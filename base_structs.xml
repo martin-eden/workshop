@@ -1,0 +1,20 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+  <Script file="#base.lua"/>
+
+  <Script file="table/clone.lua"/>
+
+  <Script file="queue/cyclic_array_alt.lua"/>
+
+  <Script file="graph/dfs_pass.lua"/>
+  <Script file="table/get_num_entries.lua"/>
+  <Script file="graph/dfs_pass/handlers/debug.lua"/>
+  <Script file="graph/dfs_pass/handlers/nice_print.lua"/>
+  <Script file="graph/dfs_pass/handlers.lua"/>
+  <Script file="table/ordered_pass.lua"/>
+  <Script file="table/print.lua"/>
+
+  <!--Include file="SomeFile.xml"/-->
+
+</Ui>
