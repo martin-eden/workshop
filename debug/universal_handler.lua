@@ -7,7 +7,7 @@ local universal_handler =
     for i = 1, #result do
       result[i] = tostring(result[i])
     end
-    result = table.concat(result, ', ')
+    result = table.concat(result, '\t')
     print(result)
     -- return result
   end

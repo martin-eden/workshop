@@ -45,7 +45,6 @@ end
 
 --[[ export tribute/request functions: ]]--
 if not truibute then
-  --dynamically changed global variables
   local tributes = {}
   local debug_flow_seq = {}
   local known_names = {}
