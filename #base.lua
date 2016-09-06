@@ -1,6 +1,6 @@
 --[[
   Lua base libraries extensions which is used in almost any
-  piece of my code. This extends base facilities. So no
+  piece of my code. This file extends base facilities, so no
   modularity assumed. I'll try to keep this code short.
 
   The essential requirement is that code must work under
@@ -110,15 +110,18 @@ if not truibute then
       -- print(('%sRequested "%s"'):format(indent:rep(depth), name_with_prefix))
       -- debug_print_tributes()
 
+      local result = tributes[name_with_prefix]
       -- ::restart::
       repeat --< lack of GOTO in Lua 5.1 workaround
         local need_restart = false
-        local result = tributes[name_with_prefix]
-        local path_name_pattern = escape_punctuation(name_with_prefix) .. '$'
-        local known_names = extract_keys(tributes)
-        local num_found = 0
+        -- print('name_with_prefix', name_with_prefix)
+        -- print('result', result)
 
         if not result then
+          local path_name_pattern = escape_punctuation(name_with_prefix) .. '$'
+          local known_names = extract_keys(tributes)
+          local num_found = 0
+
           --[[ possibly passed module name is less qualified than we have: ]]
           for i = 1, #known_names do
             if known_names[i]:find(path_name_pattern) then
@@ -127,6 +130,7 @@ if not truibute then
             end
           end
           if (num_found > 1) then
+            -- debug_print_tributes()
             error(('Found more than one match for short path name "%s".'):format(name_with_prefix))
           end
 
@@ -140,6 +144,7 @@ if not truibute then
               end
             end
             if (num_found > 1) then
+              -- debug_print_tributes()
               error(('Found more than one match for long path name "%s".'):format(name_with_prefix))
             end
           end

@@ -74,7 +74,7 @@ local create_cyclic_array =
       function(cur_index)
         local result
         result = cur_index - 1
-        if (cur_index < first) then
+        if (result < first) then
           result = last
         end
         return result
