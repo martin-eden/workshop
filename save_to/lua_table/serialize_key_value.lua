@@ -1,0 +1,15 @@
+local serialize_key_val =
+  function(self, key, value, is_first_record, deep)
+    local string_adder = self.string_adder
+    local token = self.token_giver
+
+    if not is_first_record then
+      string_adder:add_term(token:records_delimiter(deep))
+    end
+    string_adder:add_term(token:key_indent(deep, is_first_record))
+    self:serialize_key(key, deep)
+    string_adder:add_term(token.assignment)
+    self:serialize(value, deep + 1)
+  end
+
+return serialize_key_val

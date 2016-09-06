@@ -1,8 +1,6 @@
-local chunk_name = 'default'
-
 local val_rank =
   {
-    number = 0,
+    number = 2,
     string = 1,
     other = 3,
   }
@@ -35,4 +33,4 @@ local compare_function =
     return result
   end
 
-tribute(chunk_name, compare_function)
+return compare_function

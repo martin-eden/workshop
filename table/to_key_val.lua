@@ -1,5 +1,3 @@
-local chunk_name = 'to_key_val'
-
 local to_key_val =
   function(t)
     assert_table(t)
@@ -10,4 +8,4 @@ local to_key_val =
     return result
   end
 
-tribute(chunk_name, to_key_val)
+return to_key_val

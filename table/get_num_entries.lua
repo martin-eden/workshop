@@ -1,5 +1,3 @@
-local chunk_name = 'get_num_entries'
-
 local get_num_entries =
   function(t)
     local result
@@ -12,4 +10,4 @@ local get_num_entries =
     return result
   end
 
-tribute(chunk_name, get_num_entries)
+return get_num_entries

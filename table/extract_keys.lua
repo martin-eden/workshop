@@ -1,5 +1,3 @@
-local chunk_name = 'extract_keys'
-
 local extract_keys =
   function(t)
     assert_table(t)
@@ -10,4 +8,4 @@ local extract_keys =
     return result
   end
 
-tribute(chunk_name, extract_keys)
+return extract_keys

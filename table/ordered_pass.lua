@@ -1,4 +1,3 @@
-local chunk_name = 'ordered_pass'
 local default_comparator = request('comparators.default')
 local extract_keys = request('extract_keys')
 local to_key_val = request('to_key_val')
@@ -25,4 +24,4 @@ local create_sorted_pairs =
     return sorted_next, t
   end
 
-tribute(chunk_name, create_sorted_pairs)
+return create_sorted_pairs
