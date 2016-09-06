@@ -1,6 +1,4 @@
-require('#base')
-
-local chunk_name = 'graph.dfs_pass.handlers.debug'
+local chunk_name = 'debug'
 
 local debug_handle_hook =
   function(visit_type, node, external_name, node_status, depth)

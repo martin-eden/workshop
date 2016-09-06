@@ -3,17 +3,30 @@
 
   <Script file="#base.lua"/>
 
-  <Script file="table/clone.lua"/>
-
-  <Script file="queue/cyclic_array_alt.lua"/>
-
-  <Script file="graph/dfs_pass.lua"/>
-  <Script file="table/get_num_entries.lua"/>
   <Script file="graph/dfs_pass/handlers/debug.lua"/>
+  <Script file="table/get_num_entries.lua"/>
   <Script file="graph/dfs_pass/handlers/nice_print.lua"/>
   <Script file="graph/dfs_pass/handlers.lua"/>
+  <Script file="graph/dfs_pass.lua"/>
+  <Script file="table/comparators/general.lua"/>
+  <Script file="table/extract_keys.lua"/>
   <Script file="table/ordered_pass.lua"/>
-  <Script file="table/print.lua"/>
+  <Script file="table/default_ordered_pass.lua"/>
+  <Script file="debug/print_table.lua"/>
+  <Script file="debug/universal_handler.lua"/>
+  <Script file="file/as_string.lua"/>
+  <Script file="graph/bfs_pass/handlers.lua"/>
+  <Script file="queue/cyclic_array.lua"/>
+  <Script file="queue.lua"/>
+  <Script file="graph/bfs_pass.lua"/>
+  <Script file="parse/json/qd.lua"/>
+  <Script file="parse/lua_table/qd.lua"/>
+  <Script file="parse/json.lua"/>
+  <Script file="parse/lua_table.lua"/>
+  <Script file="parse/path_name.lua"/>
+  <Script file="table/clone.lua"/>
+  <Script file="table/concat.lua"/>
+  <Script file="table/extract_values.lua"/>
 
   <!--Include file="SomeFile.xml"/-->
 

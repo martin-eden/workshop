@@ -1,6 +1,4 @@
-require('#base')
-
-local chunk_name = 'table.get_num_entries'
+local chunk_name = 'get_num_entries'
 
 local get_num_entries =
   function(t)
@@ -14,7 +12,4 @@ local get_num_entries =
     return result
   end
 
-tribute(
-  chunk_name,
-  get_num_entries
-)
+tribute(chunk_name, get_num_entries)

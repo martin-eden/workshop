@@ -1,21 +1,29 @@
--- Cyclic array implementation.
+--[[ Cyclic array implementation. ]]--
 
 --[[
   Status: not tested, conceptual complete
-  Last mod.: 2015-07-07
+  Last mod.: 2015-07-15
 --]]
 
-local chunk_name = 'queue.cyclic_array'
+--[[
+  This implementations does not deal with any real array (and thus
+  not limited by it). It supports indexes where elements should be
+  stored. This way to add element <e> in add of queue represented
+  by array <A> do following:
 
-require('#base')
+    queue.increase_tail()
+    A[queue.get_tail()] = e
+--]]
+
+local chunk_name = 'cyclic_array'
 
 local default_capacity = 100
-local default_overflow_allowed = true
+local default_overflow_allowed = false
 local default_underflow_allowed = false
 
 local create_cyclic_array =
   function(capacity, overflow_allowed)
-    capacity = capacity or default_capacity
+    local capacity = capacity or default_capacity
     local check_capacity =
       function()
         local condition = (capacity >= 1)
@@ -23,8 +31,9 @@ local create_cyclic_array =
           error(('bad capacity: %d'):format(capacity), 2)
         end
       end
-    overflow_allowed = overflow_allowed or default_overflow_allowed
-    underflow_allowed = underflow_allowed or default_underflow_allowed
+
+    local overflow_allowed = overflow_allowed or default_overflow_allowed
+    local underflow_allowed = underflow_allowed or default_underflow_allowed
 
     local head
     local tail
@@ -161,14 +170,16 @@ local create_cyclic_array =
     return
       {
         get_index = get_index,
-        increase_head = add_at_head,
-        decrease_head = remove_at_head,
+        increase_head = remove_at_head,
+        decrease_head = add_at_head,
         increase_tail = add_at_tail,
         decrease_tail = remove_at_tail,
-        get_next_tail = add_at_tail,
 
         get_head = function() return head end,
         get_tail = function() return tail end,
+
+        is_empty = function() return (length == 0) end,
+
         get_length = function() return length end,
         get_capacity = function() return array_size end,
         get_overflow_allowed = function() return overflow_allowed end,
@@ -192,4 +203,5 @@ tribute(chunk_name, create_cyclic_array)
 2015-06-29
 2015-07-06
 2015-07-07
-]]
+2015-07-15
+--]]
