@@ -1,10 +1,9 @@
-local quote_string = request('^.^.compile.lua.quote_string')
-
 local serialize
 serialize =
   function(self, node, deep, parent_type)
     local string_adder = self.string_adder
     local token = self.token_giver
+    local quote_string = self.quote_string
 
     local node_type = type(node)
     if (node_type == 'nil') then

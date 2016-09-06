@@ -30,7 +30,6 @@ local function_body =
       opt_spc, ')',
     },
     {
-      name = 'function_body',
       opt_spc, statements,
       opt_spc, word('end'),
     }

@@ -10,7 +10,6 @@ local key_val =
     name = 'key_val',
     handy.opt(
       {
-        name = 'table_key',
         handy.cho1(
           bracket_expr,
           name
@@ -19,10 +18,7 @@ local key_val =
         opt_spc,
       }
     ),
-    {
-      name = 'table_value',
-      '>expression',
-    }
+    '>expression',
   }
 
 local rec_sep =

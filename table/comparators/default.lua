@@ -1,7 +1,7 @@
 local val_rank =
   {
-    number = 2,
     string = 1,
+    number = 2,
     other = 3,
   }
 

@@ -1,7 +1,7 @@
 local parser = request('^.^.^.parser')
 local handy = parser.handy
 
-local expr_assignment = request('expr_assignment')
+local call_assign = request('call_assign')
 local named_function = request('named_function')
 
 local empty_statement = request('empty_statement')
@@ -21,7 +21,7 @@ local statement =
   {
     inner_name = 'statement',
     handy.cho1(
-      expr_assignment,
+      call_assign,
       named_function,
 
       empty_statement,
