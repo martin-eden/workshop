@@ -6,7 +6,7 @@ local handler
 handler = request('graph.bfs_pass.handlers').debug_with_indent
 
 local iterator
-iterator = request('table.default_ordered_pass')
+iterator = request('table.ordered_pass')
 
 local test_table
 local table_samples = request('#table_samples')

@@ -15,7 +15,7 @@ function json_as_table(json_str)
   local result = json_str
   result = result:gsub('%[', '{')
   result = result:gsub('%]', '}')
-  result = result:gsub('"([^"-]+)"%s+%:', '["%1"]=')
+  result = result:gsub('"([^"]+)"%s*:', '["%1"]=')
   result = table_from_lua_string(result)
   return result
 end

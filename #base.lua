@@ -45,36 +45,65 @@ end
 
 --[[ export tribute/request functions: ]]--
 if not truibute then
+  --dynamically changed global variables
   local tributes = {}
-  -- local requested_tributes = {}
-  local system_have_require = is_function(require)
+  local debug_flow_seq = {}
+  local known_names = {}
   local depth = 0
-  local indent = '  '
   local caller_prefix = ''
+
+  local system_have_require = is_function(require)
+  local indent = '  '
+
+  local debug_add_to_flow =
+    function(name, type, depth)
+      debug_flow_seq[#debug_flow_seq + 1] =
+        {
+          name = name,
+          depth = depth,
+          type = type,
+        }
+    end
+
+  local debug_add_tribute =
+    function(name)
+      debug_add_to_flow(name, '<', depth)
+    end
+
+  local debug_add_request =
+    function(name)
+      debug_add_to_flow(name, '>', depth)
+    end
+
+  local debug_print_flow =
+    function()
+      print('Tribute/requests flow: (')
+      for i = 1, #debug_flow_seq do
+        local rec = debug_flow_seq[i]
+        print(
+          ('%s%s %s,'):format(
+            ('  '):rep(rec.depth),
+            rec.type,
+            rec.name
+          )
+        )
+      end
+      print(')')
+    end
 
   tribute =
     function(path_name, value)
       assert_string(path_name)
+      assert(value ~= nil)
       path_name = caller_prefix .. path_name
-      tributes[path_name] = value
-      -- requested_tributes[path_name] = 0
-      -- print(('%sTributed "%s" (%s)'):format(indent:rep(depth), path_name, type(value)))
-    end
-
-  local debug_print_tributes =
-    function()
-      for k, v in pairs(tributes) do
-        print('tribute', k)
+      if not tributes[path_name] then
+        tributes[path_name] = value
+        known_names[#known_names + 1] = path_name
+      else
+        --we have duplicating tribute
+        error(('Tribute for "%s" already exists.'):format(path_name))
       end
-    end
-
-  local extract_keys =
-    function(t)
-      local result = {}
-      for k in pairs(t) do
-        result[#result + 1] = k
-      end
-      return result
+      debug_add_tribute(path_name)
     end
 
   local escape_punctuation =
@@ -107,19 +136,14 @@ if not truibute then
       end
       local name_with_prefix = caller_prefix .. path_name
       name_with_prefix = substitute_upper_dir(name_with_prefix)
-      -- print(('%sRequested "%s"'):format(indent:rep(depth), name_with_prefix))
-      -- debug_print_tributes()
 
       local result = tributes[name_with_prefix]
       -- ::restart::
       repeat --< lack of GOTO in Lua 5.1 workaround
         local need_restart = false
-        -- print('name_with_prefix', name_with_prefix)
-        -- print('result', result)
 
         if not result then
           local path_name_pattern = escape_punctuation(name_with_prefix) .. '$'
-          local known_names = extract_keys(tributes)
           local num_found = 0
 
           --[[ possibly passed module name is less qualified than we have: ]]
@@ -130,7 +154,6 @@ if not truibute then
             end
           end
           if (num_found > 1) then
-            -- debug_print_tributes()
             error(('Found more than one match for short path name "%s".'):format(name_with_prefix))
           end
 
@@ -144,7 +167,6 @@ if not truibute then
               end
             end
             if (num_found > 1) then
-              -- debug_print_tributes()
               error(('Found more than one match for long path name "%s".'):format(name_with_prefix))
             end
           end
@@ -156,7 +178,7 @@ if not truibute then
             if (caller_prefix ~= '') then
               -- print(('%sPrefix is set to "%s".'):format(indent:rep(depth), caller_prefix))
             end
-            -- print(('%sRequiring "%s".'):format(indent:rep(depth), name_with_prefix))
+            debug_add_request(name_with_prefix)
             require(name_with_prefix)
             caller_prefix = old_prefix
             require_tried = true
@@ -168,8 +190,6 @@ if not truibute then
       if not result then
         error(('No matches found for path name "%s".'):format(name_with_prefix))
       end
-      -- requested_tributes[name_with_prefix] = requested_tributes[name_with_prefix] + 1
-      -- print(('%sReturned "%s"'):format((' '):rep(2 * depth), name_with_prefix))
       depth = depth - 1
       return result
     end
@@ -181,15 +201,5 @@ if not truibute then
     -- print('System have require().')
   end
 
-  --[[
-  debug_print_requested_tributes =
-    function()
-      print('Requested trbutes:')
-      for k, v in pairs(requested_tributes) do
-        print(('  %s: %d'):format(k, v))
-      end
-    end
-  ]]
+  _G.debug_print_flow = debug_print_flow
 end
-
-tribute(chunk_name, '')

@@ -2,16 +2,16 @@ local chunk_name = 'print_table'
 
 local dfs = request('^.graph.dfs_pass')
 
-local handler = request('^.graph.dfs_pass.handlers').nice_print
--- local handler = request('dfs_pass.handlers').debug_with_indent
--- local handler = request('dfs_pass.handlers').debug
+local printer = request('^.graph.dfs_pass.printers.nice')
+-- local handler = request('dfs_pass.printers').debug_with_indent
+-- local handler = request('dfs_pass.printers').debug
 --[[
-local handler_object = request('dfs_pass.handlers.nice_print')
+local handler_object = request('dfs_pass.printers.nice')
 handler_object.set_options({indent_chunk = '|-'})
-local handler = handler_object.handler
 ]]
+local handler = printer.handler
 
-local iterator = request('^.table.default_ordered_pass')
+local iterator = request('^.table.ordered_pass')
 
 local print_table =
   function(graph, graph_name)

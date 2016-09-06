@@ -1,25 +1,27 @@
 local chunk_name = 'ordered_pass'
-
+local default_comparator = request('comparators.default')
 local extract_keys = request('extract_keys')
+local to_key_val = request('to_key_val')
 
+-- Sort <t> and return iterator function to pass that sorted table:
 local create_sorted_pairs =
-  function(t, keys_compare_function)
+  function(t, comparator)
     assert_table(t)
-    assert_function(keys_compare_function)
+    comparator = comparator or default_comparator
+    assert_function(comparator)
 
-    local sorted_keys = extract_keys(t)
-    table.sort(sorted_keys, keys_compare_function)
+    local key_vals = to_key_val(t)
+    table.sort(key_vals, comparator)
 
-    local i = 1
+    local i = 0
     local sorted_next =
-      function(tt, prev_key)
-        if sorted_keys[i] then
-          i = i + 1
-          return sorted_keys[i - 1], tt[sorted_keys[i - 1]]
-        else
-          sorted_keys = nil
+      function()
+        i = i + 1
+        if key_vals[i] then
+          return key_vals[i].key, key_vals[i].value
         end
       end
+
     return sorted_next, t
   end
 
