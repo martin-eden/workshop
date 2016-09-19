@@ -28,9 +28,9 @@
   Use normal parser if this hack fails.
 --]]
 
-local str_as_lua_table = request('^.lua_table')
+local str_as_lua_table = request('^.lua.serialize_table.lua_table')
 
-local json_as_table =
+return
   function(json_str)
     if not is_string(json_str) then
       return
@@ -42,5 +42,3 @@ local json_as_table =
     result = str_as_lua_table(result)
     return result
   end
-
-return json_as_table

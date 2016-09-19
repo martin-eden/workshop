@@ -1,6 +1,4 @@
-local init =
+return
   function(self)
     self.serializer:init()
   end
-
-return init

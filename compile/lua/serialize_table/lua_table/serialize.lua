@@ -1,5 +1,4 @@
-local serialize
-serialize =
+return
   function(self, node, deep, parent_type)
     local string_adder = self.string_adder
     local token = self.token_giver
@@ -58,5 +57,3 @@ serialize =
       end
     end
   end
-
-return serialize

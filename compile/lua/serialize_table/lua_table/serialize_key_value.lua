@@ -1,4 +1,4 @@
-local serialize_key_val =
+return
   function(self, key, value, is_first_record, deep)
     local string_adder = self.string_adder
     local token = self.token_giver
@@ -11,5 +11,3 @@ local serialize_key_val =
     string_adder:add_term(token.assignment)
     self:serialize(value, deep + 1)
   end
-
-return serialize_key_val

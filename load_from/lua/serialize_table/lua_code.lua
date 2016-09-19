@@ -1,4 +1,4 @@
-local get_lua_code_result =
+return
   function(s)
     local f = load(s)
     local result
@@ -7,5 +7,3 @@ local get_lua_code_result =
     end
     return result
   end
-
-return get_lua_code_result

@@ -1,5 +1,6 @@
-local is_identifier = request('^.^.parse.lua.is_identifier')
-local serialize_key =
+local is_identifier = request('^.^.^.^.parse.lua.is_identifier')
+
+return
   function(self, key, deep)
     local string_adder = self.string_adder
     local token = self.token_giver
@@ -12,5 +13,3 @@ local serialize_key =
       string_adder:add_term(token:key_postfix(deep, is_table(key)))
     end
   end
-
-return serialize_key

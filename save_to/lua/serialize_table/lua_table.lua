@@ -2,15 +2,14 @@
 
 -- Not suitable for tables with cross-links in keys or values.
 
-local override_params = request('^.handy_mechs.override_params')
-
+local override_params = request('^.^.^.handy_mechs.override_params')
 local default_params =
   {
     initial_deep = 0,
-    serializer = request('lua_table.interface'),
+    serializer = request('^.^.^.compile.lua.serialize_table.lua_table.interface'),
   }
 
-local serialize_manager =
+return
   function(value, a_params)
     local params = override_params(default_params, a_params)
     local serializer = params.serializer
@@ -18,5 +17,3 @@ local serialize_manager =
     serializer:serialize(value, params.initial_deep)
     return serializer.string_adder:get_result()
   end
-
-return serialize_manager

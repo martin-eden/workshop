@@ -1,4 +1,4 @@
-local serialize_subtable =
+return
   function(self, node)
     local node_rec = self.node_recs[node]
     local string_adder = self.serializer.string_adder
@@ -36,5 +36,3 @@ local serialize_subtable =
       end
     end
   end
-
-return serialize_subtable
