@@ -1,7 +1,7 @@
 -- These are core cycle nodes. Loaded separately to avoid cycles in require()
 
 local parser = request('^.parser')
-local to_str = request('^.^.save_to.lua_code')
+local to_str = request('^.^.save_to.lua.serialize_table.lua_code')
 
 local producers, consumers
 local expression = request('lua.expressions.expression')
