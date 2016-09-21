@@ -1,4 +1,4 @@
-local produce_call_struc =
+return
   function(self, node)
     local result
     local name_part
@@ -37,12 +37,5 @@ local produce_call_struc =
       end
     end
 
-    return result
-  end
-
-return
-  function(self, node)
-    local result
-    result = produce_call_struc(self, node)
     return result
   end

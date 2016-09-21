@@ -1,4 +1,4 @@
-local unquote =
+return
   function(s)
     if
       (#s >= 2) and
@@ -10,5 +10,3 @@ local unquote =
     end
     return s
   end
-
-return unquote

@@ -1,4 +1,4 @@
-local parse_choice_first =
+return
   function(struc, s, s_pos, parse_func)
     local parse_result, new_s_pos
     for i = 1, #struc do
@@ -10,5 +10,3 @@ local parse_choice_first =
     end
     return parse_result, new_s_pos
   end
-
-return parse_choice_first

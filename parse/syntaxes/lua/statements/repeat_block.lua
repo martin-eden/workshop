@@ -5,7 +5,7 @@ local word = request('^.words.word')
 local opt_spc = request('^.words.opt_spc')
 local statements = request('statements')
 
-local repeat_block =
+return
   handy.interleave(
     {
       name = 'repeat_block',
@@ -16,5 +16,3 @@ local repeat_block =
     },
     opt_spc
   )
-
-return repeat_block

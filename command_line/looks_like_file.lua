@@ -1,6 +1,6 @@
 -- Tries to refuse strings like '--verbose' as file name
 
-local looks_like_file =
+return
   function(s)
     local result
     if is_string(s) and (#s > 0) then
@@ -8,5 +8,3 @@ local looks_like_file =
     end
     return result
   end
-
-return looks_like_file

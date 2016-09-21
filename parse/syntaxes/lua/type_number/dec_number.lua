@@ -28,10 +28,8 @@ local dec_power =
     int_10
   }
 
-local dec_number =
+return
   {
     dec_base,
     handy.opt(dec_power)
   }
-
-return dec_number

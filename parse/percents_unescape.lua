@@ -1,14 +1,10 @@
-local unescape_string =
+return
   function(s)
-    local result
-    result =
+    return
       s:gsub(
         '%%(%x%x)',
         function(m)
           return string.char(tonumber(m, 16))
         end
       )
-    return result
   end
-
-return unescape_string

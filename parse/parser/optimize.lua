@@ -159,7 +159,7 @@ optimize =
     end
   end
 
-local optimize_outer =
+return
   function(struc)
     repeat
       optimizations_done = false
@@ -168,5 +168,3 @@ local optimize_outer =
     until not optimizations_done
     visited = {}
   end
-
-return optimize_outer

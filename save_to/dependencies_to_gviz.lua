@@ -2,7 +2,8 @@
   To test save output to some file, say "test.gv",
   run "dot -Tsvg test.gv -o result.svg" and open "result.svg".
 ]]
-local dependencies_to_gviz =
+
+return
   function()
     local result = {}
     local graph_name = 'dependencies'
@@ -16,5 +17,3 @@ local dependencies_to_gviz =
     result = table.concat(result, '\n')
     return result
   end
-
-return dependencies_to_gviz

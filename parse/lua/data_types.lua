@@ -1,6 +1,6 @@
 local map_values = request('^.^.table.map_values')
 
-local data_types =
+return
   map_values(
     {
       'nil',
@@ -13,5 +13,3 @@ local data_types =
       'table',
     }
   )
-
-return data_types

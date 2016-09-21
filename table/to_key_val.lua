@@ -1,4 +1,4 @@
-local to_key_val =
+return
   function(t)
     assert_table(t)
     local result = {}
@@ -7,5 +7,3 @@ local to_key_val =
     end
     return result
   end
-
-return to_key_val

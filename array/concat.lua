@@ -1,4 +1,4 @@
-local array_concat =
+return
   function(...)
     local result = {}
     for i = 1, select('#', ...) do
@@ -10,5 +10,3 @@ local array_concat =
     end
     return result
   end
-
-return array_concat

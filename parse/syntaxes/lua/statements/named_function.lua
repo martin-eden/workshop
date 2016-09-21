@@ -6,7 +6,7 @@ local opt_spc = request('^.words.opt_spc')
 local name = request('^.words.name')
 local function_body = request('function_body')
 
-local named_function =
+return
   {
     name = 'named_function',
     word('function'),
@@ -23,5 +23,3 @@ local named_function =
     ),
     opt_spc, function_body,
   }
-
-return named_function

@@ -101,7 +101,7 @@ local try_reversed =
     return is_succeeded, fixed_s
   end
 
-local fix_bad_line_outer =
+return
   function(s)
     if (s:sub(-1, -1) == '\n') then
       s = s:sub(1, -2)
@@ -124,5 +124,3 @@ local fix_bad_line_outer =
     end
     return is_succeeded, fixed_s
   end
-
-return fix_bad_line_outer

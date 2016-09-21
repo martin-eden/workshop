@@ -26,7 +26,7 @@ populate_data_struc =
     data_struc.owner = nil
   end
 
-local populate_data_struc_outer =
+return
   function(data_struc, s)
     assert_table(data_struc)
     assert_string(s)
@@ -36,5 +36,3 @@ local populate_data_struc_outer =
     end
     data_struc.is_folded = nil
   end
-
-return populate_data_struc_outer

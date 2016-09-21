@@ -2,7 +2,7 @@ local quote_string = request('^.^.compile.json.quote_string')
 
 local is_array = request('^.^.array.is_array')
 
-local serialize =
+return
   function(self, value)
     local adder = self.string_adder
     local tokens = self.token_giver
@@ -48,5 +48,3 @@ local serialize =
       end
     end
   end
-
-return serialize

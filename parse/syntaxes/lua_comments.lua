@@ -12,7 +12,7 @@ local type_string = request('lua.type_string')
 type_string.name = nil
 local any_char = request('lua.words.particles.any_char')
 
-local code =
+return
   {
     opt_rep(
       cho(
@@ -24,5 +24,3 @@ local code =
       )
     ),
   }
-
-return code

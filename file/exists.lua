@@ -1,4 +1,4 @@
-local file_exists =
+return
   function(file_name)
     local file_handle = io.open(file_name, 'r')
     local result = (file_handle ~= nil)
@@ -7,5 +7,3 @@ local file_exists =
     end
     return result
   end
-
-return file_exists

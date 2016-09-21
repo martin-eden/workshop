@@ -5,7 +5,8 @@ local space_chars =
     ['\t'] = true,
   }
 local quote = request('quote_field')
-local quote_smart =
+
+return
   function(s)
     assert_string(s)
     if
@@ -17,5 +18,3 @@ local quote_smart =
     end
     return s
   end
-
-return quote_smart

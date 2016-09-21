@@ -1,7 +1,5 @@
-local vararg =
+return
   {
     name = 'vararg',
     '...',
   }
-
-return vararg

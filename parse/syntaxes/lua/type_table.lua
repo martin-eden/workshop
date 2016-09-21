@@ -26,7 +26,7 @@ local rec_sep =
     opt_spc, handy.cho1(',', ';'),
   }
 
-local type_table =
+return
   {
     name = 'table',
     '{',
@@ -36,5 +36,3 @@ local type_table =
     ),
     opt_spc, '}',
   }
-
-return type_table

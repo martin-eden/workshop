@@ -36,6 +36,7 @@ local generate_list_record =
     return result
   end
 
+--TODO: drop interleave()
 local interleave =
   function(t, delim)
     assert_table(t)

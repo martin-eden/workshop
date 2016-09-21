@@ -1,6 +1,6 @@
 -- BFS-pass of given graph
 
-local bfs =
+return
   function(self, root)
     assert_table(root)
 
@@ -88,5 +88,3 @@ local bfs =
       end
     end
   end
-
-return bfs

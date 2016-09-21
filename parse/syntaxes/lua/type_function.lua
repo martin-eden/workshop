@@ -5,7 +5,7 @@ local word = request('words.word')
 local opt_spc = request('words.opt_spc')
 local function_body = request('statements.function_body')
 
-local type_function =
+return
   handy.interleave(
     {
       name = 'type_function',
@@ -14,5 +14,3 @@ local type_function =
     },
     opt_spc
   )
-
-return type_function

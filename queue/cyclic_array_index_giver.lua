@@ -8,7 +8,8 @@ local default_params =
   }
 
 local override_params = request('^.handy_mechs.override_params')
-local create_cyclic_array =
+
+return
   function(a_params)
     local params = override_params(default_params, a_params)
     assert(params.min_idx <= params.max_idx)
@@ -136,5 +137,3 @@ local create_cyclic_array =
         get_params = function() return clone(params) end,
       }
   end
-
-return create_cyclic_array

@@ -16,7 +16,7 @@ local comparable_types =
     string = true,
   }
 
-local compare_function =
+return
   function(a, b)
     local result
     local a_key, b_key = a.key, b.key
@@ -32,5 +32,3 @@ local compare_function =
     end
     return result
   end
-
-return compare_function

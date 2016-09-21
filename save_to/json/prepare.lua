@@ -57,7 +57,8 @@ prepare =
   end
 
 local autofix_root_table_name = 'data'
-local prepare_outer =
+
+return
   function(self, t)
     assert_table(t)
     if is_arrayable(t) then
@@ -67,8 +68,6 @@ local prepare_outer =
     t = prepare(t)
     return t
   end
-
-return prepare_outer
 
 --[[
   [1]

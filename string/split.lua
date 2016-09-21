@@ -1,4 +1,4 @@
-local split_string =
+return
   function(s, delim)
     assert_string(s)
     local delim = delim or '\n'
@@ -11,5 +11,3 @@ local split_string =
     result[#result + 1] = s:sub(last_pos)
     return result
   end
-
-return split_string

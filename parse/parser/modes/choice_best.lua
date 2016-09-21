@@ -1,6 +1,6 @@
 local folder = request('^.folder')
 
-local parse_choice =
+return
   function(struc, s, s_pos, parse_func)
     local parse_result, new_s_pos
     local best_match_new_pos = 0
@@ -26,5 +26,3 @@ local parse_choice =
     end
     return parse_result, new_s_pos
   end
-
-return parse_choice

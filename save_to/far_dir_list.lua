@@ -25,11 +25,9 @@ visit =
     end
   end
 
-local struct_to_far_dir_list =
+return
   function(struct)
     string_adder:init()
     visit(struct, 1)
     return string_adder.get_result()
   end
-
-return struct_to_far_dir_list

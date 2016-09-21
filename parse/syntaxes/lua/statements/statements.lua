@@ -4,7 +4,7 @@ local handy = parser.handy
 local return_statement = request('return_statement')
 local opt_spc = request('^.words.opt_spc')
 
-local statements =
+return
   {
     opt_spc,
     {
@@ -13,8 +13,6 @@ local statements =
       handy.opt(opt_spc, return_statement),
     },
   }
-
-return statements
 
 --[[
 2013-07-08
@@ -27,4 +25,5 @@ return statements
 2016-08-03
 2016-08-04
 2016-08-16
+2016-09-21
 ]]

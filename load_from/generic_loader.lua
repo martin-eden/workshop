@@ -1,6 +1,6 @@
 local parser = request('^.parse.parser')
 
-local generic_loader =
+return
   function(str, syntax, struc_transformer)
     local result
     local parse_result, finish_pos, data_struc = parser.parse(syntax, str)
@@ -12,5 +12,3 @@ local generic_loader =
     end
     return result
   end
-
-return generic_loader

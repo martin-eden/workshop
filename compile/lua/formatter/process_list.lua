@@ -9,7 +9,7 @@ local apply_delimiter =
     end
   end
 
-local process_list =
+return
   function(self, node, delimiter, apply_tail_delimiter)
     if (#node > 0) then
       for i = 1, (#node - 1) do
@@ -22,5 +22,3 @@ local process_list =
       end
     end
   end
-
-return process_list

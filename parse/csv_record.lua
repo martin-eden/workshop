@@ -4,7 +4,8 @@ local _parse_record = request('csv.parse_record')
 local fix_bad_line = request('csv.fix_bad_line')
 
 local trim_linefeed = request('^.string.trim_linefeed')
-local parse_record =
+
+return
   function(s, dirty_data_allowed)
     assert_string(s)
     s = trim_linefeed(s)
@@ -18,5 +19,3 @@ local parse_record =
     end
     return record, has_problems, is_unclosed_quote
   end
-
-return parse_record

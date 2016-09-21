@@ -1,4 +1,4 @@
-local is_array_smart =
+return
   function(t)
     local result
     if is_table(t) then
@@ -12,5 +12,3 @@ local is_array_smart =
     end
     return result
   end
-
-return is_array_smart

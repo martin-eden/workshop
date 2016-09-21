@@ -1,6 +1,6 @@
 -- DFS-pass of given graph
 
-local dfs =
+return
   function(self, graph)
     assert_table(graph)
 
@@ -57,5 +57,3 @@ local dfs =
     nodes_status[graph] = {}
     dfs_visit(graph, 0)
   end
-
-return dfs

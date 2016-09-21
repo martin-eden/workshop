@@ -33,7 +33,7 @@ local may_print_inline =
   As always I prefer to wait real problem before doing changes.
 ]]
 
-local serialize =
+return
   function(self, root, a_params)
     local assembly_order
     local dfs_params =
@@ -70,5 +70,3 @@ local serialize =
       'return ' .. result_name .. self.serializer.token_giver.commands_delimiter
     )
   end
-
-return serialize

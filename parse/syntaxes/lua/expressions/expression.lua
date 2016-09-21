@@ -52,7 +52,8 @@ local type_string = request('^.type_string')
 local type_table = request('^.type_table')
 local type_function = request('^.type_function')
 local var_link = request('var_link')
-local expression =
+
+return
   {
     name = 'expression',
     inner_name = 'expression',
@@ -73,5 +74,3 @@ local expression =
       opt_spc, '>expression'
     )
   }
-
-return expression

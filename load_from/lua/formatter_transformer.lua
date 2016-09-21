@@ -15,7 +15,7 @@
 
 local transformer = request('formatter_transformer.init')
 
-local struc_to_lua =
+return
   function(data_struc)
     assert_table(data_struc)
     local result
@@ -24,5 +24,3 @@ local struc_to_lua =
     end
     return result
   end
-
-return struc_to_lua

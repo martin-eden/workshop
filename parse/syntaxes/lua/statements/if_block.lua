@@ -5,7 +5,7 @@ local word = request('^.words.word')
 local opt_spc = request('^.words.opt_spc')
 local statements = request('statements')
 
-local if_block =
+return
   {
     name = 'if_block',
     {
@@ -33,5 +33,3 @@ local if_block =
     ),
     opt_spc, word('end'),
   }
-
-return if_block

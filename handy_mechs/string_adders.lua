@@ -1,8 +1,8 @@
-local string_adders =
+local result =
   {
     array = request('string_adders.consolidable_array'),
     file = request('string_adders.file'),
   }
-string_adders.default = string_adders.file
+result.default = result.file
 
-return string_adders
+return result

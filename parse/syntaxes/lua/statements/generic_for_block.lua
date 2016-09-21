@@ -4,7 +4,7 @@ local name_list = request('^.words.name_list')
 local expr_list = request('^.expressions.expr_list')
 local statements = request('statements')
 
-local generic_for_block =
+return
   {
     name = 'generic_for_block',
     word('for'),
@@ -15,5 +15,3 @@ local generic_for_block =
     opt_spc, statements,
     opt_spc, word('end'),
   }
-
-return generic_for_block

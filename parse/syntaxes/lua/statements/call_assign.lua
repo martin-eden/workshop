@@ -5,7 +5,7 @@ local var_link = request('^.expressions.var_link')
 local opt_spc = request('^.words.opt_spc')
 local expr_list = request('^.expressions.expr_list')
 
-local call_assign =
+return
   {
     name = 'call_assign',
     var_link,
@@ -24,5 +24,3 @@ local call_assign =
       }
     ),
   }
-
-return call_assign

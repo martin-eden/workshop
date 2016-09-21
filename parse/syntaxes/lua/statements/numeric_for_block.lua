@@ -6,7 +6,7 @@ local opt_spc = request('^.words.opt_spc')
 local name = request('^.words.name')
 local statements = request('statements')
 
-local numeric_for_block =
+return
   handy.interleave(
     {
       name = 'numeric_for_block',
@@ -27,5 +27,3 @@ local numeric_for_block =
     },
     opt_spc
   )
-
-return numeric_for_block

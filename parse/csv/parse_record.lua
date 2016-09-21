@@ -133,7 +133,7 @@ local debug_print_state =
   end
 ]]
 
-local parse_record =
+return
   function(s)
     result = {}
     term = ''
@@ -151,5 +151,3 @@ local parse_record =
     local has_errors = (state == states.broken)
     return result, cur_position, has_errors
   end
-
-return parse_record

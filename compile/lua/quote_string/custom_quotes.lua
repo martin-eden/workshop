@@ -1,4 +1,4 @@
-local custom_quotes =
+return
   {
     ['\x07'] = [[\a]],
     ['\x08'] = [[\b]],
@@ -11,5 +11,3 @@ local custom_quotes =
     ["'"] = [[\']],
     ['\\'] = [[\\]],
   }
-
-return custom_quotes

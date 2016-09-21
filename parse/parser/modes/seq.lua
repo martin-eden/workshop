@@ -1,4 +1,4 @@
-local parse_seq =
+return
   function(struc, s, s_pos, parse_func)
     local parse_result, new_s_pos
     local struc_type = type(struc)
@@ -35,5 +35,3 @@ local parse_seq =
     end
     return parse_result, new_s_pos
   end
-
-return parse_seq

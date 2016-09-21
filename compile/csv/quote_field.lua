@@ -1,7 +1,5 @@
-local quote_field =
+return
   function(s)
     s = '"' .. s:gsub('"', '""') .. '"'
     return s
   end
-
-return quote_field

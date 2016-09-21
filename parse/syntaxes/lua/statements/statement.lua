@@ -17,7 +17,7 @@ local repeat_block = request('repeat_block')
 local generic_for_block = request('generic_for_block')
 local numeric_for_block = request('numeric_for_block')
 
-local statement =
+return
   {
     inner_name = 'statement',
     handy.cho1(
@@ -38,5 +38,3 @@ local statement =
       numeric_for_block
     )
   }
-
-return statement

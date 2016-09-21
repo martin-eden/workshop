@@ -9,7 +9,7 @@ local default_params =
     serializer = request('json.interface'),
   }
 
-local serialize_outer =
+return
   function(t, params)
     params = override_params(default_params, params)
     local serializer = params.serializer
@@ -26,5 +26,3 @@ local serialize_outer =
 
     return result
   end
-
-return serialize_outer

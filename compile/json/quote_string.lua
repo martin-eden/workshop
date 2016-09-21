@@ -1,4 +1,4 @@
-local quote_string =
+return
   function(s)
     assert_string(s)
     local result = s
@@ -16,5 +16,3 @@ local quote_string =
     result = '"' .. result .. '"'
     return result
   end
-
-return quote_string

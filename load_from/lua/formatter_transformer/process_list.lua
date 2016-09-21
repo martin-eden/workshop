@@ -1,6 +1,6 @@
 local process_node = request('process_node')
 
-local process_list =
+return
   function(self, node)
     local result = {}
     for i = 1, #node do
@@ -9,5 +9,3 @@ local process_list =
     result.type = node.name
     return result
   end
-
-return process_list

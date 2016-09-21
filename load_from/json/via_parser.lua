@@ -2,7 +2,7 @@ local syntax = request('^.^.parse.syntaxes.json')
 local parser = request('^.^.parse.parser')
 local struc_to_lua = request('^.^.parse.json.struc_to_lua')
 
-local json_to_lua =
+return
   function(json_str)
     local result
     local parse_result, finish_pos, data_struc = parser.parse(syntax, json_str)
@@ -12,5 +12,3 @@ local json_to_lua =
     end
     return result
   end
-
-return json_to_lua

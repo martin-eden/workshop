@@ -2,8 +2,8 @@ local default_comparator = request('comparators.default')
 local extract_keys = request('extract_keys')
 local to_key_val = request('to_key_val')
 
--- Sort <t> and return iterator function to pass that sorted table:
-local create_sorted_pairs =
+-- Sort <t> and return iterator function to pass that sorted <t>
+return
   function(t, comparator)
     assert_table(t)
     comparator = comparator or default_comparator
@@ -23,5 +23,3 @@ local create_sorted_pairs =
 
     return sorted_next, t
   end
-
-return create_sorted_pairs

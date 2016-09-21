@@ -1,4 +1,4 @@
-local safe_open =
+return
   function(file_name, mode)
     assert_string(file_name)
     assert_string(mode)
@@ -8,5 +8,3 @@ local safe_open =
     end
     return f_object
   end
-
-return safe_open

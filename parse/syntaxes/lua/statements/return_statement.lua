@@ -6,7 +6,7 @@ local opt_spc = request('^.words.opt_spc')
 local expr_list = request('^.expressions.expr_list')
 local empty_statement = request('empty_statement')
 
-local return_statement =
+return
   handy.interleave(
     {
       name = 'return_statement',
@@ -16,5 +16,3 @@ local return_statement =
     },
     opt_spc
   )
-
-return return_statement

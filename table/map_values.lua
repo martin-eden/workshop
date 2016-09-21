@@ -1,4 +1,4 @@
-local map_values =
+return
   function(t)
     assert_table(t)
     local result = {}
@@ -7,5 +7,3 @@ local map_values =
     end
     return result
   end
-
-return map_values

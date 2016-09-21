@@ -1,4 +1,4 @@
-local process_node =
+return
   function(self, node)
     local result
     if is_table(node) then
@@ -18,5 +18,3 @@ local process_node =
     end
     return result
   end
-
-return process_node

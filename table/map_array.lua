@@ -1,4 +1,4 @@
-local map_array =
+return
   function(a, mapping)
     assert_table(a)
     assert_table(mapping)
@@ -8,5 +8,3 @@ local map_array =
     end
     return result
   end
-
-return map_array

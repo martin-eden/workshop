@@ -1,4 +1,4 @@
-local struc_to_lua =
+return
   function(data_struc)
     local result = {}
     for i = 1, #data_struc do
@@ -19,5 +19,3 @@ local struc_to_lua =
     end
     return result
   end
-
-return struc_to_lua

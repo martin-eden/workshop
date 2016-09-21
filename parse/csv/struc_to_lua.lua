@@ -1,6 +1,6 @@
 local unquote = request('unquote_field')
 
-local struc_to_lua =
+return
   function(data_struc)
     assert_table(data_struc)
     local result = {}
@@ -22,5 +22,3 @@ local struc_to_lua =
     end
     return result
   end
-
-return struc_to_lua

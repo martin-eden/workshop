@@ -42,7 +42,7 @@ struc_to_lua =
     return result
   end
 
-local struc_to_lua_outer =
+return
   function(data_struc)
     assert_table(data_struc)
     local result
@@ -57,5 +57,3 @@ local struc_to_lua_outer =
     end
     return result
   end
-
-return struc_to_lua_outer

@@ -9,7 +9,7 @@ local handy = parser.handy
 	\Documents and Settings\All Users\Documents\My Videos
 ]]
 
-local records =
+return
 	handy.list(
 		{
 			name = 'record',
@@ -23,5 +23,3 @@ local records =
 		},
 		'\n'
 	)
-
-return records

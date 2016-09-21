@@ -8,7 +8,7 @@ local custom_quotes = request('custom_quotes')
     "\" maps to "\\", I prefer "\x5c". Without using <custom_quote>
     table you get longer but easier to understand data representation.
 ]]
-local linear_quote =
+return
   function(s)
     local result = s
     --(1)
@@ -33,5 +33,3 @@ local linear_quote =
     end
     return result
   end
-
-return linear_quote

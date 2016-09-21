@@ -75,7 +75,7 @@ local resolve_links =
     return not has_unresolved_links
   end
 
-local link =
+return
   function(node, producers, consumers)
     local producers = producers or {}
     local consumers = consumers or {}
@@ -113,5 +113,3 @@ local link =
     --]]
     return producers, consumers
   end
-
-return link

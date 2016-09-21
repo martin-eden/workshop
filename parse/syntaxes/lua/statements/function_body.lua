@@ -21,7 +21,7 @@ local params_list =
     )
   }
 
-local function_body =
+return
   {
     {
       name = 'function_params',
@@ -34,5 +34,3 @@ local function_body =
       opt_spc, word('end'),
     }
   }
-
-return function_body

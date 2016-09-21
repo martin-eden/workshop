@@ -1,6 +1,6 @@
 local parse_seq = request('seq')
 
-local parse_repeat =
+return
   function(struc, s, s_pos, parse_func)
     local parse_result, new_s_pos = parse_seq(struc, s, s_pos, parse_func)
     if parse_result then
@@ -13,5 +13,3 @@ local parse_repeat =
     end
     return parse_result, new_s_pos
   end
-
-return parse_repeat

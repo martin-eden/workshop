@@ -1,8 +1,10 @@
-local escape_string =
+return
   function(s)
-    local result
-    result = s:gsub('.', function(c) return string.format('%%%X', string.byte(c, 1)) end)
-    return result
+    return
+      s:gsub(
+        '.',
+        function(c)
+          return string.format('%%%X', string.byte(c, 1))
+        end
+      )
   end
-
-return escape_string

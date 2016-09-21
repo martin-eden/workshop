@@ -1,9 +1,7 @@
 local word = request('words.word')
 
-local type_nil =
+return
   {
     name = 'nil',
     word('nil'),
   }
-
-return type_nil

@@ -1,11 +1,6 @@
-local is_array =
+return
   function(t)
     assert_table(t)
     local mt = getmetatable(t)
-    if mt and (mt.is_array == true) then
-      return true
-    end
-    return false
+    return mt and (mt.is_array == true)
   end
-
-return is_array

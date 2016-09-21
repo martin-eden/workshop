@@ -46,7 +46,7 @@ local colon_name =
 
 local bracket_expr = request('bracket_expr')
 
-local var_link =
+return
   {
     name = 'var_link',
     handy.cho1(
@@ -66,5 +66,3 @@ local var_link =
       )
     ),
   }
-
-return var_link

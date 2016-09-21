@@ -1,4 +1,4 @@
-local merge =
+return
   function(t_dest, t_src)
     assert_table(t_dest)
     assert_table(t_src)
@@ -6,5 +6,3 @@ local merge =
       t_src[k] = v
     end
   end
-
-return merge

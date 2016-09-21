@@ -72,7 +72,7 @@ parse =
 
 local populate = request('populate')
 
-local parse_caller =
+return
   function(struc, s, a_verify_only)
     assert(is_table(struc) or is_string(struc) or is_function(struc))
     assert_string(s)
@@ -88,5 +88,3 @@ local parse_caller =
       return result, new_s_pos, data_struc
     end
   end
-
-return parse_caller

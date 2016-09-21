@@ -5,7 +5,7 @@
 ]]
 local parse_csv_line = request('^.^.parse.csv_record')
 
-local load_full_file =
+return
   function(csv_str, allow_dirty_fixes)
     local result = {}
     local line_pattern = '(.-\n)'
@@ -15,7 +15,8 @@ local load_full_file =
         line = broken_line .. line
         broken_line = nil
       end
-      local record, has_problems, is_unclosed_quote = parse_csv_line(line, allow_dirty_fixes)
+      local record, has_problems, is_unclosed_quote =
+        parse_csv_line(line, allow_dirty_fixes)
       if is_unclosed_quote then
         broken_line = line
       elseif not has_problems then
@@ -24,5 +25,3 @@ local load_full_file =
     end
     return result
   end
-
-return load_full_file

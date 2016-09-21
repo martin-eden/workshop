@@ -2,7 +2,7 @@ local syntax = request('^.^.parse.syntaxes.csv')
 local parser = request('^.^.parse.parser')
 local struc_to_lua = request('^.^.parse.csv.struc_to_lua')
 
-local csv_to_lua =
+return
   function(csv_str)
     local result
     local parse_result, finish_pos, data_struc = parser.parse(syntax, csv_str)
@@ -11,5 +11,3 @@ local csv_to_lua =
     end
     return result
   end
-
-return csv_to_lua

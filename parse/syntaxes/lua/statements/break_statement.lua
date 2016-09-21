@@ -1,9 +1,7 @@
 local word = request('^.words.word')
 
-local break_statement =
+return
   {
     name = 'break_statement',
     word('break'),
   }
-
-return break_statement

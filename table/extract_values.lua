@@ -1,4 +1,4 @@
-local extract_values =
+return
   function(t)
     assert_table(t)
     local result = {}
@@ -7,5 +7,3 @@ local extract_values =
     end
     return result
   end
-
-return extract_values

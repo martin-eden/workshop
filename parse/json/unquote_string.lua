@@ -2,7 +2,7 @@ local hex_digit_pattern = '[0-9a-fA-F]'
 local basic_plane_pattern = [[(\u)]] .. '(' .. hex_digit_pattern:rep(4) .. ')'
 local utf16_surrogate_pair_pattern = basic_plane_pattern:rep(2)
 
-local unquote_string =
+return
   function(s)
     if
       (#s >= 2) and
@@ -59,5 +59,3 @@ local unquote_string =
     end
     return s
   end
-
-return unquote_string

@@ -1,6 +1,6 @@
 local map_values = request('^.^.table.map_values')
 
-local lua_keywords =
+return
   map_values(
     {
       'nil',
@@ -27,5 +27,3 @@ local lua_keywords =
       'return',
     }
   )
-
-return lua_keywords

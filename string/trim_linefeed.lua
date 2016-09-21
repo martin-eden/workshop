@@ -4,7 +4,7 @@ local newline_chars =
     ['\x0a'] = true,
   }
 
-local trim_linefeed =
+return
   function(s)
     assert_string(s)
     local finish_pos = #s
@@ -14,5 +14,3 @@ local trim_linefeed =
     local result = s:sub(1, finish_pos)
     return result
   end
-
-return trim_linefeed

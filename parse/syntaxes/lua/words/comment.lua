@@ -3,7 +3,7 @@ local handy = parser.handy
 
 local long_bracket = request('particles.long_bracket')
 
-local comment =
+return
   {
     '--',
     handy.cho1(
@@ -11,5 +11,3 @@ local comment =
       handy.match_pattern('[^\n\r]*')
     )
   }
-
-return comment

@@ -3,12 +3,10 @@ local handy = parser.handy
 
 local word = request('words.word')
 
-local type_boolean =
+return
   {
     name = 'boolean',
     word(
       handy.cho1('false', 'true')
     ),
   }
-
-return type_boolean

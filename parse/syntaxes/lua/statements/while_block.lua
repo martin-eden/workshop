@@ -5,7 +5,7 @@ local word = request('^.words.word')
 local opt_spc = request('^.words.opt_spc')
 local statements = request('statements')
 
-local while_block =
+return
   handy.interleave(
     {
       name = 'while_block',
@@ -17,5 +17,3 @@ local while_block =
     },
     opt_spc
   )
-
-return while_block

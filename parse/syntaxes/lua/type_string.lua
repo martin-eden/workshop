@@ -13,7 +13,7 @@ local linear_string_char =
     any_char
   )
 
-local type_string =
+return
   {
     name = 'string',
     handy.cho1(
@@ -36,5 +36,3 @@ local type_string =
       }
     )
   }
-
-return type_string

@@ -7,7 +7,7 @@ local name_list = request('^.words.name_list')
 local expr_list = request('^.expressions.expr_list')
 local named_function = request('named_function')
 
-local local_statement =
+return
   {
     name = 'local_statement',
     word('local'),
@@ -24,5 +24,3 @@ local local_statement =
       named_function
     ),
   }
-
-return local_statement

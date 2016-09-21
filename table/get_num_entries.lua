@@ -1,4 +1,4 @@
-local get_num_entries =
+return
   function(t)
     local result
     if is_table(t) then
@@ -9,5 +9,3 @@ local get_num_entries =
     end
     return result
   end
-
-return get_num_entries

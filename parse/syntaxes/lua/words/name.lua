@@ -31,11 +31,9 @@ local is_keyword =
 
 local name_pattern = '[_A-Za-z][_A-Za-z0-9]*'
 
-local name =
+return
   {
     name = 'name',
     handy.is_not(is_keyword),
     handy.match_pattern(name_pattern),
   }
-
-return name

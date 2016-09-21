@@ -1,6 +1,6 @@
 -- Checks command line for presence given option like '--verbose'
 
-local has_option =
+return
   function(option)
     local result
     for i = 1, #_G.arg do
@@ -11,5 +11,3 @@ local has_option =
     end
     return result
   end
-
-return has_option

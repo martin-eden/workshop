@@ -1,4 +1,4 @@
-local clone_outer =
+return
   function(node)
     local cloned = {}
     local clone
@@ -23,8 +23,6 @@ local clone_outer =
       end
     return clone(node)
   end
-
-return clone_outer
 
 --[[
   Metatables is shared, not cloned.

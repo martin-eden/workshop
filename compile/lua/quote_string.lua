@@ -7,7 +7,7 @@ local has_backslashes = content_funcs.has_backslashes
 local has_single_quotes = content_funcs.has_single_quotes
 local has_double_quotes = content_funcs.has_double_quotes
 
-local smart_quote =
+return
   function(s)
     assert_string(s)
     local quote_func
@@ -27,5 +27,3 @@ local smart_quote =
     local result = quote_func(s)
     return result
   end
-
-return smart_quote

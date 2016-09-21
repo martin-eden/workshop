@@ -33,10 +33,8 @@ local bin_power =
     int_10
   }
 
-local hex_number =
+return
   {
     hex_base,
     handy.opt(bin_power)
   }
-
-return hex_number

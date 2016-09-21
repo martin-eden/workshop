@@ -33,7 +33,7 @@ verify =
     end
   end
 
-local verify_outer =
+return
   function(self, t, deep)
     assert_table(t)
     if (#t > 0) then
@@ -42,5 +42,3 @@ local verify_outer =
     visited = {}
     verify(t)
   end
-
-return verify_outer

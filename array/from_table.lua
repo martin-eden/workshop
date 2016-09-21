@@ -8,7 +8,7 @@ local length_func =
     return mt.array_length
   end
 
-local from_table =
+return
   function(t, length)
     assert_table(t)
     length = length or get_max_idx(t) or 0
@@ -22,5 +22,3 @@ local from_table =
       }
     )
   end
-
-return from_table
