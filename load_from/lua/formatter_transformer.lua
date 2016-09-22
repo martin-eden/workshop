@@ -21,6 +21,8 @@ return
     local result
     if (#data_struc == 1) then
       result = transformer:process_node(data_struc[1])
+    else
+      result = {}
     end
     return result
   end
