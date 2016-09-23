@@ -1,27 +1,4 @@
-local unquote_linear =
-  function(s)
-    s = s:gsub([[\a]], '\a')
-    s = s:gsub([[\b]], '\b')
-    s = s:gsub([[\f]], '\f')
-    s = s:gsub([[\n]], '\n')
-    s = s:gsub([[\r]], '\r')
-    s = s:gsub([[\t]], '\t')
-    s = s:gsub([[\v]], '\v')
-
-    s = s:gsub([[\"]], '\"')
-    s = s:gsub([[\']], '\'')
-    s = s:gsub([[\]] .. '\n', '\n')
-
-    --[[
-    x hex_dig^2
-    z space_char^N
-    dec_dig^(1..3)
-    u { hex_dig^N }
-    ]]
-
-    s = s:gsub([[\\]], [[\]])
-    return s
-  end
+local unquote_linear = request('unquote_string.linear')
 
 local long_quote_start = '^%[=*%['
 local long_quote_finish = '%]=*%]$'

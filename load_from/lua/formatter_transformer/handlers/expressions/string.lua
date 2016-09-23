@@ -1,8 +1,10 @@
+local unquote = request('^.^.^.^.^.parse.lua.unquote_string')
+
 return
   function(self, node)
     return
       {
         type = 'string',
-        value = node.value,
+        value = unquote(node.value),
       }
   end
