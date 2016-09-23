@@ -2,13 +2,13 @@ local unquote_linear = request('unquote_string.linear')
 
 local long_quote_start = '^%[=*%['
 local long_quote_finish = '%]=*%]$'
-local get_chunk =
+local get_long_quote_len =
   function(s)
     local start_chunk = s:match(long_quote_start)
     local finish_chunk = s:match(long_quote_finish)
     local result
     if start_chunk and (#start_chunk == #finish_chunk) then
-      result = chunk
+      result = #start_chunk
     end
     return result
   end
@@ -30,7 +30,7 @@ return
       result = s:sub(2, -2)
       result = unquote_linear(result)
     elseif (border_chars == '[]') then
-      local quote_len = get_chunk(s)
+      local quote_len = get_long_quote_len(s)
       if not quote_len then
         error(('String "%s" has bad long quotes?'):format(s), 2)
       end

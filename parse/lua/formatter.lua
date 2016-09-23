@@ -13,7 +13,7 @@
   Such work is done by this code.
 ]]
 
-local transformer = request('formatter_transformer.init')
+local transformer = request('formatter.init')
 
 return
   function(data_struc)
