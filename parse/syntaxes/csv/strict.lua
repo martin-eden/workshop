@@ -17,7 +17,11 @@ local any_char =
   end
 
 local record_sep = {opt('\r'), '\n'}
-local field_sep = ','
+local field_sep =
+  {
+    name = 'field_sep',
+    ',',
+  }
 
 local quoted_data =
   {
@@ -25,11 +29,19 @@ local quoted_data =
     {
       name = 'quoted_data',
       '"',
-      opt(rep(cho('""', {is_not('"'), any_char}))),
+      opt(
+        rep(
+          handy.cho1(
+            {is_not('"'), any_char},
+            '""'
+          )
+        )
+      ),
       '"',
     },
     opt_spc
   }
+
 local unquoted_data =
   {
     name = 'unquoted_data',
@@ -37,19 +49,18 @@ local unquoted_data =
     is_not('"'),
     opt(rep(is_not(field_sep, record_sep), any_char))
   }
+
 local record =
   {
     name = 'record',
-    opt(
-      list(
-        opt(cho(quoted_data, unquoted_data)),
-        field_sep
-      )
+    list(
+      opt(handy.cho1(quoted_data, unquoted_data)),
+      field_sep
     )
   }
-local csv_records =
-  opt(list(record, record_sep))
 
-parser.finalize(csv_records)
+local csv_records = list(record, record_sep)
+
+parser.optimize(csv_records)
 
 return csv_records

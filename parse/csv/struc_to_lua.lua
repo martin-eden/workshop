@@ -11,13 +11,25 @@ return
     for i = 1, #data_struc do
       local rec = data_struc[i]
       result[i] = {}
+      local prev_field_type
       for j = 1, #rec do
         local field = rec[j]
-        local value = field.value
-        if (field.name == 'quoted_data') then
-          value = unquote(value)
+        local value
+        if (field.name == 'unquoted_data') then
+          value = field.value
+        elseif (field.name == 'quoted_data') then
+          value = unquote(field.value)
+        elseif (field.name == 'field_sep') then
+          if (prev_field_type == 'field_sep') then
+            value = ''
+          else
+            value = nil
+          end
         end
-        result[i][j] = value
+        if value then
+          table.insert(result[i], value)
+        end
+        prev_field_type = field.name
       end
     end
     return result
