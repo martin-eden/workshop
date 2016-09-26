@@ -114,6 +114,7 @@ states =
       end,
   }
 
+--[[
 local debug_state_names =
   {
     [states.waiting_to_begin] = 'waiting_to_begin',
@@ -125,7 +126,6 @@ local debug_state_names =
     [states.broken] = 'broken',
   }
 
---[[
 local quote_string = request('^.^.compile.lua.quote_string')
 local debug_print_state =
   function(cur_state, cur_char)
