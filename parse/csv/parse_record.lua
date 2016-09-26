@@ -1,5 +1,13 @@
 -- Comma-separated lines parser
 
+--[[
+  Implemented as state machine with function records.
+  For maximum performace of this structure I've tried
+  to convert it to series of elseif's where state is
+  string constant. Got small performance increase
+  (about 7%) and horribly looking code. Reverted back.
+]]
+
 local quote_char = '"'
 local space_char = ' '
 local field_sep_char = ','
