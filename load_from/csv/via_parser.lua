@@ -1,13 +1,8 @@
+local generic_loader = request('^.generic_loader')
 local syntax = request('^.^.parse.syntaxes.csv')
-local parser = request('^.^.parse.parser')
-local struc_to_lua = request('^.^.parse.csv.struc_to_lua')
+local struc_transormer = request('^.^.parse.csv.struc_to_lua')
 
 return
-  function(csv_str)
-    local result
-    local parse_result, finish_pos, data_struc = parser.parse(syntax, csv_str)
-    if parse_result then
-      result = struc_to_lua(data_struc)
-    end
-    return result
+  function(str)
+    return generic_loader(str, syntax, struc_transormer)
   end

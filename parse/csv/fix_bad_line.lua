@@ -101,14 +101,11 @@ local try_reversed =
     return is_succeeded, fixed_s
   end
 
+local trim_newline = request('^.^.string.trim_linefeed')
+
 return
   function(s)
-    if (s:sub(-1, -1) == '\n') then
-      s = s:sub(1, -2)
-    end
-    if (s:sub(-1, -1) == '\r') then
-      s = s:sub(1, -2)
-    end
+    s = trim_newline(s)
     local is_succeeded, fixed_s
     is_succeeded, fixed_s = fix_bad_line(s)
     if not is_succeeded then

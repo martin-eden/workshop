@@ -4,7 +4,7 @@ return
   function(data_struc)
     assert_table(data_struc)
     local result = {}
-    --parser adds emtry record if last line ends with NL
+    --parser adds empty record if last line ends with NL
     if (#data_struc[#data_struc] == 1) then
       data_struc[#data_struc] = nil
     end
