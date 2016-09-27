@@ -9,12 +9,10 @@ local quoted_data =
     {
       name = 'quoted_data',
       '"',
-      handy.opt(
-        handy.rep(
-          handy.cho1(
-            handy.match_pattern('[^"]+'),
-            '""'
-          )
+      handy.opt_rep(
+        handy.cho1(
+          handy.match_pattern('[^"]+'),
+          '""'
         )
       ),
       '"',
@@ -25,7 +23,6 @@ local quoted_data =
 local unquoted_data =
   {
     name = 'unquoted_data',
-    opt_spc,
     handy.match_pattern('[^,\r\n]*'),
   }
 
@@ -45,8 +42,5 @@ local record =
   }
 
 local record_sep = handy.match_pattern('[\r]?\n')
-local csv_records = handy.list(record, record_sep)
 
-parser.optimize(csv_records)
-
-return csv_records
+return handy.list(record, record_sep)
