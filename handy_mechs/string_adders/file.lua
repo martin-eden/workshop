@@ -1,29 +1,23 @@
 -- Concatter implementation via writing to file.
 
 --[[
-  With comparision of mere ".." and "table.concat" implementations:
+  With comparision of array implementation:
+  + speed
+    In my case it's a bit (about 7%) faster that array implementation
+    as it has no table maintenance overhead.
+
   + capacity
-  - speed
+    Theoretically limited to size of disk storage
+
+  - creates file on disk
+    Writing can be painfully slow.
+    Available disk size may be smaller than RAM size.
+    Filling disk cause stability problems.
+    Maximum file size depends of file system.
 ]]
 
+local get_unique_file_name = request('^.^.file.get_unique_name')
 local safe_open = request('^.^.file.safe_open')
-local file_as_string = request('^.^.file.as_string')
-local file_exists = request('^.^.file.exists')
-
-local get_new_file_name =
-  function()
-    -- do return os.tmpname() end --(1)
-    local result
-    local num_tries = 0
-    repeat
-      result = ('%010d.tmp'):format(math.random(2 ^ 32))
-      num_tries = num_tries + 1
-      if (num_tries > 10) then
-        error('Too many tries to generate file name. Possibly due same math.randomseed. Stopped.')
-      end
-    until not file_exists(result)
-    return result
-  end
 
 local result =
   {
@@ -31,7 +25,7 @@ local result =
     --file
     init =
       function(self)
-        self.file_name = get_new_file_name()
+        self.file_name = get_unique_file_name()
         self.file = safe_open(self.file_name, 'a+b')
       end,
     free =
@@ -62,18 +56,10 @@ setmetatable(
   result,
   {
     __gc =
-      function(obj)
-        obj:free()
+      function(self)
+        self:free()
       end,
   }
 )
 
 return result
-
---[[
-  [1]
-    os.tmpname() is not used because in my case /tmp is really
-    partition in memory. So it does not solve problem when I have
-    data structure occupuing 80% of RAM and write raw data which
-    is 40% of RAM.
-]]
