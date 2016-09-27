@@ -9,15 +9,12 @@
 ]]
 
 local quote_char = '"'
-local space_char = ' '
 local field_sep_char = ','
 local record_sep_char = '\n'
 local eot = ''
 
 local term
 local result
-
-local term_chars = {}
 
 local add_char =
   function(char)
@@ -28,12 +25,6 @@ local add_term =
   function()
     result[#result + 1] = term
     term = ''
-    --[[
-      I've tested variant with storing chars in array and
-      table.concat-ing them. Result is almost same (worse
-      on about 1%). So let's "term = term .. char" remain
-      to keep code simple.
-    ]]
     -- print(('[%d] = %q'):format(#result, result[#result]))
   end
 
@@ -122,34 +113,14 @@ states =
       end,
   }
 
---[[
-local debug_state_names =
-  {
-    [states.waiting_to_begin] = 'waiting_to_begin',
-    [states.reading_unquoted] = 'reading_unquoted',
-    [states.reading_in_quotes] = 'reading_in_quotes',
-    [states.checking_double_quotes] = 'checking_double_quotes',
-    [states.waiting_delimiter] = 'waiting_delimiter',
-    [states.finished] = 'finished',
-    [states.broken] = 'broken',
-  }
-
-local quote_string = request('^.^.compile.lua.quote_string')
-local debug_print_state =
-  function(cur_state, cur_char)
-    print(('%s\t%s'):format(debug_state_names[cur_state], quote_string(cur_char)))
-  end
-]]
-
 return
   function(s)
     result = {}
     term = ''
-    local cur_position = 1
     local state = states.waiting_to_begin
+    local cur_position = 1
     while true do
       local cur_char = s:sub(cur_position, cur_position)
-      -- debug_print_state(state, cur_char)
       state = state(cur_char) or state
       if (state == states.finished) or (state == states.broken) then
         break

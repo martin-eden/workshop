@@ -1,4 +1,4 @@
--- Comma-separated string parser driver
+-- CSV parser driver
 
 local _parse_record = request('csv.parse_record')
 local fix_bad_line = request('csv.fix_bad_line')
