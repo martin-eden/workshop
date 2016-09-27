@@ -11,12 +11,12 @@ return
     maximum_array_size = 8e6,
     estimated_compression_to_act = math.sqrt(2),
     debug_output = false,
-
     data = {},
     table_rec_size = 52,
     total_data_len = 0,
     init =
       function(self)
+        self.data = {}
       end,
     compress =
       function(self)
