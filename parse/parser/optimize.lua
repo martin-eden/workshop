@@ -165,6 +165,10 @@ return
       optimizations_done = false
       visited = {}
       optimize(struc)
+      --[[
+      if optimizations_done then
+        print('optimizations_done')
+      end]]
     until not optimizations_done
     visited = {}
   end

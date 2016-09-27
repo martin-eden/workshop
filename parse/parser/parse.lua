@@ -71,6 +71,7 @@ parse =
 ---
 
 local populate = request('populate')
+local optimize = request('optimize')
 
 return
   function(struc, s, a_verify_only)
@@ -81,6 +82,7 @@ return
       local result, new_s_pos = parse(struc, s, 1)
       return result, new_s_pos
     else
+      optimize(struc)
       folder.init()
       local result, new_s_pos = parse(struc, s, 1)
       local data_struc = folder.get_struc()
