@@ -101,7 +101,7 @@ local try_reversed =
     return is_succeeded, fixed_s
   end
 
-local trim_newline = request('^.^.string.trim_linefeed')
+local trim_newline = request('^.^.^.string.trim_linefeed')
 
 return
   function(s)

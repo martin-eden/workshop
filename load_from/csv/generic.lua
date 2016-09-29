@@ -1,6 +1,6 @@
 local generic_loader = request('^.generic_loader')
 local syntax = request('^.^.parse.syntaxes.csv')
-local struc_transormer = request('^.^.parse.csv.struc_to_lua')
+local struc_transormer = request('^.^.parse.csv.generic.restruc')
 
 return
   function(str)

@@ -1,8 +1,8 @@
 local implementors =
   {
-    general = request('csv.via_parser'),
-    custom = request('csv.via_custom_parser'),
+    generic = request('csv.generic'),
+    specific = request('csv.specific'),
   }
-implementors.default = implementors.general
+implementors.default = implementors.specific
 
 return implementors

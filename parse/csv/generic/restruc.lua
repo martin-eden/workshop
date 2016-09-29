@@ -1,4 +1,4 @@
-local unquote = request('unquote_field')
+local unquote = request('^.specific.unquote_field')
 
 return
   function(data_struc)
@@ -22,14 +22,16 @@ return
         elseif (field.name == 'field_sep') then
           if (prev_field_type == 'field_sep') then
             value = ''
-          else
-            value = nil
           end
         end
         if value then
           table.insert(result[i], value)
         end
         prev_field_type = field.name
+      end
+      -- Handle "1," case:
+      if (rec[#rec].name == 'field_sep') then
+        table.insert(result[i], '')
       end
     end
     return result
