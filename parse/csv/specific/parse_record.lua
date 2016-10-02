@@ -4,10 +4,10 @@
   Implemented as state machine with function records.
 ]]
 
-local quote_char
 local field_sep_char
-local record_sep_char
 
+local record_sep_char = '\n'
+local quote_char = '"'
 local eot = ''
 local term
 local parse_result
@@ -116,9 +116,7 @@ st_broken = --unclosed quote
 
 return
   function(parent, s)
-    quote_char = parent.quote_char
     field_sep_char = parent.field_sep_char
-    record_sep_char = parent.record_sep_char
     parse_result = {}
     term = ''
     local handle = st_waiting_to_begin
