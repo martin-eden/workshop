@@ -1,11 +1,7 @@
--- CSV parser driver
+local result = new(request('^.tsv.specific'))
 
-return
-  {
-    field_sep_char = ',',
-    dirty_data_allowed = false,
-    lines_iterator = nil,
-    init = request('specific.init'),
-    get_next_rec = request('specific.get_next_rec'),
-    parse_data = request('specific.parse_data'),
-  }
+result.fix_bad_data = false
+result.field_sep_char = ','
+result.get_next_rec = request('specific.get_next_rec')
+
+return result

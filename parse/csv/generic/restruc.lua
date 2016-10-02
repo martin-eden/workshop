@@ -1,4 +1,4 @@
-local unquote = request('^.specific.unquote_field')
+local unquote = request('unquote_field')
 
 return
   function(data_struc)
