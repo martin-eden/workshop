@@ -1,28 +1,54 @@
 -- CSV parser driver
 
-local iterate_data =
-  function(self, next_line_func)
-    local result = {}
-    local broken_line
-    for line in next_line_func do
+local string_lines_iterator = request('^.^.handy_mechs.line_iterators.string')
+local file_lines_iterator = request('^.^.handy_mechs.line_iterators.file')
+
+local init =
+  function(self, file_or_string)
+    if is_string(file_or_string) then
+      self.lines_iterator = new(string_lines_iterator)
+    elseif (io.type(file_or_string) == 'file') then
+      self.lines_iterator = new(file_lines_iterator)
+    end
+    self.lines_iterator:init(file_or_string)
+  end
+
+local parse_line = request('specific.parse_line')
+
+local get_next_rec =
+  function(self)
+    local result
+    local line, broken_line
+    local has_problems, is_unclosed_quote
+    local next_line_func
+    ::read::
+    line = self.lines_iterator:get_next_line()
+    if line then
       if broken_line then
-        line = broken_line .. line
+        line = line .. broken_line
         broken_line = nil
       end
-      local record, has_problems, is_unclosed_quote = self:parse_line(line)
+      result, has_problems, is_unclosed_quote = parse_line(self, line)
       if is_unclosed_quote then
         broken_line = line
-      elseif not has_problems then
-        result[#result + 1] = record
+        goto read
+      end
+      if has_problems then
+        result = nil
       end
     end
     return result
   end
 
-local parse_record = request('specific.parse_record')
-local fix_bad_line = request('specific.fix_bad_line')
-local trim_linefeed = request('^.^.string.trim_linefeed')
-local line_pattern = '.-\n'
+local parse_data =
+  function(self)
+    local result = {}
+    repeat
+      local rec = self:get_next_rec()
+      result[#result + 1] = rec
+    until not rec
+    return result
+  end
 
 return
   {
@@ -30,26 +56,8 @@ return
     field_sep_char = ',',
     record_sep_char = '\n',
     dirty_data_allowed = false,
-    parse_line =
-      function(self, s)
-        assert_string(s)
-        s = trim_linefeed(s)
-        local record, last_pos, has_problems = parse_record(self, s)
-        if has_problems and self.dirty_data_allowed then
-          local fix_succeded, fixed_s = fix_bad_line(s)
-          if fix_succeded then
-            record, last_pos, has_problems = parse_record(fixed_s)
-          end
-        end
-        local is_unclosed_quote = has_problems and (last_pos > #s)
-        return record, has_problems, is_unclosed_quote
-      end,
-    parse_lines =
-      function(self, csv_str)
-        return iterate_data(self, csv_str:gmatch(line_pattern))
-      end,
-    parse_file =
-      function(self, f)
-        return iterate_data(self, f:lines('L'))
-      end,
+    lines_iterator = nil,
+    init = init,
+    get_next_rec = get_next_rec,
+    parse_data = parse_data,
   }
