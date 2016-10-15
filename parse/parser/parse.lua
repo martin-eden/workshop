@@ -72,12 +72,14 @@ parse =
 
 local populate = request('populate')
 local optimize = request('optimize')
+local link = request('link')
 
 return
   function(struc, s, a_verify_only)
     assert(is_table(struc) or is_string(struc) or is_function(struc))
     assert_string(s)
     verify_only = a_verify_only
+    link(struc)
     if verify_only then
       local result, new_s_pos = parse(struc, s, 1)
       return result, new_s_pos

@@ -108,6 +108,4 @@ local object =
   }
 object.inner_name = 'object'
 
-parser.finalize(object)
-
 return object
