@@ -18,7 +18,7 @@ local list = handy.list
 local match = handy.match_pattern
 
 local opt_spc =
-  match('^[ \n\r\t]*')
+  match('[ \n\r\t]*')
 
 local tok =
   function(...)
@@ -38,10 +38,10 @@ local boolean =
   tok({name = 'boolean', cho('true', 'false')})
 
 local dec_digits_no_lead_zero =
-  match([[^[1-9][%d]*]])
+  match('[1-9][%d]*')
 
 local dec_digits_any =
-  match([[^[%d]+]])
+  match('[%d]+')
 
 local number =
   {
@@ -52,15 +52,15 @@ local number =
       dec_digits_no_lead_zero
     ),
     opt({'.', dec_digits_any}),
-    opt(match('^[eE][%+%-]?'), dec_digits_any)
+    opt(match('[eE][%+%-]?'), dec_digits_any)
   }
 number = tok(number)
 
 local plain_string_chars =
-  match([[^[^%c%\%"]*]])
+  match([[[^%c%\%"]+]])
 
 local hex_dig =
-  match('^[%dabcdefABCDEF]')
+  match('[%dabcdefABCDEF]')
 
 local utf_code_point =
   {'u', hex_dig, hex_dig, hex_dig, hex_dig}
@@ -96,7 +96,5 @@ local object =
     tok('{'), opt(list({name = 'key', json_string}, tok(':'), {name = 'value', value}, tok(','))), tok('}')
   }
 object.inner_name = 'object'
-
-parser.finalize(object)
 
 return object
