@@ -1,5 +1,6 @@
 return
   function(self, node)
+    self.printer:emit_nl()
     self.printer:emit('function ')
     self:process_node(node.dotted_name)
     if node.colon_name then
