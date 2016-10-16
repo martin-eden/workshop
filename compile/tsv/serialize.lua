@@ -5,9 +5,9 @@ return
     check_fix(self)
     local result = {}
     for i = 1, #self.data do
-      result[i] = table.concat(self.data[i], self.delimiter)
+      result[i] = table.concat(self.data[i], self.field_separator)
     end
-    result = table.concat(result, '\n')
-    result = result .. '\n'
+    result = table.concat(result, self.record_separator)
+    result = result .. self.record_separator
     return result
   end

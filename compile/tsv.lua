@@ -3,7 +3,8 @@
 return
   {
     data = nil,
-    delimiter ='\t',
+    field_separator = '\t',
+    record_separator = '\n',
     do_fix = true,
     do_check = true,
     init = request('tsv.init'),
