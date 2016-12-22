@@ -1,10 +1,16 @@
+local multiliner =
+  function(self, node)
+    self:process_block_multiline('repeat', 'until', node.body)
+    self.printer:emit(' ')
+    self:process_node(node.condition)
+  end
+
+local variants =
+  {
+    {handle = multiliner, is_multiline = true},
+  }
+
 return
   function(self, node)
-    self.printer:emit('repeat')
-    self.printer:emit_nl()
-    self.printer:inc_indent()
-    self:process_node(node.body)
-    self.printer:dec_indent()
-    self.printer:emit('until ')
-    self:process_node(node.condition)
+    self:variate(variants, node)
   end

@@ -1,9 +1,14 @@
+local multiliner =
+  function(self, node)
+    self:process_block_multiline('do', 'end', node[1])
+  end
+
+local variants =
+  {
+    {handle = multiliner, is_multiline = true},
+  }
+
 return
   function(self, node)
-    self.printer:emit('do')
-    self.printer:inc_indent()
-    self.printer:emit_nl()
-    self.handlers.statements(self, node)
-    self.printer:dec_indent()
-    self.printer:emit('end')
+    self:variate(variants, node)
   end

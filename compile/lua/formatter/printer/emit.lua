@@ -1,9 +1,9 @@
 return
   function(self, s)
     if self.has_debt then
-      self.cur_line:add(self:get_indent())
+      self.text:add(self:get_indent())
       self.has_debt = false
     end
-    self.cur_line:add(s)
+    self.text:add(s)
+    self.on_clean_line = false
   end
-

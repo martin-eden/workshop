@@ -12,6 +12,6 @@ return
     assert_table(data_struc)
     formatter:init()
     formatter:process_node(data_struc)
-    local result = formatter.printer.string_adder:get_result()
+    local result = formatter.printer:get_text()
     return result
   end

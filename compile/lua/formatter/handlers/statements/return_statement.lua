@@ -1,9 +1,8 @@
 return
   function(self, node)
-    if node.expr_list then
-      self.printer:emit('return ')
-      self:process_node(node.expr_list)
-    else
+    if not node.expr_list then
       self.printer:emit('return')
+    else
+      self:process_block_oneline('return', nil, node.expr_list)
     end
   end

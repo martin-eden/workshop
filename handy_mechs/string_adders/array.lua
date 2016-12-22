@@ -17,6 +17,7 @@ return
     init =
       function(self)
         self.data = {}
+        self.total_data_len = 0
       end,
     compress =
       function(self)
