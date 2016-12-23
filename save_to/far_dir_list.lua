@@ -5,9 +5,9 @@ local path = {}
 
 local write_path =
   function(deep)
-    string_adder.add_term([[\]])
-    string_adder.add_term(table.concat(path, [[\]], 1, deep - 1))
-    string_adder.add_term('\x0a')
+    string_adder:add_term([[\]])
+    string_adder:add_term(table.concat(path, [[\]], 1, deep - 1))
+    string_adder:add_term('\x0a')
   end
 
 local visit
@@ -29,5 +29,5 @@ return
   function(struct)
     string_adder:init()
     visit(struct, 1)
-    return string_adder.get_result()
+    return string_adder:get_result()
   end
