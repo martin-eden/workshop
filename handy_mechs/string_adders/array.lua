@@ -23,7 +23,7 @@ return
         self.data = {table.concat(self.data)}
         collectgarbage()
       end,
-    add_term =
+    add =
       function(self, term)
         self.data[#self.data + 1] = term
         self.total_data_len = self.total_data_len + #term

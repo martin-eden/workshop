@@ -5,9 +5,9 @@ local path = {}
 
 local write_path =
   function(deep)
-    string_adder:add_term([[\]])
-    string_adder:add_term(table.concat(path, [[\]], 1, deep - 1))
-    string_adder:add_term('\x0a')
+    string_adder:add([[\]])
+    string_adder:add(table.concat(path, [[\]], 1, deep - 1))
+    string_adder:add('\x0a')
   end
 
 local visit

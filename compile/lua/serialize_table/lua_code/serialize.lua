@@ -66,7 +66,7 @@ return
     end
     self:serialize_subtable(root)
 
-    self.serializer.string_adder:add_term(
+    self.serializer.string_adder:add(
       'return ' .. result_name .. self.serializer.token_giver.commands_delimiter
     )
   end

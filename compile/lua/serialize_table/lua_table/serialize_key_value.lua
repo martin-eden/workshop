@@ -4,10 +4,10 @@ return
     local token = self.token_giver
 
     if not is_first_record then
-      string_adder:add_term(token:records_delimiter(deep))
+      string_adder:add(token:records_delimiter(deep))
     end
-    string_adder:add_term(token:key_indent(deep, is_first_record))
+    string_adder:add(token:key_indent(deep, is_first_record))
     self:serialize_key(key, deep)
-    string_adder:add_term(token.assignment)
+    string_adder:add(token.assignment)
     self:serialize(value, deep + 1)
   end

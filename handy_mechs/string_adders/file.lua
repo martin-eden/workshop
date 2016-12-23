@@ -37,7 +37,7 @@ local result =
           os.remove(self.file_name)
         end
       end,
-    add_term =
+    add =
       function(self, s)
         self.file:write(s)
       end,
