@@ -14,7 +14,8 @@ return
         local start, finish, result = s:find('(.-\n)', self.idx_start)
         if not start then
           if (self.idx_start <= #s) then
-            result = s:sub(idx_start)
+            result = s:sub(self.idx_start)
+            self.idx_start = #s + 1
           end
         else
           self.idx_start = finish + 1
