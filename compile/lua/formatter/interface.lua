@@ -2,6 +2,7 @@ return
   {
     handlers = request('handlers.interface'),
     printer = request('printer.interface'),
+    cached_presentations = {}, -- internal
 
     init = request('init'),
     process_list = request('process_list'),

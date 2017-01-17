@@ -2,22 +2,22 @@ return
   function(self, node)
     local printer = self.printer
     if (#node == 0) then
-      printer:emit('{}')
+      printer:add_text('{}')
       return
     end
-    printer:emit('{')
-    printer:emit_nl()
+    printer:add_text('{')
+    printer:close_line()
     printer:inc_indent()
     for i = 1, #node do
       local key, value = node[i].key, node[i].value
       if key then
         self:process_node(key)
-        printer:emit(' = ')
+        printer:add_text(' = ')
       end
       self:process_node(value)
-      printer:emit(';')
-      printer:emit_nl()
+      printer:add_text(';')
+      printer:close_line()
     end
     printer:dec_indent()
-    printer:emit('}')
+    printer:add_text('}')
   end

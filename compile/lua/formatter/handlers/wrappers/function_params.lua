@@ -1,6 +1,6 @@
 return
   function(self, node)
-    self.printer:emit('(')
+    self.printer:add_text('(')
     self:process_list(node, ', ')
-    self.printer:emit(')')
+    self.printer:add_text(')')
   end

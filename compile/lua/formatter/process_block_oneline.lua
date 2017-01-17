@@ -19,17 +19,17 @@ return
     postfix = postfix or ''
     local postfix_need_space = not postfix:match('^[%p]')
 
-    printer:emit(prefix)
+    printer:add_text(prefix)
 
     if prefix_need_space then
-      printer:emit(' ')
+      printer:add_text(' ')
     end
     printer:inc_indent()
     self:process_node(node)
     printer:dec_indent()
     if postfix_need_space then
-      printer:emit(' ')
+      printer:add_text(' ')
     end
 
-    printer:emit(postfix)
+    printer:add_text(postfix)
   end

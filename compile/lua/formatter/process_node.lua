@@ -7,7 +7,7 @@ return
       if is_function(handler) then
         handler(self, node)
       else
-        self.printer:emit('<' .. node_type .. '>')
+        self.printer:add_text('<' .. node_type .. '>')
       end
     end
   end

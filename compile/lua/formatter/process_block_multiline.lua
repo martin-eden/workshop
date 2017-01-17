@@ -15,7 +15,7 @@ return
     local printer = self.printer
 
     if prefix then
-      printer:emit(prefix)
+      printer:add_text(prefix)
     end
 
     printer:request_clean_line()
@@ -25,6 +25,6 @@ return
     printer:request_clean_line()
 
     if postfix then
-      printer:emit(postfix)
+      printer:add_text(postfix)
     end
   end

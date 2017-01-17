@@ -1,12 +1,14 @@
+local indents_class = request('^.^.^.^.handy_mechs.indents_table')
+
 return
   function(self)
     self.text:init()
-    self.indent = 0
-    self.has_debt = false
+    self.next_line_indent = 0
+    self.line_indents = {}
     self.on_clean_line = true
-    self.variate_state =
-      {
-        is_multiline_allowed = true,
-        is_failed_to_represent = false,
-      }
+    self:update_indent()
+
+    self.indents_obj = new(indents_class)
+    self.indents_obj.indent_chunk = self.indent_chunk
+    self.indents_obj:init()
   end

@@ -1,6 +1,6 @@
 return
   function(self)
-    self:emit('\n')
-    self.has_debt = true
+    self.text:add_line()
     self.on_clean_line = true
+    self:update_indent()
   end

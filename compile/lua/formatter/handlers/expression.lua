@@ -9,18 +9,18 @@ return
         for i = 1, #term.un_ops do
           cur_un_op = term.un_ops[i]
           if (prev_un_op == '-') and (cur_un_op == '-') then
-            printer:emit(' -')
+            printer:add_text(' -')
           elseif (cur_un_op == 'not') then
-            printer:emit('not ')
+            printer:add_text('not ')
           else
-            printer:emit(cur_un_op)
+            printer:add_text(cur_un_op)
           end
           prev_un_op = cur_un_op
         end
       end
       self:process_node(term.operand)
       if term.bin_op then
-        printer:emit(' ' .. term.bin_op .. ' ')
+        printer:add_text(' ' .. term.bin_op .. ' ')
       end
     end
   end
@@ -37,19 +37,19 @@ return
         for i = 1, #term.un_ops do
           cur_un_op = term.un_ops[i]
           if (prev_un_op == '-') and (cur_un_op == '-') then
-            printer:emit(' -')
+            printer:add_text(' -')
           elseif (cur_un_op == 'not') then
-            printer:emit('not ')
+            printer:add_text('not ')
           else
-            printer:emit(cur_un_op)
+            printer:add_text(cur_un_op)
           end
           prev_un_op = cur_un_op
         end
       end
       self:process_node(term.operand)
       if term.bin_op then
-        printer:emit(' ' .. term.bin_op)
-        printer:emit_nl()
+        printer:add_text(' ' .. term.bin_op)
+        printer:close_line()
       end
     end
   end
