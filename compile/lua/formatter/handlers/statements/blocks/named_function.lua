@@ -1,17 +1,26 @@
-local multiliner =
-  function(self, node)
-    self.printer:request_empty_line()
-    self.printer:add_text('function ')
-    self:process_node(node.dotted_name)
-    if node.colon_name then
-      self:process_node(node.colon_name)
-    end
-    self:process_node(node.params)
-    self:process_block_multiline(nil, 'end', node.body)
-    self.printer:request_empty_line()
-  end
-
 return
   function(self, node)
-    multiliner(self, node)
+    local printer = self.printer
+
+    printer:request_empty_line()
+    printer:add_text('function ')
+    if not self:process_node(node.dotted_name) then
+      return
+    end
+    if node.colon_name then
+      if not self:process_node(node.colon_name) then
+        return
+      end
+    end
+    if not self:process_node(node.params) then
+      return
+    end
+
+    printer:request_clean_line()
+    if not self:process_block_multiline(nil, node.body, 'end') then
+      return
+    end
+
+    printer:request_empty_line()
+    return true
   end

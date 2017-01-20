@@ -1,11 +1,8 @@
-local multiliner =
-  function(self, node)
-    self:process_block_multiline('repeat', 'until', node.body)
-    self.printer:add_text(' ')
-    self:process_node(node.condition)
-  end
-
 return
   function(self, node)
-    multiliner(self, node)
+    if not self:process_block_multiline('repeat', node.body, 'until') then
+      return
+    end
+    self.printer:add_text(' ')
+    return self:process_node(node.condition)
   end

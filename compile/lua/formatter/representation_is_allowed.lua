@@ -1,12 +1,14 @@
-local max_right_margin = 70
-
 return
   function(self, representation)
-    local text_width = representation:get_width()
-    local text_height = representation:get_height()
+    local result = true
 
-    local result
-    result = (text_width <= max_right_margin)
+    local text_margin, text_width = representation:get_text_width()
+    if self.right_margin then
+      result = result and (text_margin <= self.right_margin)
+    end
+    if self.max_text_width then
+      result = result and (text_width <= self.max_text_width)
+    end
 
     return result
   end

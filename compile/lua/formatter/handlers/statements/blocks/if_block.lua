@@ -1,24 +1,65 @@
-local multiliner =
+local oneline_if =
   function(self, node)
-    self:process_block_oneline('if', 'then', node.if_part.condition)
-    self:process_block_multiline(nil, nil, node.if_part.body)
+    return self:process_block_oneline('if ', node, ' then')
+  end
 
-    if node.elseif_parts then
-      for i = 1, #node.elseif_parts do
-        local part = node.elseif_parts[i]
-        self:process_block_oneline('elseif', 'then', part.condition)
-        self:process_block_multiline(nil, nil, part.body)
-      end
-    end
+local multiline_if =
+  function(self, node)
+    return self:process_block_multiline('if', node, 'then')
+  end
 
-    if node.else_part then
-      self:process_block_multiline('else', nil, node.else_part.body)
-    end
+local oneline_elseif =
+  function(self, node)
+    return self:process_block_oneline('elseif ', node, ' then')
+  end
 
-    self.printer:add_text('end')
+local multiline_elseif =
+  function(self, node)
+    return self:process_block_multiline('elseif', node, 'then')
   end
 
 return
   function(self, node)
-    multiliner(self, node)
+    local printer = self.printer
+
+    printer:request_clean_line()
+    if not self:variate(node.if_part.condition, oneline_if, multiline_if) then
+      return
+    end
+
+    printer:request_clean_line()
+    if not self:process_block(node.if_part.body) then
+      return
+    end
+
+    if node.elseif_parts then
+      for i = 1, #node.elseif_parts do
+        printer:request_clean_line()
+        if
+          not self:variate(
+            node.elseif_parts[i].condition,
+            oneline_elseif,
+            multiline_elseif
+          )
+        then
+          return
+        end
+
+        printer:request_clean_line()
+        if not self:process_block(node.elseif_parts[i].body) then
+          return
+        end
+      end
+    end
+
+    if node.else_part then
+      printer:request_clean_line()
+      if not self:process_block_multiline('else', node.else_part.body) then
+        return
+      end
+    end
+
+    printer:request_clean_line()
+    self.printer:add_text('end')
+    return true
   end
