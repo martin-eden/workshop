@@ -3,7 +3,7 @@ local get_cmd_copy =
     return ('cp %s %s'):format(src_name, dest_name)
   end
 
-local directories_created = {}
+local directories_created
 
 local get_cmd_mkdir =
   function(dir_name)
@@ -25,6 +25,7 @@ local get_deploy_script =
   function(deploy_dir)
     deploy_dir = (deploy_dir or 'deploy/')
 
+    directories_created = {}
     local result = {}
     local files = get_loaded_module_files()
     table.sort(files)
