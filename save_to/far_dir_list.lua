@@ -1,4 +1,4 @@
-local string_adder = request('^.handy_mechs.string_adders').default
+local string_adder = request('^.handy_mechs.string_adders.any')
 local sorted_pairs = request('^.table.ordered_pass')
 
 local path = {}
