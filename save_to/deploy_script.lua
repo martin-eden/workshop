@@ -19,19 +19,24 @@ local get_cmd_mkdir =
     end
   end
 
+local strip_updirs =
+  function(s)
+    return s:gsub('%.%./', '')
+  end
+
 local get_loaded_module_files = request('^.handy_mechs.get_loaded_module_files')
 
 local get_deploy_script =
-  function(deploy_dir)
+  function(module_files, deploy_dir)
     deploy_dir = (deploy_dir or 'deploy/')
 
     directories_created = {}
     local result = {}
-    local files = get_loaded_module_files()
+    local files = module_files or get_loaded_module_files()
     table.sort(files)
     for i = 1, #files do
       local source = files[i]
-      local dest = deploy_dir .. files[i]:gsub('%.%./', '')
+      local dest = deploy_dir .. strip_updirs(files[i])
       local directory = dest:match('(.+)/')
       result[#result + 1] = get_cmd_mkdir(directory)
       result[#result + 1] = get_cmd_copy(source, dest)
@@ -42,20 +47,19 @@ local get_deploy_script =
   end
 
 local save_deploy_script =
-  function(script_name, deploy_dir)
+  function(module_files, script_name, deploy_dir)
     script_name = script_name or 'deploy.sh'
     local f, err_msg = io.open(script_name, 'w+')
     if not f then
       error(err_msg)
     end
     f:write('#!/bin/bash', '\n')
-    f:write(get_deploy_script(deploy_dir))
+    f:write(get_deploy_script(module_files, deploy_dir))
     f:close()
   end
 
 return
   {
-    get_modules_list = get_deploy_list,
     get_script = get_deploy_script,
     save_script = save_deploy_script,
   }
