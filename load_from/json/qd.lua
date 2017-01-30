@@ -28,7 +28,7 @@
   Use normal parser if this hack fails.
 --]]
 
-local str_as_lua_table = request('^.lua.serialize_table.lua_table')
+local str_as_lua_table = request('^.lua_simple_table')
 
 return
   function(json_str)
