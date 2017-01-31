@@ -14,7 +14,10 @@ do
       'userdata',
     }
   for k, type_name in ipairs(data_types) do
-    _G['is_' .. type_name] = function(a) return (type(a) == type_name) end
+    _G['is_' .. type_name] =
+      function(a)
+        return (type(a) == type_name)
+      end
     _G['assert_' .. type_name] =
       function(a, responsibility_level)
         local responsibility_level = (responsibility_level or 1)
@@ -26,7 +29,10 @@ do
         end
       end
   end
-  _G.is_integer = function(n) return (math.type(n) == 'integer') end
+  _G.is_integer =
+    function(n)
+      return (math.type(n) == 'integer')
+    end
   _G.assert_integer =
     function(a, responsibility_level)
       local responsibility_level = (responsibility_level or 1)
@@ -39,7 +45,12 @@ end
 -- Make sure we have table.pack and table.unpack:
 do
   _G.table.pack = _G.table.pack or _G.pack
-  _G.table.unpack = _G.table.unpack or _G.unpack
+  _G.table.unpack =
+    _G.table.unpack or
+    _G.unpack or
+    function(...)
+      return {n = select('#', ...), ...}
+    end
 end
 
 -- Export request function:
