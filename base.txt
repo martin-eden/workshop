@@ -1,0 +1,119 @@
+Well, this is base module. It differs from others in that it
+writes it's values in _G, not returns them.
+
+It provides base functions used by other modules in system.
+These functions may be described as handy, crucial and optional.
+
+
+Handy functions made global just because they use very often.
+They are
+
+  is_<type> - family of functions is_nil, is_number, ... - one
+    for each type.
+
+    They receive one parameter and return "true" when it's
+    type corresponds name of function.
+
+  assert_<type> - almost same family of functions.
+
+    They receive one parameter and raise error if it's type
+    not corresponds name of function.
+
+  is_integer,
+  assert_integer - special is that it checks not type() retult
+    of argument but math.type().
+
+    (
+      In lua5.3 hidden integer numbers was introduced. For both
+      float and integer values type() returns "number" but
+      math.type() - "float" or "integer".
+    )
+
+  new - clone table with possible field overrides.
+
+    It's often used in OO-modules, so I decided to make it global too.
+
+    It awaits one or two table parameters. Clones first table.
+    Overrides it's fields with corresponding fields from second
+    table (if in second table is field not presented in first
+    table - error raised). Returns that cloned and possibly
+    patched first table.
+
+    It's typical usage is specifying field values at object creation:
+
+      local obj_a = new(class_a, {class_a_specific_field = new_value})
+
+    It is just a shortcut for
+
+      local clone = request('table.clone')
+      local obj_a = clone(class_a)
+      assert(obj_a.class_a_specifiec_field)
+      obj_a.class_a_specific_field = new_value
+
+
+Crucial function is
+
+  request - wrapper for require() with relative module paths support.
+
+    Yes, require() principally don't support relative names. But
+    when module "house/room_1/a.lua" is required, in loading process
+    it requires module "house/room_2/b.lua". If we wrap require(), at
+    second call in chain we can understand that our caller name is
+    "house.room_1.a". So in "a.lua" we may reference "b.lua" as
+    "^.room_2.b".
+
+    I consider this concept of relative naming important because if
+    directory "house" is renamed to "block", with traditional
+    require() all references in this directory files has to be
+    changed. Which is merely silly from code autonomy point of
+    view.
+
+    But this approach has limitation - we can't get parent caller
+    name if the call is executed not in first module load time.
+
+    So module having code
+
+      local g = request('^.room_2.b')
+      g()
+
+    will work but not
+
+      local function f()
+        local g = request('^.room_2.b')
+        g()
+      end
+      return f
+
+    (
+      This is because in second case we will likely have no
+      caller name (which is filled in request() in upper level
+      of currecnt function call chain). So no prefix will
+      be assumed and upper-level change "^" will fail.
+    )
+
+    I'm avoiding this by storing all needed request()'s in local
+    variables filled at loading time.
+
+
+Optional stuff is
+
+  dependencies - table containing dependencies between loaded modules.
+
+    It is filled along request() execution - at load time we have
+    unique information about dependencies, so storing just because.
+
+    It's format is [caller_name][callee_name]. Both names are
+    normal module names, require()-ready.
+
+
+Also it fills table.pack, table.unpack (if this fields is empty)
+with pack(), unpack(). Also it fills table.pack if it still empty
+with equivalent function.
+
+This is because of different locations (and presence) these functions
+in lua versions:
+
+     _G.pack  table.pack  _G.unpack  table.unpack
+5.1     ---      ---          +          ---
+5.2     ---       +           +           +
+5.3     ---       +          ---          +
