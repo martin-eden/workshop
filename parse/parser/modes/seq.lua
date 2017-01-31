@@ -3,11 +3,9 @@ return
     local parse_result, new_s_pos
     local struc_type = type(struc)
     if (struc_type == 'table') then
-      local term
       local term_s_pos = s_pos
       for i = 1, #struc do
-        term = struc[i]
-        parse_result, new_s_pos = parse_func(term, s, term_s_pos)
+        parse_result, new_s_pos = parse_func(struc[i], s, term_s_pos)
         if not parse_result then
           break
         end

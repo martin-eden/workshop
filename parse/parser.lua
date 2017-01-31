@@ -14,14 +14,11 @@
 
 local parse = request('parser.parse')
 
-local link = request('parser.link')
-local optimize = request('parser.optimize')
-
 return
   {
     handy = request('parser.handy'),
-    link = link,
-    optimize = optimize,
+    link = request('parser.link'),
+    optimize = request('parser.optimize'),
     parse =
       function(struc, s)
         return parse(struc, s)
