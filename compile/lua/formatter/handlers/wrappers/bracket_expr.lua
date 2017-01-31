@@ -1,16 +1,16 @@
 local oneliner =
   function(self, node)
-    self.printer:add_text('[')
+    self.printer:add_curline('[')
     if not self:process_node(node.expr) then
       return
     end
-    self.printer:add_text(']')
+    self.printer:add_curline(']')
     return true
   end
 
 local multiliner =
   function(self, node)
-    self.printer:add_text('[')
+    self.printer:add_curline('[')
 
     self.printer:request_clean_line()
     if not self:process_block(node.expr) then
@@ -18,7 +18,7 @@ local multiliner =
     end
 
     self.printer:request_clean_line()
-    self.printer:add_text(']')
+    self.printer:add_curline(']')
 
     return true
   end

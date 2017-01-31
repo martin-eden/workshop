@@ -66,8 +66,14 @@ return
     end
 
     if result_representation then
-      self.printer.lines[#self.printer.lines] = ''
-      self.printer:concat_text_block(result_representation, true)
+      if not self.printer:on_clean_line() then
+        --[[
+          Current line is already in result as it was added
+          in represent(). So remove it before concat with result.
+        ]]
+        self.printer.line_with_text.text = ''
+      end
+      self.printer:include(result_representation, true)
     end
 
     self.state_keeper:leave_level()

@@ -4,7 +4,7 @@ local apply_delimiter =
       if is_function(delimiter) then
         delimiter(self)
       else
-        self.printer:add_text(delimiter)
+        self.printer:add_curline(delimiter)
       end
     end
   end

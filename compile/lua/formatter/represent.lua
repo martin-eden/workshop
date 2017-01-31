@@ -2,20 +2,24 @@ local printer_class = request('^.^.^.string.text_block.interface')
 
 return
   function(self, representer, node)
-    local original_presentation = self.printer
+    local original = self.printer
 
-    local trial_presentation = new(printer_class)
-    trial_presentation.indent_chunk = original_presentation.indent_chunk
-    trial_presentation:init()
-    local num_lines = #original_presentation.lines
-    trial_presentation.lines[1] = original_presentation.lines[num_lines]
-    trial_presentation.line_indents[1] = original_presentation.line_indents[num_lines]
-    trial_presentation.next_line_indent = original_presentation.next_line_indent
+    local trial = new(printer_class)
 
-    self.printer = trial_presentation
+    trial.indent_chunk = original.indent_chunk
+    trial:init()
+
+    trial.line_with_text.indent = original.line_with_text.indent
+    if not original:on_clean_line() then
+      trial.line_with_text.text = original.line_with_text.text
+    end
+
+    trial.next_line_indent = original.next_line_indent
+
+    self.printer = trial
     local has_failed = not representer(self, node)
-    self.printer = original_presentation
+    self.printer = original
 
-    return trial_presentation, has_failed
+    return trial, has_failed
   end
 

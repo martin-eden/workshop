@@ -3,7 +3,7 @@ return
     local printer = self.printer
 
     printer:request_empty_line()
-    printer:add_text('local function ')
+    printer:add_curline('local function ')
     if not self:process_node(node.dotted_name) then
       return
     end

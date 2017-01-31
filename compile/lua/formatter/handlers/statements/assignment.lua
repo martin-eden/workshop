@@ -4,7 +4,7 @@ return
       return
     end
     if node.val_list then
-      self.printer:add_to_prev_text(' = ')
+      self.printer:add_textline(' = ')
       return self:process_block(node.val_list)
     end
     return true

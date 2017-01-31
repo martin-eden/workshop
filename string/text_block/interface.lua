@@ -1,48 +1,35 @@
---[[
-  This is interface for block of several text lines. Like
-
-    "local k = 1"
-    "for i = 1, n do"
-    "  k = k * i"
-    "end"
-    ""
-    "print(k)"
-
-  This class will export next operations for such blocks:
-
-    lines[] -- read-only
-    add_line(s)
-    add_text(s) -- text to concat to last line
-
-  Intention is to store representations of formatted code and
-  indent blocks.
-]]
-
 return
   {
-    lines = nil,
-    next_line_indent = nil,
-    line_indents = nil,
-    indent_chunk = nil,
-    indents_obj = nil,
+    -- text:
+    line_with_text = request('line.interface'),
+    processed_text = {},
+    num_line_feeds = 0,
 
-    init = request('init'),
+    store_textline = request('text.store_textline'),
+    add_textline = request('text.add_textline'),
+    add_curline = request('text.add_curline'),
 
-    close_line = request('close_line'),
-    add_text = request('add_text'),
-    add_to_prev_text = request('add_to_prev_text'),
+    new_line = request('text.new_line'),
+    request_clean_line = request('text.request_clean_line'),
+    request_empty_line = request('text.request_empty_line'),
 
-    on_clean_line = request('on_clean_line'),
-    request_clean_line = request('request_clean_line'),
-    request_empty_line = request('request_empty_line'),
+    on_clean_line = request('text.on_clean_line'),
 
+    include = request('text.include'),
+
+    get_text = request('text.get_text'),
+
+    -- indents:
+    indent_chunk = '  ',
+    next_line_indent = 0,
     inc_indent = request('inc_indent'),
     dec_indent = request('dec_indent'),
-    update_indent = request('update_indent'),
 
-    get_text = request('get_text'),
-    get_line_length = request('get_line_length'),
-    get_text_width = request('get_text_width'),
+    -- text length:
+    max_text_width = 0,
+    max_block_width = 0,
+    get_text_width = request('text.get_text_width'),
+    get_block_width = request('text.get_block_width'),
 
-    concat_text_block = request('concat_text_block'),
+    init = request('init'),
   }

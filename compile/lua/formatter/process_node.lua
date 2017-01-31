@@ -6,7 +6,7 @@ return
       if is_function(handler) then
         return handler(self, node)
       else
-        self.printer:add_text('<' .. node_type .. '>')
+        self.printer:add_curline('<' .. node_type .. '>')
         return
       end
     end

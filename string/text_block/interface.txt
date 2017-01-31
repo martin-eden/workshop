@@ -1,0 +1,136 @@
+This is class for writing left-indented text.
+
+Efforts are made for low memory consumption and ease of use.
+
+It knows about indents, border spaces, line feeds, length of longest
+line in indented block and length of longest line text in block.
+Also it can concatenate with friendly text block.
+
+
+General architecture
+
+  Changable text is last added line with non-empty text. It is
+  accessed via <line_with_text> field. All previously lines added
+  to <processed_text> object which have no methods to return it
+  individually. (This is for low memory consumption as <processed_text>
+  usually temporary disk file.)
+
+  There two entry points for adding text: <add_curline> and
+  <add_textline>. Let me show data layout for sample text
+
+    [[
+    do
+      local a;     <-- <processed_text>, {"do", \n, "  local a", \n}
+      local b      <-- current entry point for add_textline()
+
+                   <-- current entry point for add_curline()
+    ]]
+
+    <num_line_feeds>: 2
+    <line_with_text>
+      {indent: 1, text: "local b"}
+    <indent_chunk>: "  "
+
+
+  If the current line is not empty then <num_line_feeds> == 0
+  and both <add_textline> and <add_curline> do the same.
+
+  Usually you add text via <add_curline> unless you want to add
+  something to the first non-empty line from bottom (say, add ";" to
+  the "local b" from example above).
+
+
+Border spaces
+
+  Head and tail line spaces are internally trimmed. There no official
+  way to make them appear in result text.
+
+
+Supported operations
+
+  Indents
+
+    Indents are preserved between lines.
+
+    inc_indent(),
+    dec_indent() - increase/decrease indent for next line
+
+    indent_chunk - string with block for building indents
+
+      This is used at initialization (in init()), changing it
+      after will have no effect.
+
+    Mostly for internal use
+
+      next_line_indent - stores indent (number) for next line
+
+
+  Line feeds
+
+    new_line() - move virtual cursor to new empty line
+
+    request_clean_line() - if current line is not empty, starts new
+      line
+
+      So in end you may me sure that virtual cursor is on beginning
+      of empty line.
+
+    request_empty_line() - if previous line is not empty, starts
+      new line and closes it.
+
+      So in end it's guaranteed that previous line is empty (or
+      absent in case current line is first). But no guarantees
+      about emptiness of current line.
+
+    on_clean_line() - returns true if current line is empty
+
+
+  Adding text
+
+    add_curline(s) - adds string <s> to current line
+
+    add_to_prev(s) - adds string <s> to first non-empty line,
+      counting back from bottom
+
+      This strange function born to ease writing of node
+      representers: inner representer may finish on empty line
+      and it's parent caller may add text on it's last meaningful
+      line.
+
+
+  Getting text
+
+    get_text() - returns string with all lines, indented and delimited
+      with \n.
+
+
+  Getting text metrics
+
+    As this class was initially written to handle reformatting
+    of code within given margins, it supplies function to get
+    maximum width of our text.
+
+    By the way, "width" has two flavors, length of line with
+    indent and length of line without indent. First if obviously >=
+    second, for given line. I name them "line length" and
+    "line text length".
+
+    get_text_width() - returns max("line text length") for existing text
+
+    get_block_width() - returns max("line length") for existing text
+
+
+  Other stuff
+
+    There is function to add text from other instance of our class,
+
+    include(other_instance, do_glue_border_lines) - adds text from
+      other instance to us
+
+      <do_glue_border_lines> - boolean parameter, when true first line
+        of added block glued to last line, else it is added after
+        last line.
+
+
+All other methods not described here are probably implementation
+details and may de changed/dropped any moment.

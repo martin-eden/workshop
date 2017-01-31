@@ -2,7 +2,7 @@ local quote_oneline = request('^.^.^.^.quote_string')
 
 local oneliner =
   function(self, node)
-    self.printer:add_text(quote_oneline(node.value))
+    self.printer:add_curline(quote_oneline(node.value))
     return true
   end
 
@@ -17,7 +17,7 @@ local multiliner =
     else
       s = quote_oneline(s)
     end
-    self.printer:add_text(s)
+    self.printer:add_curline(s)
     return true
   end
 

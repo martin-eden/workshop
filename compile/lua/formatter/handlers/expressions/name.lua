@@ -1,5 +1,5 @@
 return
   function(self, node)
-    self.printer:add_text(node.value)
+    self.printer:add_curline(node.value)
     return true
   end

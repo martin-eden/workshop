@@ -1,6 +1,6 @@
 return
   function(self)
     if not self:on_clean_line() then
-      self:close_line()
+      self:new_line()
     end
   end

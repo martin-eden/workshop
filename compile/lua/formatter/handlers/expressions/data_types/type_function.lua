@@ -3,7 +3,7 @@ local multiliner =
     local printer = self.printer
 
     printer:request_clean_line()
-    printer:add_text('function')
+    printer:add_curline('function')
     if not self:process_node(node.params) then
       return
     end

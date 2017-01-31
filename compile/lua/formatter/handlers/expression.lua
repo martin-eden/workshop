@@ -6,11 +6,11 @@ local represent_operand_oneline =
       for i = 1, #node.un_ops do
         cur_un_op = node.un_ops[i]
         if (prev_un_op == '-') and (cur_un_op == '-') then
-          printer:add_text(' -')
+          printer:add_curline(' -')
         elseif (cur_un_op == 'not') then
-          printer:add_text('not ')
+          printer:add_curline('not ')
         else
-          printer:add_text(cur_un_op)
+          printer:add_curline(cur_un_op)
         end
         prev_un_op = cur_un_op
       end
@@ -19,7 +19,7 @@ local represent_operand_oneline =
       return
     end
     if node.bin_op then
-      printer:add_text(' ' .. node.bin_op .. ' ')
+      printer:add_curline(' ' .. node.bin_op .. ' ')
     end
     return true
   end

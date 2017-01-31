@@ -60,6 +60,6 @@ return
     end
 
     printer:request_clean_line()
-    self.printer:add_text('end')
+    self.printer:add_curline('end')
     return true
   end

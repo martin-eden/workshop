@@ -3,7 +3,7 @@ return
     local printer = self.printer
 
     if prefix then
-      printer:add_text(prefix)
+      printer:add_curline(prefix)
     end
 
     printer:request_clean_line()
@@ -11,7 +11,7 @@ return
 
     if postfix then
       printer:request_clean_line()
-      printer:add_text(postfix)
+      printer:add_curline(postfix)
     end
 
     return result

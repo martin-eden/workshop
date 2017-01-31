@@ -7,7 +7,7 @@ local oneliner =
 
 local multiline_delimiter =
   function(self)
-    self.printer:add_to_prev_text(',')
+    self.printer:add_textline(',')
     self.printer:request_clean_line()
   end
 

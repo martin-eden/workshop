@@ -1,12 +1,10 @@
-local indents_class = request('^.^.handy_mechs.indents_table')
-
 return
   function(self)
-    self.lines = {''}
-    self.line_indents = {0}
-    self.next_line_indent = 0
+    self.processed_text = {}
 
-    self.indents_obj = new(indents_class)
-    self.indents_obj.indent_chunk = self.indent_chunk
-    self.indents_obj:init()
+    self.line_with_text.indents_obj.indent_chunk = self.indent_chunk
+    self.line_with_text:init()
+    self.line_with_text.indent = self.next_line_indent
+
+    self.num_line_feeds = 0
   end
