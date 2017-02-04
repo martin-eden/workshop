@@ -59,7 +59,7 @@ return
     inner_name = 'expression',
     handy.opt(handy.list(un_op, opt_spc)),
     opt_spc,
-    handy.cho(
+    handy.cho1(
       vararg,
       type_nil,
       type_boolean,
