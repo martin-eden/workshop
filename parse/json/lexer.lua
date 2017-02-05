@@ -1,5 +1,29 @@
-local cached_pos
-local token_type
+--[[
+  This is JSON lexer.
+
+  This module task is to export quick boolean functions
+
+    is_null
+    is_boolean,
+    ...
+    (see <json_syntels> sequence for full list)
+
+  for use in [parser] grammar.
+
+  Each function is called with parameters <s>, <s_pos> with parsing
+  string and start position in it. If function succeeds it returns
+  "true" and new start position.
+
+  Previous call results cached in <last_pos> and <last_token>.
+  As it is typical in grammar to iterate all possible tokens at
+  fixed positions.
+
+  For performance reasons this module is not represented as class.
+  (To allow referencing <last_pos> as upvalue, not via "self" table.)
+]]
+
+local last_pos
+local last_token
 local our_s
 local cur_pos
 
@@ -11,17 +35,13 @@ local space_chars =
     ['\t'] = true,
   }
 
-local skip_spaces =
+local eat_spaces =
   function()
     while space_chars[our_s:sub(cur_pos, cur_pos)] do
       cur_pos = cur_pos + 1
     end
+    return 'spaces'
   end
-
---[[
-  You can get type of JSON token just by analyzing first char
-  after spaces.
-]]
 
 local eat_null =
   function()
@@ -35,7 +55,7 @@ local eat_true =
   function()
     if (our_s:sub(cur_pos, cur_pos + #'true' - 1) == 'true') then
       cur_pos = cur_pos + #'true'
-      return 'true'
+      return 'boolean'
     end
   end
 
@@ -43,9 +63,14 @@ local eat_false =
   function()
     if (our_s:sub(cur_pos, cur_pos + #'false' - 1) == 'false') then
       cur_pos = cur_pos + #'false'
-      return 'false'
+      return 'boolean'
     end
   end
+
+--[[
+  Numbers in JSON must start with digit. If first digit is "0" then
+  it must be sole digit in integer part. Optional "-" sign allowed.
+]]
 
 local eat_number =
   function()
@@ -101,7 +126,7 @@ local eat_string =
           cur_pos = cur_pos + 1
           break
         elseif (cur_char == [[\]]) then
-          cur_pos = cur_char + 1
+          cur_pos = cur_pos + 1
           local next_char = our_s:sub(cur_pos, cur_pos)
           if escape_next_chars[next_char] then
             cur_pos = cur_pos + 1
@@ -129,6 +154,11 @@ local eat_string =
     return 'string'
   end
 
+--[[
+  We can get type of JSON token just by analyzing first char
+  after spaces.
+]]
+
 local handler_by_first_char =
   {
     ['['] = 'open_bracket',
@@ -152,23 +182,24 @@ local handler_by_first_char =
     ['8'] = eat_number,
     ['9'] = eat_number,
     ['"'] = eat_string,
+    [' '] = eat_spaces,
+    ['\n'] = eat_spaces,
+    ['\r'] = eat_spaces,
+    ['\t'] = eat_spaces,
   }
 
 local get_token =
   function()
+    last_pos = cur_pos
     local handler = handler_by_first_char[our_s:sub(cur_pos, cur_pos)]
     if (type(handler) == 'string') then
       cur_pos = cur_pos + 1
-      return handler
+      last_token = handler
     elseif handler then
-      return handler()
+      last_token = handler()
+    else
+      last_token = nil
     end
-  end
-
-local get_next_token =
-  function()
-    skip_spaces()
-    token_type = get_token()
   end
 
 local json_syntels =
@@ -183,49 +214,53 @@ local json_syntels =
     'close_brace',
     'comma',
     'colon',
+    'spaces',
   }
+
+local create_is_func =
+  function(syntel_name)
+    return
+      function(s, s_pos)
+        if (s_pos ~= last_pos) or (s ~= our_s) then
+          our_s = s
+          cur_pos = s_pos
+          get_token()
+        end
+        if (last_token == syntel_name) then
+          return true, cur_pos
+        end
+      end
+  end
 
 local spawn_get_functions =
   function()
     local result = {}
     for i = 1, #json_syntels do
-      local func_name = ('get_%s'):format(json_syntels[i])
-      local func =
-        function(s, s_pos)
-          if (s_pos ~= cached_pos) or (s ~= our_s) then
-            our_s = s
-            cur_pos = s_pos
-            cached_pos = cur_pos
-            get_next_token()
-          end
-          if (token_type == json_syntels[i]) then
-            return true, cur_pos
-          end
-        end
+      local func_name = ('is_%s'):format(json_syntels[i])
+      local func = create_is_func(json_syntels[i])
       result[func_name] = func
     end
     return result
   end
 
+local result = spawn_get_functions()
+
 local init =
   function(s)
     our_s = s
     cur_pos = 1
-    -- print(('s: [%s]'):format(our_s))
   end
 
-local print_cur_state =
+local get_state =
   function()
-    -- print(('[%s]: %s'):format(cur_pos, token_type))
-    return token_type
+    return last_token, last_pos, cur_pos
   end
 
-local result = spawn_get_functions()
 result.test =
   {
     init = init,
-    print_cur_state = print_cur_state,
-    get_next_token = get_next_token,
+    get_state = get_state,
+    get_token = get_token,
   }
 
 return result
