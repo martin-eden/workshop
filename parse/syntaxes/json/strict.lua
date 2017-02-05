@@ -5,17 +5,17 @@
 local parser = request('^.^.parser')
 local handy = parser.handy
 
-local cho = handy.cho
+local cho1 = handy.cho1
 local opt_rep = handy.opt_rep
 local opt = handy.opt
 local rep = handy.rep
 local opt_cho = handy.opt_cho
 local is_not = handy.is_not
-local opt_rep_cho = handy.opt_rep_cho
+local opt_rep = handy.opt_rep
 local list = handy.list
 
 local opt_spc =
-  opt_rep(cho(' ', '\n', '\r', '\t'))
+  opt_rep(cho1(' ', '\n', '\r', '\t'))
 
 local tok =
   function(...)
@@ -32,30 +32,30 @@ local null =
   tok({name = 'null', 'null'})
 
 local boolean =
-  tok({name = 'boolean', cho('true', 'false')})
+  tok({name = 'boolean', cho1('true', 'false')})
 
 local zero_digit =
   '0'
 local nonzero_dec_digit =
-  cho('9', '8', '7', '6', '5', '4', '3', '2', '1')
+  cho1('9', '8', '7', '6', '5', '4', '3', '2', '1')
 local dec_digit =
-  cho(nonzero_dec_digit, zero_digit)
+  cho1(nonzero_dec_digit, zero_digit)
 
 local number =
   {
     name = 'number',
     opt('-'),
-    cho(
+    cho1(
       zero_digit,
       {nonzero_dec_digit, opt_rep(dec_digit)}
     ),
     opt({'.', rep(dec_digit)}),
-    opt(cho('e', 'E'), opt_cho('+', '-'), rep(dec_digit))
+    opt(cho1('e', 'E'), opt_cho('+', '-'), rep(dec_digit))
   }
 number = tok(number)
 
 local control_char =
-  cho(
+  cho1(
     '\x00', '\x01', '\x02', '\x03', '\x04', '\x05', '\x06', '\x07',
     '\x08', '\x09', '\x0a', '\x0b', '\x0c', '\x0d', '\x0e', '\x0f',
     '\x10', '\x11', '\x12', '\x13', '\x14', '\x15', '\x16', '\x17',
@@ -69,9 +69,9 @@ local any_char =
   end
 
 local hex_only_digit =
-  cho('a', 'b', 'c', 'd', 'e', 'f', 'A', 'B', 'C', 'D', 'E', 'F')
+  cho1('a', 'b', 'c', 'd', 'e', 'f', 'A', 'B', 'C', 'D', 'E', 'F')
 local hex_dig =
-  cho(dec_digit, hex_only_digit)
+  cho1(dec_digit, hex_only_digit)
 
 local utf_code_point =
   {'u', hex_dig, hex_dig, hex_dig, hex_dig}
@@ -80,12 +80,14 @@ local json_string =
   {
     name = 'string',
     '"',
-    opt_rep_cho(
-      {is_not('"', [[\]], control_char), any_char},
-      {
-        [[\]],
-        cho('"', [[\]], '/', 'b', 'f', 'n', 'r', 't', utf_code_point)
-      }
+    opt_rep(
+      cho1(
+        {is_not('"', [[\]], control_char), any_char},
+        {
+          [[\]],
+          cho1('"', [[\]], '/', 'b', 'f', 'n', 'r', 't', utf_code_point)
+        }
+      )
     ),
     '"'
   }
@@ -98,7 +100,14 @@ local array =
   }
 
 local value =
-  cho(array, '>object', json_string, number, boolean, null)
+  cho1(
+    number,
+    json_string,
+    array,
+    '>object',
+    boolean,
+    null
+  )
 value.inner_name = 'value'
 
 local object =

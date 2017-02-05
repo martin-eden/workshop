@@ -11,9 +11,9 @@
 local parser = request('^.^.parser')
 local handy = parser.handy
 
-local cho = handy.cho
+local cho1 = handy.cho1
 local opt = handy.opt
-local opt_rep_cho = handy.opt_rep_cho
+local opt_rep = handy.opt_rep
 local list = handy.list
 local match = handy.match_pattern
 
@@ -35,7 +35,7 @@ local null =
   tok({name = 'null', 'null'})
 
 local boolean =
-  tok({name = 'boolean', cho('true', 'false')})
+  tok({name = 'boolean', cho1('true', 'false')})
 
 local dec_digits_no_lead_zero =
   match('[1-9][%d]*')
@@ -47,7 +47,7 @@ local number =
   {
     name = 'number',
     opt('-'),
-    cho(
+    cho1(
       '0',
       dec_digits_no_lead_zero
     ),
@@ -69,12 +69,14 @@ local json_string =
   {
     name = 'string',
     '"',
-    opt_rep_cho(
-      plain_string_chars,
-      {
-        [[\]],
-        cho('"', [[\]], '/', 'b', 'f', 'n', 'r', 't', utf_code_point)
-      }
+    opt_rep(
+      cho1(
+        plain_string_chars,
+        {
+          [[\]],
+          cho1('"', [[\]], '/', 'b', 'f', 'n', 'r', 't', utf_code_point)
+        }
+      )
     ),
     '"'
   }
@@ -87,7 +89,14 @@ local array =
   }
 
 local value =
-  cho(array, '>object', json_string, number, boolean, null)
+  cho1(
+    number,
+    json_string,
+    array,
+    '>object',
+    boolean,
+    null
+  )
 value.inner_name = 'value'
 
 local object =
