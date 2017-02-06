@@ -18,12 +18,6 @@ local mark =
     -- print(('Marked %s(%d,%d)'):format(owner, start, finish))
   end
 
-local seg_inside =
-  function(a, b)
-    -- print((a.start >= b.start) and (a.finish <= b.finish), a.start, a.finish, b.start, b.finish)
-    return (a.start >= b.start) and (a.finish <= b.finish)
-  end
-
 local fold_struc =
   function()
     if (#struc >= 2) then
@@ -31,7 +25,10 @@ local fold_struc =
       local dest_idx = 1
       local result = {struc[1]}
       repeat
-        if not seg_inside(result[dest_idx], struc[src_idx]) then
+        if
+          (result[dest_idx].start < struc[src_idx].start) or
+          (result[dest_idx].finish > struc[src_idx].finish)
+        then
           dest_idx = dest_idx + 1
           result[dest_idx] = struc[src_idx]
         else
@@ -40,7 +37,9 @@ local fold_struc =
             start_idx = start_idx - 1
           until
             (start_idx < 1) or
-            not seg_inside(result[start_idx], struc[src_idx])
+            (result[start_idx].start < struc[src_idx].start) or
+            (result[start_idx].finish > struc[src_idx].finish)
+
           start_idx = start_idx + 1
           local dest_table =
             {
