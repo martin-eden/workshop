@@ -5,11 +5,6 @@ local val_rank =
     other = 3,
   }
 
-local get_rank =
-  function(val)
-    return val_rank[type(val)] or val_rank.other
-  end
-
 local comparable_types =
   {
     number = true,
@@ -19,16 +14,22 @@ local comparable_types =
 return
   function(a, b)
     local result
-    local a_key, b_key = a.key, b.key
-    local rank_a, rank_b = get_rank(a_key), get_rank(b_key)
+
+    local a_key = a.key
+    local a_key_type = type(a_key)
+    local rank_a = val_rank[a_key_type] or val_rank.other
+
+    local b_key = b.key
+    local b_key_type = type(b_key)
+    local rank_b = val_rank[b_key_type] or val_rank.other
+
     if (rank_a ~= rank_b) then
-      result = (rank_a < rank_b)
+      return (rank_a < rank_b)
     else
-      if comparable_types[type(a_key)] and comparable_types[type(b_key)] then
-        result = (a_key < b_key)
+      if comparable_types[a_key_type] and comparable_types[b_key_type] then
+        return (a_key < b_key)
       else
-        result = (tostring(a_key) < tostring(b_key))
+        return (tostring(a_key) < tostring(b_key))
       end
     end
-    return result
   end
