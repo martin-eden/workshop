@@ -102,7 +102,7 @@ value.inner_name = 'value'
 local object =
   {
     name = 'object',
-    tok('{'), opt(list({name = 'key', json_string}, tok(':'), {name = 'value', value}, tok(','))), tok('}')
+    tok('{'), opt(list(json_string, tok(':'), value, tok(','))), tok('}')
   }
 object.inner_name = 'object'
 

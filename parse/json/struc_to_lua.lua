@@ -15,10 +15,6 @@ struc_to_lua =
         result[key] = value
         i = i + 2
       end
-    elseif (name == 'key') then
-      result = struc_to_lua(data_struc[1])
-    elseif (name == 'value') then
-      result = struc_to_lua(data_struc[1])
     elseif (name == 'array') then
       result = {}
       for i = 1, #data_struc do

@@ -2,11 +2,11 @@ local lexer = request('^.^.json.lexer')
 local parser = request('^.^.parser')
 local handy = parser.handy
 
-local is_spaces = lexer.is_spaces
 local is_null = {name = 'null', lexer.is_null}
 local is_boolean = {name = 'boolean', lexer.is_boolean}
 local is_number = {name = 'number', lexer.is_number}
 local is_string = {name = 'string', lexer.is_string}
+local is_spaces = lexer.is_spaces
 local is_open_bracket = {handy.opt(is_spaces), lexer.is_open_bracket}
 local is_close_bracket = {handy.opt(is_spaces), lexer.is_close_bracket}
 local is_open_brace = {handy.opt(is_spaces), lexer.is_open_brace}
@@ -44,9 +44,9 @@ local object =
     handy.opt(
       handy.list(
         handy.opt(is_spaces),
-        {name = 'key', is_string},
+        is_string,
         is_colon,
-        {name = 'value', value},
+        value,
         is_comma
       )
     ),
