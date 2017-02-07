@@ -55,21 +55,15 @@ parse =
     -- debug_print(struc, s, s_pos, mode)
     local parse_result, new_s_pos
     local is_tracking = not verify_only and struc_is_table and struc.name
-    if is_tracking then
-      local checkpoint = get_checkpoint()
-      parse_result, new_s_pos = mode_handlers[mode](struc, s, s_pos, parse)
-      if parse_result then
-        if (s_pos < new_s_pos) then
-          mark(s_pos, new_s_pos - 1, struc.name)
-        end
-      else
-        rollback(checkpoint)
+    local checkpoint = get_checkpoint()
+    parse_result, new_s_pos = mode_handlers[mode](struc, s, s_pos, parse)
+    if parse_result then
+      if is_tracking and (s_pos < new_s_pos) then
+        mark(s_pos, new_s_pos - 1, struc.name)
       end
     else
-      parse_result, new_s_pos = mode_handlers[mode](struc, s, s_pos, parse)
-    end
-    if not parse_result then
       new_s_pos = s_pos
+      rollback(checkpoint)
     end
     return parse_result, new_s_pos
   end
