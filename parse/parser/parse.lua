@@ -15,9 +15,6 @@ local mode_handlers =
     ['repeat'] = request('modes.repeat'),
   }
 
-local folder = request('folder')
-local mark = folder.mark
-
 local verify_only
 
 local quote_string = request('^.^.compile.lua.quote_string')
@@ -45,23 +42,31 @@ local debug_print =
     )
   end
 
+local folder = request('folder')
+local get_checkpoint = folder.get_checkpoint
+local mark = folder.mark
+local rollback = folder.rollback
+
 local parse
 parse =
   function(struc, s, s_pos)
-    local mode = (is_table(struc) and struc.mode) or 'seq'
+    local struc_is_table = (type(struc) == 'table')
+    local mode = (struc_is_table and struc.mode) or 'seq'
     -- debug_print(struc, s, s_pos, mode)
-    local is_tracing = not verify_only and is_table(struc) and struc.name
-    local checkpoint = folder.get_checkpoint()
-    local parse_result, new_s_pos = mode_handlers[mode](struc, s, s_pos, parse)
-    if not parse_result then
-      folder.rollback(checkpoint)
-    end
-    if
-      is_tracing and
-      parse_result and
-      (s_pos < new_s_pos)
-    then
-      mark(s_pos, new_s_pos - 1, struc.name)
+    local parse_result, new_s_pos
+    local is_tracking = not verify_only and struc_is_table and struc.name
+    if is_tracking then
+      local checkpoint = get_checkpoint()
+      parse_result, new_s_pos = mode_handlers[mode](struc, s, s_pos, parse)
+      if parse_result then
+        if (s_pos < new_s_pos) then
+          mark(s_pos, new_s_pos - 1, struc.name)
+        end
+      else
+        rollback(checkpoint)
+      end
+    else
+      parse_result, new_s_pos = mode_handlers[mode](struc, s, s_pos, parse)
     end
     if not parse_result then
       new_s_pos = s_pos

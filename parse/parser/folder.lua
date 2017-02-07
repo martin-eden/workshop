@@ -6,16 +6,31 @@ local init =
     struc.is_folded = false
   end
 
+local get_checkpoint =
+  function()
+    -- print('Checkpoint.')
+    return #struc
+  end
+
+local rollback =
+  function(checkpoint)
+    -- local orig_len = #struc
+    for i = checkpoint + 1, #struc do
+      struc[i] = nil
+    end
+    -- print(('Rolled back from %d to #%d.'):format(orig_len, checkpoint))
+  end
+
 local mark =
-  function(start, finish, owner, data)
+  function(start, finish, name, data)
     struc[#struc + 1] =
       {
         start = start,
         finish = finish,
-        owner = owner,
+        name = name,
         data = data,
       }
-    -- print(('Marked %s(%d,%d)'):format(owner, start, finish))
+    -- print(('Marked %s(%d,%d)'):format(name, start, finish))
   end
 
 local fold_struc =
@@ -45,7 +60,7 @@ local fold_struc =
             {
               start = struc[src_idx].start,
               finish = struc[src_idx].finish,
-              owner = struc[src_idx].owner,
+              name = struc[src_idx].name,
               data = struc[src_idx].data,
             }
           local copy_idx = start_idx
@@ -75,44 +90,6 @@ local get_struc =
     return struc
   end
 
-local get_checkpoint =
-  function()
-    -- print('Checkpoint.')
-    return #struc
-  end
-
-local rollback =
-  function(checkpoint)
-    local orig_len = #struc
-    for i = checkpoint + 1, #struc do
-      struc[i] = nil
-    end
-    -- print(('Rolled back from %d to #%d.'):format(orig_len, checkpoint))
-  end
-
-local get_delta =
-  function(checkpoint)
-    local result
-    if (checkpoint < #struc) then
-      result = {}
-      for i = checkpoint + 1, #struc do
-        result[#result + 1] = struc[i]
-      end
-    end
-    return result
-  end
-
-local apply_delta =
-  function(checkpoint, delta)
-    if delta then
-      -- print(('Applying delta (%d)[%d]'):format(checkpoint, #delta))
-      for i = 1, #delta do
-        struc[checkpoint + i] = delta[i]
-      end
-      rollback(checkpoint + #delta)
-    end
-  end
-
 return
   {
     init = init,
@@ -120,6 +97,4 @@ return
     get_struc = get_struc,
     get_checkpoint = get_checkpoint,
     rollback = rollback,
-    get_delta = get_delta,
-    apply_delta = apply_delta,
   }

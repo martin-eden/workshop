@@ -10,9 +10,6 @@
 local populate_data_struc
 populate_data_struc =
   function(data_struc, s)
-    assert_table(data_struc)
-    assert_number(data_struc.start)
-    assert_number(data_struc.finish)
     if (#data_struc == 0) then
       data_struc.value = s:sub(data_struc.start, data_struc.finish)
     else
@@ -20,10 +17,8 @@ populate_data_struc =
         populate_data_struc(data_struc[i], s)
       end
     end
-    data_struc.name = data_struc.owner
     data_struc.start = nil
     data_struc.finish = nil
-    data_struc.owner = nil
   end
 
 return
