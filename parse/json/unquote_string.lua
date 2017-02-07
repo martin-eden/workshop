@@ -10,14 +10,20 @@ return
       (s:sub(-1, -1) == '"')
     then
       s = s:sub(2, -2)
-      -- '"', [[\]], '/', 'b', 'f', 'n', 'r', 't', utf_code_point)
-      s = s:gsub([[\"]], '"')
-      s = s:gsub([[\/]], '/')
-      s = s:gsub([[\b]], '\x08')
-      s = s:gsub([[\f]], '\x0c')
-      s = s:gsub([[\n]], '\x0a')
-      s = s:gsub([[\r]], '\x0d')
-      s = s:gsub([[\t]], '\x09')
+      -- \" \/ \b \n \f \r \t
+      s =
+        s:gsub(
+          [[\.]],
+          {
+            [ [[\"]] ] = '"',
+            [ [[\/]] ] = '/',
+            [ [[\b]] ] = '\x08',
+            [ [[\f]] ] = '\x0c',
+            [ [[\n]] ] = '\x0a',
+            [ [[\r]] ] = '\x0d',
+            [ [[\t]] ] = '\x09',
+          }
+        )
       -- UTF code points sequencies ("\u" and 4 hex digits)
       s =
         s:gsub(
@@ -55,7 +61,8 @@ return
             return utf_char
           end
         )
-      s = s:gsub([[\\]], '\\')
+      -- \\
+      s = s:gsub([[\\]], [[\]])
     end
     return s
   end
