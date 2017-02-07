@@ -90,6 +90,29 @@ local get_struc =
     return struc
   end
 
+local get_delta =
+  function(checkpoint)
+    local result
+    if (checkpoint < #struc) then
+      result = {}
+      for i = checkpoint + 1, #struc do
+        result[#result + 1] = struc[i]
+      end
+    end
+    return result
+  end
+
+local apply_delta =
+  function(checkpoint, delta)
+    if delta then
+      -- print(('Applying delta (%d)[%d]'):format(checkpoint, #delta))
+      for i = 1, #delta do
+        struc[checkpoint + i] = delta[i]
+      end
+      rollback(checkpoint + #delta)
+    end
+  end
+
 return
   {
     init = init,
@@ -97,4 +120,6 @@ return
     get_struc = get_struc,
     get_checkpoint = get_checkpoint,
     rollback = rollback,
+    get_delta = get_delta,
+    apply_delta = apply_delta,
   }
