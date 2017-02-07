@@ -229,6 +229,7 @@ local create_is_func =
         if (last_token == syntel_name) then
           return true, cur_pos
         end
+        return false, s_pos
       end
   end
 
@@ -256,11 +257,8 @@ local get_state =
     return last_token, last_pos, cur_pos
   end
 
-result.test =
-  {
-    init = init,
-    get_state = get_state,
-    get_token = get_token,
-  }
+result.init = init
+result.get_state = get_state
+result.get_token = get_token
 
 return result
