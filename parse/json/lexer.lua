@@ -22,11 +22,6 @@
   (To allow referencing <last_pos> as upvalue, not via "self" table.)
 ]]
 
-local last_pos
-local last_token
-local our_s
-local cur_pos
-
 local space_chars =
   {
     [' '] = true,
@@ -36,34 +31,33 @@ local space_chars =
   }
 
 local eat_spaces =
-  function()
-    while space_chars[our_s:sub(cur_pos, cur_pos)] do
-      cur_pos = cur_pos + 1
+  function(s, s_pos)
+    if space_chars[s:sub(s_pos, s_pos)] then
+      repeat
+        s_pos = s_pos + 1
+      until not space_chars[s:sub(s_pos, s_pos)]
+      return 'spaces', s_pos
     end
-    return 'spaces'
   end
 
 local eat_null =
-  function()
-    if (our_s:sub(cur_pos, cur_pos + #'null' - 1) == 'null') then
-      cur_pos = cur_pos + #'null'
-      return 'null'
+  function(s, s_pos)
+    if (s:sub(s_pos, s_pos + #'null' - 1) == 'null') then
+      return 'null', s_pos + #'null'
     end
   end
 
 local eat_true =
-  function()
-    if (our_s:sub(cur_pos, cur_pos + #'true' - 1) == 'true') then
-      cur_pos = cur_pos + #'true'
-      return 'boolean'
+  function(s, s_pos)
+    if (s:sub(s_pos, s_pos + #'true' - 1) == 'true') then
+      return 'boolean', s_pos + #'true'
     end
   end
 
 local eat_false =
-  function()
-    if (our_s:sub(cur_pos, cur_pos + #'false' - 1) == 'false') then
-      cur_pos = cur_pos + #'false'
-      return 'boolean'
+  function(s, s_pos)
+    if (s:sub(s_pos, s_pos + #'false' - 1) == 'false') then
+      return 'boolean', s_pos + #'false'
     end
   end
 
@@ -73,29 +67,29 @@ local eat_false =
 ]]
 
 local eat_number =
-  function()
+  function(s, s_pos)
     local start_pos, finish_pos
-    if (our_s:sub(cur_pos, cur_pos) == '-') then
-      cur_pos = cur_pos + 1
+    if (s:sub(s_pos, s_pos) == '-') then
+      s_pos = s_pos + 1
     end
-    if (our_s:sub(cur_pos, cur_pos) == '0') then
-      cur_pos = cur_pos + 1
+    if (s:sub(s_pos, s_pos) == '0') then
+      s_pos = s_pos + 1
     else
-      start_pos, finish_pos = our_s:find('^[%d]+', cur_pos)
+      start_pos, finish_pos = s:find('^[%d]+', s_pos)
       if not finish_pos then
         return
       end
-      cur_pos = finish_pos + 1
+      s_pos = finish_pos + 1
     end
-    start_pos, finish_pos = our_s:find('^%.[%d]+', cur_pos)
+    start_pos, finish_pos = s:find('^%.[%d]+', s_pos)
     if finish_pos then
-      cur_pos = finish_pos + 1
+      s_pos = finish_pos + 1
     end
-    start_pos, finish_pos = our_s:find('^[eE][%+%-]?[%d]+', cur_pos)
+    start_pos, finish_pos = s:find('^[eE][%+%-]?[%d]+', s_pos)
     if finish_pos then
-      cur_pos = finish_pos + 1
+      s_pos = finish_pos + 1
     end
-    return 'number'
+    return 'number', s_pos
   end
 
 local escape_next_chars =
@@ -111,35 +105,35 @@ local escape_next_chars =
   }
 
 local eat_string =
-  function()
+  function(s, s_pos)
     local start_pos, finish_pos
-    if (our_s:sub(cur_pos, cur_pos) ~= '"') then
+    if (s:sub(s_pos, s_pos) ~= '"') then
       return
     else
-      cur_pos = cur_pos + 1
+      s_pos = s_pos + 1
     end
     while true do
-      start_pos, finish_pos = our_s:find([[^[^%c%\%"]+]], cur_pos)
+      start_pos, finish_pos = s:find([[^[^%c%\%"]+]], s_pos)
       if not finish_pos then
-        local cur_char = our_s:sub(cur_pos, cur_pos)
+        local cur_char = s:sub(s_pos, s_pos)
         if (cur_char == '"') then
-          cur_pos = cur_pos + 1
+          s_pos = s_pos + 1
           break
         elseif (cur_char == [[\]]) then
-          cur_pos = cur_pos + 1
-          local next_char = our_s:sub(cur_pos, cur_pos)
+          s_pos = s_pos + 1
+          local next_char = s:sub(s_pos, s_pos)
           if escape_next_chars[next_char] then
-            cur_pos = cur_pos + 1
+            s_pos = s_pos + 1
           elseif (next_char == 'u') then
             -- Four hex. digits of UTF codepoint. (f.e. "\uA0b2")
             local start_pos, finish_pos =
-              our_s:find(
+              s:find(
                 '[%dabcdefABCDEF][%dabcdefABCDEF][%dabcdefABCDEF][%dabcdefABCDEF]'
               )
             if not finish_pos then
               return
             else
-              cur_pos = finish_pos + 1
+              s_pos = finish_pos + 1
             end
           else
             return
@@ -148,10 +142,10 @@ local eat_string =
           return
         end
       else
-        cur_pos = finish_pos + 1
+        s_pos = finish_pos + 1
       end
     end
-    return 'string'
+    return 'string', s_pos
   end
 
 --[[
@@ -188,18 +182,26 @@ local handler_by_first_char =
     ['\t'] = eat_spaces,
   }
 
+local last_token
+local last_pos
+local last_s
+local last_new_pos
+
 local get_token =
-  function()
-    last_pos = cur_pos
-    local handler = handler_by_first_char[our_s:sub(cur_pos, cur_pos)]
-    if (type(handler) == 'string') then
-      cur_pos = cur_pos + 1
-      last_token = handler
-    elseif handler then
-      last_token = handler()
-    else
-      last_token = nil
+  function(s, s_pos)
+    if (s_pos ~= last_pos) or (s ~= last_s) then
+      last_s = s
+      last_pos = s_pos
+      local handler = handler_by_first_char[s:sub(s_pos, s_pos)]
+      if (type(handler) == 'string') then
+        last_token, last_new_pos = handler, s_pos + 1
+      elseif handler then
+        last_token, last_new_pos = handler(s, s_pos)
+      else
+        return false, s_pos
+      end
     end
+    return last_token, last_new_pos
   end
 
 local json_syntels =
@@ -216,18 +218,24 @@ local json_syntels =
     'colon',
     'spaces',
   }
-
+local quote = request('^.^.compile.lua.quote_string')
 local create_is_func =
   function(syntel_name)
     return
       function(s, s_pos)
-        if (s_pos ~= last_pos) or (s ~= our_s) then
-          our_s = s
-          cur_pos = s_pos
-          get_token()
-        end
-        if (last_token == syntel_name) then
-          return true, cur_pos
+        local token, new_pos = get_token(s, s_pos)
+        --[[
+        print(
+          ('[%d][%4s] requested %s, has %s'):
+          format(
+            s_pos,
+            quote(s:sub(s_pos, s_pos + 3)),
+            syntel_name, token
+          )
+        )
+        --]]
+        if (token == syntel_name) then
+          return true, new_pos
         end
         return false, s_pos
       end
@@ -246,18 +254,11 @@ local spawn_get_functions =
 
 local result = spawn_get_functions()
 
-local init =
-  function(s)
-    our_s = s
-    cur_pos = 1
-  end
-
 local get_state =
   function()
-    return last_token, last_pos, cur_pos
+    return last_token, last_pos, s_pos
   end
 
-result.init = init
 result.get_state = get_state
 result.get_token = get_token
 
