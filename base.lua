@@ -147,4 +147,4 @@ if not _G.request then
 end
 
 local prefix = split_name((...))
-_G.new = request(prefix .. 'handy_mechs.new')
+_G.new = request(prefix .. 'table.new')
