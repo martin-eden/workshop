@@ -1,4 +1,4 @@
-local representer = request('represent')
+local representer = request('representer.interface')
 
 representer =
   new(
