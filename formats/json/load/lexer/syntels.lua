@@ -1,0 +1,14 @@
+return
+  {
+    'null',
+    'boolean',
+    'number',
+    'string',
+    'open_bracket',
+    'close_bracket',
+    'open_brace',
+    'close_brace',
+    'comma',
+    'colon',
+    'spaces',
+  }

@@ -2,8 +2,8 @@
 
 -- Counterpart of verify().
 
-local is_arrayable = request('^.^.^.mechs.array.is_arrayable')
-local to_array = request('^.^.^.mechs.array.from_table')
+local is_arrayable = request('!.mechs.array.is_arrayable')
+local to_array = request('!.mechs.array.from_table')
 
 local visited
 
@@ -59,14 +59,13 @@ prepare =
 local autofix_root_table_name = 'data'
 
 return
-  function(self, t)
+  function(t)
     assert_table(t)
     if is_arrayable(t) then
       t = {[autofix_root_table_name] = t}
     end
     visited = {}
-    t = prepare(t)
-    return t
+    prepare(t)
   end
 
 --[[

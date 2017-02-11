@@ -2,7 +2,7 @@
 
 -- Will raise error even at minor violation. (Counterpart of prepare().)
 
-local is_array = request('^.^.^.mechs.array.is_array')
+local is_array = request('!.mechs.array.is_array')
 
 local visited
 
@@ -34,7 +34,7 @@ verify =
   end
 
 return
-  function(self, t, deep)
+  function(t)
     assert_table(t)
     if (#t > 0) then
       error('Root table is array, not object.')

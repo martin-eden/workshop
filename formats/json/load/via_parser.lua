@@ -1,6 +1,6 @@
-local parse = request('^.^.^.mechs.generic_loader')
-local syntax = request('^.syntax')
-local struc_to_lua = request('^.transform.struc_to_lua')
+local parse = request('!.mechs.generic_loader')
+local syntax = request('via_parser.syntax')
+local struc_to_lua = request('via_parser.struc_to_lua')
 
 return
   function(json_str)

@@ -1,0 +1,18 @@
+This is JSON lexer.
+
+This module task is to export quick boolean functions
+
+  is_null
+  is_boolean,
+  ...
+  (see [syntels] sequence for full list)
+
+for use in [parser] grammar.
+
+Each function is called with parameters <s>, <s_pos> with parsing
+string and start position in it. If function succeeds it returns
+"true" and new start position.
+
+Previous call results cached in <last_pos> and <last_token>.
+As it is typical for grammar to iterate all possible tokens at
+fixed positions.

@@ -1,0 +1,11 @@
+Well, I've implemented JSON loader with traditional lexer-parser
+scheme. This code is just boring and not too fast, 7.48s where
+DkJson gives 4.47 (67% slower).
+
+It was nor fun nor challenge to write it. But has done it as
+  * need fast own parser
+  * wished sample to profile and compare performance with
+    parser-without-lexer.
+
+Anyway I'm not going to write such sort of code further. This is
+monkey job.
