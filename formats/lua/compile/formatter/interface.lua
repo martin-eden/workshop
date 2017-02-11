@@ -1,7 +1,7 @@
 return
   {
     right_margin = 80,
-    max_text_width = 65,
+    max_text_width = 68,
     indent_chunk = '  ',
     printer = request('^.^.^.^.mechs.text_block.interface'),
     state_keeper = request('state_keeper.interface'),
