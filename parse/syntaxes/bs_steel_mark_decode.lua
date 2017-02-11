@@ -34,7 +34,7 @@ return
       prop_name = 'hardening'
     elseif (prop_type == 'M') then
       prop_name = 'mechanical'
-    elseif (prop_type = 'S') then
+    elseif (prop_type == 'S') then
       prop_name = 'stainless or heat-resisitant'
     else
       prop_name = '? unknown'
