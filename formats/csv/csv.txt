@@ -1,0 +1,83 @@
+CSV - (c)omma-(s)eparated (v)alues
+
+This is probably extension of [tsv] format.
+
+It allows to store list of lists of values with any byte data.
+
+It has some semantic and syntactic variations, I'll mention them
+later.
+
+"," - values delimiter
+\n - records delimiter
+
+If value begins with " - it considered quoted value and may contain
+any characters (bytes). Quotes inside represented as "". End character
+is also ".
+
+  So value with single quote is represented as """".
+
+  So values can contain newlines.
+
+<csv>
+  [ list(<sequence>, \n) [\n] ]
+
+<sequence>
+  [ list(<value>, ",") ]
+
+<value>
+  [
+    choice
+      (not(",", \n, "))^N
+      " (choice("", any_byte)^N "
+  ]
+
+Now you know canonic version of CSV.
+
+
+Syntactic variations
+
+  * <sequence> delimiter may be any pre-negotiated character,
+    except " and \n.
+
+      Typical alternative values for it is ";", "~", "|", \t.
+
+    This feature not yet supported, but I'm planning to support it.
+
+  * Quoted values may have leading and trailing spaces before border
+    quotes.
+
+      This requires definition of "space" characters and requires
+      arbitraty read-ahead.
+
+        When we get ",    " we still not know what it is, unquoted
+        value with spaces or, if next char is ", head spaces before
+        quoted value.
+
+    This extension is not supported and will not be supported.
+
+
+Semantic extensions
+
+  * First record may contain names of fileds.
+
+      Usually this is unique english words without spaces. But
+      technically it may be any sequence of characters. And furter
+      records may contain more values then described in header.
+
+  * Values may be prefixed by "~" character.
+
+      This is probably MS Excel extension.
+
+      This means that "value"'s contents should not be post-processed
+      (except removing heading "~" of course).
+
+  This implementation is agnostic to semantic extensions.
+  Semantic post-processing is not our job. We just serialize/deserialize
+  chunks. Use post-processor for further data adjusting.
+
+
+Notes
+
+  There is another people try to formalize CSV format. Search for
+  "CSV-1023". This is pdf document (31 pages) trying to formalize most
+  semantic and syntactic pecularities of CSV used in wild life.
