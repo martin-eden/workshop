@@ -1,0 +1,38 @@
+Okay, what is JSON?
+
+JSON means ((j)ava-(s)cript (s)erialized (o)object).
+
+This is anonymous recursive <object> with possibly empty
+comma-separated list of key-values. Terminal elements are
+<null>, <number>, <boolean> and <string>. Key always is
+<string>.
+
+<object>
+  "{" [ list(<string> ":" <value>, ",") ] "}"
+
+<string>
+  I'd say it's some text that starts and ends with ".
+  For character escaping details you may see it's syntax in
+  [load.via_parser.syntaxes.strict].
+
+<number>
+  Say it's almost natural representation of number with optional
+  exponent part. It may not have leading zero if integer part > 0
+  (so "01" is invalid). Also it may not have "+" sign in mantissa
+  part. For details refer that [strics] syntax.
+
+<boolean>
+  Just words "true" or "false" (without quotes).
+
+<null>
+  Word "null", also without quotes.
+
+<value>
+  All mentioned elements or <array>.
+
+<array>
+  Anonymous list of <value>s. Comma-separated and possibly empty.
+
+  "[" [ list(<value>, "," ] "]"
+
+Now you know JSON.
