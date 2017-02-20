@@ -6,7 +6,7 @@ local long_bracket = request('particles.long_bracket')
 return
   {
     '--',
-    handy.cho1(
+    handy.cho(
       long_bracket,
       handy.match_pattern('[^\n\r]*')
     )

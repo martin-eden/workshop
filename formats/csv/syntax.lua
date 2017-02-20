@@ -12,7 +12,7 @@ local quoted_data =
       name = 'quoted_data',
       '"',
       handy.opt_rep(
-        handy.cho1(
+        handy.cho(
           handy.match_pattern('[^"]+'),
           '""'
         )
@@ -33,7 +33,7 @@ return
     {
       name = 'record',
       handy.list(
-        handy.cho1(
+        handy.cho(
           quoted_data,
           unquoted_data
         ),

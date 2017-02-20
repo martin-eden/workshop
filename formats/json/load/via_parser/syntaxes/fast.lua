@@ -11,7 +11,7 @@
 local parser = request('!.mechs.parser')
 local handy = parser.handy
 
-local cho1 = handy.cho1
+local cho = handy.cho
 local opt = handy.opt
 local opt_rep = handy.opt_rep
 local list = handy.list
@@ -35,7 +35,7 @@ local null =
   tok({name = 'null', 'null'})
 
 local boolean =
-  tok({name = 'boolean', cho1('true', 'false')})
+  tok({name = 'boolean', cho('true', 'false')})
 
 local dec_digits_no_lead_zero =
   match('[1-9][%d]*')
@@ -47,7 +47,7 @@ local number =
   {
     name = 'number',
     opt('-'),
-    cho1(
+    cho(
       '0',
       dec_digits_no_lead_zero
     ),
@@ -70,11 +70,11 @@ local json_string =
     name = 'string',
     '"',
     opt_rep(
-      cho1(
+      cho(
         plain_string_chars,
         {
           [[\]],
-          cho1('"', [[\]], '/', 'b', 'f', 'n', 'r', 't', utf_code_point)
+          cho('"', [[\]], '/', 'b', 'f', 'n', 'r', 't', utf_code_point)
         }
       )
     ),
@@ -89,7 +89,7 @@ local array =
   }
 
 local value =
-  cho1(
+  cho(
     number,
     json_string,
     array,

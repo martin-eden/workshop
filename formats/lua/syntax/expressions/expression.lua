@@ -8,7 +8,7 @@ local opt_spc = request('^.words.opt_spc')
 local un_op =
   {
     name = 'un_op',
-    handy.cho1(
+    handy.cho(
       '-',
       '#',
       '~',
@@ -19,7 +19,7 @@ local un_op =
 local bin_op =
   {
     name = 'bin_op',
-    handy.cho1(
+    handy.cho(
       '+',
       '-',
       '*',
@@ -59,7 +59,7 @@ return
     inner_name = 'expression',
     handy.opt(handy.list(un_op, opt_spc)),
     opt_spc,
-    handy.cho1(
+    handy.cho(
       vararg,
       type_nil,
       type_boolean,

@@ -27,7 +27,7 @@ local value =
   {
     inner_name = 'value',
     handy.opt(is_spaces),
-    handy.cho1(
+    handy.cho(
       -- ordering is important for final performance
       is_number,
       is_string,

@@ -7,5 +7,5 @@ local hex_number = request('type_number.hex_number')
 return
   {
     name = 'number',
-    handy.cho1(hex_number, dec_number)
+    handy.cho(hex_number, dec_number)
   }

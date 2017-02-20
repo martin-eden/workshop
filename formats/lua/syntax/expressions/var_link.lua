@@ -11,7 +11,7 @@ local type_string = request('^.type_string')
 local func_args =
   {
     name = 'func_args',
-    handy.cho1(
+    handy.cho(
       {
         '(',
         opt_spc, handy.opt(expr_list),
@@ -49,13 +49,13 @@ local bracket_expr = request('bracket_expr')
 return
   {
     name = 'var_link',
-    handy.cho1(
+    handy.cho(
       name,
       par_expr
     ),
     handy.opt_rep(
       opt_spc,
-      handy.cho1(
+      handy.cho(
         dot_name,
         bracket_expr,
         {

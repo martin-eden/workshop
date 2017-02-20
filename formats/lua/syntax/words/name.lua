@@ -4,7 +4,7 @@ local handy = parser.handy
 local word = request('word')
 
 local is_keyword =
-  handy.cho1(
+  handy.cho(
     word('nil'),
     word('false'),
     word('true'),

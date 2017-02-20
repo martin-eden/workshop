@@ -9,7 +9,7 @@ local opt_spc = request('^.words.opt_spc')
 
 local params_list =
   {
-    handy.cho1(
+    handy.cho(
       vararg,
       {
         name_list,

@@ -7,6 +7,6 @@ return
   {
     name = 'boolean',
     word(
-      handy.cho1('false', 'true')
+      handy.cho('false', 'true')
     ),
   }

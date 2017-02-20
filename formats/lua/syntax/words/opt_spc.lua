@@ -5,7 +5,7 @@ local comment = request('comment')
 
 return
   handy.opt_rep(
-    handy.cho1(
+    handy.cho(
       handy.match_pattern('[ \t\n\r]+'),
       comment
     )

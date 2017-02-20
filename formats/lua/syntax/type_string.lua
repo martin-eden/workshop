@@ -5,7 +5,7 @@ local long_bracket = request('words.particles.long_bracket')
 local any_char = request('words.particles.any_char')
 
 local linear_string_char =
-  handy.cho1(
+  handy.cho(
     {
       [[\]],
       any_char
@@ -16,7 +16,7 @@ local linear_string_char =
 return
   {
     name = 'string',
-    handy.cho1(
+    handy.cho(
       long_bracket,
       {
         '"',

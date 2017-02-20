@@ -12,7 +12,7 @@ return
     name = 'local_statement',
     word('local'),
     opt_spc,
-    handy.cho1(
+    handy.cho(
       {
         name = 'local_assignment',
         name_list,

@@ -10,7 +10,7 @@ local key_val =
     name = 'key_val',
     handy.opt(
       {
-        handy.cho1(
+        handy.cho(
           bracket_expr,
           name
         ),
@@ -23,7 +23,7 @@ local key_val =
 
 local rec_sep =
   {
-    opt_spc, handy.cho1(',', ';'),
+    opt_spc, handy.cho(',', ';'),
   }
 
 return

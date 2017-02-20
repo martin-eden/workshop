@@ -7,8 +7,8 @@ local frac_point = request('frac_point')
 local hex_base =
   {
     '0',
-    handy.cho1('x', 'X'),
-    handy.cho1(
+    handy.cho('x', 'X'),
+    handy.cho(
       {
         frac_point,
         int_16,
@@ -28,7 +28,7 @@ local int_10 = request('dec_number.int_10')
 
 local bin_power =
   {
-    handy.cho1('p', 'P'),
+    handy.cho('p', 'P'),
     handy.opt(exp_sign),
     int_10
   }

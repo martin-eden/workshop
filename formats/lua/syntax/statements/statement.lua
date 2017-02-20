@@ -20,7 +20,7 @@ local numeric_for_block = request('numeric_for_block')
 return
   {
     inner_name = 'statement',
-    handy.cho1(
+    handy.cho(
       call_assign,
       named_function,
 
