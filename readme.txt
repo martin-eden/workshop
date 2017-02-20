@@ -1,26 +1,19 @@
-Free software, as I see it.
+This is not a "library"!
 
-This is open-source, free code. No obfuscation or any restrictions in
-it's further use (except claiming your authorship on it's pieces).
-From the other side to use it profitably you usually need qualification
-near mine or higher. This is because I'm not doing simplifications
-for things I personally not need. So there is no support for features
-I dont personally wish.
+This is just a pile of code chunks. It is not like Steve Donovan's
+PenLight.
 
-Why so many tiny files?
+It provides no guarantees for backward compatibility.
 
-Because I like it. I can supply tools using this code hive with
-only really needed pieces from it. Id est if there is code piece
-in supply - it is really used somewhere from code. No dead code.
+But has general idea: do not repeat code.
 
-Tools I supply uses copies of parts from this hive. So it will work
-always, while standard lua works. Even if this library will be
-deleted, tools will continue to work.
+So there are many code chunks. They are relatively small and usually
+has links to another, absolutely necessary, code chunks.
 
-From the other hand, they inherit all bugs from original parent.
-So from time to time I'm updating them, making copies from fresh
-code hive version. Also there will be duplication of files,
-when several tools installed, using similar code base. I dont
-care it. I think it's filesystem task to maintain unique files.
+I'm using it as a resource base for my projects. I can automatically
+extract chunks that are used by code and pack them in distrubution.
+So in distrubution there are no dead code.
 
-2017-01-23
+You are free legally use them under GPLv3.
+
+2017-05-05
