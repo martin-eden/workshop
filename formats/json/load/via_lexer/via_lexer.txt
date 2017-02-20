@@ -1,11 +1,24 @@
-Well, I've implemented JSON loader with traditional lexer-parser
-scheme. This code is just boring and not too fast, 7.48s where
-DkJson gives 4.47 (67% slower).
+This is traditional lexer-parser scheme parser of JSON strings to
+lua table. It constructs table based on tokens stream given by
+[lexer]. As token values given as substrings from input, it
+post-processes them (unqoting string, tonumber() for numbers etc.).
 
-It was nor fun nor challenge to write it. But has done it as
-  * need fast own parser
-  * wished sample to profile and compare performance with
-    parser-without-lexer.
+Writing it was boring and not challenging. But I need fast own
+parser and wished to compare performance with general-grammar
+[parser].
 
-Anyway I'm not going to write such sort of code further. This is
-monkey job.
+This implementation is about three times faster versus
+(syntax + [parser]) implementation. [parser] just needs to be
+implemented in some compiled langguage.
+
+This implementation is about 1.5-2 times slower than DkJson
+(without LPEG usage). This may be sped up but I'm not going to do it.
+(As there will not be algorithm changes, just implementation
+optimizations which make code worse.)
+
+I'm not going to write such sort of code further. This is monkey job
+(writing custom code for every custom format). Write grammars
+for [parser]. It's more natural than regexps, and generally more
+powerful. This is future of computing.
+
+2017-02-20
