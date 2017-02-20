@@ -1,0 +1,27 @@
+TSV - (t)ab-(s)eparated (v)alues
+
+This is probably the most simple format for storing list of
+lists of values when values not contain delimiters.
+
+\t - ASCII(9) - delimiter of values in list (no tail delimiter)
+\n - some sort of newline -
+  ASCII(10) ASCII(13) or
+  ASCII(13) ASCII(10) or
+  (ASCII(13) and not(ASCII(10)) or
+  (ASCII(10) and not(ASCII(13)) -
+  list delimiter. With possible tail delimiter.
+
+  Generally tsv-file have one sort of newline delimiter in it.
+
+So
+
+<tsv>
+  [ list(<sequence>, \n) [\n] ]
+
+<sequence>
+  [ list(<value>, \t) ]
+
+<value>
+  [ (not(\t, \n))^N ]
+
+Now you know TSV.
