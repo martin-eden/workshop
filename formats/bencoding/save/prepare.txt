@@ -1,0 +1,18 @@
+Changes given table to be ready to serialize.
+
+If table may be converted to array (sequence 1 .. n) it is
+converted, and in further processing it's keys are ignored and
+values defined as <array_value>.
+
+Restrictions on types:
+
+  <table_key>
+    string
+  <table_value>
+    table
+    integer
+    string
+  <array_value>
+    table
+    integer
+    string

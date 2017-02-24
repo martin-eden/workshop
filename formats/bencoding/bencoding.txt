@@ -1,0 +1,58 @@
+Bencoding, What is It?
+
+This is serialization format with possibly folded recursive
+structures (like JSON). This format is used in .torrent files.
+
+Format itself quite nicely and compactly described in "BEP 3"
+document by Bram Cohen. (site bittorrent.org)
+
+As I said this format compatible with JSON and may serialize
+subset of structures JSON can. It misses <null> and <boolean>
+datatypes (probably due their low practical value).
+
+| <dictionary>
+  This is a key-value sequence.
+
+| | "d" opt(rep(<string>, <value>)) "e"
+
+  First term in pairs is key name.
+
+| <list>
+  Sequence of values.
+
+| | "l" opt(rep(<value>)) "e"
+
+| <value>
+| | cho(<string>, <integer>, <dictionary>, <list>)
+
+| <string>
+| | <string_len> ":" <string_chars>
+
+  <string_len> - integer representing amount of <string_chars>.
+    Must be non-negative, sign char is not allowed.
+
+  <string_chars> - <string_len> characters (probably bytes).
+
+| <integer>
+| | "i" opt("-") <dec_digits> "e"
+
+  <dec_digits> may not have leading "0". I.e. "10" and "0" is ok but
+  not "010" or "00".
+
+Now you know bencoding.
+
+
+This format is more effective for serialization than JSON.
+
+It requires less reading in parsing as we can skip string
+after we got it's length (while in JSON you have to parse
+all string characters, handling escape sequences, until you
+find final closing quote.
+
+Representation has no variable parts. In JSON variable parts
+is whitespaces which allows it to be more human-readable.
+
+It does not need list delimiters. Frankly speaking list delimiters
+in JSON can be switched from "," to " " or \n. Human can parse this
+JSON-like structure: {1 "a" [true 2 null]} but as whitespaces
+in JSON are optional, "," must be placed.
