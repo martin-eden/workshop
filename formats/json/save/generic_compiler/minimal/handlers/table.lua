@@ -1,10 +1,8 @@
-local is_arrayable = request('!.mechs.array.is_arrayable')
-local to_array = request('!.mechs.array.from_table')
+local is_array = request('!.mechs.array.is_array')
 
 return
   function(self, data)
-    if is_arrayable(data) then
-      to_array(data)
+    if is_array(data) then
       return self.handlers.wrap_array(self, data)
     else
       return self.handlers.wrap_object(self, data)
