@@ -5,4 +5,5 @@ return
     for k, v in pairs(t_src) do
       t_dest[k] = v
     end
+    return t_dest
   end
