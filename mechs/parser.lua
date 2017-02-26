@@ -19,12 +19,5 @@ return
     handy = request('parser.handy'),
     link = request('parser.link'),
     optimize = request('parser.optimize'),
-    parse =
-      function(struc, s)
-        return parse(struc, s)
-      end,
-    verify =
-      function(struc, s)
-        return parse(struc, s, true)
-      end
+    parse = request('parser.parse'),
   }

@@ -48,7 +48,7 @@ local add_producer =
 
 local add_consumer =
   function(node, consumers)
-    local name = node.name or node.inner_name or tostring(node)
+    -- local name = node.name or node.inner_name or tostring(node)
     if consumers[node] then
       -- print(('Already have consumer "%s.".'):format(name))
     else

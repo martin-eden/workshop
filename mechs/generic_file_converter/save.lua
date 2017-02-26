@@ -1,5 +1,5 @@
-local represent_size = request('^.^.number.represent_size')
-local safe_open = request('^.^.file.safe_open')
+local represent_size = request('!.number.represent_size')
+local safe_open = request('!.file.safe_open')
 
 return
   function(self, compile_result)

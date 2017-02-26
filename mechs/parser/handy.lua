@@ -46,7 +46,7 @@ local interleave =
     return t
   end
 
-local spawn_pattern_function =
+local spawn_match_function =
   function(pattern)
     assert_string(pattern)
     assert(pattern ~= '')
@@ -55,11 +55,8 @@ local spawn_pattern_function =
       pattern = '^' .. pattern
     end
     return
-      function(s, s_pos)
-        local start, finish = s:find(pattern, s_pos)
-        if start then
-          return true, finish + 1
-        end
+      function(stream)
+        return stream:match_regexp(pattern)
       end
   end
 
@@ -76,5 +73,5 @@ return
     opt_cho = generate_record('choice_first optional'),
     opt_rep_cho = generate_record('choice_first repeat optional'),
     is_not = generate_record('is_not'),
-    match_pattern = spawn_pattern_function,
+    match_regexp = spawn_match_function,
   }

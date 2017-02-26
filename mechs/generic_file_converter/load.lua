@@ -1,6 +1,6 @@
-local file_size = request('^.^.file.get_size')
-local represent_size = request('^.^.number.represent_size')
-local text_file_as_string = request('^.^.file.text_file_as_string')
+local file_size = request('!.file.get_size')
+local represent_size = request('!.number.represent_size')
+local text_file_as_string = request('!.file.text_file_as_string')
 
 return
   function(self)
