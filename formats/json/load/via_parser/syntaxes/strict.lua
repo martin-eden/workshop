@@ -9,7 +9,6 @@ local cho = handy.cho
 local opt_rep = handy.opt_rep
 local opt = handy.opt
 local rep = handy.rep
-local opt_cho = handy.opt_cho
 local is_not = handy.is_not
 local opt_rep = handy.opt_rep
 local list = handy.list
@@ -50,7 +49,7 @@ local number =
       {nonzero_dec_digit, opt_rep(dec_digit)}
     ),
     opt({'.', rep(dec_digit)}),
-    opt(cho('e', 'E'), opt_cho('+', '-'), rep(dec_digit))
+    opt(cho('e', 'E'), opt(cho('+', '-')), rep(dec_digit))
   }
 number = tok(number)
 
@@ -80,7 +79,7 @@ local json_string =
     '"',
     opt_rep(
       cho(
-        {is_not('"', [[\]], control_char), any_char},
+        {is_not(cho('"', [[\]], control_char)), any_char},
         {
           [[\]],
           cho('"', [[\]], '/', 'b', 'f', 'n', 'r', 't', utf_code_point)
@@ -114,5 +113,7 @@ local object =
     tok('{'), opt(list(json_string, tok(':'), value, tok(','))), tok('}')
   }
 object.inner_name = 'object'
+
+parser.link(object)
 
 return object

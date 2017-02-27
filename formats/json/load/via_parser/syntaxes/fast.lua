@@ -15,77 +15,60 @@ local cho = handy.cho
 local opt = handy.opt
 local opt_rep = handy.opt_rep
 local list = handy.list
-local match = handy.match_regexp
+local match_regexp = handy.match_regexp
 
 local opt_spc =
-  match('[ \n\r\t]*')
-
-local tok =
-  function(...)
-    local result =
-      {
-        opt_spc,
-        ...
-      }
-    result[#result + 1] = opt_spc
-    return result
-  end
+  match_regexp('[ \n\r\t]*')
 
 local null =
-  tok({name = 'null', 'null'})
+  {opt_spc, {name = 'null', 'null'}}
 
 local boolean =
-  tok({name = 'boolean', cho('true', 'false')})
-
-local dec_digits_no_lead_zero =
-  match('[1-9][%d]*')
-
-local dec_digits_any =
-  match('[%d]+')
+  {opt_spc, {name = 'boolean', cho('true', 'false')}}
 
 local number =
   {
-    name = 'number',
-    opt('-'),
-    cho(
-      '0',
-      dec_digits_no_lead_zero
-    ),
-    opt({'.', dec_digits_any}),
-    opt(match('[eE][%+%-]?'), dec_digits_any)
+    opt_spc,
+    {
+      name = 'number',
+      opt('-'),
+      cho('0', match_regexp('[1-9]%d*')),
+      opt(match_regexp('%.%d+')),
+      opt(match_regexp('[eE][%+%-]?%d+'))
+    }
   }
-number = tok(number)
-
-local plain_string_chars =
-  match([[[^%c%\%"]+]])
-
-local hex_dig =
-  match('[%dabcdefABCDEF]')
 
 local utf_code_point =
-  {'u', hex_dig, hex_dig, hex_dig, hex_dig}
+  'u' .. ('[0-9a-fA-F]'):rep(4)
 
 local json_string =
   {
-    name = 'string',
-    '"',
-    opt_rep(
-      cho(
-        plain_string_chars,
-        {
-          [[\]],
-          cho('"', [[\]], '/', 'b', 'f', 'n', 'r', 't', utf_code_point)
-        }
-      )
-    ),
-    '"'
+    opt_spc,
+    {
+      name = 'string',
+      '"',
+      opt_rep(
+        cho(
+          match_regexp([[[^%c%\%"]+]]),
+          {
+            [[\]],
+            cho(
+              match_regexp([=[[%"%\%/bfnrt]]=]),
+              match_regexp(utf_code_point)
+            )
+          }
+        )
+      ),
+      '"'
+    }
   }
-json_string = tok(json_string)
 
 local array =
   {
     name = 'array',
-    tok('['), opt(list('>value', tok(','))), tok(']')
+    opt_spc, '[',
+    opt(list('>value', {opt_spc, ','})),
+    opt_spc, ']',
   }
 
 local value =
@@ -102,8 +85,17 @@ value.inner_name = 'value'
 local object =
   {
     name = 'object',
-    tok('{'), opt(list(json_string, tok(':'), value, tok(','))), tok('}')
+    opt_spc, '{',
+    opt(
+      list(
+        json_string, opt_spc, ':', value,
+        {opt_spc, ','}
+      )
+    ),
+    opt_spc, '}',
   }
 object.inner_name = 'object'
+
+parser.link(object)
 
 return object
