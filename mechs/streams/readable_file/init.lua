@@ -3,12 +3,9 @@ return
     local f_type = f:type()
     if (f_type ~= 'file') then
       error(
-        ('Wrong <f> type: "%s" while "%s" awaited.'):format(
-          f_type,
-          'file'
-        ),
-        2
+        ('Wrong <f> type: "%s" while "%s" awaited.'):format(f_type, 'file'), 2
       )
     end
     self.f = f
+    self:original_init()
   end

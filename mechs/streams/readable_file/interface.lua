@@ -1,12 +1,16 @@
 local merge = request('!.table.merge')
+local result = new(request('^.readable.interface'))
+local original_init = result.init
 return
   merge(
-    new(request('^.readable.interface')),
+    result,
     {
       init = request('init'),
-      get_position = request('get_position'),
-      set_position = request('set_position'),
-      read = request('read'),
+      raw_get_position = request('raw_get_position'),
+      raw_set_position = request('raw_set_position'),
+      raw_read = request('raw_read'),
+
       f = nil,
+      original_init = original_init,
     }
   )

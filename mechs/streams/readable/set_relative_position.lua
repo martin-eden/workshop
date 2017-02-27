@@ -1,4 +1,4 @@
 return
   function(self, position_offset)
-    return self:set_position(self:get_position() + position_offset)
+    self.position = self.position + position_offset
   end
