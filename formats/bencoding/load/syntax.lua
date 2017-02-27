@@ -7,20 +7,11 @@ local cho = handy.cho
 
 local eat_digits =
   function(stream)
-    local result = ''
-    while true do
-      local c = stream:read(1)
-      if (c >= '0') and (c <= '9') then
-        result = result .. c
-      else
-        stream:set_position(stream:get_position() - 1)
-        break
-      end
+    local init_pos = stream:get_position()
+    if stream:match_regexp('^%d+') then
+      local len = stream:get_position() - init_pos
+      return stream:get_segment(init_pos, len)
     end
-    if (result == '') then
-      result = nil
-    end
-    return result
   end
 
 local string_len
