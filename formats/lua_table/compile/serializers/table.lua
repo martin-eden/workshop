@@ -10,13 +10,13 @@ return
       string_adder:add(token_giver:open_table(deep))
       local is_first_record = true
 
-      local always_index_sequence = self.always_index_sequence
-
+      local skip_seq_keys_allowed =
+        not self.always_index_sequence and
+        (#node < self.max_seq_len_keys_droppable)
       local last_seq_key = 0
       for k, v in self.table_iterator(node) do
         if
-          false and
-          not always_index_sequence and
+          skip_seq_keys_allowed and
           is_integer(k) and
           (k == last_seq_key + 1)
         then
