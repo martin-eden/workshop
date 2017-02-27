@@ -11,6 +11,7 @@ return
       local is_first_record = true
 
       local skip_seq_keys_allowed =
+        false and
         not self.always_index_sequence and
         (#node < self.max_seq_len_keys_droppable)
       local last_seq_key = 0
