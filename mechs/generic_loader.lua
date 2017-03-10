@@ -13,12 +13,12 @@ return
     input_stream:init(str)
     local result
 
-    local is_processed, data_struc = parser.parse(input_stream, syntax)
+    local is_processed, data_struc = parse(input_stream, syntax)
     if is_processed then
       result = data_struc
       for i = 1, select('#', ...) do
         local struc_transformer = select(i, ...)
-        result = struc_transformer(input_stream, result)
+        result = struc_transformer(result)
       end
     end
 
