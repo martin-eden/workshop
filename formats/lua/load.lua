@@ -1,8 +1,8 @@
-local parse = request('^.^.mechs.generic_loader')
-local syntax = request('syntax')
-local postprocess_struc = request('transform.formatter')
+local parse = request('!.mechs.generic_loader')
+local syntax = request('load.syntax')
+local postprocess = request('load.postprocess.formatter')
 
 return
   function(str)
-    return parse(str, syntax, postprocess_struc)
+    return parse(str, syntax, postprocess)
   end
