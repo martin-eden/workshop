@@ -5,11 +5,11 @@ return
     always_index_sequence = false,
     max_seq_len_keys_droppable = 15,
 
-    name_giver = request('^.^.^.mechs.name_giver'),
-    table_iterator = request('^.^.^.table.ordered_pass'),
-    string_adder = request('^.^.^.mechs.string_adders.any'),
+    name_giver = request('!.mechs.name_giver'),
+    table_iterator = request('!.table.ordered_pass'),
+    string_adder = request('!.mechs.string_adders.any'),
     token_giver = request('token_givers.any'),
-    quote_string = request('^.^.lua.transform.quote_string'),
+    quote_string = request('!.formats.lua.postprocess.quote_string'),
 
     serialize_key = request('serialize_key'),
     serialize_key_value = request('serialize_key_value'),
