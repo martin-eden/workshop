@@ -1,4 +1,4 @@
 return
   function(self)
-    self:say('Done.')
+    self:say('')
   end
