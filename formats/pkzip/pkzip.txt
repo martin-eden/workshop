@@ -1,0 +1,96 @@
+PKWARE's ZIP file format
+
+Most dreaded format I've encountered yet. Feels very amateurish and
+bad designed ("business"_needs-directed).
+
+Intention is to glue several files with directories in one file.
+File data may be somehow encoded: compressed and/or encrypted.
+
+What is naive implementation, I'd start?
+
+  rep(<file_header>, <file_data>)
+
+There are two objections:
+  1. File may be a stream which final size we don't know beforehead.
+
+    Then we add link to start of data in some table which located
+    at fixed offset from _file end_.
+
+  2. If we're writing zip to media with slow seeks like tape,
+    jumping between large chunks will be slow.
+
+    This is also resolved by adding files table at the end of zip.
+
+And indeed, at the fixed offset from end stored offset to files table.
+This record with offset called "central directory end record" in docs.
+
+The bad design is that
+  1. "central directory end record" is _variable_ size! It may
+    optionally include variable block of "archive comment". It may
+    be up to 64KiB (although docs tries to force that size of "central
+    directory end record" (22 bytes) and comment will be less 64KiB).
+
+    Okay, we read last 64KiB and will search first entry of "central
+    directory end record" signature (PK\x05\x06). (There may be
+    several entries as optional comment theoretically is arbitrary
+    data.)
+
+    Okay, we've found offset of file headers list and jumped to it.
+
+  2. Records in file headers list may contain comments too! Yes, again
+    with arbitrary data up to 64KiB.
+
+    If you still not see pitfall: one of such comments may contain
+    signature of "central directory end record" which we though we
+    found at checkpoint 1.
+
+    So theoretically there is not way to parse zip file.
+
+    (In practice comments very rare and usually include silly texts
+    so this is not yet a real problem.)
+
+  3. Before actual file data is record called "local file header".
+    It may duplicate according "file record" from "central directory".
+
+    * For what it is done? For that guys who tries to get listing
+      of zip file by jumping through headers from start to end.
+      (And they will fail at first stream-compressed local file
+      header as that header will not contain data size.)
+
+      Also for case where zipfile tail is lost. We can still retrieve
+      existing files to cut point.
+
+    * What to do if "local file header" data doesn't match "file
+      header" data? No answer in this question in docs.
+
+      But there are description of cases where certain fields of
+      "local file header" must differ from "file header".
+
+      This is when "central directory" file headers list is encrypted.
+      In this case in "local file header" should be dummy file name,
+      zeroed data size and compression method.
+
+    So we should prioritize values in "local file header" over
+    values in "file header" _except_ when
+      * file is stream-compressed
+      * file is encrypted
+
+  4. There are obscure blocks called "additional data" that may occur
+    inside "file header" or "local file header". (Yes, there may
+    be different "additional data" for one file (which have two
+    headers).)
+
+  5. In file header original file length may be more than 4GiB that
+    fits in 4 bytes. So in this case length fields are zeroed and
+    one more _special record_ is added. Where lengths are eight bytes.
+
+  6. Authors do not understand encryption caveats. They forcibly
+    recommend encrypt only compressed files in partially falsely
+    assumption that compressed data contain more randomness.
+
+    Indeed compressed data will have _very predictable_ header.
+    From this point most cracks starts. (And probably this is done
+    intentionally, according NSA recommendations.)
+
+Okay, now you know my notes about this format. (Sole good point of
+which is localized files index.)
