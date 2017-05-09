@@ -10,11 +10,8 @@ local handy = parser.handy
 local opt = handy.opt
 local rep = handy.rep
 local cho = handy.cho
-local rep_cho = handy.rep_cho
 local list = handy.list
 local opt_rep = handy.opt_rep
-local opt_cho = handy.opt_cho
-local opt_rep_cho = handy.opt_rep_cho
 local is_not = handy.is_not
 local match_regexp = handy.match_regexp
 
