@@ -3,11 +3,11 @@ return
     local result = {}
     for i = 1, #data_struc do
       local rec = data_struc[i]
-      -- assert(rec.name == 'record')
+      -- assert(rec.type == 'record')
       local node = result
       for deep = 1, #rec do
         local field = rec[deep]
-        -- assert(field.name == 'field')
+        -- assert(field.type == 'field')
         local value = field.value
         if (value == '') then
           break

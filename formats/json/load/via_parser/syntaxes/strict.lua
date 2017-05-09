@@ -2,17 +2,16 @@
 
 -- Intended to verify results from optimized syntaxes
 
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local processor_handy = request('!.mechs.processor.handy')
+local cho = processor_handy.cho
+local opt_rep = processor_handy.opt_rep
+local opt = processor_handy.opt
+local rep = processor_handy.rep
+local is_not = processor_handy.is_not
+local opt_rep = processor_handy.opt_rep
+local list = processor_handy.list
 
-local cho = handy.cho
-local opt_rep = handy.opt_rep
-local opt = handy.opt
-local rep = handy.rep
-local is_not = handy.is_not
-local opt_rep = handy.opt_rep
-local list = handy.list
-local any_char = handy.any_char
+local any_char = request('!.mechs.parser.handy').any_char
 
 local opt_spc =
   opt_rep(cho(' ', '\n', '\r', '\t'))
@@ -114,6 +113,7 @@ local value =
   )
 value.inner_name = 'value'
 
-parser.link(value)
+local link = request('!.mechs.processor.link')
+link(value)
 
 return object

@@ -1,5 +1,5 @@
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local handy = request('!.mechs.processor.handy')
+local match_regexp = request('!.mechs.parser.handy').match_regexp
 
 local word = request('word')
 
@@ -35,5 +35,5 @@ return
   {
     name = 'name',
     handy.is_not(is_keyword),
-    handy.match_regexp(name_pattern),
+    match_regexp(name_pattern),
   }

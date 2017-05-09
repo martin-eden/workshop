@@ -1,8 +1,7 @@
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local handy = request('!.mechs.processor.handy')
+local match_regexp = request('!.mechs.parser.handy').match_regexp
 
 local opt_rep = handy.opt_rep
-local match_regexp = handy.match_regexp
 local cho = handy.cho
 
 local long_bracket = request('words.particles.long_bracket')

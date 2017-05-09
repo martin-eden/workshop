@@ -1,11 +1,10 @@
-local parser = request('^.parser')
-local handy = parser.handy
+local handy = request('!.mechs.processor.handy')
+local any_char = request('!.mechs.parser.handy').any_char
 
 local cho = handy.cho
 local rep = handy.rep
 local opt_rep = handy.opt_rep
 local is_not = handy.is_not
-local any_char = handy.any_char
 
 local comment = request('lua.words.comment')
 comment.name = 'comment'

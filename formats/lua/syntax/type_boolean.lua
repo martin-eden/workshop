@@ -1,12 +1,9 @@
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local handy = request('!.mechs.processor.handy')
 
 local word = request('words.word')
 
 return
   {
     name = 'boolean',
-    word(
-      handy.cho('false', 'true')
-    ),
+    word(handy.cho('false', 'true')),
   }

@@ -8,14 +8,13 @@
   2016-06-15
 ]]
 
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local processor_handy = request('!.mechs.processor.handy')
+local cho = processor_handy.cho
+local opt = processor_handy.opt
+local opt_rep = processor_handy.opt_rep
+local list = processor_handy.list
 
-local cho = handy.cho
-local opt = handy.opt
-local opt_rep = handy.opt_rep
-local list = handy.list
-local match_regexp = handy.match_regexp
+local match_regexp = request('!.mechs.parser.handy').match_regexp
 
 local opt_spc = match_regexp('[ \n\r\t]*')
 
@@ -95,6 +94,7 @@ local value =
   )
 value.inner_name = 'value'
 
-parser.link(value)
+local link = request('!.mechs.processor.link')
+link(value)
 
 return object

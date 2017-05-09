@@ -1,5 +1,5 @@
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local handy = request('!.mechs.processor.handy')
+local match_regexp = request('!.mechs.parser.handy').match_regexp
 
 local long_bracket = request('particles.long_bracket')
 
@@ -8,6 +8,6 @@ return
     '--',
     handy.cho(
       long_bracket,
-      handy.match_regexp('[^\n\r]*')
+      match_regexp('[^\n\r]*')
     )
   }

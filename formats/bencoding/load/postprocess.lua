@@ -1,16 +1,16 @@
 local to_array = request('!.mechs.array.from_table')
 
 return
-  function(stream, data_struc)
+  function(data_struc)
 
     local struc_to_lua
     struc_to_lua =
       function(node)
         local result
         if (node.type == 'string') then
-          result = stream:get_segment(node.start, node.len)
+          result = node.value
         elseif (node.type == 'integer') then
-          result = stream:get_segment(node.start, node.len)
+          result = node.value
           result = tonumber(result)
         elseif (node.type == 'dictionary') then
           result = {}

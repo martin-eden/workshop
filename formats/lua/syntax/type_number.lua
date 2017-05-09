@@ -1,8 +1,7 @@
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local handy = request('!.mechs.processor.handy')
+local match_regexp = request('!.mechs.parser.handy').match_regexp
 
 local opt = handy.opt
-local match_regexp = handy.match_regexp
 local cho = handy.cho
 
 local int_10 = match_regexp('%d+')

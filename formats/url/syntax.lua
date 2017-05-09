@@ -1,5 +1,4 @@
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local handy = request('!.mechs.processor.handy')
 
 local field_sep_char = '&'
 local fields_section_start_char = '?'

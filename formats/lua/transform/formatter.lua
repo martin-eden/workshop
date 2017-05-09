@@ -16,10 +16,8 @@
 local c_transformer = request('formatter.init')
 
 return
-  function(stream, data_struc)
-    assert_table(stream)
+  function(data_struc)
     assert_table(data_struc)
     local transformer = new(c_transformer)
-    transformer.stream = stream
     return transformer:process_node(data_struc)
   end

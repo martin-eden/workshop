@@ -1,5 +1,4 @@
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local handy = request('!.mechs.processor.handy')
 
 local call_assign = request('call_assign')
 local named_function = request('named_function')
