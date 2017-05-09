@@ -1,11 +1,7 @@
 return
   function(self, rule)
-    assert(rule)
-    if is_string(rule) then
-      return self.value:match(rule)
-    elseif is_function(rule) then
-      return rule(self.value)
-    elseif is_table(rule) then
+    local rule_type = type(rule)
+    if (rule_type == 'table') then
       local mode = rule.mode or 'seq'
       local handler = self.handlers[mode]
       local init_position = self.value:get_position()
@@ -19,5 +15,9 @@ return
         end
       end
       return result
+    elseif (rule_type == 'string') then
+      return self.value:match(rule)
+    elseif (rule_type == 'function') then
+      return rule(self.value)
     end
   end
