@@ -3,7 +3,6 @@ return
     local result
     if is_table(node) then
       if node.type then
-        node.value = self.stream:get_segment(node.start, node.len)
         local handler = self.handlers[node.type]
         if handler then
           result = handler(self, node)

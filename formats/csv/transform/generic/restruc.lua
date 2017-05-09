@@ -1,20 +1,20 @@
 local unquote = request('^.^.unquote_field')
 
 return
-  function(stream, data_struc)
-    assert_table(data_struc)
+  function(node)
+    assert_table(node)
     local result = {}
     --parser adds empty record if last line ends with NL
-    if (#data_struc[#data_struc] == 1) then
-      data_struc[#data_struc] = nil
+    if (#node[#node] == 1) then
+      node[#node] = nil
     end
-    for i = 1, #data_struc do
-      local rec = data_struc[i]
+    for i = 1, #node do
+      local rec = node[i]
       result[i] = {}
       local prev_field_type
       for j = 1, #rec do
         local field = rec[j]
-        local value = stream:get_segment(field.start, field.len)
+        local value = node.value
         if (field.type == 'unquoted_data') then
         elseif (field.type == 'quoted_data') then
           value = unquote(value)

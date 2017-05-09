@@ -1,5 +1,5 @@
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local handy = request('!.mechs.processor.handy')
+local match_regexp = request('!.mechs.parser.handy').match_regexp
 
 --[[
   Data sample:
@@ -17,7 +17,7 @@ return
         [[\]],
         {
           name = 'field',
-          handy.match_regexp('[^%\x5C\n]*')
+          match_regexp('[^%\x5C\n]*')
         }
       )
     },

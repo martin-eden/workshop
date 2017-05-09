@@ -1,7 +1,5 @@
-local parser = request('!.mechs.parser')
-local handy = parser.handy
-
-local match_regexp = handy.match_regexp
+local handy = request('!.mechs.processor.handy')
+local match_regexp = request('!.mechs.parser.handy').match_regexp
 
 local word = request('^.words.word')
 

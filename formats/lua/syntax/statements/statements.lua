@@ -1,5 +1,4 @@
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local handy = request('!.mechs.processor.handy')
 
 local return_statement = request('return_statement')
 local opt_spc = request('^.words.opt_spc')

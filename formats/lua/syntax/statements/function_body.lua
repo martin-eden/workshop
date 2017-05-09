@@ -1,5 +1,4 @@
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local handy = request('!.mechs.processor.handy')
 
 local vararg = request('^.expressions.vararg')
 local name_list = request('^.words.name_list')

@@ -1,5 +1,4 @@
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local match_regexp = request('!.mechs.parser.handy').match_regexp
 
 --[[
   In human words: idea is to capture "="'s that may be present between
@@ -9,4 +8,4 @@ local handy = parser.handy
     ".-" - eat any chars while not next pattern occurred
     "%]%1%]" means "]" <capture #1> "]"
 ]]
-return handy.match_regexp('%[(%=*)%[.-%]%1%]')
+return match_regexp('%[(%=*)%[.-%]%1%]')

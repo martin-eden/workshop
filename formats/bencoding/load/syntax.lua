@@ -1,5 +1,4 @@
-local parser = request('!.mechs.parser')
-local handy = parser.handy
+local handy = request('!.mechs.processor.handy')
 
 local opt = handy.opt
 local rep = handy.rep
@@ -49,6 +48,7 @@ local list =
 local value =
   {inner_name = 'value', cho(string, integer, list, dictionary)}
 
-parser.link(value)
+local link = request('!.mechs.processor.link')
+link(value)
 
 return dictionary

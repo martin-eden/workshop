@@ -2,13 +2,8 @@ local unquote_string = request('^.unquote_string')
 local to_array = request('!.mechs.array.from_table')
 
 return
-  function(stream, data_struc)
+  function(data_struc)
     assert_table(data_struc)
-
-    local get_value =
-      function(node)
-        return stream:get_segment(node.start, node.len)
-      end
 
     local struc_to_lua
     struc_to_lua =
@@ -30,11 +25,11 @@ return
           end
           to_array(result, #node)
         elseif (node.type == 'string') then
-          result = unquote_string(get_value(node))
+          result = unquote_string(node.value)
         elseif (node.type == 'number') then
-          result = tonumber(get_value(node))
+          result = tonumber(node.value)
         elseif (node.type == 'boolean') then
-          local value = get_value(node)
+          local value = node.value
           if (value == 'true') then
             result = true
           elseif (value == 'false') then
