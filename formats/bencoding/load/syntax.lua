@@ -49,7 +49,6 @@ local list =
 local value =
   {inner_name = 'value', cho(string, integer, list, dictionary)}
 
-parser.link(dictionary, {value = value})
-parser.link(dictionary)
+parser.link(value)
 
 return dictionary
