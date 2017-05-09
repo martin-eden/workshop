@@ -1,4 +1,4 @@
-local is_identifier = request('^.^.lua.is_identifier')
+local is_identifier = request('!.formats.lua.load.is_identifier')
 
 return
   function(self, key, deep)

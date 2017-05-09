@@ -1,4 +1,4 @@
-local looks_like_name = request('^.^.lua.is_identifier')
+local looks_like_name = request('!.formats.lua.load.is_identifier')
 
 return
   function(self, node)

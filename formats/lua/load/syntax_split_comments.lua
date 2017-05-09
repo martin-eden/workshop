@@ -6,9 +6,9 @@ local rep = handy.rep
 local opt_rep = handy.opt_rep
 local is_not = handy.is_not
 
-local comment = request('lua.words.comment')
+local comment = request('syntax.words.comment')
 comment.name = 'comment'
-local type_string = request('lua.type_string')
+local type_string = request('syntax.type_string')
 type_string.name = nil
 
 return
