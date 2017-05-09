@@ -5,10 +5,7 @@ local field_sep_char = '&'
 local fields_section_start_char = '?'
 local key_val_delim_char = '='
 
-local any_char =
-  function(stream)
-    return stream:block_read(1)
-  end
+local any_char = handy.any_char
 
 return
   {

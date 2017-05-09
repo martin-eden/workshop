@@ -111,5 +111,4 @@ return
       print(tostring(k))
     end
     --]]
-    return producers, consumers
   end

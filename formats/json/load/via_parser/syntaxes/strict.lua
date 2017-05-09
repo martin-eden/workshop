@@ -12,6 +12,7 @@ local rep = handy.rep
 local is_not = handy.is_not
 local opt_rep = handy.opt_rep
 local list = handy.list
+local any_char = handy.any_char
 
 local opt_spc =
   opt_rep(cho(' ', '\n', '\r', '\t'))
@@ -55,10 +56,6 @@ local control_char =
     '\x10', '\x11', '\x12', '\x13', '\x14', '\x15', '\x16', '\x17',
     '\x18', '\x19', '\x1a', '\x1b', '\x1c', '\x1d', '\x1e', '\x1f'
   )
-local any_char =
-  function(stream)
-    return stream:block_read(1)
-  end
 
 local hex_only_digit =
   cho('a', 'b', 'c', 'd', 'e', 'f', 'A', 'B', 'C', 'D', 'E', 'F')

@@ -8,7 +8,7 @@ return
     {
       on_match = request('on_match'),
       init = request('init'),
-      get_marks = request('get_marks'),
+      get_struc = request('get_struc'),
 
       original_init = original_init,
       marks = nil,

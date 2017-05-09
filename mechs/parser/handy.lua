@@ -64,6 +64,11 @@ local spawn_match_function =
       end
   end
 
+local any_char =
+  function(stream)
+    return stream:block_read(1)
+  end
+
 return
   {
     cho = cho,
@@ -74,4 +79,5 @@ return
     list = make_list_record,
     interleave = interleave,
     match_regexp = spawn_match_function,
+    any_char = any_char,
   }
