@@ -1,4 +1,4 @@
 return
-  function(self, value)
-    self.value = value
+  function(self, stream)
+    self.stream = stream
   end

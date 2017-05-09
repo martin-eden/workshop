@@ -5,43 +5,47 @@
   obvious defining common syntax constructions.
 ]]
 
-local generate_record =
-  function(mode)
+local cho =
+  function(...)
+    local node = {...}
+    node.mode = 'choice_first'
+    return node
+  end
+
+local add_flags =
+  function(flags)
+    assert_table(flags)
     return
       function(...)
-        local result = {...}
-        local is_first_term = true
-        for flag in mode:gmatch('[%a_]+') do
-          if not is_first_term then
-            result = {result}
-          end
-          result.mode = flag
-          is_first_term = false
+        local node = {...}
+        node.flags = node.flags or {}
+        for i = 1, #flags do
+          node.flags[flags[i]] = true
         end
-        return result
+        return node
       end
   end
 
-local generate_list_record =
+local is_not = add_flags({'is_not'})
+local opt = add_flags({'optional'})
+local rep = add_flags({'repeat'})
+local opt_rep = add_flags({'optional', 'repeat'})
+
+local make_list_record =
   function(...)
-    local list = {...}
-    assert(#list >= 2)
-    local delim = list[#list]
-    list[#list] = nil
-    local result =
-      {
-        list,
-        generate_record('repeat optional')({delim, list})
-      }
-    return result
+    local body = {...}
+    assert(#body >= 2)
+    local delimiter = body[#body]
+    body[#body] = nil
+    return {body, opt_rep({delimiter, body})}
   end
 
 --TODO: drop interleave()
 local interleave =
-  function(t, delim)
+  function(t, delimiter)
     assert_table(t)
     for i = #t, 2, -1 do
-      table.insert(t, i, delim)
+      table.insert(t, i, delimiter)
     end
     return t
   end
@@ -62,16 +66,12 @@ local spawn_match_function =
 
 return
   {
-    opt = generate_record('optional'),
-    rep = generate_record('repeat'),
-    best_cho = generate_record('choice_best'),
-    cho = generate_record('choice_first'),
-    rep_cho = generate_record('choice_first repeat'),
-    list = generate_list_record,
+    cho = cho,
+    is_not = is_not,
+    opt = opt,
+    rep = rep,
+    opt_rep = opt_rep,
+    list = make_list_record,
     interleave = interleave,
-    opt_rep = generate_record('repeat optional'),
-    opt_cho = generate_record('choice_first optional'),
-    opt_rep_cho = generate_record('choice_first repeat optional'),
-    is_not = generate_record('is_not'),
     match_regexp = spawn_match_function,
   }

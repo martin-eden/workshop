@@ -1,3 +1,11 @@
+This is outdated after 2017-02-27.
+
+  Parser changed. opt, rep, neg are flags and no longer
+  represented as standalone tables.
+
+  [handy] shortcuts separated to flag shortcuts and
+  cho(). Also list(), interleave() are upper-level compositors.
+--
 Parser, How and Why It Works
 
 This was (and probably remains) proof of concept general strings

@@ -5,5 +5,5 @@ return
 
     handlers = request('handlers.interface'),
     on_match = request('on_match'),
-    value = nil,
+    stream = nil,
   }
