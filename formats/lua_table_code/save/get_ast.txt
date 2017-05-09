@@ -1,0 +1,26 @@
+We've got table, probably with cycles in keys or values. We have
+to produce annotated syntax tree (AST) with a sequence of table
+definitions and direct table key assignments. Also we must produce
+"return" statement in end that return result table.
+
+Later (in another code) this AST is serialized to string like
+
+  local t_1 = {}
+  local t_2 = {[t_1] = t_1}
+  t_2[t_2] = t_2
+  return
+
+First we getting "assembly order" (common name for it is "topology
+sort") for result table. Such we get a sequence 1..<n> where each
+table <i> may be defined in terms of tables 1..<i>.
+
+(There is shortcut used: if table <i> has only one reference, it may
+be represented as folded table in parent.)
+
+There also two parts:
+  * define table <i> with tables 1..(<i> - 1) and
+  * define table <i> with <i>
+
+First part is done by calling get_ast() from code that do not support
+tables with self-links. Second part is done with producing
+direct assignments to partially defined table.
