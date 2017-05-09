@@ -1,4 +1,4 @@
-local hex_digit = '[0-9a-fA-F]'
+local hex_digit = '%x'
 local basic_plane = [[(\u)]] .. '(' .. hex_digit:rep(4) .. ')'
 local utf16_surrogate_pair = basic_plane:rep(2)
 

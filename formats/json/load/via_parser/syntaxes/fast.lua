@@ -17,14 +17,18 @@ local opt_rep = handy.opt_rep
 local list = handy.list
 local match_regexp = handy.match_regexp
 
-local opt_spc =
-  match_regexp('[ \n\r\t]*')
+local opt_spc = match_regexp('[ \n\r\t]*')
 
-local null =
-  {opt_spc, {name = 'null', 'null'}}
+local open_brace = '{'
+local close_brace = {opt_spc, '}'}
+local open_bracket = '['
+local close_bracket = {opt_spc, ']'}
+local colon = {opt_spc, ':'}
+local comma = {opt_spc, ','}
 
-local boolean =
-  {opt_spc, {name = 'boolean', cho('true', 'false')}}
+local null = {opt_spc, {name = 'null', 'null'}}
+
+local boolean = {opt_spc, {name = 'boolean', cho('true', 'false')}}
 
 local number =
   {
@@ -35,11 +39,8 @@ local number =
       cho('0', match_regexp('[1-9]%d*')),
       opt(match_regexp('%.%d+')),
       opt(match_regexp('[eE][%+%-]?%d+'))
-    }
+    },
   }
-
-local utf_code_point =
-  'u' .. ('[0-9a-fA-F]'):rep(4)
 
 local json_string =
   {
@@ -54,7 +55,7 @@ local json_string =
             [[\]],
             cho(
               match_regexp([=[[%"%\%/bfnrt]]=]),
-              match_regexp(utf_code_point)
+              match_regexp('u%x%x%x%x')
             )
           }
         )
@@ -65,10 +66,22 @@ local json_string =
 
 local array =
   {
-    name = 'array',
-    opt_spc, '[',
-    opt(list('>value', {opt_spc, ','})),
-    opt_spc, ']',
+    opt_spc,
+    {
+      name = 'array',
+      open_bracket, opt(list('>value', comma)), close_bracket
+    },
+  }
+
+local object =
+  {
+    opt_spc,
+    {
+      name = 'object',
+      open_brace,
+      opt(list(json_string, colon, '>value', comma)),
+      close_brace,
+    },
   }
 
 local value =
@@ -76,26 +89,12 @@ local value =
     number,
     json_string,
     array,
-    '>object',
+    object,
     boolean,
     null
   )
 value.inner_name = 'value'
 
-local object =
-  {
-    name = 'object',
-    opt_spc, '{',
-    opt(
-      list(
-        json_string, opt_spc, ':', value,
-        {opt_spc, ','}
-      )
-    ),
-    opt_spc, '}',
-  }
-object.inner_name = 'object'
-
-parser.link(object)
+parser.link(value)
 
 return object

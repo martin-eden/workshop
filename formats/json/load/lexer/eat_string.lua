@@ -11,7 +11,7 @@ local escape_next_chars =
   }
 
 local plain_string_chars = [[^[^%c%\%"]+]]
-local four_hex_digs = '^' .. ('[0-9a-fA-F]'):rep(4)
+local four_hex_digs = '^%x%x%x%x'
 
 return
   function(s, s_pos)

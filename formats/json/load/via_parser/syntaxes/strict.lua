@@ -16,42 +16,37 @@ local list = handy.list
 local opt_spc =
   opt_rep(cho(' ', '\n', '\r', '\t'))
 
-local tok =
-  function(...)
-    local result =
-      {
-        opt_spc,
-        ...
-      }
-    result[#result + 1] = opt_spc
-    return result
-  end
+local open_brace = '{'
+local close_brace = {opt_spc, '}'}
+local open_bracket = '['
+local close_bracket = {opt_spc, ']'}
+local colon = {opt_spc, ':'}
+local comma = {opt_spc, ','}
 
 local null =
-  tok({name = 'null', 'null'})
+  {opt_spc, {name = 'null', 'null'}}
 
 local boolean =
-  tok({name = 'boolean', cho('true', 'false')})
+  {opt_spc, {name = 'boolean', cho('true', 'false')}}
 
-local zero_digit =
-  '0'
-local nonzero_dec_digit =
-  cho('9', '8', '7', '6', '5', '4', '3', '2', '1')
-local dec_digit =
-  cho(nonzero_dec_digit, zero_digit)
+local zero_digit = '0'
+local nonzero_dec_digit = cho('9', '8', '7', '6', '5', '4', '3', '2', '1')
+local dec_digit = cho(nonzero_dec_digit, zero_digit)
 
 local number =
   {
-    name = 'number',
-    opt('-'),
-    cho(
-      zero_digit,
-      {nonzero_dec_digit, opt_rep(dec_digit)}
-    ),
-    opt({'.', rep(dec_digit)}),
-    opt(cho('e', 'E'), opt(cho('+', '-')), rep(dec_digit))
+    opt_spc,
+    {
+      name = 'number',
+      opt('-'),
+      cho(
+        zero_digit,
+        {nonzero_dec_digit, opt_rep(dec_digit)}
+      ),
+      opt({'.', rep(dec_digit)}),
+      opt(cho('e', 'E'), opt(cho('+', '-')), rep(dec_digit))
+    },
   }
-number = tok(number)
 
 local control_char =
   cho(
@@ -69,31 +64,46 @@ local hex_only_digit =
   cho('a', 'b', 'c', 'd', 'e', 'f', 'A', 'B', 'C', 'D', 'E', 'F')
 local hex_dig =
   cho(dec_digit, hex_only_digit)
-
 local utf_code_point =
   {'u', hex_dig, hex_dig, hex_dig, hex_dig}
 
 local json_string =
   {
-    name = 'string',
-    '"',
-    opt_rep(
-      cho(
-        {is_not(cho('"', [[\]], control_char)), any_char},
-        {
-          [[\]],
-          cho('"', [[\]], '/', 'b', 'f', 'n', 'r', 't', utf_code_point)
-        }
-      )
-    ),
-    '"'
+    opt_spc,
+    {
+      name = 'string',
+      '"',
+      opt_rep(
+        cho(
+          {is_not(cho('"', [[\]], control_char)), any_char},
+          {
+            [[\]],
+            cho('"', [[\]], '/', 'b', 'f', 'n', 'r', 't', utf_code_point)
+          }
+        )
+      ),
+      '"'
+    },
   }
-json_string = tok(json_string)
 
 local array =
   {
-    name = 'array',
-    tok('['), opt(list('>value', tok(','))), tok(']')
+    opt_spc,
+    {
+      name = 'array',
+      open_bracket, opt(list('>value', comma)), close_bracket
+    },
+  }
+
+local object =
+  {
+    opt_spc,
+    {
+      name = 'object',
+      open_brace,
+      opt(list(json_string, colon, '>value', comma)),
+      close_brace,
+    },
   }
 
 local value =
@@ -101,19 +111,12 @@ local value =
     number,
     json_string,
     array,
-    '>object',
+    object,
     boolean,
     null
   )
 value.inner_name = 'value'
 
-local object =
-  {
-    name = 'object',
-    tok('{'), opt(list(json_string, tok(':'), value, tok(','))), tok('}')
-  }
-object.inner_name = 'object'
-
-parser.link(object)
+parser.link(value)
 
 return object
