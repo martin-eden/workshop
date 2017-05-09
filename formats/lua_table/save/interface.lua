@@ -1,0 +1,13 @@
+return
+  {
+    init = request('init'),
+
+    get_ast = request('get_ast'),
+    serialize_ast = request('serialize_ast'),
+
+    node_handlers = {},
+    text_block = nil,
+    value_names = {},
+    ignored_values = {},
+    table_iterator = request('!.table.ordered_pass'),
+  }

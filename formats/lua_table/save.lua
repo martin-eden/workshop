@@ -1,14 +1,16 @@
--- Serialize lua table as lua table definition.
+-- Serialize lua table as string with lua table definition.
 
 -- Not suitable for tables with cross-links in keys or values.
 
-local table_serializer_class = request('compile.interface')
+local table_serializer_class = request('save.interface')
+local compile = request('!.mechs.compile')
 
 return
   function(t, options)
     assert_table(t)
-    local serializer = new(table_serializer_class, options)
-    serializer:init()
-    serializer:serialize(t)
-    return serializer:get_result()
+    local table_serializer = new(table_serializer_class, options)
+    table_serializer:init()
+    local ast = table_serializer:get_ast(t)
+    local result = table_serializer:serialize_ast(ast)
+    return result
   end

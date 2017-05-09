@@ -1,4 +1,5 @@
 -- This is not secure method. But very simple and fast.
+
 return
   function(table_str)
     local result
