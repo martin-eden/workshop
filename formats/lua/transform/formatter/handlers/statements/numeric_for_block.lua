@@ -6,7 +6,7 @@ return
     result.start_val = self:process_node(node[2])
     result.end_val = self:process_node(node[3])
     local body_index
-    if node[4] and (node[4].name == 'expression') then
+    if node[4] and (node[4].type == 'expression') then
       result.increment = self:process_node(node[4])
       body_index = 5
     else

@@ -3,7 +3,7 @@ return
     local result = {}
     result.type = 'repeat_block'
     local condition_index
-    if (node[1].name == 'statements') then
+    if (node[1].type == 'statements') then
       result.body = self:process_node(node[1])
       condition_index = 2
     else

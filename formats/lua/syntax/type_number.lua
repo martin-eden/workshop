@@ -1,4 +1,4 @@
-local parser = request('^.^.^.mechs.parser')
+local parser = request('!.mechs.parser')
 local handy = parser.handy
 
 local dec_number = request('type_number.dec_number')

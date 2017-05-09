@@ -7,9 +7,9 @@ return
         comments = {},
       }
     for i = 1, #data_struc do
-      if (data_struc[i].name == 'code') then
+      if (data_struc[i].type == 'code') then
         table.insert(result.code, data_struc[i].value)
-      elseif (data_struc[i].name == 'comment') then
+      elseif (data_struc[i].type == 'comment') then
         table.insert(result.comments, data_struc[i].value)
       end
     end

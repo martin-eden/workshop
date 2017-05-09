@@ -6,9 +6,9 @@ return
     while (i <= #node) do
       local term = {}
 
-      if (node[1].name == 'un_op') then
+      if (node[1].type == 'un_op') then
         local un_ops = {}
-        while (i <= #node) and (node[i].name == 'un_op') do
+        while (i <= #node) and (node[i].type == 'un_op') do
           un_ops[#un_ops + 1] = self:process_node(node[i]).value
           i = i + 1
         end
@@ -25,7 +25,7 @@ return
 
       result[#result + 1] = term
 
-      if (i <= #node) and (node[i].name == 'expression') then
+      if (i <= #node) and (node[i].type == 'expression') then
         node = node[i]
         i = 1
       end

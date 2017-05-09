@@ -1,4 +1,4 @@
-local parser = request('^.^.^.mechs.parser')
+local parser = request('!.mechs.parser')
 local handy = parser.handy
 
 local long_bracket = request('words.particles.long_bracket')

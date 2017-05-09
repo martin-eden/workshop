@@ -13,16 +13,13 @@
   Such work is done by this code.
 ]]
 
-local transformer = request('formatter.init')
+local c_transformer = request('formatter.init')
 
 return
-  function(data_struc)
+  function(stream, data_struc)
+    assert_table(stream)
     assert_table(data_struc)
-    local result
-    if (#data_struc == 1) then
-      result = transformer:process_node(data_struc[1])
-    else
-      result = {}
-    end
-    return result
+    local transformer = new(c_transformer)
+    transformer.stream = stream
+    return transformer:process_node(data_struc)
   end

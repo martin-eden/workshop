@@ -2,15 +2,13 @@ return
   function(self, node)
     local result
     if is_table(node) then
-      if node.name then
-        local handler = self.handlers[node.name]
+      if node.type then
+        node.value = self.stream:get_segment(node.start, node.len)
+        local handler = self.handlers[node.type]
         if handler then
           result = handler(self, node)
-          if result then
-            result.type = result.type or node.name
-          end
         else
-          print('Encountered unknown structure <' .. node.name .. '>.')
+          print('Encountered unknown structure <' .. node.type .. '>.')
         end
       else
         result = node

@@ -46,4 +46,6 @@ return
       },
     process_list = request('process_list'),
     process_node = request('process_node'),
+
+    stream = nil,
   }

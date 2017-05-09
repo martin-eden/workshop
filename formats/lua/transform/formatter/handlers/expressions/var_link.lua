@@ -14,7 +14,7 @@ return
 
       while
         (name_part_pos <= #node) and
-        (node[name_part_pos].name ~= 'func_args')
+        (node[name_part_pos].type ~= 'func_args')
       do
         name_part[#name_part + 1] = self:process_node(node[name_part_pos])
         name_part_pos = name_part_pos + 1

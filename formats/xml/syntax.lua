@@ -4,7 +4,7 @@
   Unicode is not supported (yet).
 ]]
 
-local parser = request('^.^.mechs.parser')
+local parser = request('!.mechs.parser')
 local handy = parser.handy
 
 local opt = handy.opt
@@ -16,7 +16,7 @@ local opt_rep = handy.opt_rep
 local opt_cho = handy.opt_cho
 local opt_rep_cho = handy.opt_rep_cho
 local is_not = handy.is_not
-local match_pattern = handy.match_pattern
+local match_regexp = handy.match_regexp
 
 local document =
   {

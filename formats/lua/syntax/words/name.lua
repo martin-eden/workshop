@@ -1,4 +1,4 @@
-local parser = request('^.^.^.^.mechs.parser')
+local parser = request('!.mechs.parser')
 local handy = parser.handy
 
 local word = request('word')
@@ -35,5 +35,5 @@ return
   {
     name = 'name',
     handy.is_not(is_keyword),
-    handy.match_pattern(name_pattern),
+    handy.match_regexp(name_pattern),
   }

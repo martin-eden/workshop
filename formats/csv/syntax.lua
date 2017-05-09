@@ -1,9 +1,9 @@
-local parser = request('^.^.mechs.parser')
+local parser = request('!.mechs.parser')
 local handy = parser.handy
 
 local field_sep_char = ','
 
-local opt_spc = handy.match_pattern('[ \t]*')
+local opt_spc = handy.match_regexp('[ \t]*')
 
 local quoted_data =
   {
@@ -13,7 +13,7 @@ local quoted_data =
       '"',
       handy.opt_rep(
         handy.cho(
-          handy.match_pattern('[^"]+'),
+          handy.match_regexp('[^"]+'),
           '""'
         )
       ),
@@ -25,7 +25,7 @@ local quoted_data =
 local unquoted_data =
   {
     name = 'unquoted_data',
-    handy.match_pattern('[^' .. field_sep_char .. '\r\n]*'),
+    handy.match_regexp('[^' .. field_sep_char .. '\r\n]*'),
   }
 
 return
@@ -40,5 +40,5 @@ return
         {name = 'field_sep', field_sep_char}
       )
     },
-    handy.match_pattern('[\r]?\n')
+    handy.match_regexp('[\r]?\n')
   )

@@ -1,8 +1,8 @@
 return
   function(self, node)
     local result = {}
-    local name_part = node[1] and (node[1].name ~= 'vararg') and node[1]
-    local vararg = node[#node] and (node[#node].name == 'vararg') and node[#node]
+    local name_part = node[1] and (node[1].type ~= 'vararg') and node[1]
+    local vararg = node[#node] and (node[#node].type == 'vararg') and node[#node]
     if name_part then
       result = self:process_list(name_part)
     end

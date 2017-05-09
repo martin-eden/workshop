@@ -15,7 +15,7 @@ local cho = handy.cho
 local opt = handy.opt
 local opt_rep = handy.opt_rep
 local list = handy.list
-local match = handy.match_pattern
+local match = handy.match_regexp
 
 local opt_spc =
   match('[ \n\r\t]*')

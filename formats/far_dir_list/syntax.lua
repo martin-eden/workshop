@@ -1,4 +1,4 @@
-local parser = request('^.^.mechs.parser')
+local parser = request('!.mechs.parser')
 local handy = parser.handy
 
 --[[
@@ -17,7 +17,7 @@ return
         [[\]],
         {
           name = 'field',
-          handy.match_pattern('[^%\x5C\n]*')
+          handy.match_regexp('[^%\x5C\n]*')
         }
       )
     },

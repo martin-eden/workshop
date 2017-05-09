@@ -1,10 +1,10 @@
 return
-  function(mark_rec)
+  function(stream, mark_rec)
     assert_table(mark_rec)
-    assert_string(mark_rec.name)
-    assert(mark_rec.name == 'BS_steel_mark')
+    assert_string(mark_rec.type)
+    assert(mark_rec.type == 'BS_steel_mark')
 
-    local mark = mark_rec.value
+    local mark = stream:get_segment(mark.start, mark_rec.len)
     assert_string(mark)
     assert(#mark == 6)
     local result = {}

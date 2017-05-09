@@ -62,10 +62,8 @@ local control_char =
     '\x18', '\x19', '\x1a', '\x1b', '\x1c', '\x1d', '\x1e', '\x1f'
   )
 local any_char =
-  function(s, s_pos)
-    if (s_pos <= #s) then
-      return true, s_pos + 1
-    end
+  function(stream)
+    return stream:block_read(1)
   end
 
 local hex_only_digit =

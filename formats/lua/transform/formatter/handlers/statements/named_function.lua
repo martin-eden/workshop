@@ -6,7 +6,7 @@ return
     local dotted_list = node[1]
     local colon_name
     local idx_params
-    if node[2] and (node[2].name == 'colon_name') then
+    if node[2] and (node[2].type == 'colon_name') then
       colon_name = node[2]
       idx_params = 3
     else

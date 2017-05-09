@@ -1,4 +1,4 @@
-local parser = request('^.^.mechs.parser')
+local parser = request('!.mechs.parser')
 local handy = parser.handy
 
 local field_sep_char = '&'
@@ -6,10 +6,8 @@ local fields_section_start_char = '?'
 local key_val_delim_char = '='
 
 local any_char =
-  function(s, s_pos)
-    if (s_pos <= #s) then
-      return true, s_pos + 1
-    end
+  function(stream)
+    return stream:block_read(1)
   end
 
 return

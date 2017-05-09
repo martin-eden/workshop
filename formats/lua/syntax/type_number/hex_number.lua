@@ -1,4 +1,4 @@
-local parser = request('^.^.^.^.mechs.parser')
+local parser = request('!.mechs.parser')
 local handy = parser.handy
 
 local int_16 = request('hex_number.int_16')

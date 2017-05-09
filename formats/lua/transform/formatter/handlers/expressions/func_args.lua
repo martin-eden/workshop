@@ -3,7 +3,7 @@ return
     local result
     if node[1] then
       result = self:process_node(node[1])
-      if (node[1].name == 'expr_list') then
+      if (node[1].type == 'expr_list') then
         -- It's ok. No need to modify <result> now. (f(a, b))
       else
         -- Arg is a directly mentioned table or string (f 'abc')
