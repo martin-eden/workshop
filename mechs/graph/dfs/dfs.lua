@@ -18,7 +18,7 @@ return
 
     local process =
       function(parent, parent_key, node, deep)
-        nodes_status[node] = nodes_status[node] or {}
+        nodes_status[node] = nodes_status[node] or {node = node}
         local node_rec = nodes_status[node]
         node_rec.refs = node_rec.refs or {}
         node_rec.refs[parent] = node_rec.refs[parent] or {}
