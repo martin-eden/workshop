@@ -1,36 +1,34 @@
 local parser = request('!.mechs.parser')
 local handy = parser.handy
 
-local long_bracket = request('words.particles.long_bracket')
-local any_char = request('words.particles.any_char')
+local opt_rep = handy.opt_rep
+local match_regexp = handy.match_regexp
+local cho = handy.cho
 
-local linear_string_char =
-  handy.cho(
-    {
-      [[\]],
-      any_char
-    },
-    any_char
-  )
+local long_bracket = request('words.particles.long_bracket')
 
 return
   {
     name = 'string',
-    handy.cho(
+    cho(
       long_bracket,
       {
         '"',
-        handy.opt_rep(
-          handy.is_not('"'),
-          linear_string_char
+        opt_rep(
+          cho(
+            match_regexp([[[^%\%"]+]]),
+            match_regexp([[%\.]])
+          )
         ),
         '"'
       },
       {
         "'",
-        handy.opt_rep(
-          handy.is_not("'"),
-          linear_string_char
+        opt_rep(
+          cho(
+            match_regexp([[[^%\%']+]]),
+            match_regexp([[%\.]])
+          )
         ),
         "'"
       }

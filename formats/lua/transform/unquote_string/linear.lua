@@ -15,8 +15,7 @@ local one_char_seq_subst =
 local space_char = '[\x00-\x20]'
 local space_chars_seq = ([[\z%s*]]):format(space_char)
 
-local dec_dig = '[0-9]'
-local dec_code_seq = ([[\(%s%s?%s?)]]):format(dec_dig, dec_dig, dec_dig)
+local dec_code_seq = [[\(%d%d?%d?)]]
 local decode_dec_code =
   function(code_str)
     local dec_code = tonumber(code_str)
@@ -30,8 +29,7 @@ local decode_dec_code =
     return result
   end
 
-local hex_dig = '[0-9A-Fa-f]'
-local hex_code_seq = ([[\x(%s%s)]]):format(hex_dig, hex_dig)
+local hex_code_seq = [[\x(%x%x)]]
 local decode_hex_code =
   function(code_str)
     local dec_code = tonumber(code_str, 16)
@@ -39,7 +37,7 @@ local decode_hex_code =
     return string.char(dec_code)
   end
 
-local utf_code_seq = ([[\u{(%s+)}]]):format('hex_dig')
+local utf_code_seq = [[\u{(%x+)}]]
 local decode_utf_code =
   function(code_str)
     local result
@@ -56,7 +54,7 @@ local decode_utf_code =
     return result
   end
 
-local split = request('^.^.^.^.string.split')
+local split = request('!.string.split')
 
 local unescape =
   function(s)

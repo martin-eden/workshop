@@ -12,11 +12,7 @@ local func_args =
   {
     name = 'func_args',
     handy.cho(
-      {
-        '(',
-        opt_spc, handy.opt(expr_list),
-        opt_spc, ')',
-      },
+      {'(', opt_spc, handy.opt(expr_list), opt_spc, ')'},
       type_table,
       type_string
     ),
@@ -25,23 +21,19 @@ local func_args =
 local par_expr =
   {
     name = 'par_expr',
-    '(',
-    opt_spc, '>expression',
-    opt_spc, ')',
+    '(', opt_spc, '>expression',  opt_spc, ')',
   }
 
 local dot_name =
   {
     name = 'dot_name',
-    '.',
-    opt_spc, name
+    '.', opt_spc, name
   }
 
 local colon_name =
   {
     name = 'colon_name',
-    ':',
-    opt_spc, name,
+    ':', opt_spc, name,
   }
 
 local bracket_expr = request('bracket_expr')
@@ -58,10 +50,7 @@ return
       handy.cho(
         dot_name,
         bracket_expr,
-        {
-          colon_name,
-          opt_spc, func_args,
-        },
+        {colon_name, opt_spc, func_args},
         func_args
       )
     ),

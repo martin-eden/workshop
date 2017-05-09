@@ -1,6 +1,8 @@
 local parser = request('!.mechs.parser')
 local handy = parser.handy
 
+local match_regexp = handy.match_regexp
+
 local word = request('^.words.word')
 
 local opt_spc = request('^.words.opt_spc')
@@ -9,9 +11,7 @@ local un_op =
   {
     name = 'un_op',
     handy.cho(
-      '-',
-      '#',
-      '~',
+      match_regexp('[%-%#%~]'),
       word('not')
     ),
   }
@@ -20,25 +20,15 @@ local bin_op =
   {
     name = 'bin_op',
     handy.cho(
-      '+',
-      '-',
-      '*',
       '//',
-      '/',
-      '^',
-      '%',
       '==',
       '~=',
-      '&',
-      '~',
-      '|',
       '<<',
       '<=',
-      '<',
       '>>',
       '>=',
-      '>',
       '..',
+      match_regexp('[%+%-%*%/%^%%%&%~%|%<%>]'),
       word('and'),
       word('or')
     ),
