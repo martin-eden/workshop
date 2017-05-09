@@ -1,8 +1,10 @@
 local parser = request('parser')
 local c_string_stream = request('!.mechs.streams.readable_string.interface')
 
+-- local to_str = request('!.formats.lua_table_code.save')
 return
   function(str, syntax, ...)
+    -- print(to_str(syntax))
     local string_stream = new(c_string_stream)
     string_stream:init(str)
 
