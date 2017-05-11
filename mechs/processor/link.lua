@@ -5,13 +5,10 @@
   by resolving links.
 ]]
 
-local pass_graph = request('^.graph.dfs')
+local pass_graph = request('!.mechs.graph.dfs')
 
 local is_producer =
   function(node)
-    if node.inner_name then
-      -- print('This is producer.')
-    end
     return node.inner_name
   end
 
@@ -29,9 +26,6 @@ local is_consumer =
         end
       end
     end
-    if result then
-      -- print('This is consumer.')
-    end
     return result
   end
 
@@ -42,18 +36,15 @@ local add_producer =
       -- print(('Already have producer with name "%s".'):format(name))
     else
       producers[name] = node
-      -- print(('Added producer "%s".'):format(name))
     end
   end
 
 local add_consumer =
   function(node, consumers)
-    -- local name = node.name or node.inner_name or tostring(node)
     if consumers[node] then
       -- print(('Already have consumer "%s.".'):format(name))
     else
       consumers[node] = node
-      -- print(('Added consumer "%s".'):format(name))
     end
   end
 
@@ -84,7 +75,6 @@ return
       {
         handle_discovery =
           function(node, node_rec, deep)
-            local node_name = node.name or node.inner_name or tostring(node)
             if is_producer(node) then
               add_producer(node, producers)
             end
@@ -100,15 +90,15 @@ return
       end
     end
 
-    --[[
-    print('producers:')
-    for k, v in pairs(producers) do
-      print(k)
-    end
-
-    print('consumers:')
-    for k, v in pairs(consumers) do
-      print(tostring(k))
-    end
-    --]]
+    pass_graph(
+      node,
+      {
+        handle_leave =
+          function(node, node_rec, deep)
+            if node.inner_name then
+              node.inner_name = nil
+            end
+          end,
+      }
+    )
   end
