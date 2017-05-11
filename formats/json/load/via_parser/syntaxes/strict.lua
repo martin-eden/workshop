@@ -87,7 +87,9 @@ local array =
     opt_spc,
     {
       name = 'array',
-      open_bracket, opt(list('>value', comma)), close_bracket
+      open_bracket,
+      opt(list('>value', comma)),
+      close_bracket
     },
   }
 
@@ -115,5 +117,9 @@ value.inner_name = 'value'
 
 local link = request('!.mechs.processor.link')
 link(value)
+
+local optimize = request('!.mechs.processor.optimize')
+optimize(object)
+
 
 return object
