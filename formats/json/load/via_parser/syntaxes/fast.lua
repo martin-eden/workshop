@@ -25,9 +25,23 @@ local close_bracket = {opt_spc, ']'}
 local colon = {opt_spc, ':'}
 local comma = {opt_spc, ','}
 
-local null = {opt_spc, {name = 'null', 'null'}}
+local null =
+  {
+    opt_spc,
+    {
+      name = 'null',
+      'null',
+    }
+  }
 
-local boolean = {opt_spc, {name = 'boolean', cho('true', 'false')}}
+local boolean =
+  {
+    opt_spc,
+    {
+      name = 'boolean',
+      cho('true', 'false'),
+    }
+  }
 
 local number =
   {
@@ -68,7 +82,9 @@ local array =
     opt_spc,
     {
       name = 'array',
-      open_bracket, opt(list('>value', comma)), close_bracket
+      open_bracket,
+      opt(list('>value', comma)),
+      close_bracket
     },
   }
 
@@ -96,5 +112,8 @@ value.inner_name = 'value'
 
 local link = request('!.mechs.processor.link')
 link(value)
+
+local optimize = request('!.mechs.processor.optimize')
+optimize(object)
 
 return object
