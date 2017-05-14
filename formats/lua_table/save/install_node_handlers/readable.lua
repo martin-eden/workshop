@@ -44,7 +44,6 @@ node_handlers.table =
     for i = 1, #node do
       local key, value = node[i].key, node[i].value
       request_clean_line()
-      -- skip key part?
       if
         compact_sequences and
         (key.type == 'number') and
@@ -53,7 +52,6 @@ node_handlers.table =
       then
         last_integer_key = key.value
       else
-        -- may mention key without brackets?
         if
           (key.type == 'string') and
           is_identifier(key.value)
@@ -74,34 +72,12 @@ node_handlers.table =
     add('}')
   end
 
-local quote_string = request('!.formats.lua.save.quote_string')
-
-node_handlers.string =
-  function(node)
-    add(quote_string(node.value))
-  end
-
-local serialize_tostring =
-  function(node)
-    add(tostring(node.value))
-  end
-
-local tostring_datatypes =
-  {'number', 'boolean', 'nil', 'function', 'thread', 'userdata'}
-
-for i = 1, #tostring_datatypes do
-  node_handlers[tostring_datatypes[i]] = serialize_tostring
-end
-
-node_handlers.name =
-  function(node)
-    compile(node.value)
-  end
-
 local merge = request('!.table.merge')
+local install_minimal_handlers = request('minimal')
 
 return
   function(a_node_handlers, a_text_block, options)
+    install_minimal_handlers(a_node_handlers, a_text_block, options)
     node_handlers = merge(a_node_handlers, node_handlers)
     text_block = a_text_block
     if options and is_boolean(options.compact_sequences) then

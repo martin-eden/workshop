@@ -6,6 +6,7 @@ return
     serialize_ast = request('serialize_ast'),
 
     node_handlers = {},
+    c_text_block = request('!.mechs.text_block.interface'),
     text_block = nil,
     value_names = {},
     ignored_values = {},
