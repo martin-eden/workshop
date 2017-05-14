@@ -1,0 +1,50 @@
+-- Lua table serializer
+
+details = {
+  intention = 'Serialize data to machine-and-human readable format.',
+  requirements = {'Lua 5.3'},
+  license = 'GPLv3',
+  priorities = {
+    fast = 0,
+    simple = 0.4,
+    flexible = 0.6,
+  },
+  handles = {
+    cycles = true,
+    metatables = false,
+    threads = false,
+    userdata = false,
+    functions = false,
+  },
+  installation = {
+    '$ git clone https://github.com/martin-eden/lua_table_serializer',
+    '$ cd lua_table_serializer',
+  },
+  usage = {
+    "require('workshop.base')",
+    "local table_to_str = request('!.formats.lua_table_code.save')",
+    'print(table_to_str(_G))',
+  },
+  additional_modes = {
+    minimal = {
+      intention = 'Serialize table data without whitespaces.',
+      usage = [[
+1. Clone <lua_table.save.interface> object.
+2. Override <install_node_handlers> function in it.
+3. Provide changed object to generic table serializer.
+
+  -- 1
+  local table_serializer = new(request('!.formats.lua_table.save.interface'))
+  -- 2
+  table_serializer.install_node_handlers = request('!.formats.lua_table.save.install_node_handlers.minimal')
+  -- 3
+  local table_to_str_orig = request('!.formats.lua_table_code.save')
+  local table_to_str =
+    function(t)
+      return table_to_str_orig(t, {table_serializer = table_serializer})
+    end
+  -- test
+  print(table_to_str(_G))]],
+    },
+  },
+}

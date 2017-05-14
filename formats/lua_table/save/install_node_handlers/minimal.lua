@@ -64,16 +64,30 @@ node_handlers.string =
     add(quote_string(node.value))
   end
 
-local serialize_tostring =
-  function(node)
-    add(tostring(node.value))
+do
+  local serialize_tostring =
+    function(node)
+      add(tostring(node.value))
+    end
+
+  local tostring_datatypes = {'number', 'boolean', 'nil'}
+
+  for i = 1, #tostring_datatypes do
+    node_handlers[tostring_datatypes[i]] = serialize_tostring
   end
+end
 
-local tostring_datatypes =
-  {'number', 'boolean', 'nil', 'function', 'thread', 'userdata'}
+do
+  local serialize_quoted =
+    function(node)
+      add(quote_string(tostring(node.value)))
+    end
 
-for i = 1, #tostring_datatypes do
-  node_handlers[tostring_datatypes[i]] = serialize_tostring
+  local quoted_datatypes = {'function', 'thread', 'userdata'}
+
+  for i = 1, #quoted_datatypes do
+    node_handlers[quoted_datatypes[i]] = serialize_quoted
+  end
 end
 
 node_handlers.name =
