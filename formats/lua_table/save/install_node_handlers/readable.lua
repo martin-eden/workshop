@@ -30,6 +30,7 @@ local compile =
   end
 
 local is_identifier = request('!.formats.lua.load.is_identifier')
+local compact_sequences = true
 
 node_handlers.table =
   function(node)
@@ -37,26 +38,36 @@ node_handlers.table =
       add('{}')
       return
     end
+    local last_integer_key = 0
     add('{')
     inc_indent()
     for i = 1, #node do
-      local pair = node[i]
+      local key, value = node[i].key, node[i].value
       request_clean_line()
+      -- skip key part?
       if
-        pair.key.type and
-        (pair.key.type == 'string') and
-        is_identifier(pair.key.value)
+        compact_sequences and
+        (key.type == 'number') and
+        is_integer(key.value) and
+        (key.value == last_integer_key + 1)
       then
-        add(pair.key.value)
+        last_integer_key = key.value
       else
-        add('[')
-        compile(pair.key)
-        add(']')
+        -- may mention key without brackets?
+        if
+          (key.type == 'string') and
+          is_identifier(key.value)
+        then
+          add(key.value)
+        else
+          add('[')
+          compile(key)
+          add(']')
+        end
+        add(' = ')
       end
-      add(' = ')
-      compile(pair.value)
+      compile(value)
       add(',')
-      add(' ')
     end
     dec_indent()
     request_clean_line()
@@ -90,8 +101,10 @@ node_handlers.name =
 local merge = request('!.table.merge')
 
 return
-  function(a_node_handlers, a_text_block)
+  function(a_node_handlers, a_text_block, options)
+    node_handlers = merge(a_node_handlers, node_handlers)
     text_block = a_text_block
-    merge(a_node_handlers, node_handlers)
-    node_handlers = a_node_handlers
+    if options and is_boolean(options.compact_sequences) then
+      compact_sequences = options.compact_sequences
+    end
   end

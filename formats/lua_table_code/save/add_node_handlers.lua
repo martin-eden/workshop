@@ -48,6 +48,5 @@ local merge = request('!.table.merge')
 return
   function(a_node_handlers, a_text_block)
     text_block = a_text_block
-    merge(a_node_handlers, node_handlers)
-    node_handlers = a_node_handlers
+    node_handlers = merge(a_node_handlers, node_handlers)
   end
