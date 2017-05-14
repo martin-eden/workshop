@@ -4,7 +4,10 @@ return
   function(self, data)
     local result
     local data_type = type(data)
-    if (data_type == 'table') then
+    if
+      (data_type == 'table') and
+      not self.ignored_values[data]
+    then
       if self.value_names[data] then
         result =
           {
