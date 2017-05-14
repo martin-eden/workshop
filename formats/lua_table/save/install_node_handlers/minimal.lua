@@ -57,13 +57,6 @@ node_handlers.table =
     add('}')
   end
 
-local quote_string = request('!.formats.lua.save.quote_string')
-
-node_handlers.string =
-  function(node)
-    add(quote_string(node.value))
-  end
-
 do
   local serialize_tostring =
     function(node)
@@ -78,12 +71,25 @@ do
 end
 
 do
+  local quote_string = request('!.formats.lua.save.quote_string')
+
   local serialize_quoted =
     function(node)
-      add(quote_string(tostring(node.value)))
+      local quoted_string = quote_string(tostring(node.value))
+      -- Quite ugly handling indexing [[[s]]] case: convert to [ [[s]]]
+      if not text_block:on_clean_line() then
+        local text_line = text_block.line_with_text:get_line()
+        if
+          (text_line:sub(-1) == '[') and
+          (quoted_string:sub(1, 1) == '[')
+        then
+          add(' ')
+        end
+      end
+      add(quoted_string)
     end
 
-  local quoted_datatypes = {'function', 'thread', 'userdata'}
+  local quoted_datatypes = {'string', 'function', 'thread', 'userdata'}
 
   for i = 1, #quoted_datatypes do
     node_handlers[quoted_datatypes[i]] = serialize_quoted
