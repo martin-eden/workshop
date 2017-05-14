@@ -2,12 +2,16 @@ local get_num_refs =
   function(node_rec)
     local result = 0
     if node_rec.refs then
+      local node = node_rec.node
       for parent, parent_keys in pairs(node_rec.refs) do
+        if (parent == node) then
+          result = result + 1
+        end
         for key in pairs(parent_keys) do
-          if (parent[key] == node_rec.node) then
+          if (parent[key] == node) then
             result = result + 1
           end
-          if (key == node_rec.node) then
+          if (key == node) then
             result = result + 1
           end
         end
@@ -21,7 +25,6 @@ local may_print_inline =
     return
       not node_rec or
       (
-        node_rec and
         (get_num_refs(node_rec) <= 1) and
         not node_rec.part_of_cycle
       )
@@ -50,8 +53,8 @@ return
         not may_print_inline(node_rec) or
         (subtable == data)
       then
-        local ignored_values = {}
         if node_rec.part_of_cycle then
+          local ignored_values = {}
           for parent in pairs(node_rec.refs) do
             if not processed_tables[parent] then
               ignored_values[parent] = true
@@ -67,6 +70,16 @@ return
             name = name_slot,
             value = value_slot,
           }
+        --[[
+        print(
+          'not may_print_inline',
+          subtable,
+          get_num_refs(node_rec),
+          table_serializer.value_names[subtable],
+          subtable == data,
+          node_rec.part_of_cycle
+        )
+        --]]
       end
       processed_tables[subtable] = true
 
