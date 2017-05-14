@@ -10,4 +10,5 @@ return
     value_names = {},
     ignored_values = {},
     table_iterator = request('!.table.ordered_pass'),
+    install_node_handlers = request('install_node_handlers.readable'),
   }
