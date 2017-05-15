@@ -19,7 +19,7 @@ local compile =
     add(raw_compile(t, node_handlers))
   end
 
-node_handlers.local_assignment =
+node_handlers.local_definition =
   function(node)
     request_clean_line()
     add('local ')
@@ -28,10 +28,29 @@ node_handlers.local_assignment =
     compile(node.value)
   end
 
+local quote_string = request('!.formats.lua.save.quote_string')
+local is_identifier = request('!.formats.lua.load.is_identifier')
+
+node_handlers.index =
+  function(node)
+    if
+      (node.value.type == 'string') and
+      is_identifier(node.value.value)
+    then
+      add('.')
+      add(node.value.value)
+    else
+      add('[')
+      compile(node.value)
+      add(']')
+    end
+  end
+
 node_handlers.assignment =
   function(node)
     request_clean_line()
-    compile(node.name)
+    add(node.name)
+    compile(node.index)
     add(' = ')
     compile(node.value)
   end
