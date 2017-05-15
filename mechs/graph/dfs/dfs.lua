@@ -1,5 +1,6 @@
 -- DFS-pass of given graph
 
+
 return
   function(self, graph)
     assert_table(graph)
@@ -12,13 +13,18 @@ return
     local iterate_table_keys = self.also_visit_keys
     local nodes_status = self.nodes_status
 
+    local init_node_rec =
+      function(node)
+        nodes_status[node] = nodes_status[node] or {node = node}
+      end
+
     local time = 0
 
     local dfs_visit
 
     local process =
       function(parent, parent_key, node, deep)
-        nodes_status[node] = nodes_status[node] or {node = node}
+        init_node_rec(node)
         local node_rec = nodes_status[node]
         node_rec.refs = node_rec.refs or {}
         node_rec.refs[parent] = node_rec.refs[parent] or {}
@@ -27,7 +33,7 @@ return
           node_rec.parent = parent
           node_rec.parent_key = parent_key
           dfs_visit(node, deep + 1)
-        elseif (nodes_status[node].color == 'gray') then
+        elseif (node_rec.color == 'gray') then
           node_rec.part_of_cycle = true
           nodes_status[parent].part_of_cycle = true
         end
@@ -54,6 +60,6 @@ return
         handle_leave(node, node_rec, deep)
       end
 
-    nodes_status[graph] = {}
+    init_node_rec(graph)
     dfs_visit(graph, 0)
   end
