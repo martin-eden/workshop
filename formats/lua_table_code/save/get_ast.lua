@@ -31,6 +31,7 @@ local may_print_inline =
   end
 
 local get_assembly_order = request('!.mechs.graph.assembly_order')
+local name_giver = request('!.mechs.name_giver')
 
 return
   function(self, data)
@@ -47,65 +48,62 @@ return
     local processed_tables = {}
 
     for i = 1, #nodes_ordered do
-      local subtable = nodes_ordered[i]
-      local node_rec = node_recs[subtable]
+      local node = nodes_ordered[i]
+      local node_rec = node_recs[node]
       if
         not may_print_inline(node_rec) or
-        (subtable == data)
+        (node == data)
       then
+        local table_rec
         if node_rec.part_of_cycle then
-          local ignored_values = {}
-          for parent in pairs(node_rec.refs) do
-            if not processed_tables[parent] then
-              ignored_values[parent] = true
+          table_rec = {type = 'table'}
+          for k, v in table_serializer.table_iterator(node) do
+            local key_is_ok = not is_table(k) or processed_tables[k]
+            local value_is_ok = not is_table(v) or processed_tables[v]
+            if key_is_ok and value_is_ok then
+              table_rec[#table_rec + 1] =
+                {
+                  key = table_serializer:get_ast(k),
+                  value = table_serializer:get_ast(v),
+                }
             end
           end
-          table_serializer.ignored_values = ignored_values
+        else
+          table_rec = table_serializer:get_ast(node)
         end
-        local value_slot = table_serializer:get_ast(subtable)
-        local name_slot = table_serializer.value_names[subtable]
+        local node_name = name_giver:give_name(node)
         result[#result + 1] =
           {
-            type = 'local_assignment',
-            name = name_slot,
-            value = value_slot,
+            type = 'local_definition',
+            name = node_name,
+            value = table_rec,
           }
-        --[[
-        print(
-          'not may_print_inline',
-          subtable,
-          get_num_refs(node_rec),
-          table_serializer.value_names[subtable],
-          subtable == data,
-          node_rec.part_of_cycle
-        )
-        --]]
+        table_serializer.value_names[node] = node_name
       end
-      processed_tables[subtable] = true
+      processed_tables[node] = true
 
       if node_rec.part_of_cycle then
         -- Add links to a table we just processed:
         for parent, parent_keys in pairs(node_rec.refs) do
           if processed_tables[parent] then
             for parent_key in pairs(parent_keys) do
-              local key_name =
-                table_serializer.value_names[parent_key] or
-                tostring(parent_key)
-              local name_slot =
-                {
-                  type = 'name',
-                  value =
-                    {
-                      table_serializer.value_names[parent],
-                      '[', key_name, ']',
-                    }
-                }
-              local value_slot = table_serializer.value_names[subtable]
+              local key_slot
+              local key_name = table_serializer.value_names[parent_key]
+              if key_name then
+                key_slot = {type = 'name', value = key_name}
+              else
+                key_slot = {type = type(parent_key), value = parent_key}
+              end
               result[#result + 1] =
                 {
                   type = 'assignment',
-                  name = name_slot,
-                  value = value_slot,
+                  name = table_serializer.value_names[parent],
+                  index =
+                    {
+                      type = 'index',
+                      value = key_slot,
+                    },
+                  value = table_serializer.value_names[node],
                 }
             end
           end
