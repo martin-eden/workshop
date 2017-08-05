@@ -1,0 +1,37 @@
+Double-length version of MD4. This alorithm variation from RFC1186.
+(Looks like Ronald Rivest likes to place two spaces after period.)
+
+---
+MD4 Message Digest Algorithm, RFC 1186, 1990-10
+
+
+
+4.  Extensions
+
+   If more than 128 bits of output are required, then the following
+   procedure is recommended to obtain a 256-bit output.  (There is no
+   provision made for obtaining more than 256 bits.)
+
+   Two copies of MD4 are run in parallel over the input.  The first copy
+   is standard as described above.  The second copy is modified as
+   follows.
+
+   The initial state of the second copy is:
+                    word A:    00 11 22 33
+                    word B:    44 55 66 77
+                    word C:    88 99 aa bb
+                    word D:    cc dd ee ff
+
+   The magic constants in rounds 2 and 3 for the second copy of MD4 are
+   changed from sqrt(2) and sqrt(3) to cuberoot(2) and cuberoot(3):
+
+                                    Octal           Hex
+            Round 2 constant        012050505746    50a28be6
+            Round 3 constant        013423350444    5c4dd124
+
+   Finally, after every 16-word block is processed (including the last
+   block), the values of the A registers in the two copies are
+   exchanged.
+
+   The final message digest is obtaining by appending the result of the
+   second copy of MD4 to the end of the result of the first copy of MD4.
