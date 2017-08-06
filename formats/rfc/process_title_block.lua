@@ -1,5 +1,4 @@
-local trim_head_spaces = request('!.string.trim_head_spaces')
-local trim_tail_spaces = request('!.string.trim_tail_spaces')
+local trim = request('!.funcs.string.trim')
 
 return
   function(block, result)
@@ -7,7 +6,7 @@ return
     if (#block > 0) then
       title_str = {}
       for i = 1, #block do
-        title_str[i] = trim_head_spaces(trim_tail_spaces(block[i]))
+        title_str[i] = trim(block[i])
       end
       title_str = table.concat(title_str, ' ')
     end
