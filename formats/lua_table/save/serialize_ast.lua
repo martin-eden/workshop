@@ -1,4 +1,4 @@
-local compile = request('!.mechs.compile')
+local compile = request('!.funcs.struc.compile')
 
 return
   function(self, ast)

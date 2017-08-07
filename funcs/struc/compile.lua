@@ -1,4 +1,4 @@
-local unfold = request('^.table.unfold')
+local unfold = request('!.table.unfold')
 
 return
   function(t, node_handlers)
