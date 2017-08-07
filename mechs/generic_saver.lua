@@ -1,4 +1,4 @@
-local compile = request('compile')
+local compile = request('!.funcs.struc.compile')
 
 return
   function(struc, ...)

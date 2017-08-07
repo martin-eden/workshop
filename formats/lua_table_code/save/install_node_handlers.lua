@@ -12,7 +12,7 @@ local request_clean_line =
     text_block:request_clean_line()
   end
 
-local raw_compile = request('!.mechs.compile')
+local raw_compile = request('!.funcs.struc.compile')
 
 local compile =
   function(t)
