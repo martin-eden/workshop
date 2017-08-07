@@ -1,10 +1,14 @@
-local split_string = request('^.string.split')
+--[[
+  Returns a list of filenames for used modules.
 
-local get_paths =
-  function()
-    local result = split_string(package.path, ';')
-    return result
-  end
+  Notes
+    * There is not always a file name for module.
+    * There is not always we can determine file name for module.
+
+  Uses _G.package.loaded.
+]]
+
+local get_module_location = request('!.funcs.system.get_module_location')
 
 local get_module_names =
   function()
@@ -15,21 +19,12 @@ local get_module_names =
     return result
   end
 
-local file_exists = request('^.file.exists')
-
 return
   function()
     local result = {}
-    local paths = get_paths()
     local modules = get_module_names()
     for i = 1, #modules do
-      local aligned_module_name = modules[i]:gsub('%.', '/')
-      for j = 1, #paths do
-        local possible_script_name = paths[j]:gsub('%?', aligned_module_name)
-        if file_exists(possible_script_name) then
-          result[#result + 1] = possible_script_name
-        end
-      end
+      result[#result + 1] = get_module_location(modules[i])
     end
     return result
   end
