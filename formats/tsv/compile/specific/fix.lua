@@ -1,4 +1,4 @@
-local quote_regexp = request('^.^.^.lua.transform.quote_regexp')
+local quote_regexp = request('!.funcs.lua.regexps.quote')
 
 return
   function(self)
