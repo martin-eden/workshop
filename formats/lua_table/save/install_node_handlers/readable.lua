@@ -22,7 +22,7 @@ local dec_indent =
 
 local node_handlers = {}
 
-local raw_compile = request('!.funcs.struc.compile')
+local raw_compile = request('!.struc.compile')
 
 local compile =
   function(t)
