@@ -1,4 +1,4 @@
-local print_msg_with_time = request('!.system.print_msg_with_time')
+local print_msg_with_time = request('!.frontend.text.print_msg_with_time')
 
 return
   function(self, s)
