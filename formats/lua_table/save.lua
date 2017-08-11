@@ -3,7 +3,7 @@
 -- Not suitable for tables with cross-links in keys or values.
 
 local c_table_serializer = request('save.interface')
-local compile = request('!.funcs.struc.compile')
+local compile = request('!.struc.compile')
 
 return
   function(t, options)
