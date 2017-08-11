@@ -4,7 +4,7 @@
   Input: <self> <file_name>
 ]]
 
-local quote_regexp = request('!.funcs.lua.regexp.quote')
+local quote_regexp = request('!.lua.regexp.quote')
 
 return
   function(self, file_name)
