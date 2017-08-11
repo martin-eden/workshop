@@ -1,4 +1,4 @@
-local trim = request('!.funcs.string.trim')
+local trim = request('!.string.trim')
 
 return
   function(self)
