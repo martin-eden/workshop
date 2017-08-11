@@ -1,4 +1,4 @@
-local represent_time = request('^.number.represent_time')
+local represent_time = request('!.number.represent_time')
 
 local last_time
 
