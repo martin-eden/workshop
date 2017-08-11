@@ -1,3 +1,16 @@
+--[[
+  Save table to file as lua code.
+
+  Input: <file_name> <table>
+  Output: none
+
+  Notes
+
+    Supports cross-linked tables.
+
+    Lua code is indented and wrapped at right margin. So printable.
+]]
+
 local table_to_str = request('!.formats.lua_table_code.save')
 
 local get_ast = request('!.formats.lua.load')
