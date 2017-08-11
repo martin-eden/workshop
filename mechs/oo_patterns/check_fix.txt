@@ -1,34 +1,34 @@
-There is general implementation decision I have to make
-and wish to make it optional.
+There is general implementation decision I have to make and wish to
+make it optional.
 
 Decision whether code should trust to given data.
 
-Suppose huge table is given to serialize() function. Well-behaved
-code should check all values of this table and decide whether it can
+Suppose huge table is given to serialize() function. Well-behaved code
+should check all values of this table and decide whether it can
 serialize it or not. This consumes time.
 
-I may export verify() function in hope that outer code will
-call it before calling serialize(). This will save time in
-cases where tables passed to serizalize() are always correct.
+I may export verify() function in hope that outer code will call it
+before calling serialize(). This will save time in cases where tables
+passed to serialize() are always correct.
 
-So outer call now should call verify() if it is not absolutely
-sure that data is correct. But if they are (data is correct and
-verify() not called) - serialize will work faster and not calls
-code from outer semantic level.
+So outer call now should call verify() if it is not absolutely sure
+that data is correct. But if they are (data is correct and verify()
+not called) - serialize will work faster and not calls code from outer
+semantic level.
 
 I'm understand that make additional call is not pleasant for casual
-user who just want one function like do_it!(). And than speed is
-crucial for industrial-grade users who is ready to make now matter how
-complex prefix code for final processing time decrease.
+user who just wants one function like do_it!(). And than speed is
+crucial for industrial-grade users who is ready to call complex prefix
+code for final processing time decrease.
 
 So solution is hybrid.
 
-verify() function is available as stand-alone method. Also
-.do_verify boolean field exported. (And this default value is
-true). In serialize() if .do_verify is set, verify() is called.
+verify() function is available as stand-alone method. Also .do_verify
+boolean field exported. (And this default value is true). In
+serialize() if .do_verify is set, verify() is called.
 
-This worsens general class footprint and adds side logic to
-serizalize() but I consider it as acceptable compromise.
+This adds some strange field to class interface and adds side logic
+to serialize() but I consider it as acceptable compromise.
 
 
 The story repeats in case when verify() fails.
@@ -38,19 +38,19 @@ values. So adjust() method is exported.
 
 It _changes_ given table by removing or changing "bad" values.
 
-Also .do_adjust boolean field exported (default value is true).
+Similarly .do_adjust boolean field exported (default value is true).
 
-So in casual-user case when verify() fails it calls adjust()
+So for casual-user case when verify() fails it calls adjust()
 (which changes data) and then serializes data, not disturbing
 caller with problems.
 
-In production-user case both .do_verify and .do_adjust set to false.
-Outer code should decide call verify() or not. If verify() fails
-outer code should decide who will fix problem. It may furter call
-adjust() and problem will be fixed from serizalier's point of view.
+In production use case both .do_verify and .do_adjust set to false.
+Outer code should decide call verify() or not. If verify() fails,
+outer code should decide who will fix problem. It may further call
+adjust() and problem will be fixed from serializer's point of view.
 Finally outer code calls serialize().
 
 
-This way field checks and corresponding calls logic becomes
-parasitic for every serialize() implementation. So it is represented
-as stand-alone code chunk.
+This way field checks and corresponding calls logic becomes parasitic
+for every serialize() implementation. So it is represented as stand-
+alone code chunk.
