@@ -1,6 +1,6 @@
 return
   function(self, f)
-    local f_type = f:type()
+    local f_type = io.type(f)
     if (f_type ~= 'file') then
       error(
         ('Wrong <f> type: "%s" while "%s" awaited.'):format(f_type, 'file'), 2
