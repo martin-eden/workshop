@@ -6,8 +6,10 @@
     * Uses _G.package.path.
     * Not all cases can be resolved: module may be loaded but we can't
       figure file's name. This is possible at least when
-        * require() may be overriden to custom function
-        * module is loaded via custom function in package.searchers[]
+        * direct writing to <package.loaded>
+        * <require> overriden with custom function (in this case record
+          for module in <package.loaded> may be absent)
+        * module is loaded via custom function in <package.searchers>
 ]]
 
 local split = request('!.string.split')

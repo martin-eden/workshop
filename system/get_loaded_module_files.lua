@@ -8,7 +8,7 @@
   Uses _G.package.loaded.
 ]]
 
-local get_module_location = request('!.funcs.system.get_module_location')
+local get_module_location = request('get_module_location')
 
 local get_module_names =
   function()
