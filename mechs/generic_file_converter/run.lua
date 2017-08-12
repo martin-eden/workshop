@@ -1,14 +1,36 @@
+local file_size = request('!.file.get_size')
+local represent_size = request('!.number.represent_size')
+
 return
   function(self)
-    local data_str = self:load()
-    if data_str then
-      local parse_result = self:parse(data_str)
+    self:say(
+      ('Loading from "%s" [%s].'):format(
+        self.f_in_name,
+        represent_size(file_size(self.f_in_name))
+      )
+    )
+    local data = self.load(self.f_in_name)
+    if data then
+      self:say('Parsing.')
+      local parse_result = self.parse(data)
       if parse_result then
-        local compile_result = self:compile(parse_result)
+        self:say('Compiling.')
+        local compile_result = self.compile(parse_result)
         if compile_result then
-          self:save(compile_result)
+          assert_string(compile_result)
+          self:say(
+            ('Saving to "%s" [%s].'):format(
+              self.f_out_name,
+              represent_size(#compile_result)
+            )
+          )
+          self.save(self.f_out_name, compile_result)
+        else
+          self:say('Compile failed.')
         end
+      else
+        self:say('Parse failed.')
       end
     end
-    self:finish()
+    self:say('')
   end
