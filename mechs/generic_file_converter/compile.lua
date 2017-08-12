@@ -1,11 +1,10 @@
+local table_to_str = request('!.formats.lua_table_code.save')
+
 return
-  function(self, parse_result)
-    self:say('Compiling.')
-    local result = self.save_func(parse_result)
-    if not result then
-      self:say('Compile failed.')
+  function(t)
+    if is_table(t) then
+      return table_to_str(t)
     else
-      assert_string(result)
+      return t
     end
-    return result
   end
