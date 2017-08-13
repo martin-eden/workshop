@@ -25,7 +25,7 @@ return populate_outer
 
 --[[
   * We populate only leaf nodes.
-  * For all records we remove data  offsets relating to input stream.
+  * For all records we remove data offsets related to input stream.
 
     This is because
       * we assume that input stream is no longer accessible in
