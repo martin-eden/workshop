@@ -9,7 +9,7 @@ return
     load = request('!.file.text_file_as_string'),
     parse = request('!.formats.lua_table_code.load'),
     compile = request('compile'),
-    save = request('save'),
+    save = request('!.string.save_to_file'),
 
     say = request('say'),
   }

@@ -21,16 +21,9 @@ local format_code =
     return get_code(get_ast(s))
   end
 
-local safe_open = request('!.file.safe_open')
-
-local save_to =
-  function(fname, s)
-    local f = safe_open(fname, 'w')
-    f:write(s)
-    f:close()
-  end
+local save_to_file = request('!.string.save_to_file')
 
 return
   function(file_name, t)
-    save_to(file_name, format_code(table_to_str(t)))
+    save_to_file(file_name, format_code(table_to_str(t)))
   end
