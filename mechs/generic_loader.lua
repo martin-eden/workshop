@@ -1,4 +1,6 @@
 local parse = request('parser.parse')
+
+-- local c_string_stream = request('!.mechs.streams.mergeable.file.interface')
 local c_string_stream = request('!.mechs.streams.mergeable.string.interface')
 
 -- local profiler = request('!.system.profiler')
