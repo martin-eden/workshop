@@ -28,7 +28,7 @@ local local_file_header =
     {name = 'additional_data_length', store('add_data_len', 2)},
     {name = 'filename', locate_rel('filename_len')},
     {name = 'additional_data', locate_rel('add_data_len')},
-    {name = 'data', load_data},
+    {_name = 'data', load_data},
     cho(
       is_not(bit_3_is_set),
       {bit_3_is_set, data_descriptor}
