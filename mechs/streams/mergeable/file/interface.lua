@@ -12,6 +12,7 @@ return
       get_length = request('get_length'),
       -- extensions:
       match_string = request('match_string'),
+      match_regexp = request('match_regexp'),
       -- internal:
       f = nil,
       original_init = original_init,
