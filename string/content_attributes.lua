@@ -20,7 +20,7 @@ local has_double_quotes =
 
 local is_nonascii =
   function(s)
-    return s:find('[^%w%s_]')
+    return s:find('[^%w%s_%p]')
   end
 
 return
