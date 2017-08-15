@@ -10,5 +10,7 @@ return
       {
         zip64 = '\x01\x00',
         ntfs = '\x0A\x00',
+        infozip_unix_extra = 'ux',
+        infozip_timestamp = 'UT',
       }
   }

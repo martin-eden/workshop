@@ -4,6 +4,30 @@ return
   function(self, data)
     assert(data ~= '')
 
+    local id_parsers =
+      {
+        {
+          signature = self.signatures.additional_data.ntfs,
+          hive = 'ntfs',
+          parser = self.parse_ntfs_add_data,
+        },
+        {
+          signature = self.signatures.additional_data.zip64,
+          hive = 'zip64',
+          parser = self.parse_zip64_add_data,
+        },
+        {
+          signature = self.signatures.additional_data.infozip_unix_extra,
+          hive = 'infozip_unix_extra',
+          parser = self.parse_infozip_unix_extra,
+        },
+        {
+          signature = self.signatures.additional_data.infozip_timestamp,
+          hive = 'infozip_timestamp',
+          parser = self.parse_infozip_timestamp,
+        },
+      }
+
     local result = {}
     local id, part_data
     local start_pos = 1
@@ -21,14 +45,13 @@ return
 
     for i = #result, 1, -1 do
       local rec = result[i]
-      if (rec.id == self.signatures.additional_data.ntfs) then
-        result.ntfs = self:parse_ntfs_add_data(rec.data)
-        result.ntfs.id = rec.id
-        table.remove(result, i)
-      elseif (rec.id == self.signatures.additional_data.zip64) then
-        result.zip64 = self:parse_zip64_add_data(rec.data)
-        result.zip64.id = rec.id
-        table.remove(result, i)
+      for j = 1, #id_parsers do
+        local parser_rec = id_parsers[j]
+        if (rec.id == parser_rec.signature) then
+          result[parser_rec.hive] = parser_rec.parser(self, rec.data)
+          result[parser_rec.hive].id = rec.id
+          table.remove(result, i)
+        end
       end
     end
 
