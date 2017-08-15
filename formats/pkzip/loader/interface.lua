@@ -15,6 +15,8 @@ return
     parse_ntfs_add_data = request('parse.ntfs_add_data'),
     parse_ntfs_mtimes = request('parse.ntfs_mtimes'),
     parse_zip64_add_data = request('parse.zip64_add_data'),
+    parse_infozip_unix_extra = request('parse.infozip_unix_extra'),
+    parse_infozip_timestamp = request('parse.infozip_timestamp'),
     parse_local_file_header = request('parse.local_file_header'),
     parse_post_file_rec = request('parse.post_file_rec'),
   }
