@@ -1,0 +1,37 @@
+Salsa20/20 stream cipher
+
+This is a 256-bit stream cipher. Uses simple operations (ROL, ADD, XOR).
+Daniel Bernstein wrote nice paper "The Salsa20 family of stream ciphers"
+describing it. (Unlike Ronald's Rivest paper about MD5.)
+
+"/20" means 20 rounds. Each round means XOR-ing input with output
+of hash function. Hash function depends on key, salt (nonce) and
+block number. It does not depend on input stream. So encryption
+and decryption are same. And it is possible to encrypt/decrypt
+stream from random position.
+
+This may be thought as pseudorandom generator for one-time pad.
+
+2017-08-16
+
+
+Side thoughts
+
+  * It expands 32-byte key to 64-byte block. Anyway there are still
+    2^(32-byte) unique blocks.
+
+    * TEA shrinks 16-byte key to 8-byte block. That is worse.
+
+  * CBC mode. Yeah, random access is nice. But for two consecutive
+    blocks, their <block_num> differs only by one bit in every second
+    case. So generated blocks grows from two blocks with 1-bit
+    difference.
+
+  * Addition of fixed values at end. That original block added to
+    result at end. This intended to prevent reversing computations.
+    Idea is right. But you should add more complex values (as in
+    MD/SHA family, where results are chained).
+
+    Currently 32-bytes of 64-byte block is known. So I consider
+    this as a right but weak step.
+
