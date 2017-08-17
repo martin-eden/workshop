@@ -1,6 +1,6 @@
 -- This function is also used in MD4-extended, so it is made standalone
 
-local rol = request('!.mechs.bin_ops.rol')
+local rol = request('!.bare.bin_ops.rol32')
 
 return
   function(slots, funcs, msg_map, data, salt, shifts)
