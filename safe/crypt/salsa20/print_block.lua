@@ -1,5 +1,5 @@
 return
-  function(self, block, annotation)
+  function(block, annotation)
     annotation = annotation or ''
     print(('-- %s'):format(annotation))
     for i = 1, 4 do
