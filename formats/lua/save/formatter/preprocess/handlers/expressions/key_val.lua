@@ -1,8 +1,8 @@
 return
   function(self, node)
     local key, value
-    if (#node == 2) then
-      key, value = node[1], node[2]
+    if (#node == 3) then
+      key, value = node[1], node[3]
     else
       value = node[1]
     end

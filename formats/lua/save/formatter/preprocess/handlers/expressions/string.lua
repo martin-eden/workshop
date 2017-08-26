@@ -4,6 +4,6 @@ return
   function(self, node)
     return
       {
-        value = unquote(node.value),
+        value = unquote(node[1]),
       }
   end

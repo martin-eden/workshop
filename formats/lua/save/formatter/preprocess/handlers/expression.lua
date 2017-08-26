@@ -1,3 +1,19 @@
+--[[
+  opt_rep <un_op>
+  cho(
+          <vararg>
+          <type_nil>
+          <type_boolean>
+          <type_number>
+          <type_string>
+          <type_table>
+          <type_function>
+     )    <var_link>
+  opt_rep
+          <bin_op>
+          <expression>
+]]
+
 return
   function(self, node)
     local result = {}
