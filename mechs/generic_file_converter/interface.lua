@@ -12,4 +12,6 @@ return
     save = request('!.string.save_to_file'),
 
     say = request('say'),
+    get_state_str = request('get_state_str'),
+    error = request('error'),
   }
