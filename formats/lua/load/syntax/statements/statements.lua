@@ -1,16 +1,12 @@
 local handy = request('!.mechs.processor.handy')
 
 local return_statement = request('return_statement')
-local opt_spc = request('^.words.opt_spc')
 
 return
   {
-    opt_spc,
-    {
-      name = 'statements',
-      handy.opt(handy.list('>statement', opt_spc)),
-      handy.opt(opt_spc, return_statement),
-    },
+    name = 'statements',
+    handy.opt_rep('>statement'),
+    handy.opt(return_statement),
   }
 
 --[[

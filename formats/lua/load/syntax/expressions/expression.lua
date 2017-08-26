@@ -9,7 +9,7 @@ local un_op =
   {
     name = 'un_op',
     handy.cho(
-      match_regexp('[%-%#%~]'),
+      {opt_spc, match_regexp('[%-%#%~]')},
       word('not')
     ),
   }
@@ -17,6 +17,7 @@ local un_op =
 local bin_op =
   {
     name = 'bin_op',
+    opt_spc,
     handy.cho(
       '//',
       '==',
@@ -45,8 +46,7 @@ return
   {
     name = 'expression',
     inner_name = 'expression',
-    handy.opt(handy.list(un_op, opt_spc)),
-    opt_spc,
+    handy.opt_rep(un_op),
     handy.cho(
       vararg,
       type_nil,
@@ -58,7 +58,7 @@ return
       var_link
     ),
     handy.opt_rep(
-      opt_spc, bin_op,
-      opt_spc, '>expression'
+      bin_op,
+      '>expression'
     )
   }

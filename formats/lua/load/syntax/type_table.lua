@@ -8,14 +8,11 @@ local key_val =
   {
     name = 'key_val',
     handy.opt(
-      {
-        handy.cho(
-          bracket_expr,
-          name
-        ),
-        opt_spc, '=',
-        opt_spc,
-      }
+      handy.cho(
+        bracket_expr,
+        name
+      ),
+      opt_spc, '='
     ),
     '>expression',
   }
@@ -28,9 +25,9 @@ local rec_sep =
 return
   {
     name = 'table',
-    '{',
+    opt_spc, '{',
     handy.opt(
-      handy.list({opt_spc, key_val}, rec_sep),
+      handy.list(key_val, rec_sep),
       handy.opt(rec_sep)
     ),
     opt_spc, '}',
