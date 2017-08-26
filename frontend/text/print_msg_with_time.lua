@@ -7,8 +7,9 @@ return
     local cur_time = os.clock()
     if last_time then
       local time_passed = represent_time(cur_time - last_time)
-      io.stderr:write((' [%s]\n'):format(time_passed))
+      io.stdout:write((' [%s]\n'):format(time_passed))
     end
-    io.stderr:write(s)
+    io.stdout:write(s)
+    io.stdout:flush()
     last_time = cur_time
   end
