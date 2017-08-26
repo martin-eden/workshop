@@ -1,3 +1,15 @@
+--[[
+  cho
+    <name>
+    <par_expr>
+  opt_rep
+    cho
+      <dot_name>
+      <bracket_expr>
+      {<colon_name>, <func_args>}
+      <func_args>
+]]
+
 return
   function(self, node)
     local result

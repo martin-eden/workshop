@@ -1,15 +1,24 @@
+--[[
+        "function"
+        <dot_list>
+  opt   <colon_name>
+        <function_params>
+        <statements>
+        "end"
+]]
+
 return
   function(self, node)
     local result = {}
 
-    local dotted_list = node[1]
+    local dotted_list = node[2]
     local colon_name
     local idx_params
-    if node[2] and (node[2].type == 'colon_name') then
-      colon_name = node[2]
-      idx_params = 3
+    if node[3] and (node[3].type == 'colon_name') then
+      colon_name = node[3]
+      idx_params = 4
     else
-      idx_params = 2
+      idx_params = 3
     end
 
     local params = self:process_node(node[idx_params])

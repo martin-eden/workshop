@@ -1,3 +1,10 @@
+--[[
+          <if_part>
+  opt_rep <elseif_part>
+  opt     <else_part>
+          "end"
+]]
+
 return
   function(self, node)
     local result = {}

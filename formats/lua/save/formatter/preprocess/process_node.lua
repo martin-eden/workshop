@@ -17,11 +17,7 @@ return
         result.type = node.type
       end
     else
-      result =
-        {
-          type = node.type,
-          value = node.value,
-        }
+      result = {type = node.type, value = node[1]}
     end
 
     return result
