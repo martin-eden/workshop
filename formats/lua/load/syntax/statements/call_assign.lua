@@ -8,9 +8,9 @@ return
   {
     name = 'call_assign',
     var_link,
-    opt_spc,
     handy.opt(
       {
+        opt_spc,
         handy.opt(
           {
             ',',
