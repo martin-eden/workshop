@@ -5,7 +5,7 @@ return
       output_stream:write(
         {
           start = init_in_stream_pos,
-          len = input_stream:get_position() - init_in_stream_pos,
+          len = len,
           type = rule_name,
         }
       )
