@@ -1,15 +1,18 @@
 --[[
   This is lua code formatter.
 
-  It receives adjusted parsed code and produces some text result
-  of it.
+  It receives table with parsed syntax, preprocess it and produces
+  some text result.
 ]]
 
+local preprocess = request('formatter.preprocess')
 local formatter_class = request('formatter.interface')
 
 return
   function(data_struc, options)
     assert_table(data_struc)
+    data_struc = preprocess(data_struc)
+
     local formatter = new(formatter_class, options)
     formatter:init()
     local is_ok = formatter:process_node(data_struc)
