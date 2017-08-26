@@ -13,7 +13,7 @@
   Such work is done by this code.
 ]]
 
-local transformer = request('formatter.interface')
+local transformer = request('preprocess.interface')
 
 return
   function(data_struc)
