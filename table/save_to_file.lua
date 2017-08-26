@@ -13,7 +13,7 @@
 
 local table_to_str = request('!.formats.lua_table_code.save')
 
-local get_ast = request('!.formats.lua.load')
+local get_ast = request('!.lua.code.get_ast')
 local get_code = request('!.formats.lua.save')
 
 local format_code =
