@@ -18,6 +18,7 @@ return
 
     assignment = request('statements.assignment'),
     break_statement = request('statements.break_statement'),
+    comment = request('statements.comment'),
     goto_statement = request('statements.goto_statement'),
     label_statement = request('statements.label_statement'),
     local_assignment = request('statements.local_assignment'),
