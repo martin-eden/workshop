@@ -6,23 +6,19 @@ local name = request('^.words.name')
 local statements = request('statements')
 
 return
-  handy.interleave(
-    {
-      name = 'numeric_for_block',
-      word('for'),
-      name,
-      '=',
-      '>expression',
-      ',',
-      '>expression',
-      handy.opt(
-        ',',
-        opt_spc,
-        '>expression'
-      ),
-      word('do'),
-      statements,
-      word('end'),
-    },
-    opt_spc
-  )
+  {
+    name = 'numeric_for_block',
+    word('for'),
+    name,
+    opt_spc, '=',
+    '>expression',
+    opt_spc, ',',
+    '>expression',
+    handy.opt(
+      opt_spc, ',',
+      '>expression'
+    ),
+    word('do'),
+    statements,
+    word('end'),
+  }

@@ -10,14 +10,13 @@ return
   {
     name = 'local_statement',
     word('local'),
-    opt_spc,
     handy.cho(
       {
         name = 'local_assignment',
         name_list,
         handy.opt(
           opt_spc, '=',
-          opt_spc, expr_list
+          expr_list
         )
       },
       named_function

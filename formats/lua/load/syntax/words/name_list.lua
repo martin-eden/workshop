@@ -6,5 +6,5 @@ local opt_spc = request('opt_spc')
 return
   {
     name = 'name_list',
-    handy.list({opt_spc, name}, {opt_spc, ','})
+    handy.list(name, {opt_spc, ','})
   }

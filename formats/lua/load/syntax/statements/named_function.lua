@@ -11,14 +11,14 @@ return
     word('function'),
     {
       name = 'dot_list',
-      handy.list({opt_spc, name}, {opt_spc, '.'}),
+      handy.list(name, {opt_spc, '.'}),
     },
     handy.opt(
       {
         name = 'colon_name',
         opt_spc, ':',
-        opt_spc, name
+        name
       }
     ),
-    opt_spc, function_body,
+    function_body,
   }

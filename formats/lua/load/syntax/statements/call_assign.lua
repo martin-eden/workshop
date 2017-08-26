@@ -7,19 +7,9 @@ local expr_list = request('^.expressions.expr_list')
 return
   {
     name = 'call_assign',
-    var_link,
+    handy.list(var_link, {opt_spc, ','}),
     handy.opt(
-      {
-        opt_spc,
-        handy.opt(
-          {
-            ',',
-            handy.list({opt_spc, var_link}, {opt_spc, ','}),
-            opt_spc
-          }
-        ),
-        '=',
-        opt_spc, expr_list
-      }
+      opt_spc, '=',
+      expr_list
     ),
   }

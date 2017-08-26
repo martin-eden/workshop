@@ -7,29 +7,27 @@ local statements = request('statements')
 local opt_spc = request('^.words.opt_spc')
 
 local params_list =
-  {
-    handy.cho(
-      vararg,
-      {
-        name_list,
-        handy.opt(
-          opt_spc, ',',
-          opt_spc, vararg
-        )
-      }
-    )
-  }
+  handy.cho(
+    vararg,
+    {
+      name_list,
+      handy.opt(
+        opt_spc, ',',
+        vararg
+      ),
+    }
+  )
 
 return
   {
     {
       name = 'function_params',
-      '(',
-      opt_spc, handy.opt(params_list),
+      opt_spc, '(',
+      handy.opt(params_list),
       opt_spc, ')',
     },
     {
-      opt_spc, statements,
-      opt_spc, word('end'),
+      statements,
+      word('end'),
     }
   }

@@ -1,4 +1,5 @@
 local match_regexp = request('!.mechs.parser.handy').match_regexp
+local opt_spc = request('opt_spc')
 
 local keywords = request('^.^.keywords')
 local name_pattern = '^[_A-Za-z][_A-Za-z0-9]*'
@@ -17,4 +18,8 @@ local is_name =
     end
   end
 
-return {name = 'name', is_name}
+return
+  {
+    name = 'name',
+    opt_spc, is_name,
+  }
