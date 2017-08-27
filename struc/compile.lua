@@ -18,7 +18,7 @@ return
         if is_string(node) then
           result[#result + 1] = node
         elseif is_table(node) then
-          if node.type then
+          if node.type and node_handlers[node.type] then
             local node_handler = node_handlers[node.type]
             assert(node_handler, ('No handler found for type "%s".'):format(node.type))
             result[#result + 1] = node_handler(node)
