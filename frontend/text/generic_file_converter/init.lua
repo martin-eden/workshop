@@ -14,6 +14,10 @@ return
     end
 
     -- Test that <f_out_name> is writable:
-    local f_out = safe_open(self.f_out_name, 'w')
-    f_out:close()
+    local f_out = safe_open(self.f_out_name, 'w', true)
+    if not f_out then
+      self:error("Can't open output file for writing.")
+    else
+      f_out:close()
+    end
   end
