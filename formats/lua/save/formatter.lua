@@ -1,24 +1,17 @@
 --[[
   This is lua code formatter.
 
-  It receives table with parsed syntax, preprocess it and produces
-  some text result.
+  It receives table with parsed syntax and returns string with
+  formatted code.
 ]]
 
-local preprocess = request('formatter.preprocess')
 local formatter_class = request('formatter.interface')
 
 return
   function(data_struc, options)
-    assert_table(data_struc)
-    data_struc = preprocess(data_struc)
-
     local formatter = new(formatter_class, options)
+    formatter.data_struc = data_struc
     formatter:init()
-    local is_ok = formatter:process_node(data_struc)
-    local result = formatter.printer:get_text()
-    if not is_ok then
-      result = result .. '<no_valid_representation>'
-    end
-    return result
+    formatter:run()
+    return formatter:get_result()
   end

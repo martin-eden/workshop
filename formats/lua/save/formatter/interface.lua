@@ -3,10 +3,17 @@ return
     right_margin = 80,
     max_text_width = 68,
     indent_chunk = '  ',
-    printer = request('^.^.^.^.mechs.text_block.interface'),
-    state_keeper = request('state_keeper.interface'),
+    keep_comments = true,
+
+    data_struc = nil,
+    is_ok = true,
 
     init = request('init'),
+    run = request('run'),
+    get_result = request('get_result'),
+
+    printer = request('!.mechs.text_block.interface'),
+    state_keeper = request('state_keeper.interface'),
 
     handlers = request('handlers.interface'),
 
