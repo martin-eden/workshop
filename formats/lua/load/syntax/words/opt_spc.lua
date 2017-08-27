@@ -4,9 +4,12 @@ local match_regexp = request('!.mechs.parser.handy').match_regexp
 local comment = request('comment')
 
 return
-  handy.opt_rep(
-    handy.cho(
-      match_regexp('[ \t\n\r]+'),
-      comment
+  {
+    name = 'whitespace',
+    handy.opt_rep(
+      handy.cho(
+        match_regexp('[ \t\n\r]+'),
+        comment
+      )
     )
-  )
+  }
