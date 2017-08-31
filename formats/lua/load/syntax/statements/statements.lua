@@ -1,12 +1,14 @@
 local handy = request('!.mechs.processor.handy')
 
 local return_statement = request('return_statement')
+local opt_spc = request('^.words.opt_spc')
 
 return
   {
     name = 'statements',
     handy.opt_rep('>statement'),
     handy.opt(return_statement),
+    opt_spc,
   }
 
 --[[
@@ -21,4 +23,5 @@ return
 2016-08-04
 2016-08-16
 2016-09-21
+2017-08-28
 ]]
