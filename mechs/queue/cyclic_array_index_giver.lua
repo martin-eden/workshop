@@ -1,4 +1,21 @@
--- Cyclic array implementation.
+--[[
+  Cyclic array indexes implementations.
+
+  Old code. Unused.
+
+  This is/was one of base modules from my World of Warcraft lua
+  framework (~2014-05). Was used to keep debug messages.
+  Later it was reworked (~2016-07). But remained useless.
+
+  Idea with cursors was good. Also as idea with object-manager.
+  But there is no real need in ring buffer in Lua. Anyway
+  real implementation should store elements too, not just return
+  new indexes.
+
+  So I'll drop or rework this code someday.
+
+  2017-09-01
+]]
 
 local default_params =
   {
