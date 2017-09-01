@@ -12,6 +12,24 @@
   lua code that is compiled to function which is returned.
 ]]
 
+local matrix_cursor =
+  new(
+    request('!.mechs.matrix_coords.interface'),
+    {
+      num_columns = 4,
+      num_rows = 4,
+      index_base = 1,
+      rows_base = 0,
+      columns_base = 0,
+    }
+  )
+
+local coord_to_idx =
+  function(coord)
+    matrix_cursor:wrap_coords(coord)
+    return matrix_cursor:get_index(coord)
+  end
+
 local generate_initial_assignment =
   function()
     local result = {''}
@@ -32,21 +50,6 @@ local emit =
       format(cur, cur, sum_i, shift, sum_i, 32 - shift)
   end
 
-local coord_to_idx =
-  function(row, col)
-    while (row < 0) do
-      row = row + 4
-    end
-    row = row % 4
-    while (col < 0) do
-      col = col + 4
-    end
-    col = col % 4
-    local result = row * 4 + col
-    result = result + 1
-    return result
-  end
-
 local generate_main_cycle =
   function(shifts, num_dbl_rounds)
     local result = {''}
@@ -54,20 +57,32 @@ local generate_main_cycle =
     result[#result + 1] = '    local sum_1, sum_2, sum_3, sum_4'
     result[#result + 1] = ('    for i = 1, %d do'):format(num_dbl_rounds)
 
-    for i = 0, 3 do
-      for j = 0, 3 do
-        local cur = coord_to_idx(j + i + 1, i)
-        local prev = coord_to_idx(j + i, i)
-        local prev_prev = coord_to_idx(j + i - 1, i)
-        result[#result + 1] = emit(i + 1, cur, prev, prev_prev, shifts[j + 1])
+    do
+      local coord = {x = 1, y = 1}
+      local cur, prev, prev_prev
+      for i = 0, 3 do
+        coord.x = i
+        for j = 0, 3 do
+          coord.y = i + j + 1
+          cur = coord_to_idx(coord)
+          coord.y = coord.y - 1
+          prev = coord_to_idx(coord)
+          coord.y = coord.y - 1
+          prev_prev = coord_to_idx(coord)
+          result[#result + 1] = emit(i + 1, cur, prev, prev_prev, shifts[j + 1])
+        end
       end
-    end
-    for i = 0, 3 do
-      for j = 0, 3 do
-        local cur = coord_to_idx(i, i + j + 1)
-        local prev = coord_to_idx(i, i + j)
-        local prev_prev = coord_to_idx(i, i + j - 1)
-        result[#result + 1] = emit(i + 1, cur, prev, prev_prev, shifts[j + 1])
+      for i = 0, 3 do
+        coord.y = i
+        for j = 0, 3 do
+          coord.x = i + j + 1
+          cur = coord_to_idx(coord)
+          coord.x = coord.x - 1
+          prev = coord_to_idx(coord)
+          coord.x = coord.x - 1
+          prev_prev = coord_to_idx(coord)
+          result[#result + 1] = emit(i + 1, cur, prev, prev_prev, shifts[j + 1])
+        end
       end
     end
 
