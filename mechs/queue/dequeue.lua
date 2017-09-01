@@ -1,3 +1,7 @@
+--[[
+  Dequeue prototype. Old code. Unused - no real need.
+]]
+
 local interface =
   {
     add_first = add_first,
