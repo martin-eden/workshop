@@ -108,9 +108,6 @@ local generate_final_assignment =
 
 return
   function(shifts, num_dbl_rounds)
-    assert_table(shifts)
-    assert_integer(num_dbl_rounds)
-
     local result =
       ([[
 local result = {}
