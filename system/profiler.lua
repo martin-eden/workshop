@@ -1,3 +1,25 @@
+--[[
+  Q&D lua code profiler.
+
+  Prints to stdout(). Uses _G.debug.
+
+  Basic usage:
+
+    .start()
+    [...]
+    .stop()
+
+  start() options:
+    {
+      instructions_per_hook
+      print_interval
+      measure_interval
+      parent_offset
+    }
+
+  For additional info see "profiler.txt".
+]]
+
 local func_call_count = {}  -- [name] = {[line] = count, total_calls = count}
 
 local parent_offset = 0
