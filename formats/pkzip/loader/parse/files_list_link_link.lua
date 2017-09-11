@@ -1,5 +1,5 @@
 --[[
-  signature, 'PK\x06\x07'
+  signature, 4, 'PK\x06\x07'
   start_disk_number, 4
   directory_end_i64_offs, 8
   num_disks, 4

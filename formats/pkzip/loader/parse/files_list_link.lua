@@ -1,5 +1,5 @@
 --[[
-  signature, 'PK\x05\x06'
+  signature, 4, 'PK\x05\x06'
   current_disk_number, 2
   start_disk_number, 2
   num_entries_on_disk, 2
