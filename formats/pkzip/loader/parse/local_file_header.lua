@@ -1,5 +1,5 @@
 --[[
-  signature, 'PK\x03\x04'
+  signature, 4, 'PK\x03\x04'
   version_to_extract, 2
   bit_flag, 2
   compression_method, 2

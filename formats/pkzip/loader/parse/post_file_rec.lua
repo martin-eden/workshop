@@ -2,7 +2,7 @@
   In this great format, post-file record MAY contain 4-byte
   signature. Or maybe not. Looks like design was made by woman.
 
-  [signature, 'PK\x07\x08']
+  [signature, 4, 'PK\x07\x08']
   crc_32, 4
   compressed_size, 4
   original_size, 4

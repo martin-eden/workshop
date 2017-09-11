@@ -7,7 +7,7 @@ return
     --[[
       HackIt: Same thoughts as for [parse_additional_data] should
       be stated here. Technically <data> string may have several
-      chunks with same tag. But in wild (in 2017) only one possible
+      chunks with same tag. But in a wild (in 2017) only one possible
       tag and only one chunk. So data just pushed up to the parent
       level.
     ]]

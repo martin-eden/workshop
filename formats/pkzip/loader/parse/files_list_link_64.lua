@@ -1,5 +1,5 @@
 --[[
-  signature, 'PK\x06\x06'
+  signature, 4, 'PK\x06\x06'
   structure_size, 8
   version_made_by, 2
   version_to_extract, 2
