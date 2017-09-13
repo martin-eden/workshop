@@ -11,7 +11,6 @@
 
 local to_str = request('!.formats.lua_table_code.save')
 local assembly_order = request('!.mechs.graph.assembly_order')
-local pass_graph = request('!.mechs.graph.dfs')
 
 local get_num_refs =
   function(node_rec)
