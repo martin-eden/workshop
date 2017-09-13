@@ -24,16 +24,22 @@ local strip_updirs =
     return s:gsub('%.%./', '')
   end
 
-local get_loaded_module_files = request('^.^.system.get_loaded_module_files')
+local get_modules_dependencies = request('!.system.get_modules_dependencies')
+local get_module_location = request('!.system.get_module_location')
 
 local get_deploy_script =
-  function(module_files, deploy_dir)
+  function(modules, deploy_dir)
     deploy_dir = (deploy_dir or 'deploy/')
-
     directories_created = {}
-    local result = {}
-    local files = module_files or get_loaded_module_files()
+
+    local files = get_modules_dependencies(modules)
+    for i = 1, #files do
+      files[i] = get_module_location(files[i])
+    end
     table.sort(files)
+
+    local result = {}
+
     for i = 1, #files do
       local source = files[i]
       local dest = deploy_dir .. strip_updirs(files[i])
@@ -47,14 +53,14 @@ local get_deploy_script =
   end
 
 local save_deploy_script =
-  function(module_files, script_name, deploy_dir)
+  function(modules, script_name, deploy_dir)
     script_name = script_name or 'deploy.sh'
     local f, err_msg = io.open(script_name, 'w+')
     if not f then
       error(err_msg)
     end
     f:write('#!/bin/bash', '\n')
-    f:write(get_deploy_script(module_files, deploy_dir))
+    f:write(get_deploy_script(modules, deploy_dir))
     f:close()
   end
 
