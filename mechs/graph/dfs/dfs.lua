@@ -1,17 +1,13 @@
 -- DFS-pass of given graph
 
-
 return
   function(self, graph)
-    assert_table(graph)
-
     self.nodes_status = {}
 
     local handle_discovery = self.handle_discovery
     local handle_leave = self.handle_leave
-    local table_iterator = self.table_iterator
-    local iterate_table_keys = self.also_visit_keys
     local nodes_status = self.nodes_status
+    local get_children = self.get_children
 
     local init_node_rec =
       function(node)
@@ -46,13 +42,8 @@ return
         node_rec.discovery_time = time
         node_rec.color = 'gray'
         handle_discovery(node, node_rec, deep)
-        for k, v in table_iterator(node) do
-          if is_table(v) then
-            process(node, k, v, deep)
-          end
-          if is_table(k) and iterate_table_keys then
-            process(node, k, k, deep)
-          end
+        for _, child in ipairs(self:get_children(node)) do
+          process(node, child.key, child.value, deep)
         end
         time = time + 1
         node_rec.color = 'black'
