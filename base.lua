@@ -129,23 +129,32 @@ local add_dependency =
 
 local base_prefix = split_name((...))
 
-local request =
+local get_require_name =
   function(qualified_name)
     local is_absolute_name = (qualified_name:sub(1, 2) == '!.')
     if is_absolute_name then
       qualified_name = qualified_name:sub(3)
     end
     local prefix, name = split_name(qualified_name)
-    local src_name = get_caller_name()
     local caller_prefix =
       is_absolute_name and base_prefix or get_caller_prefix()
     prefix = unite_prefixes(caller_prefix, prefix)
+    return prefix .. name, prefix, name
+  end
+
+local request =
+  function(qualified_name)
+    local src_name = get_caller_name()
+
+    local require_name, prefix, name = get_require_name(qualified_name)
+
     push(prefix, name)
     local dest_name = get_caller_name()
     add_dependency(src_name, dest_name)
-    local require_name = prefix .. name
+
     local results = table.pack(require(require_name))
     pop()
+
     return table.unpack(results)
   end
 
@@ -155,3 +164,4 @@ if not _G.request then
 end
 
 _G.new = request(base_prefix .. 'table.new')
+_G.get_require_name = get_require_name
