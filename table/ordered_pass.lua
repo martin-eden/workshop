@@ -1,5 +1,4 @@
 local default_comparator = request('ordered_pass.default_comparator')
-local extract_keys = request('extract_keys')
 local to_key_val = request('to_key_val')
 
 -- Sort <t> and return iterator function to pass that sorted <t>
