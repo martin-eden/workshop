@@ -151,7 +151,6 @@ local request =
     push(prefix, name)
     local dest_name = get_caller_name()
     add_dependency(src_name, dest_name)
-
     local results = table.pack(require(require_name))
     pop()
 
@@ -161,7 +160,8 @@ local request =
 if not _G.request then
   _G.request = request
   _G.dependencies = dependencies
+  _G.get_require_name = get_require_name
+  push('', 'base')
+  _G.new = request('table.new')
+  pop()
 end
-
-_G.new = request(base_prefix .. 'table.new')
-_G.get_require_name = get_require_name
