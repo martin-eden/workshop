@@ -14,14 +14,14 @@
 ]]
 local get_children
 do
-  local extract_keys = request('!.table.extract_keys')
+  local get_keys = request('!.table.get_keys')
   local to_key_val = request('!.table.to_key_val')
 
   get_children =
     function(self, node)
       node = _G.dependencies[node] or {}
       local result
-      result = to_key_val(extract_keys(node))
+      result = to_key_val(get_keys(node))
       return result
     end
 end
