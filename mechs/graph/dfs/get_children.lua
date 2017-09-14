@@ -7,13 +7,13 @@
   This method assumed to be overriden for custom formats.
 ]]
 
-local to_key_vals = request('!.table.to_key_val')
+local get_key_vals = request('!.table.get_key_vals')
 local compare = request('!.table.ordered_pass.default_comparator')
 
 return
   function(self, node)
     local result = {}
-    local key_vals = to_key_vals(node)
+    local key_vals = get_key_vals(node)
     local also_visit_keys = self.also_visit_keys
     for _, rec in ipairs(key_vals) do
       if is_table(rec.value) then
