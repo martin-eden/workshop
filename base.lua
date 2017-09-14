@@ -1,57 +1,22 @@
--- Lua base libraries extensions. Used almost in any piece of my code.
+--[[
+  Lua base libraries extensions. Used almost in any piece of my code.
 
--- Export "is_<type>" and "assert_<type>" functions:
-do
-  local data_types =
-    {
-      'boolean',
-      'function',
-      'nil',
-      'number',
-      'string',
-      'table',
-      'thread',
-      'userdata',
-    }
-  for k, type_name in ipairs(data_types) do
-    _G['is_' .. type_name] =
-      function(a)
-        return (type(a) == type_name)
-      end
-    _G['assert_' .. type_name] =
-      function(a, responsibility_level)
-        local responsibility_level = (responsibility_level or 1)
-        if (type(a) ~= type_name) then
-          error(
-            ('Argument must have a type "%s", not "%s".'):format(type_name, type(a)),
-            responsibility_level + 1
-          )
-        end
-      end
-  end
-  _G.is_integer =
-    function(n)
-      return (math.type(n) == 'integer')
-    end
-  _G.assert_integer =
-    function(a, responsibility_level)
-      local responsibility_level = (responsibility_level or 1)
-      if (math.type(a) ~= 'integer') then
-        error(('Argument must be integer, not %s.'):format(type(a)), responsibility_level + 1)
-      end
-    end
-end
+  This module installs global function "request" which is based on
+  "require" and makes relative module names possible.
 
--- Make sure we have table.pack and table.unpack:
-do
-  _G.table.pack = _G.table.pack or _G.pack
-  _G.table.unpack =
-    _G.table.unpack or
-    _G.unpack or
-    function(...)
-      return {n = select('#', ...), ...}
-    end
-end
+  Also this function tracks module dependencies. This allows to
+  get dependencies list for any module. Which is used in creating
+  deploys without unused code.
+
+  Price for this is exported global table "dependencies" and function
+  "get_require_name".
+
+  And lastly, global functions are added for convenience. Such
+  functions are families of "is_<type>", "assert_<type>" and "new".
+
+  "new" basically clones given table. But may override fields in
+  clone with fields of second table argument.
+]]
 
 -- Export request function:
 local split_name =
@@ -162,6 +127,9 @@ if not _G.request then
   _G.dependencies = dependencies
   _G.get_require_name = get_require_name
   push('', 'base')
-  _G.new = request('table.new')
+  request('!.system.install_unpack_function')
+  request('!.system.install_is_functions')
+  request('!.system.install_assert_functions')
+  _G.new = request('!.table.new')
   pop()
 end
