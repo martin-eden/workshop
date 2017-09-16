@@ -52,7 +52,7 @@ local fill_modules =
     return result
   end
 
-local get_loaded_module_files = request('^.^.system.get_loaded_module_files')
+local get_loaded_module_files = request('!.system.get_loaded_module_files')
 
 local augment_config =
   function(cfg)
@@ -97,7 +97,7 @@ local get_bash_wrapper =
     return result
   end
 
-local fopen = request('^.^.file.safe_open')
+local fopen = request('!.file.safe_open')
 
 local save_bash_wrapper =
   function(cfg)
@@ -134,7 +134,32 @@ build = {
 }
 ]]
 
-local table_to_string = request('^.lua_table.save')
+local table_to_string = request('!.formats.lua_table.save')
+local trim_head = request('!.string.trim_head')
+
+local get_modules_text =
+  function(modules)
+    local result
+    result =
+      table_to_string(
+        modules,
+        {c_text_block = {next_line_indent = 1}}
+      )
+    result = trim_head(result)
+    return result
+  end
+
+local get_shell_scripts_text =
+  function(shell_scripts)
+    local result
+    result =
+      table_to_string(
+        shell_scripts,
+        {c_text_block = {next_line_indent = 2}}
+      )
+    result = trim_head(result)
+    return result
+  end
 
 local get_rockspec =
   function(cfg)
@@ -149,8 +174,8 @@ local get_rockspec =
     local substitutions =
       {
         package = cfg.project_name,
-        modules = table_to_string(modules, {initial_deep = 2}),
-        shell_scripts = table_to_string(shell_scripts, {initial_deep = 4}),
+        modules = get_modules_text(modules),
+        shell_scripts = get_shell_scripts_text(shell_scripts),
       }
     local result = fill_template(rockspec_template, substitutions)
     return result
