@@ -1,11 +1,9 @@
-local get_cmd_copy =
-  function(src_name, dest_name)
-    return ('cp %s %s'):format(src_name, dest_name)
-  end
+local get_cmd_copy = request('!.bare.file_system.get_cmd_copy')
+local get_cmd_mkdir = request('!.bare.file_system.get_cmd_mkdir')
 
 local directories_created
 
-local get_cmd_mkdir =
+local get_cmd_mkdir_cached =
   function(dir_name)
     if not directories_created[dir_name] then
       local parent_path = ''
@@ -15,7 +13,7 @@ local get_cmd_mkdir =
         parent_path = parent_path .. '/'
       end
       directories_created[dir_name] = true
-      return ('mkdir -p %s'):format(dir_name)
+      return get_cmd_mkdir(dir_name)
     end
   end
 
@@ -44,7 +42,7 @@ local get_deploy_script =
       local source = files[i]
       local dest = deploy_dir .. strip_updirs(files[i])
       local directory = dest:match('(.+)/')
-      result[#result + 1] = get_cmd_mkdir(directory)
+      result[#result + 1] = get_cmd_mkdir_cached(directory)
       result[#result + 1] = get_cmd_copy(source, dest)
     end
     result[#result + 1] = ''
