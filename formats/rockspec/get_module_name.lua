@@ -1,5 +1,5 @@
-local strip_self_prefix = request('strip_self_prefix')
-local strip_updirs = request('strip_updirs')
+local strip_self_prefix = request('!.string.file_name.strip_self_prefix')
+local strip_updirs = request('!.string.file_name.strip_updirs')
 local strip_lua_postfix = request('strip_lua_postfix')
 
 return
