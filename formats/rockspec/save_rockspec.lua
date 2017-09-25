@@ -1,9 +1,7 @@
-local fopen = request('!.file.safe_open')
 local get_rockspec = request('get_rockspec')
+local save_to_file = request('!.string.save_to_file')
 
 return
   function(cfg)
-    local f = fopen(cfg.rockspec_name, 'w')
-    f:write(get_rockspec(cfg))
-    f:close()
+    save_to_file(cfg.rockspec_name, get_rockspec(cfg))
   end
