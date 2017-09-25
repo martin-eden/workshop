@@ -8,11 +8,11 @@ return
   function(cfg)
     local modules = fill_modules(cfg)
     local shell_scripts
-    if cfg.bash_script_name then
-      shell_scripts =
-        {
-          [cfg.bash_command_name] = cfg.bash_script_name
-        }
+    if cfg.bash_commands then
+      shell_scripts = {}
+      for _, rec in ipairs(cfg.bash_commands) do
+        shell_scripts[rec.command] = rec.script
+      end
     end
     local substitutions =
       {
