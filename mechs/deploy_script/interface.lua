@@ -1,5 +1,8 @@
 local get_cmd_copy = request('!.bare.file_system.get_cmd_copy')
 local get_cmd_mkdir = request('!.bare.file_system.get_cmd_mkdir')
+local get_modules_dependencies = request('!.system.get_modules_dependencies')
+local get_module_location = request('!.system.get_module_location')
+local strip_updirs = request('!.string.file_name.strip_updirs')
 
 local mark_directory_created =
   function(dir_name, directories_created)
@@ -12,13 +15,12 @@ local mark_directory_created =
     directories_created[dir_name] = true
   end
 
-local get_modules_dependencies = request('!.system.get_modules_dependencies')
-local get_module_location = request('!.system.get_module_location')
-local strip_updirs = request('!.string.file_name.strip_updirs')
+local add_dir_postfix = request('!.string.file_name.add_dir_postfix')
 
 local get_deploy_script =
   function(modules, deploy_dir)
-    deploy_dir = (deploy_dir or 'deploy/')
+    deploy_dir = deploy_dir or 'deploy'
+    deploy_dir = add_dir_postfix(deploy_dir)
 
     local files = get_modules_dependencies(modules)
     for i = 1, #files do
