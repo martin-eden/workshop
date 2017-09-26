@@ -8,18 +8,21 @@ comma-separated list of key-values. Terminal elements are
 <string>.
 
 <object>
-  "{" [ list(<string> ":" <value>, ",") ] "}"
+  List of key-values separated by ",". Key-value separated by ":".
+  Key is <string>.
+
+  "{" opt(list(<string> ":" <value>, ",")) "}"
 
 <string>
-  I'd say it's some text that starts and ends with ".
-  For character escaping details you may see it's syntax in
+  I'd say it's some text that starts and ends with """.
+  Escape char is "\".  For character escaping details refer
   [load.via_parser.syntaxes.strict].
 
 <number>
   Say it's almost natural representation of number with optional
-  exponent part. It may not have leading zero if integer part > 0
-  (so "01" is invalid). Also it may not have "+" sign in mantissa
-  part. For details refer that [strics] syntax.
+  exponent part. No leading zeros if integer part > 0 ("01" is bad).
+  Also no "+" sign in mantissa part. For details refer that [strics]
+  syntax.
 
 <boolean>
   Just words "true" or "false" (without quotes).
@@ -28,11 +31,11 @@ comma-separated list of key-values. Terminal elements are
   Word "null", also without quotes.
 
 <value>
-  All mentioned elements or <array>.
+  One of mentioned elements or <array>.
 
 <array>
-  Anonymous list of <value>s. Comma-separated and possibly empty.
+  List of <value>'s. Separated by ",".
 
-  "[" [ list(<value>, "," ] "]"
+  "[" opt(list(<value>, ",")) "]"
 
 Now you know JSON.
