@@ -11,7 +11,7 @@ return
           bash_wrapper_template,
           {
             package = cfg.project_name,
-            lua_main = rec.lua_module,
+            lua_main = rec.lua_script,
           }
         )
     end
