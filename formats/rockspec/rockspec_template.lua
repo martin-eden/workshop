@@ -1,16 +1,17 @@
 return
 [[
-package = '$package'
+package = $package
 version = 'scm-1'
 
 source = {
-  url = '?',
+  url = $repository_url,
+  branch = $repository_branch,
 }
 
 description = {
-  summary = '?',
-  license = '?',
-  homepage = '?',
+  summary = $short_desc,
+  detailed = $description,
+  license = $license,
 }
 
 dependencies = {
