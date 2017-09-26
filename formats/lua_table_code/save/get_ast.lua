@@ -31,10 +31,11 @@ local may_print_inline =
   end
 
 local get_assembly_order = request('!.mechs.graph.assembly_order')
+local c_name_giver = request('!.mechs.name_giver')
 
 return
   function(self, data)
-    local name_giver = new(request('!.mechs.name_giver'))
+    local name_giver = new(c_name_giver)
     local table_serializer = self.table_serializer
     local table_iterator = table_serializer.table_iterator
 
