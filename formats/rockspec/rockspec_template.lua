@@ -21,7 +21,7 @@ dependencies = {
 build = {
   type = 'builtin',
   install = {
-    bin = $shell_scripts,
+    bin = $wrappers,
   },
   modules = $modules,
 }

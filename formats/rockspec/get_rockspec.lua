@@ -1,6 +1,6 @@
 local fill_modules = request('fill_modules')
 local get_modules_text = request('get_modules_text')
-local get_shell_scripts_text = request('get_shell_scripts_text')
+local get_wrappers_text = request('get_wrappers_text')
 local rockspec_template = request('rockspec_template')
 local fill_template = request('fill_template')
 local quote = request('!.string.quote')
@@ -8,11 +8,11 @@ local quote = request('!.string.quote')
 return
   function(cfg)
     local modules = fill_modules(cfg)
-    local shell_scripts
-    if cfg.bash_commands then
-      shell_scripts = {}
-      for _, rec in ipairs(cfg.bash_commands) do
-        shell_scripts[rec.command] = rec.script
+    local wrappers
+    if cfg.commands then
+      wrappers = {}
+      for _, rec in ipairs(cfg.commands) do
+        wrappers[rec.command] = rec.wrapper
       end
     end
     local substitutions =
@@ -23,7 +23,7 @@ return
         short_desc = quote(cfg.short_desc),
         description = quote(cfg.description),
         license = quote(cfg.license),
-        shell_scripts = get_shell_scripts_text(shell_scripts),
+        wrappers = get_wrappers_text(wrappers),
         modules = get_modules_text(modules),
       }
     local result = fill_template(rockspec_template, substitutions)
