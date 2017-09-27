@@ -17,19 +17,19 @@ return
 
     assert_table(cfg.used_modules)
 
-    if cfg.bash_commands then
-      assert_table(cfg.bash_commands)
-      for _, rec in ipairs(cfg.bash_commands) do
-        assert_string(rec.script)
+    if cfg.commands then
+      assert_table(cfg.commands)
+      for _, rec in ipairs(cfg.commands) do
         assert_string(rec.command)
+        assert_string(rec.wrapper)
         assert_string(rec.lua_script)
         rec.lua_script = strip_lua_postfix(rec.lua_script)
       end
     end
 
     local used_modules = get_modules_dependencies(cfg.used_modules)
-    if cfg.bash_commands then
-      for _, rec in ipairs(cfg.bash_commands) do
+    if cfg.commands then
+      for _, rec in ipairs(cfg.commands) do
         table.insert(used_modules, rec.lua_script)
       end
     end
