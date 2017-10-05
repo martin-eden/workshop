@@ -10,6 +10,29 @@
   and return.
 ]]
 
+local text_block = new(request('!.mechs.text_block.interface'))
+
+local add_line =
+  function(s)
+    text_block:request_clean_line()
+    text_block:add_curline(s)
+  end
+
+local empty_line =
+  function()
+    text_block:request_empty_line()
+  end
+
+local inc_indent =
+  function()
+    text_block:inc_indent()
+  end
+
+local dec_indent =
+  function()
+    text_block:dec_indent()
+  end
+
 local matrix_cursor =
   new(
     request('!.mechs.matrix_coords.interface'),
@@ -22,7 +45,7 @@ local matrix_cursor =
     }
   )
 
-local coord_to_idx =
+local get_index =
   function(coord)
     matrix_cursor:wrap_coords(coord)
     return matrix_cursor:get_index(coord)
@@ -30,87 +53,79 @@ local coord_to_idx =
 
 local generate_initial_assignment =
   function()
-    local result = {''}
     for i = 1, 16 do
-      result[#result + 1] =
-        ('    local r_%d = block[%d]'):
-        format(i, i, i)
+      add_line(('local r_%d = block[%d]'):format(i, i))
     end
-    result = table.concat(result, '\n')
-    return result
   end
 
 local emit =
   function(sum_i, cur, prev, prev_prev, shift)
-    return
-      ('      sum_%d = (r_%d + r_%d) & 0xFFFFFFFF\n'):format(sum_i, prev, prev_prev) ..
-      ('      r_%d = r_%d ~ ((sum_%d << %d) | (sum_%d >> %d) & 0xFFFFFFFF)'):
+    add_line(
+      ('sum_%d = (r_%d + r_%d) & 0xFFFFFFFF'):format(sum_i, prev, prev_prev)
+    )
+    add_line(
+      ('r_%d = r_%d ~ ((sum_%d << %d) | (sum_%d >> %d) & 0xFFFFFFFF)'):
       format(cur, cur, sum_i, shift, sum_i, 32 - shift)
+    )
   end
 
 local generate_main_cycle =
   function(shifts, num_dbl_rounds)
-    local result = {''}
-
-    result[#result + 1] = '    local sum_1, sum_2, sum_3, sum_4'
-    result[#result + 1] = ('    for i = 1, %d do'):format(num_dbl_rounds)
+    local result = {}
+    empty_line()
+    add_line('local sum_1, sum_2, sum_3, sum_4')
+    add_line(('for i = 1, %d do'):format(num_dbl_rounds))
+    inc_indent()
 
     local cur, prev, prev_prev
     for i = 0, 3 do
       for j = 0, 3 do
-        cur = coord_to_idx({x = i, y = i + j + 1})
-        prev = coord_to_idx({x = i, y = i + j})
-        prev_prev = coord_to_idx({x = i, y = i + j - 1})
-        result[#result + 1] = emit(i + 1, cur, prev, prev_prev, shifts[j + 1])
+        cur = get_index({x = i, y = i + j + 1})
+        prev = get_index({x = i, y = i + j})
+        prev_prev = get_index({x = i, y = i + j - 1})
+        emit(i + 1, cur, prev, prev_prev, shifts[j + 1])
       end
     end
     for i = 0, 3 do
       for j = 0, 3 do
-        cur = coord_to_idx({y = i, x = i + j + 1})
-        prev = coord_to_idx({y = i, x = i + j})
-        prev_prev = coord_to_idx({y = i, x = i + j - 1})
-        result[#result + 1] = emit(i + 1, cur, prev, prev_prev, shifts[j + 1])
+        cur = get_index({y = i, x = i + j + 1})
+        prev = get_index({y = i, x = i + j})
+        prev_prev = get_index({y = i, x = i + j - 1})
+        emit(i + 1, cur, prev, prev_prev, shifts[j + 1])
       end
     end
 
-    result[#result + 1] = '    end'
-
-    result = table.concat(result, '\n')
-
-    return result
+    dec_indent()
+    add_line('end')
   end
 
 local generate_final_assignment =
   function()
-    local result = {''}
+    empty_line()
     for i = 1, 16 do
-      result[#result + 1] =
-        ('    result[%d] = (block[%d] + r_%d) & 0xFFFFFFFF'):
-        format(i, i, i)
+      add_line(
+        ('result[%d] = (block[%d] + r_%d) & 0xFFFFFFFF'):format(i, i, i)
+      )
     end
-    result[#result + 1] = '    return result'
-    result = table.concat(result, '\n')
-    return result
+    add_line('return result')
   end
 
 return
   function(shifts, num_dbl_rounds)
-    local result =
-      ([[
-local result = {}
-return
-  function(block)
-    %s
-    %s
-    %s
-  end
-]]    ):
-      format(
-        generate_initial_assignment(),
-        generate_main_cycle(shifts, num_dbl_rounds),
-        generate_final_assignment()
-      )
+    text_block:init()
+    add_line('local result = {}')
+    add_line('return')
+    inc_indent()
+    add_line('function(block)')
+    inc_indent()
+    generate_initial_assignment()
+    generate_main_cycle(shifts, num_dbl_rounds)
+    generate_final_assignment()
+    dec_indent()
+    add_line('end')
+    dec_indent()
 
+    local result = text_block:get_text()
     -- print(result)
     result = load(result)()
 
