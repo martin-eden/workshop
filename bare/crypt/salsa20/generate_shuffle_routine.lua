@@ -4,12 +4,10 @@
   I was upset with low performance of my [shuffle_block] in comparision
   with [plc.salsa20].
 
-  I do not like code with low entropy (like "f(1, 5, 9, 13) f(2, 6,
-  10, 14) ...") and do not like to reduce clarity for specific
-  performance.
-
-  So I've created experimental routine that creates string that is
-  lua code that is compiled to function which is returned.
+  I do not like writing code with low entropy and low clarity
+  (like "f(1, 5, 9, 13) f(2, 6, 10, 14) ..."). So I wrote
+  function that generates such code, compiles it to function
+  and return.
 ]]
 
 local matrix_cursor =
@@ -57,32 +55,21 @@ local generate_main_cycle =
     result[#result + 1] = '    local sum_1, sum_2, sum_3, sum_4'
     result[#result + 1] = ('    for i = 1, %d do'):format(num_dbl_rounds)
 
-    do
-      local coord = {x = 1, y = 1}
-      local cur, prev, prev_prev
-      for i = 0, 3 do
-        coord.x = i
-        for j = 0, 3 do
-          coord.y = i + j + 1
-          cur = coord_to_idx(coord)
-          coord.y = coord.y - 1
-          prev = coord_to_idx(coord)
-          coord.y = coord.y - 1
-          prev_prev = coord_to_idx(coord)
-          result[#result + 1] = emit(i + 1, cur, prev, prev_prev, shifts[j + 1])
-        end
+    local cur, prev, prev_prev
+    for i = 0, 3 do
+      for j = 0, 3 do
+        cur = coord_to_idx({x = i, y = i + j + 1})
+        prev = coord_to_idx({x = i, y = i + j})
+        prev_prev = coord_to_idx({x = i, y = i + j - 1})
+        result[#result + 1] = emit(i + 1, cur, prev, prev_prev, shifts[j + 1])
       end
-      for i = 0, 3 do
-        coord.y = i
-        for j = 0, 3 do
-          coord.x = i + j + 1
-          cur = coord_to_idx(coord)
-          coord.x = coord.x - 1
-          prev = coord_to_idx(coord)
-          coord.x = coord.x - 1
-          prev_prev = coord_to_idx(coord)
-          result[#result + 1] = emit(i + 1, cur, prev, prev_prev, shifts[j + 1])
-        end
+    end
+    for i = 0, 3 do
+      for j = 0, 3 do
+        cur = coord_to_idx({y = i, x = i + j + 1})
+        prev = coord_to_idx({y = i, x = i + j})
+        prev_prev = coord_to_idx({y = i, x = i + j - 1})
+        result[#result + 1] = emit(i + 1, cur, prev, prev_prev, shifts[j + 1])
       end
     end
 
