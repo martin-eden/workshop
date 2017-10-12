@@ -1,5 +1,5 @@
 --[[
-  Simplified interface for [generic_file_converter].
+  Action-call of [generic_file_converter].
 ]]
 
 local c_converter = request('!.mechs.generic_file_converter.interface')
