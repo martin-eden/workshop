@@ -54,46 +54,48 @@ return
       local input_stream = self.input_stream
       local output_stream = self.output_stream
 
-      ::restart::
-      local round_in_stream_pos = input_stream:get_position()
-      local round_out_stream_pos = output_stream:get_position()
+      local need_restart = true
+      while need_restart do
+        need_restart = false
+        local round_in_stream_pos = input_stream:get_position()
+        local round_out_stream_pos = output_stream:get_position()
 
-      if mode_seq then
-        result = true
-        for i = 1, #rule do
-          if not self:match(rule[i]) then
-            result = false
-            break
+        if mode_seq then
+          result = true
+          for i = 1, #rule do
+            if not self:match(rule[i]) then
+              result = false
+              break
+            end
           end
-        end
-      else
-        -- mode_choice
-        result = false
-        for i = 1, #rule do
-          if self:match(rule[i]) then
-            result = true
-            break
-          end
-        end
-      end
-
-      if not result then
-        input_stream:set_position(round_in_stream_pos)
-        output_stream:set_position(round_out_stream_pos)
-      elseif rule_name then
-        self.on_match(
-          input_stream, output_stream, rule_name, round_in_stream_pos
-        )
-      end
-
-      if f_rep then
-        if result then
-          repeat_result = true
-          goto restart
         else
-          result = repeat_result
+          -- mode_choice
+          result = false
+          for i = 1, #rule do
+            if self:match(rule[i]) then
+              result = true
+              break
+            end
+          end
+        end
+
+        if not result then
+          input_stream:set_position(round_in_stream_pos)
+          output_stream:set_position(round_out_stream_pos)
+        elseif rule_name then
+          self.on_match(input_stream, output_stream, rule_name, round_in_stream_pos)
+        end
+
+        if f_rep then
+          if result then
+            repeat_result = true
+            need_restart = true
+          else
+            result = repeat_result
+          end
         end
       end
+
       if op_opt then
         result = true
       elseif op_neg then
