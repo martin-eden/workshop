@@ -61,35 +61,39 @@ return
         end
       end
 
-    :: restart ::
-    local node_recs, node_order = assembly_order(grammar, {table_iterator = pairs})
-    for i = 1, #node_order do
-      local node = node_order[i]
-      -- If is rule node:
-      if (#node > 0) then
-        local node_rec = node_recs[node]
-        if (get_num_refs(node_rec) <= 1) then
-          local parent, child_key = get_first_parent(node_rec)
-          if parent then
-            if
-              (#parent == 1) and
-              not_both(parent.name, node.name) and
-              modes_are_compatible(parent.mode_choice, node.mode_choice) and
-              (
-                (not parent.op) or
-                (not node.op) or
-                ((parent.op == 'opt') and (node.op == 'opt'))
-              )
-            then
-              embed(parent, child_key, node)
-            elseif
-              not node.name and
-              modes_are_compatible(parent.mode_choice, node.mode_choice) and
-              (not parent.f_rep and not node.f_rep) and
-              (not parent.op and not node.op)
-            then
-              embed(parent, child_key, node)
-              goto restart
+    local need_restart = true
+    while need_restart do
+      need_restart = false
+      local node_recs, node_order = assembly_order(grammar, {table_iterator = pairs})
+      for i = 1, #node_order do
+        local node = node_order[i]
+        -- If is rule node:
+        if (#node > 0) then
+          local node_rec = node_recs[node]
+          if (get_num_refs(node_rec) <= 1) then
+            local parent, child_key = get_first_parent(node_rec)
+            if parent then
+              if
+                (#parent == 1) and
+                not_both(parent.name, node.name) and
+                modes_are_compatible(parent.mode_choice, node.mode_choice) and
+                (
+                  (not parent.op) or
+                  (not node.op) or
+                  ((parent.op == 'opt') and (node.op == 'opt'))
+                )
+              then
+                embed(parent, child_key, node)
+              elseif
+                not node.name and
+                modes_are_compatible(parent.mode_choice, node.mode_choice) and
+                (not parent.f_rep and not node.f_rep) and
+                (not parent.op and not node.op)
+              then
+                embed(parent, child_key, node)
+                need_restart = true
+                break
+              end
             end
           end
         end
