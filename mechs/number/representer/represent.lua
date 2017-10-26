@@ -9,18 +9,22 @@ return
     local is_neg = (n < 0)
     n = math.abs(n)
 
-    ::redo::
-    local int_part, frac_part = math.modf(n)
-    -- print(self.type, int_part, frac_part, pos, n)
-    if powers[pos - 1] and (int_part == 0) then
-      n = n * powers[pos][1]
-      pos = pos - 1
-      goto redo
-    end
-    if powers[pos + 1] and (int_part >= powers[pos + 1][1]) then
-      pos = pos + 1
-      n = n / powers[pos][1]
-      goto redo
+    local int_part, frac_part
+    local need_redo = true
+    while need_redo do
+      need_redo = false
+      int_part, frac_part = math.modf(n)
+      -- print(self.type, int_part, frac_part, pos, n)
+      if powers[pos - 1] and (int_part == 0) then
+        n = n * powers[pos][1]
+        pos = pos - 1
+        need_redo = true
+      end
+      if powers[pos + 1] and (int_part >= powers[pos + 1][1]) then
+        pos = pos + 1
+        n = n / powers[pos][1]
+        need_redo = true
+      end
     end
 
     local unit_name = powers[pos][2]
