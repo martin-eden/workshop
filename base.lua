@@ -131,6 +131,7 @@ if not _G.request then
   _G.request = request
   _G.dependencies = dependencies
   _G.get_require_name = get_require_name
+  _G.table.unpack = _G.unpack
   _G.table.pack = table_pack
 
   -- First element is invocation module name, second - module file path
