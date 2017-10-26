@@ -115,6 +115,18 @@ local table_pack =
     return {n = select('#', ...), ...}
   end
 
+local math_type =
+  function(n)
+    if (type(n) == 'number') then
+      local int, frac = math.modf(n)
+      if (frac == 0) then
+        return 'integer'
+      else
+        return 'float'
+      end
+    end
+  end
+
 local request =
   function(qualified_name)
     local src_name = get_caller_name()
@@ -138,6 +150,7 @@ if IsFirstRun then
   _G.get_require_name = get_require_name
   _G.table.pack = table_pack
   _G.table.unpack = _G.unpack
+  _G.math.type = math_type
 
   --[[
     At this point we installed "request()", so it's usable from
