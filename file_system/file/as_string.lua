@@ -7,7 +7,7 @@ return
       safe_open(file_name, 'w+'):write(''):close()
     end
     local f = safe_open(file_name, 'rb')
-    local result = f:read('a')
+    local result = f:read('*a')
     f:close()
     return result
   end
