@@ -1,7 +1,7 @@
 local newline_chars =
   {
-    ['\x0d'] = true,
-    ['\x0a'] = true,
+    ['\013'] = true,
+    ['\010'] = true,
   }
 
 return
