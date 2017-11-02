@@ -11,7 +11,7 @@
 
 local file_as_string = request('as_string')
 
-local utf8_prefix = '\xef\xbb\xbf'
+local utf8_prefix = '\239\187\191' -- EF BB BF
 
 return
   function(file_name, create_missing_file)
