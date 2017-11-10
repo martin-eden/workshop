@@ -1,8 +1,10 @@
 --[[
   Return list of file names in given directory.
 
-  Input: [<start_dir>]
-  Output: <list of strings>
+  Syntax:
+
+    [<start_dir>] -> <list of strings>
+       string            sequence
 ]]
 
 local file_lister = request('!.mechs.file_lister.interface')
