@@ -1,6 +1,3 @@
-local opt_spc = request('^.words.opt_spc')
+local syntel = request('^.words.syntel')
 
-return
-  {
-    opt_spc, ';',
-  }
+return syntel(';')

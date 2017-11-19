@@ -2,7 +2,7 @@ local handy = request('!.mechs.processor.handy')
 
 local name = request('words.name')
 local bracket_expr = request('expressions.bracket_expr')
-local opt_spc = request('words.opt_spc')
+local syntel = request('words.syntel')
 
 local key_val =
   {
@@ -12,23 +12,23 @@ local key_val =
         bracket_expr,
         name
       ),
-      opt_spc, '='
+      syntel('=')
     ),
     '>expression',
   }
 
 local rec_sep =
   {
-    opt_spc, handy.cho(',', ';'),
+    handy.cho(syntel(','), syntel(';'))
   }
 
 return
   {
     name = 'table',
-    opt_spc, '{',
+    syntel('{'),
     handy.opt(
       handy.list(key_val, rec_sep),
       handy.opt(rec_sep)
     ),
-    opt_spc, '}',
+    syntel('}'),
   }

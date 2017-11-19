@@ -1,7 +1,7 @@
-local opt_spc = request('^.words.opt_spc')
+local syntel = request('^.words.syntel')
 
 return
   {
     name = 'vararg',
-    opt_spc, '...',
+    syntel('...'),
   }

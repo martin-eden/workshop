@@ -1,7 +1,7 @@
 local handy = request('!.mechs.processor.handy')
 
 local word = request('^.words.word')
-local opt_spc = request('^.words.opt_spc')
+local syntel = request('^.words.syntel')
 local name = request('^.words.name')
 local statements = request('statements')
 
@@ -10,12 +10,12 @@ return
     name = 'numeric_for_block',
     word('for'),
     name,
-    opt_spc, '=',
+    syntel('='),
     '>expression',
-    opt_spc, ',',
+    syntel(','),
     '>expression',
     handy.opt(
-      opt_spc, ',',
+      syntel(','),
       '>expression'
     ),
     word('do'),
