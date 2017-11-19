@@ -1,7 +1,7 @@
 local handy = request('!.mechs.processor.handy')
 
 local name = request('^.words.name')
-local opt_spc = request('^.words.opt_spc')
+local syntel = request('^.words.syntel')
 
 local expr_list = request('expr_list')
 local type_table = request('^.type_table')
@@ -12,9 +12,9 @@ local func_args =
     name = 'func_args',
     handy.cho(
       {
-        opt_spc, '(',
+        syntel('('),
         handy.opt(expr_list),
-        opt_spc, ')',
+        syntel(')'),
       },
       type_table,
       type_string
@@ -24,22 +24,22 @@ local func_args =
 local par_expr =
   {
     name = 'par_expr',
-    opt_spc, '(',
+    syntel('('),
     '>expression',
-    opt_spc, ')',
+    syntel(')'),
   }
 
 local dot_name =
   {
     name = 'dot_name',
-    opt_spc, '.',
+    syntel('.'),
     name
   }
 
 local colon_name =
   {
     name = 'colon_name',
-    opt_spc, ':',
+    syntel(':'),
     name,
   }
 

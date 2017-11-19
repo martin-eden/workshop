@@ -1,9 +1,9 @@
 local handy = request('!.mechs.processor.handy')
 
-local opt_spc = request('^.words.opt_spc')
+local syntel = request('^.words.syntel')
 
 return
   {
     name = 'expr_list',
-    handy.list('>expression', {opt_spc, ','}),
+    handy.list('>expression', syntel(',')),
   }

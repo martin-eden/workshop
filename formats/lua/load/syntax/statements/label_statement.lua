@@ -1,10 +1,10 @@
 local name = request('^.words.name')
-local opt_spc = request('^.words.opt_spc')
+local syntel = request('^.words.syntel')
 
 return
   {
     name = 'label_statement',
-    opt_spc, '::',
+    syntel('::'),
     name,
-    opt_spc, '::',
+    syntel('::'),
   }

@@ -1,9 +1,9 @@
-local opt_spc = request('^.words.opt_spc')
+local syntel = request('^.words.syntel')
 
 return
   {
     name = 'bracket_expr',
-    opt_spc, '[',
+    syntel('['),
     '>expression',
-    opt_spc, ']',
+    syntel(']'),
   }
