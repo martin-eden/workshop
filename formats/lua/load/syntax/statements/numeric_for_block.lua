@@ -1,4 +1,5 @@
 local handy = request('!.mechs.processor.handy')
+local opt = handy.opt
 
 local word = request('^.words.word')
 local syntel = request('^.words.syntel')
@@ -14,7 +15,7 @@ return
     '>expression',
     syntel(','),
     '>expression',
-    handy.opt(
+    opt(
       syntel(','),
       '>expression'
     ),

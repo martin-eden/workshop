@@ -1,4 +1,7 @@
 local handy = request('!.mechs.processor.handy')
+local opt = handy.opt
+local cho = handy.cho
+local list = handy.list
 
 local name = request('words.name')
 local bracket_expr = request('expressions.bracket_expr')
@@ -7,8 +10,8 @@ local syntel = request('words.syntel')
 local key_val =
   {
     name = 'key_val',
-    handy.opt(
-      handy.cho(
+    opt(
+      cho(
         bracket_expr,
         name
       ),
@@ -19,16 +22,16 @@ local key_val =
 
 local rec_sep =
   {
-    handy.cho(syntel(','), syntel(';'))
+    cho(syntel(','), syntel(';'))
   }
 
 return
   {
     name = 'table',
     syntel('{'),
-    handy.opt(
-      handy.list(key_val, rec_sep),
-      handy.opt(rec_sep)
+    opt(
+      list(key_val, rec_sep),
+      opt(rec_sep)
     ),
     syntel('}'),
   }

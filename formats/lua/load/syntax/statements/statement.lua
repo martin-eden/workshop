@@ -1,4 +1,5 @@
 local handy = request('!.mechs.processor.handy')
+local cho = handy.cho
 
 local call_assign = request('call_assign')
 local named_function = request('named_function')
@@ -19,7 +20,7 @@ local numeric_for_block = request('numeric_for_block')
 return
   {
     inner_name = 'statement',
-    handy.cho(
+    cho(
       call_assign,
       named_function,
 

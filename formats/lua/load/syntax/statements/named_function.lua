@@ -1,4 +1,6 @@
 local handy = request('!.mechs.processor.handy')
+local opt = handy.opt
+local list = handy.list
 
 local word = request('^.words.word')
 local syntel = request('^.words.syntel')
@@ -11,9 +13,9 @@ return
     word('function'),
     {
       name = 'dot_list',
-      handy.list(name, syntel('.')),
+      list(name, syntel('.')),
     },
-    handy.opt(
+    opt(
       {
         name = 'colon_name',
         syntel(':'),

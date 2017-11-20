@@ -1,4 +1,6 @@
 local handy = request('!.mechs.processor.handy')
+local opt = handy.opt
+local cho = handy.cho
 
 local vararg = request('^.expressions.vararg')
 local name_list = request('^.words.name_list')
@@ -7,11 +9,11 @@ local statements = request('statements')
 local syntel = request('^.words.syntel')
 
 local params_list =
-  handy.cho(
+  cho(
     vararg,
     {
       name_list,
-      handy.opt(
+      opt(
         syntel(','),
         vararg
       ),
@@ -23,7 +25,7 @@ return
     {
       name = 'function_params',
       syntel('('),
-      handy.opt(params_list),
+      opt(params_list),
       syntel(')'),
     },
     {

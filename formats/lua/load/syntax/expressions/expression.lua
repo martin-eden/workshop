@@ -1,4 +1,6 @@
 local handy = request('!.mechs.processor.handy')
+local opt_rep = handy.opt_rep
+local cho = handy.cho
 local match_regexp = request('!.mechs.parser.handy').match_regexp
 
 local word = request('^.words.word')
@@ -8,7 +10,7 @@ local opt_spc = request('^.words.opt_spc')
 local un_op =
   {
     name = 'un_op',
-    handy.cho(
+    cho(
       {opt_spc, match_regexp('[%-%#%~]')},
       word('not')
     ),
@@ -18,7 +20,7 @@ local bin_op =
   {
     name = 'bin_op',
     opt_spc,
-    handy.cho(
+    cho(
       '//',
       '==',
       '~=',
@@ -46,8 +48,8 @@ return
   {
     name = 'expression',
     inner_name = 'expression',
-    handy.opt_rep(un_op),
-    handy.cho(
+    opt_rep(un_op),
+    cho(
       vararg,
       type_nil,
       type_boolean,
@@ -57,7 +59,7 @@ return
       type_function,
       var_link
     ),
-    handy.opt_rep(
+    opt_rep(
       bin_op,
       '>expression'
     )
