@@ -1,4 +1,6 @@
 local handy = request('!.mechs.processor.handy')
+local opt = handy.opt
+local opt_rep = handy.opt_rep
 
 local word = request('^.words.word')
 local statements = request('statements')
@@ -13,7 +15,7 @@ return
       word('then'),
       statements,
     },
-    handy.opt_rep(
+    opt_rep(
       {
         name = 'elseif_part',
         word('elseif'),
@@ -22,7 +24,7 @@ return
         statements,
       }
     ),
-    handy.opt(
+    opt(
       {
         name = 'else_part',
         word('else'),

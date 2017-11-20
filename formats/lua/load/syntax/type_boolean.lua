@@ -1,9 +1,10 @@
 local handy = request('!.mechs.processor.handy')
+local cho = handy.cho
 
 local word = request('words.word')
 
 return
   {
     name = 'boolean',
-    handy.cho(word('false'), word('true')),
+    cho(word('false'), word('true')),
   }
