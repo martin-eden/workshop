@@ -1,5 +1,7 @@
 --[[
   Get AST for string with Lua code.
+
+  str -> table
 ]]
 
 local parse = request('!.mechs.generic_loader')
