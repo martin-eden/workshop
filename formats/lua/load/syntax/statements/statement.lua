@@ -1,7 +1,8 @@
 local handy = request('!.mechs.processor.handy')
 local cho = handy.cho
 
-local call_assign = request('call_assign')
+local function_call = request('function_call')
+local assignment = request('assignment')
 local named_function = request('named_function')
 
 local empty_statement = request('empty_statement')
@@ -21,7 +22,8 @@ return
   {
     inner_name = 'statement',
     cho(
-      call_assign,
+      function_call,
+      assignment,
       named_function,
 
       empty_statement,

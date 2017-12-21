@@ -42,7 +42,8 @@ local type_number = request('^.type_number')
 local type_string = request('^.type_string')
 local type_table = request('^.type_table')
 local type_function = request('^.type_function')
-local var_link = request('var_link')
+local var_ref = request('var_ref')
+local function_call = request('^.statements.function_call')
 
 return
   {
@@ -57,7 +58,8 @@ return
       type_string,
       type_table,
       type_function,
-      var_link
+      var_ref,
+      function_call
     ),
     opt_rep(
       bin_op,
