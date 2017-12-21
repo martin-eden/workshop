@@ -1,5 +1,7 @@
 --[[
-  Returns nicely formatted string with AST representation.
+  Returns a nicely formatted string with AST representation.
+
+  table -> str
 ]]
 
 local text_block
@@ -30,7 +32,6 @@ process =
       text_block:dec_indent()
     end
   end
-
 
 return
   function(ast)
