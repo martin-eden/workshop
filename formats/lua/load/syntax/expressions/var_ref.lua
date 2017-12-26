@@ -1,3 +1,16 @@
+--[[
+  Variable reference grammar.
+
+  Same structure as [function_call] but must not end at <call_args>.
+
+  Sample:
+
+    (a).b[c]:d()().e(f)(g){}"".h
+            ~~~~~~  ~~~~~~~~~~   call_args
+       ~~~~~      ~~          ~~ name_continuation
+    ~~~                          name | par_expr
+]]
+
 local handy = request('!.mechs.processor.handy')
 local cho = handy.cho
 local opt = handy.opt

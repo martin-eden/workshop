@@ -1,0 +1,4 @@
+Grammar elements for Lua language.
+
+Named elements and common substructures are represented as
+separate files.

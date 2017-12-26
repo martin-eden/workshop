@@ -1,8 +1,14 @@
 --[[
-  Function call parsing.
+  Function call grammar.
 
-  Sample: (a).b[c]:d()().e(f)(g){}""
-          ~ ~~~~ ~~~~~~~~~~ ~~ ~~~~~
+  Same structure as [var_ref] but must end in <call_args>.
+
+  Sample:
+
+    (a).b[c]:d()().e(f)(g){}""
+            ~~~~~~  ~~~~~~~~~~ call_args
+       ~~~~~      ~~           name_continuation
+    ~~~                        name | par_expr
 ]]
 
 local handy = request('!.mechs.processor.handy')

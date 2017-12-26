@@ -1,0 +1,12 @@
+Code to process structure returned by [preprocess] facility.
+
+This structure is some sort of AST. We process it with handlers
+dependent on type of AST node. Those handlers adds some text to
+virtual printer/screen/terminal. At the end that text becomes
+string with formatted source code.
+
+There is notable method ":variate(node, oneliner, multiliner)" which
+calls "oneliner" representation handler. If result is beyond margins
+(or if we are inside of multiline block), it calls "multiliner"
+handler. This allows adaptive formatting (at the cost of search
+time).
