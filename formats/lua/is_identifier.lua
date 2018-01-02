@@ -1,4 +1,4 @@
-local keywords = request('^.keywords')
+local keywords = request('keywords')
 
 return
   function(s)
