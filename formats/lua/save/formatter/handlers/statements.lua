@@ -6,7 +6,7 @@ local multiliner =
       if not self:process_node(node[i]) then
         return
       end
-      -- self.printer:add_textline(';')
+      self.printer:add_textline(';')
     end
     return true
   end

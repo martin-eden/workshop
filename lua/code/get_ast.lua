@@ -5,7 +5,7 @@
 ]]
 
 local parse = request('!.mechs.generic_loader')
-local syntax = request('!.formats.lua.load.syntax')
+local syntax = request('!.formats.lua.syntax')
 
 return
   function(s)
