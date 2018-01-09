@@ -1,3 +1,18 @@
+--[[
+
+  <expression>:
+
+    ---+--------------+---+- ... -------------+---+----------------------------+---
+       | ------------ |   |- nil -------------|   | -------------------------- |
+       | \          / |   |- <boolean>--------|   | \                        / |
+       *-- <un_op> ---*   |- <number> --------|   *-- <bin_op> <expression> ---*
+                          |- <string> --------|
+                          |- <table> ---------|
+                          |- <function> ------|
+                          |- <var_ref> -------|
+                          *- <function_call> -*
+]]
+
 local handy = request('!.mechs.processor.handy')
 local opt_rep = handy.opt_rep
 local cho = handy.cho
