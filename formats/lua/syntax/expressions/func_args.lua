@@ -1,3 +1,12 @@
+--[[
+  <func_args>:
+
+    ---+- ( -+---------------+- ) -+---
+       |     *- <expr_list> -*     |
+       +- <table> -----------------+
+       *- <string> ----------------*
+]]
+
 local handy = request('!.mechs.processor.handy')
 local cho = handy.cho
 local opt = handy.opt
