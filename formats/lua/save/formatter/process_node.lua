@@ -32,7 +32,7 @@ return
             print('node[1].type', node[1].type)
           end
         end
-        print('There is some uncovered cases in code formatter.')
+        print('There are some uncovered cases in code formatter.')
       end
     end
     return true
