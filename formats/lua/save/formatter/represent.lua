@@ -1,4 +1,4 @@
-local printer_class = request('^.^.^.^.mechs.text_block.interface')
+local printer_class = request('!.mechs.text_block.interface')
 
 return
   function(self, representer, node)
