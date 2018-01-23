@@ -1,8 +1,8 @@
 local handy = request('!.mechs.processor.handy')
 local list = handy.list
 
-local name = request('name')
-local syntel = request('syntel')
+local name = request('^.words.name')
+local syntel = request('^.words.syntel')
 
 return
   {

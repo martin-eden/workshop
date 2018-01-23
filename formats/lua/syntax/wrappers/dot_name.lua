@@ -5,5 +5,5 @@ return
   {
     name = 'dot_name',
     syntel('.'),
-    name
+    name,
   }
