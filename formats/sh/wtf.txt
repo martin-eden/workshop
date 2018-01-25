@@ -1,0 +1,12 @@
+Shell files parser.
+
+*nix shell fales generally is text files whose first line may
+start with shebang - #! and then the full name of tool to handle
+data below.
+
+This parser separates shebang part from data part.
+
+Need was to allow parsing .lua files without adding weirdness to
+Lua language syntax.
+
+2018-01-25
