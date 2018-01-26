@@ -13,6 +13,17 @@ local parse_sh = request('!.formats.sh.load')
 return
   function(s)
     assert_string(s)
+
     local sh = parse_sh(s)
-    return parse(sh.data, syntax)
+    local shebang_str
+    if sh.tool then
+      shebang_str = '#! ' .. sh.tool
+    end
+
+    local result, unparsed_tail = parse(sh.data, syntax)
+
+    result.shebang_str = shebang_str
+    result.unparsed_tail = unparsed_tail
+
+    return result
   end
