@@ -1,5 +1,5 @@
-local remove_whitespace
-remove_whitespace =
+local remove_whitespaces
+remove_whitespaces =
   function(node)
     assert_table(node)
     for i = #node, 1, -1 do
@@ -9,9 +9,12 @@ remove_whitespace =
     end
     for i = #node, 1, -1 do
       if is_table(node[i]) then
-        remove_whitespace(node[i])
+        remove_whitespaces(node[i])
       end
     end
   end
 
-return remove_whitespace
+return
+  function(self)
+    return remove_whitespaces(self.data_struc)
+  end

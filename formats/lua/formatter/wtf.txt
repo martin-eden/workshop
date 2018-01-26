@@ -1,7 +1,7 @@
 Code to process structure returned by [preprocess] facility.
 
 This structure is some sort of AST. We process it with handlers
-dependent on type of AST node. Those handlers adds some text to
+dependent on type of AST node. Those handlers add some text to
 virtual printer/screen/terminal. At the end that text becomes
 string with formatted source code.
 
@@ -15,15 +15,15 @@ time).
 There are some non-trivial stuff in [variate]/[represent].
 
 [variate] function mimics regular node representer. But actually it
-may try one or two "inner" node representers. Then add to output
-result that fits under right margin (or under maximum text width)
-(see [representation_is_allowed] for details). If no such
-representation possible, output is not changed and "false" returned.
+may try one or two "inner" node representers. And then add to output
+a result that fits under right margin. See [representation_is_allowed]
+for details. If no such representation possible, output is not changed
+and "false" returned.
 
 Code is so strange and complex because
 
   * that "inner" functions may be variate() too
-    (That is why node representer interface asks that handler return
+    (That is why node representer interface asks handler to return
     "true" or "false" - make early exit possible and reduce O(2^n)
     cases.)
   * we still need final output, even if it beyond margins

@@ -3,7 +3,9 @@ return
     right_margin = 80,
     max_text_width = 68,
     indent_chunk = '  ',
+
     keep_comments = true,
+    keep_unparsed_tail = true,
 
     data_struc = nil,
     is_ok = true,

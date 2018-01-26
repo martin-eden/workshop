@@ -52,4 +52,7 @@ move_comments =
     end
   end
 
-return move_comments
+return
+  function(self)
+    return move_comments(self.data_struc)
+  end
