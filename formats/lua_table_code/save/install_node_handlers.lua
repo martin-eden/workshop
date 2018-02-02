@@ -28,7 +28,7 @@ node_handlers.local_definition =
     compile(node.value)
   end
 
-local quote_string = request('!.formats.lua.save.quote_string')
+local quote_string = request('!.formats.lua.quote_string')
 local is_identifier = request('!.formats.lua.is_identifier')
 
 node_handlers.index =

@@ -71,7 +71,7 @@ do
 end
 
 do
-  local quote_string = request('!.formats.lua.save.quote_string')
+  local quote_string = request('!.formats.lua.quote_string')
 
   local serialize_quoted =
     function(node)
