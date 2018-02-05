@@ -3,14 +3,15 @@
   <expression>:
 
     ---+--------------+---+- ... -------------+---+----------------------------+---
-       | ------------ |   |- <nil> -----------|   | -------------------------- |
-       | V          | |   |- <boolean>--------|   | V                        | |
-       +-- <un_op> ---+   |- <number> --------|   +-- <bin_op> <expression> ---+
-                          |- <string> --------|
-                          |- <table> ---------|
-                          |- <function> ------|
-                          |- <var_ref> -------|
+       | ------------ |   +- <nil> -----------+   | -------------------------- |
+       | V          | |   +- <boolean>--------+   | V                        | |
+       +-- <un_op> ---+   +- <number> --------+   +-- <bin_op> <expression> ---+
+                          +- <string> --------+
+                          +- <table> ---------+
+                          +- <function> ------+
+                          +- <var_ref> -------+
                           +- <function_call> -+
+                          +- <par_expr> ------+
 ]]
 
 local handy = request('!.mechs.processor.handy')
@@ -29,6 +30,19 @@ local un_op =
       word('not')
     ),
   }
+
+--[[
+  Order
+
+    <x> before <y>:
+
+      "//" "/"
+      "~=" "~"
+      "<<" "<"
+      "<=" "<"
+      ">>" ">"
+      ">=" ">"
+]]
 
 local bin_op =
   {
@@ -58,6 +72,15 @@ local type_table = request('type_table')
 local type_function = request('type_function')
 local var_ref = request('qualifiers.var_ref')
 local function_call = request('statements.function_call')
+local par_expr = request('wrappers.par_expr')
+
+--[[
+  Order
+
+    <var_ref> and <function_call> must be placed before <par_expr>.
+    Because "(a).b" is <var_ref>, "(a)()" is <function_call> and
+    "(a)" is <par_expr>.
+]]
 
 return
   {
@@ -73,7 +96,8 @@ return
       type_table,
       type_function,
       var_ref,
-      function_call
+      function_call,
+      par_expr
     ),
     opt_rep(
       bin_op,
