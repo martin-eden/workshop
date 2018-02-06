@@ -24,16 +24,18 @@ return
 
           (For example <local_named_funcion> may have .body = nil)
         ]]
+      elseif is_table(node) then
+        --[[
+          Passed some table without <.type>. It occurs for empty files
+          or for files which we failed to parse.
+
+          It's ok when given node is not sequence.
+        ]]
+        assert(not node[1])
       else
         print('!', 'type(node)', type(node))
-        if is_table(node) then
-          print('node.type', node.type)
-          if node[1] then
-            print('node[1].type', node[1].type)
-          end
-        end
         print('There are some uncovered cases in code formatter.')
       end
+      return true
     end
-    return true
   end
