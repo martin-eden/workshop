@@ -1,14 +1,24 @@
 --[[
-  Get line for given string and position. Return it with next position.
+  Get line from given string and position. Return it with next line
+  position.
 
-  Function interface uses standard next() function format:
-    input:
-      base, index
-    output:
-      new_index, result
+  Input
 
-  Special case:
-    Last line may not have tail newline.
+    <str>
+          <int>
+
+  Output
+
+    <int> <str>
+          <nil>
+
+  Notes
+
+    * next() function format used.
+    * Special cases handled:
+      * Last line may not have tail newline. It handled as line
+        anyway.
+      * Source line may be empty. (1, <nil>) is returned.
 ]]
 
 return
