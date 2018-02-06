@@ -1,7 +1,6 @@
 local result =
   {
     expression = request('expression'),
-    statements = request('statements'),
   }
 
 local merge = request('!.table.merge')
