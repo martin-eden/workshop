@@ -1,14 +1,15 @@
 return
   function(self, node)
     if not is_table(node) then
-      return -- todo: should investigate this case
+      --[[
+        Non-table argument given. Typical case is calls from
+        process_list() with sequence (<name>, ",", <name> ...).
+        Ignore non-table arguments.
+      ]]
+      return
     end
 
     local result
-
-    if not node.type then
-      error('Given node has no .type')
-    end
 
     local handler = self.handlers[node.type]
     if handler then
@@ -17,8 +18,21 @@ return
         result.type = node.type
       end
     else
-      -- print(('No handler for type "%s". Using default behavior.'):format(node.type))
-      result = {type = node.type, value = node[1]}
+      result = {type = node.type}
+      local result_value
+      for i, el in ipairs(node) do
+        if is_string(el) then
+          if not result_value then
+            result_value = el
+          end
+        elseif is_table(el) then
+          table.insert(result, self:process_node(el))
+        end
+      end
+      if (#node > 1) then
+        result_value = nil
+      end
+      result.value = result_value
     end
 
     return result
