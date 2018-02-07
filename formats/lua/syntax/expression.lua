@@ -9,9 +9,7 @@
                           +- <string> --------+
                           +- <table> ---------+
                           +- <function> ------+
-                          +- <var_ref> -------+
-                          +- <function_call> -+
-                          +- <par_expr> ------+
+                          +- <var_or_call> ---+
 ]]
 
 local handy = request('!.mechs.processor.handy')
@@ -34,14 +32,16 @@ local un_op =
 --[[
   Order
 
-    <x> before <y>:
+    <x> must be before <y> because <y> is a prefix of <x>:
 
-      "//" "/"
-      "~=" "~"
-      "<<" "<"
-      "<=" "<"
-      ">>" ">"
-      ">=" ">"
+    <x> <y>
+
+    //   /
+    ~=   ~
+    <<   <
+    <=   <
+    >>   >
+    >=   >
 ]]
 
 local bin_op =
@@ -70,17 +70,7 @@ local type_number = request('type_number')
 local type_string = request('type_string')
 local type_table = request('type_table')
 local type_function = request('type_function')
-local var_ref = request('qualifiers.var_ref')
-local function_call = request('statements.function_call')
-local par_expr = request('wrappers.par_expr')
-
---[[
-  Order
-
-    <var_ref> and <function_call> must be placed before <par_expr>.
-    Because "(a).b" is <var_ref>, "(a)()" is <function_call> and
-    "(a)" is <par_expr>.
-]]
+local var_or_call = request('qualifiers.var_or_call')
 
 return
   {
@@ -95,9 +85,7 @@ return
       type_string,
       type_table,
       type_function,
-      var_ref,
-      function_call,
-      par_expr
+      var_or_call
     ),
     opt_rep(
       bin_op,

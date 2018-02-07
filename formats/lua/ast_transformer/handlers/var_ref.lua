@@ -28,7 +28,8 @@
     func_args
 ]]
 
-local t2s = request('!.table.as_string')
+-- local t2s = request('!.table.as_string')
+local replace = request('!.table.replace')
 
 return
   function(self, node)
@@ -48,14 +49,14 @@ return
         (seek_pos <= #node) and
         (node[seek_pos].type ~= 'func_args')
       do
-        name_part[#name_part + 1] = self:process_node(node[seek_pos])
+        name_part[#name_part + 1] = node[seek_pos]
         seek_pos = seek_pos + 1
       end
       name_part.type = 'name_parts'
 
       local args
       if node[seek_pos] then
-        args = self:process_node(node[seek_pos])
+        args = node[seek_pos]
       end
       result =
         {
@@ -72,5 +73,5 @@ return
     -- print('node\n', t2s(node))
     -- print('result\n', t2s(result))
 
-    return result
+    replace(node, result)
   end

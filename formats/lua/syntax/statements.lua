@@ -2,11 +2,10 @@
 
   <statements>:
 
-    ---+--------------------------------+---+----------------------+---+-------------+---
-       | +----------------------------  |   +- <return_statement> -+   +- <opt_spc> -+
-       | V                           /  |
-       +---+- <function_call> -----+---+
-           +- <assignment> --------+
+    ---+-------------------------------+---+----------------------+---+-------------+---
+       | +---------------------------- |   +- <return_statement> -+   +- <opt_spc> -+
+       | V                           / |
+       +---+- <assign_or_call> ----+---+
            +- <named_function> ----+
            +- <empty_statement> ---+
            +- <label_statement> ---+
@@ -26,8 +25,7 @@ local opt = handy.opt
 local opt_rep = handy.opt_rep
 local cho = handy.cho
 
-local function_call = request('statements.function_call')
-local assignment = request('statements.assignment')
+local assign_or_call = request('statements.assign_or_call')
 local named_function = request('statements.named_function')
 
 local empty_statement = request('statements.empty_statement')
@@ -52,8 +50,7 @@ return
     inner_name = 'statements',
     opt_rep(
       cho(
-        function_call,
-        assignment,
+        assign_or_call,
         named_function,
 
         empty_statement,
@@ -88,4 +85,5 @@ return
 2016-09-21
 2017-08-28
 2018-01-23
+2018-02-07
 ]]

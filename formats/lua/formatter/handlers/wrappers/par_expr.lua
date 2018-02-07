@@ -1,7 +1,7 @@
 local oneliner =
   function(self, node)
     self.printer:add_curline('(')
-    if not self:process_node(node.expr) then
+    if not self:process_node(node[1]) then
       return
     end
     self.printer:add_curline(')')
@@ -13,7 +13,7 @@ local multiliner =
     self.printer:add_curline('(')
 
     self.printer:request_clean_line()
-    if not self:process_block(node.expr) then
+    if not self:process_block(node[1]) then
       return
     end
 
