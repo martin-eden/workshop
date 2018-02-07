@@ -1,52 +1,63 @@
 --[[
-  opt_rep <un_op>
-  cho(
-          <vararg>
-          <type_nil>
-          <type_boolean>
-          <type_number>
-          <type_string>
-          <type_table>
-          <type_function>
-     )    <var_link>
-  opt_rep
-          <bin_op>
-          <expression>
+  rep
+
+    opt_rep <un_op>
+
+    cho     <vararg>
+            <type_nil>
+            <type_boolean>
+            <type_number>
+            <type_string>
+            <type_table>
+            <type_function>
+            <var_ref>
+
+    opt     <bin_op>
 ]]
+
+local replace = request('!.table.replace')
 
 return
   function(self, node)
     local result = {}
 
     local i = 1
-    while (i <= #node) do
-      local term = {}
 
-      if (node[1].type == 'un_op') then
-        local un_ops = {}
-        while (i <= #node) and (node[i].type == 'un_op') do
-          un_ops[#un_ops + 1] = self:process_node(node[i]).value
-          i = i + 1
-        end
-        term.un_ops = un_ops
-      end
+    local n = #node
 
-      term.operand = self:process_node(node[i])
-      i = i + 1
+    local term = {}
 
-      if (i <= #node) then
-        term.bin_op = self:process_node(node[i]).value
+    if (node[i].type == 'un_op') then
+      local un_ops = {}
+      while (node[i].type == 'un_op') and (i <= n) do
+        un_ops[#un_ops + 1] = node[i].value
+        node[i] = nil
         i = i + 1
       end
-
-      result[#result + 1] = term
-
-      if (i <= #node) and (node[i].type == 'expression') then
-        node = node[i]
-        i = 1
-      end
+      term.un_ops = un_ops
     end
+
+    term.operand = node[i]
+    node[i] = nil
+    i = i + 1
+
+    if (i < n) and (node[i].type == 'bin_op') then
+      term.bin_op = node[i].value
+      node[i] = nil
+      i = i + 1
+    end
+
+    result[#result + 1] = term
+
+    if (i == n) and (node[i].type == 'expression') then
+      -- Last node is already processed record. Due align_nodes() construction.
+      for j = 1, #node[i] do
+        result[#result + 1] = node[i][j]
+      end
+      node[i] = nil
+    end
+
     result.type = node.type
 
-    return result
+    replace(node, result)
   end

@@ -54,5 +54,5 @@ move_comments =
 
 return
   function(self)
-    return move_comments(self.data_struc)
+    move_comments(self.data_struc)
   end
