@@ -40,12 +40,12 @@ local multiliner =
         if not self:process_block(value) then
           return
         end
-        printer:add_textline(';')
+        printer:add_textline(',')
       else
         if not self:process_node(value) then
           return
         end
-        printer:add_textline(';')
+        printer:add_textline(',')
       end
     end
     printer:dec_indent()
