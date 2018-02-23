@@ -5,9 +5,9 @@ return
     function_call = request('expressions.function_call'),
     var_ref = request('expressions.var_ref'),
 
-    string = request('expressions.data_types.string'),
-    table = request('expressions.data_types.table'),
-    type_function = request('expressions.data_types.type_function'),
+    string = request('expressions.string'),
+    table = request('expressions.table'),
+    type_function = request('expressions.type_function'),
 
     statements = request('statements'),
 
