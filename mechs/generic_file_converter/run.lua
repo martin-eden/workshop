@@ -3,6 +3,8 @@ local represent_size = request('!.number.represent_size')
 
 return
   function(self)
+    local toolname_header = ('--[ %s ]'):format(self.tool_name)
+    self:say(toolname_header)
     self:say(
       ('Loading "%s" [%s].'):format(
         self.f_in_name,
