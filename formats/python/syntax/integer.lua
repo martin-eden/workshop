@@ -13,12 +13,17 @@
   -- https://docs.python.org/3/reference/lexical_analysis.html#literals
 ]]
 
+local handy = request('!.mechs.processor.handy')
+local opt = handy.opt
+local opt_rep = handy.opt_rep
+local cho = handy.cho
+local match_regexp = request('!.mechs.parser.handy').match_regexp
 
 local nonzerodigit =
-  match_regexp('[1-9]')
+  match_regexp('[123456789]')
 
 local digit =
-  match_regexp('[0-9]')
+  match_regexp('[0123456789]')
 
 local decinteger =
   cho(
@@ -39,7 +44,7 @@ local decinteger =
   )
 
 local bindigit =
-  cho('0', '1')
+  match_regexp('[01]')
 
 local bininteger =
   {
@@ -52,7 +57,7 @@ local bininteger =
   }
 
 local octdigit =
-  match_regexp('[0-7]')
+  match_regexp('[01234567]')
 
 local octinteger =
   {
@@ -65,7 +70,7 @@ local octinteger =
   }
 
 local hexdigit =
-  match_regexp('[0-9a-fA-F]')
+  match_regexp('[0123456789abcdefABCDEF]')
 
 local hexinteger =
   {
@@ -78,4 +83,9 @@ local hexinteger =
   }
 
 local integer =
-  cho(decinteger, bininteger, octinteger, hexinteger)
+  cho(
+    decinteger,
+    bininteger,
+    octinteger,
+    hexinteger
+  )
