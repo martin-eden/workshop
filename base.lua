@@ -126,7 +126,9 @@ if not _G.request then
   _G.request = request
   _G.dependencies = dependencies
   _G.get_require_name = get_require_name
-  push('', 'base')
+  -- First element is invocation module name, second - module file path
+  local base_require_name = (...)
+  push('', base_require_name)
   request('!.system.install_is_functions')
   request('!.system.install_assert_functions')
   _G.new = request('!.table.new')
