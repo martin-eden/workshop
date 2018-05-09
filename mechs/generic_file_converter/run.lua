@@ -1,5 +1,6 @@
 local file_size = request('!.file.get_size')
 local represent_size = request('!.number.represent_size')
+local table_to_str = request('!.table.as_string')
 
 return
   function(self)
@@ -19,6 +20,10 @@ return
         self:say('Compiling.')
         local compile_result = self.compile(parse_result)
         if compile_result then
+          if is_table(compile_result) then
+            compile_result = table_to_str(compile_result)
+            self:say('Serializing table result.')
+          end
           assert_string(compile_result)
           self:say(
             ('Saving "%s" [%s].'):format(
