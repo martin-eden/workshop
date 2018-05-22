@@ -4,27 +4,26 @@ local cho = handy.cho
 
 local vararg = request('^.words.vararg')
 local name_list = request('^.wrappers.name_list')
-local word = request('^.words.word')
 local syntel = request('^.words.syntel')
-
-local params_list =
-  cho(
-    vararg,
-    {
-      name_list,
-      opt(
-        syntel(','),
-        vararg
-      ),
-    }
-  )
+local word = request('^.words.word')
 
 return
   {
     {
       name = 'function_params',
       syntel('('),
-      opt(params_list),
+      opt(
+        cho(
+          vararg,
+          {
+            name_list,
+            opt(
+              syntel(','),
+              vararg
+            ),
+          }
+        )
+      ),
       syntel(')'),
     },
     {
