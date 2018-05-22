@@ -3,12 +3,10 @@
 
   <func_args>:
 
-    ---+- ( -+---------------+- ) -+---
-       |     +- <expr_list> -+     |
-       +- <table> -----------------+
-       +- <string> ----------------+
-
-  This module is standalone because it exports named element.
+    -+- "(" -+---------------+- ")" -+-
+     |       +- <expr_list> -+       |
+     +- <table> ---------------------+
+     +- <string> --------------------+
 ]]
 
 local handy = request('!.mechs.processor.handy')
@@ -16,6 +14,7 @@ local cho = handy.cho
 local opt = handy.opt
 
 local syntel = request('^.words.syntel')
+
 local expr_list = request('^.wrappers.expr_list')
 local type_table = request('^.type_table')
 local type_string = request('^.type_string')
