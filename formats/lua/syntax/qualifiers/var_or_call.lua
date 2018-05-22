@@ -1,30 +1,46 @@
+--[[
+  Variable reference or function call grammar.
+
+  <var_or_call>:
+
+    -+- <name> ---------+-+----------------------------------------+-
+     +- "(" <expr> ")" -+ | -------------------------------------- |
+                          | V                                    | |
+                          +---+- "[" <expr> "]" ---------------+-+-+
+                              +- "." <name> -------------------+
+                              +-+--------------+- <func_args> -+
+                                +- ":" <name> -+
+
+  Examples:
+
+    a[b].c().d - variable reference
+    a[b].c() - function call
+
+  So function call ends on function arguments part while variable
+  referece does not.
+
+  For clarity this grammar may be split in two. But it will severely
+  hurt performance, because these structures have common prefix.
+
+  Allowing such hybrid structure is good for runtime performance but
+  increases code complexity as later we have to post-process result
+  and classify every such entry to "reference" or "function call".
+
+  (Implementation with classification pass is usually faster than
+  with overlapping grammars.)
+]]
+
 local handy = request('!.mechs.processor.handy')
 local cho = handy.cho
 local opt = handy.opt
-local rep = handy.rep
 local opt_rep = handy.opt_rep
 
 local name = request('^.words.name')
-local syntel = request('^.words.syntel')
-
 local par_expr = request('^.wrappers.par_expr')
 local bracket_expr = request('^.wrappers.bracket_expr')
-local expr_list = request('^.wrappers.expr_list')
 local dot_name = request('^.wrappers.dot_name')
 local colon_name = request('^.wrappers.colon_name')
-
-local type_string = request('^.type_string')
-local type_table = request('^.type_table')
-
-local func_args =
-  {
-    name = 'func_args',
-    cho(
-      {syntel('('), opt(expr_list), syntel(')')},
-      type_string,
-      type_table
-    ),
-  }
+local func_args = request('func_args')
 
 return
   {
