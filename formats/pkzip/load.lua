@@ -1,3 +1,13 @@
+--[[
+  Parse given ZIP file handle or string with file contents.
+  Returns table with parse tree.
+
+  Usage:
+    s = [get_file_contents(zip_file)]
+    parse = request([...])
+    parsed_tree = parse(s)
+]]
+
 local loader = request('loader.interface')
 
 return
