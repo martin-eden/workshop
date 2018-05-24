@@ -1,19 +1,28 @@
+--[[
+  Generate string name for given function, thread, table and userdata.
+
+  Usage:
+
+    name_giver = request(...)
+    entity_name = name_giver:give_name(t)
+]]
+
 return
   {
     names = {},
     counters =
       {
         ['function'] = 0,
-        ['thread'] = 0,
-        ['userdata'] = 0,
-        ['table'] = 0,
+        table = 0,
+        thread = 0,
+        userdata = 0,
       },
     templates =
       {
         ['function'] = 'f_%d',
-        ['thread'] = 'th_%d',
-        ['userdata'] = 'u_%d',
-        ['table'] = 't_%d',
+        table = 't_%d',
+        thread = 'th_%d',
+        userdata = 'u_%d',
       },
     give_name =
       function(self, obj)
@@ -21,7 +30,7 @@ return
           local obj_type = type(obj)
           if not self.counters[obj_type] then
             error(
-              ('Argument type "%s" not supported for counting.'):
+              ('Argument type "%s" is not supported for counting.'):
               format(obj_type),
               2
             )
