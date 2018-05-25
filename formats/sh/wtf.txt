@@ -1,8 +1,8 @@
 Shell files parser.
 
-*nix shell fales generally is text files whose first line may
-start with shebang - #! and then the full name of tool to handle
-data below.
+Unix shell files generally are text files whose first line may
+start with shebang - "#!" followed by full name of tool to handle
+data in that file.
 
 This parser separates shebang part from data part.
 
