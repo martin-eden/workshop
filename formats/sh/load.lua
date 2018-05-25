@@ -2,10 +2,14 @@
   Shebang script files splitter.
 
   Input:
-    string with file data
+
+    string - file data
 
   Output:
-    {tool = <str> or <nil>, data = <str>}
+
+    table
+      tool: string or nil
+      data: string
 ]]
 
 local get_next_line = request('!.string.lines.get_next_line')
