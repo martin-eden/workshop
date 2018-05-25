@@ -1,3 +1,24 @@
+--[[
+  Create Bash script to copy all needed Lua modules in separate
+  directory.
+
+  get_script(
+    modules: table - list of strings - root modules
+    opt deploy_dir: string - name of directory where copy that modules
+      default "deploy"
+  )
+
+
+  Create Bash script and save it in file.
+
+  save_script(
+    modules: table - list of strings - see get_script()
+    opt script_name: string - name of Bash script
+      default "deploy.sh"
+    opt deploy_dir: string - see get_script()
+  )
+]]
+
 local get_cmd_copy = request('!.bare.file_system.get_cmd_copy')
 local get_cmd_mkdir = request('!.bare.file_system.get_cmd_mkdir')
 local get_modules_dependencies = request('!.system.get_modules_dependencies')
