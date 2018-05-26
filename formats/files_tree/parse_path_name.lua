@@ -6,7 +6,7 @@ return
   function(self, path_name, is_file)
     local components = parse_name(path_name)
     local current_node = self.tree
-    for i = 1, #components do
+    for i = 1, #components.path do
       local part_name = components[i]
       if (part_name == level_up_str) then
           if not current_node.parent then
