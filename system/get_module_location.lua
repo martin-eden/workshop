@@ -10,8 +10,13 @@
     * module is loaded via custom function in <package.searchers>
 ]]
 
+local normalize_name = request('!.file.normalize_name')
+
 return
   function(module_name)
     assert_string(module_name)
-    return (package.searchpath(module_name, _G.package.path))
+    local result
+    result = package.searchpath(module_name, _G.package.path)
+    result = normalize_name(result)
+    return result
   end
