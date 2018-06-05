@@ -2,26 +2,26 @@
   Create Bash script to copy all needed Lua modules in separate
   directory.
 
-  get_script(
-    modules: table - list of strings - root modules
-    opt deploy_dir: string - name of directory where copy that modules
-      default "deploy"
-  )
+  Workflow:
+
+    * Clone.
+
+    * -+----------------+- populate -+- save_script -+-
+       +- .deploy_docs -+            +- get_script --+
 
 
-  Create Bash script and save it in file.
+  .deploy_docs -> bool
 
-  save_script(
-    modules: table - list of strings - see get_script()
-    opt script_name: string - name of Bash script
-      default "deploy.sh"
-    opt deploy_dir: string - see get_script()
-  )
+    Flag to include documentation files in deploy package.
 ]]
-
 
 return
   {
+    deploy_docs = true,
+    populate = request('populate'),
     get_script = request('get_script'),
     save_script = request('save_script'),
+    --
+    bash_script_writer = request('!.mechs.bash_script_writer.interface'),
+    get_docs = request('get_docs'),
   }
