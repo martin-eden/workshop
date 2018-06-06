@@ -1,0 +1,35 @@
+local map_values = request('!.table.map_values')
+
+return
+  map_values(
+    {
+      'and',
+      'assert',
+      'break',
+      'class',
+      'continue',
+      'def',
+      'del',
+      'elif',
+      'else',
+      'except',
+      'exec',
+      'finally',
+      'for',
+      'from',
+      'global',
+      'if',
+      'import',
+      'in',
+      'is',
+      'lambda',
+      'not',
+      'or',
+      'pass',
+      'print',
+      'raise',
+      'return',
+      'try',
+      'while',
+    }
+  )
