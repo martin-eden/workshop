@@ -10,7 +10,7 @@
   octdigit     ::=  "0"..."7"
   hexdigit     ::=  digit | "a"..."f" | "A"..."F"
 
-  -- https://docs.python.org/3/reference/lexical_analysis.html#literals
+  -- https://docs.python.org/3/reference/lexical_analysis.html#integer-literals
 ]]
 
 local handy = request('!.mechs.processor.handy')
@@ -89,3 +89,5 @@ local integer =
     octinteger,
     hexinteger
   )
+
+return integer
