@@ -1,3 +1,17 @@
+--[[
+  String literal definition.
+
+  <string>:
+
+    - <opt_spc> -+- <long_bracket> -----------------+-
+                 +- """ -+------------------+- """ -+
+                 |       +- "\" - any_char -+       |
+                 |       +- any_char -------+       |
+                 +- "'" -+------------------+- "'" -+
+                         +- "\" - any_char -+
+                         +- any_char -------+
+]]
+
 local handy = request('!.mechs.processor.handy')
 local opt_rep = handy.opt_rep
 local cho = handy.cho
