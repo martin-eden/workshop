@@ -1,29 +1,25 @@
 --[[
-  Parse given ZIP file handle or string with file contents.
-  Returns table with parse tree.
-
-  Usage:
-    s = [get_file_contents(zip_file)]
-    parse = request([...])
-    parsed_tree = parse(s)
+  Parse ZIP file given as file handle or as string with file contents.
+  Return table with parse tree.
 ]]
 
-local loader = request('loader.interface')
+local c_string_stream =
+  request('!.mechs.streams.mergeable.string.interface')
+local c_file_stream =
+  request('!.mechs.streams.mergeable.file.interface')
+local run = request('parser.run')
 
 return
   function(data)
     local c_stream
     if is_string(data) then
-      c_stream = request('!.mechs.streams.mergeable.string.interface')
+      c_stream = c_string_stream
     elseif is_userdata(data) and (io.type(data) == 'file') then
-      c_stream = request('!.mechs.streams.mergeable.file.interface')
+      c_stream = c_file_stream
     end
 
-    local in_stream = new(c_stream)
-    in_stream:init(data)
+    local stream = new(c_stream)
+    stream:init(data)
 
-    loader.in_stream = in_stream
-    loader:init()
-
-    return loader:run()
+    return run(stream)
   end

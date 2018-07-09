@@ -1,5 +1,5 @@
 return
-  function(self, data)
+  function(data)
     local result = {}
     local version, start_pos = ('< I1'):unpack(data)
     result.version = version

@@ -75,10 +75,9 @@ The bad design is that
       * file is stream-compressed
       * file is encrypted
 
-  4. There are obscure blocks called "additional data" that may occur
+  4. There are obscure blocks called "extra data" that may occur
     inside "file header" or "local file header". (Yes, there may
-    be different "additional data" for one file (which have two
-    headers).)
+    be different "extra data" for one file (which have two headers).)
 
   5. In file header original file length may be more than 4GiB that
     fits in 4 bytes. So in this case length fields are zeroed and
