@@ -1,5 +1,5 @@
 return
-  function(self, data)
+  function(data)
     local modified, accessed, created  = ('< c8 c8 c8'):unpack(data)
     return
       {

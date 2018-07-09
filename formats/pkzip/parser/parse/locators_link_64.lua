@@ -1,4 +1,8 @@
 --[[
+  Parse 64-bit link to file locators.
+
+  Official record name: "Zip64 end of central directory record".
+
   signature, 4, 'PK\x06\x06'
   structure_size, 8
   version_made_by, 2
@@ -8,17 +12,20 @@
   num_entries_on_disk, 8
   num_entries, 8
   directory_size, 8
-  files_list_offset, 8
+  locators_offset, 8
 ]]
 
-local format = '< c4 I8 I2 I2 I4 I4 I8 I8 I8 I8'
+local assert_signature = request('assert_signature')
+
+local record = '< c4 I8 I2 I2 I4 I4 I8 I8 I8 I8'
+local rec_size = record:packsize()
+
+local expected_sign = 'PK\x06\x06'
 
 return
-  function(self)
-    local chunk = self.in_stream:read(format:packsize())
-
-    local results = {format:unpack(chunk)}
-    results[#results] = nil
+  function(stream)
+    local rec_offset = stream:get_position() - 1
+    local chunk = stream:read(rec_size)
 
     local
       signature,
@@ -30,14 +37,18 @@ return
       num_entries_on_disk,
       num_entries,
       directory_size,
-      files_list_offset =
-      table.unpack(results)
+      locators_offset
+      = record:unpack(chunk)
 
-    assert(signature == self.signatures.files_list_link_64, 'Signature mismatch.')
+    assert_signature(signature, expected_sign, rec_offset)
 
     return
       {
-        signature = signature,
+        meta =
+          {
+            type = 'locators_link_64',
+            offset = rec_offset,
+          },
         structure_size = structure_size,
         version_made_by = version_made_by,
         version_to_extract = version_to_extract,
@@ -46,6 +57,6 @@ return
         num_entries_on_disk = num_entries_on_disk,
         num_entries = num_entries,
         directory_size = directory_size,
-        files_list_offset = files_list_offset,
+        offset = locators_offset,
       }
   end
