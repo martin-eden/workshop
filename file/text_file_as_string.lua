@@ -10,20 +10,14 @@
 
 local file_as_string = request('as_string')
 
-local strip_prefixes =
-  {
-    '\xef\xbb\xbf',
-  }
+local utf8_prefix = '\xef\xbb\xbf'
 
 return
   function(file_name)
     local result = file_as_string(file_name)
-    for i = 1, #strip_prefixes do
-      local prefix = strip_prefixes[i]
-      if (result:sub(1, #prefix) == prefix) then
-        result = result:sub(#prefix + 1)
-        break
-      end
+    local prefix = utf8_prefix
+    if (result:sub(1, #prefix) == prefix) then
+      result = result:sub(#prefix + 1)
     end
     return result
   end
