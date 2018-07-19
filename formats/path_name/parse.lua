@@ -9,8 +9,8 @@
     is_absolute: bool
   }
 
-  It does not bother with ".." as "a/b/.." is not "a/" if "b" is
-  symlink to another directory.
+  ".." element: It does not interpret "a/b/.." as "a/" because
+  "b" may be a symlink to another directory.
 
   "is_directory" field may be false negative.
 
