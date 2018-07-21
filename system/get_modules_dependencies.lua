@@ -1,5 +1,10 @@
 --[[
-  Return list of modules required for given modules.
+  Return set of modules required for given set of modules.
+
+  Input is table sequence of module names. Output too.
+
+  So if module "a" requires "lib" and module "b" requires it,
+  result of call ({'a', 'b'}) will be ({'lib'}).
 ]]
 
 local get_module_dependencies = request('get_module_dependencies')
