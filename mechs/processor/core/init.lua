@@ -1,3 +1,7 @@
+--[[
+  Preflight verifications.
+]]
+
 local assert_is_stream =
   function(t)
     assert_table(t)
