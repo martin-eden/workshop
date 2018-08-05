@@ -22,6 +22,7 @@ return
 
     local result, unparsed_tail = parse(sh.data, syntax)
 
+    result = result or {}
     result.shebang_str = shebang_str
     result.unparsed_tail = unparsed_tail
 
