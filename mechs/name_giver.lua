@@ -1,10 +1,12 @@
 --[[
-  Generate string name for given function, thread, table and userdata.
+  Generate string name for given function, thread, table or userdata.
 
   Usage:
 
-    name_giver = request(...)
-    entity_name = name_giver:give_name(t)
+    [@]:give_name(<elem>)
+
+  * Main method is named "give_name", not "get_name" because module
+    name is "name_giver".
 ]]
 
 return
