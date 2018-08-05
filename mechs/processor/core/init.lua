@@ -2,12 +2,7 @@
   Preflight verifications.
 ]]
 
-local assert_is_stream =
-  function(t)
-    assert_table(t)
-    assert_function(t.get_position)
-    assert_function(t.set_position)
-  end
+local assert_is_stream = request('!.mechs.streams.assert_is_stream')
 
 return
   function(self)
