@@ -3,7 +3,7 @@ return
     -- parameters
     f_in_name = '',
     f_out_name = '',
-    tool_name = '',
+    action_name = '',
     load = request('!.file.text_file_as_string'),
     parse = request('!.formats.lua_table_code.load'),
     compile = request('!.table.as_string'),
