@@ -4,6 +4,8 @@ local table_to_str = request('!.table.as_string')
 
 return
   function(self)
+    self:init()
+
     local header = ('--[ %s ]'):format(self.action_name)
     self:say(header)
     self:say(
