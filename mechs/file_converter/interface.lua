@@ -1,13 +1,10 @@
 --[[
   Generic file converter interface.
 
-  Usage core:
-
-    Call <init>
-    Call <run>
+  Usage core: call <run>.
 
   For useful usage you'll need to override some of the following
-  methods: (<load> <parse> <transform> <compile> <save>)
+  methods: (<load> <parse> <transform> <compile> <save>).
 
   Execution stages:
 
