@@ -9,6 +9,7 @@ return
       get_position = request('get_position'),
       set_position = request('set_position'),
       read = request('read'),
+      write = request('write'),
       get_length = request('get_length'),
       -- extensions:
       match_string = request('match_string'),
