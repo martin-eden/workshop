@@ -13,31 +13,30 @@ return
       )
     )
     local data = self.load(self.f_in_name)
-    if data then
-      self:say('Parsing.')
-      local parse_result = self.parse(data)
-      if parse_result then
-        self:say('Compiling.')
-        local compile_result = self.compile(parse_result)
-        if compile_result then
-          if is_table(compile_result) then
-            compile_result = table_to_str(compile_result)
-            self:say('Serializing table result.')
-          end
-          assert_string(compile_result)
-          self:say(
-            ('Saving "%s" [%s].'):format(
-              self.f_out_name,
-              represent_size(#compile_result)
-            )
-          )
-          self.save(self.f_out_name, compile_result)
-        else
-          self:say('Compile failed.')
-        end
-      else
-        self:say('Parse failed.')
-      end
-    end
+    assert(data, 'Loading failed.')
+
+    self:say('Parsing.')
+
+    local parse_result = self.parse(data)
+    assert(parse_result, 'Parse failed.')
+
+    self:say('Transforming.')
+
+    local transform_result = self.transform(parse_result)
+    assert('Transform failed.')
+
+    self:say('Compiling.')
+
+    local compile_result = self.compile(transform_result)
+    assert(compile_result, 'Compile failed.')
+
+    self:say(
+      ('Saving "%s" [%s].'):format(
+        self.f_out_name,
+        represent_size(#compile_result)
+      )
+    )
+    self.save(self.f_out_name, compile_result)
+
     self:say('')
   end
