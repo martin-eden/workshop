@@ -3,7 +3,6 @@
 
   Usage core:
 
-    Fill (<f_in_name> <f_out_name>)
     Call <init>
     Call <run>
 
@@ -20,9 +19,9 @@
 return
   {
     -- parameters
-    f_in_name = '',
-    f_out_name = '',
-    action_name = '',
+    f_in_name = arg[1] or '',
+    f_out_name = arg[2] or '',
+    action_name = 'Generic file conversion',
     load = request('!.file.text_file_as_string'),
     parse = request('!.formats.lua_table_code.load'),
     transform = request('!.function.identity'),
