@@ -2,7 +2,7 @@
   Action-call of [generic_file_converter].
 ]]
 
-local c_converter = request('!.mechs.generic_file_converter.interface')
+local c_converter = request('!.mechs.file_converter.interface')
 
 return
   function(params)
