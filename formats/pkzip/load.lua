@@ -10,7 +10,7 @@ local c_file_stream =
 local run = request('parser.run')
 
 return
-  function(data)
+  function(data, options)
     local c_stream
     if is_string(data) then
       c_stream = c_string_stream
@@ -21,5 +21,5 @@ return
     local stream = new(c_stream)
     stream:init(data)
 
-    return run(stream)
+    return run(stream, options)
   end
