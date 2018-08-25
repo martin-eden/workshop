@@ -40,7 +40,7 @@ local name_zip64_fields_file_rec = request('name_zip64_fields_file_rec')
 local FFx4 = 0xFFFFFFFF
 
 return
-  function(stream, result)
+  function(stream, result, options)
     result.files = {}
     for i = 1, #result.locators do
       local locator = result.locators[i]
@@ -62,7 +62,7 @@ return
         name_zip64_fields_file_rec(file_rec)
       end
 
-      local data_size = file_rec.compressed_size
+      local data_size
       local bit_3_is_set =
         ('< I2'):unpack(file_rec.bit_flag) & (1 << 2) > 0
 
@@ -77,6 +77,7 @@ return
           end
         end
       else
+        data_size = file_rec.compressed_size
         -- Size too big, so stored in Zip64 record?
         if (data_size == FFx4) then
           local zip64_rec = locate_zip64_rec(file_rec)
@@ -86,7 +87,11 @@ return
         end
       end
 
-      stream:set_relative_position(data_size)
+      if options and options.retrieve_file_data then
+        file_rec.data = stream:read(data_size)
+      else
+        stream:set_relative_position(data_size)
+      end
 
       if bit_3_is_set then
         file_rec.post_rec = parse_post_file_rec(stream)
