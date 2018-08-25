@@ -1,6 +1,11 @@
 --[[
   Parse file record.
 
+  Actual compressed file contents is not retrieved here. That's
+  because actual <compressed_size> may be stored in int64 in
+  <extra_data>. Or in <locator> and in <post_rec>. That things are
+  determined and handled at [process_files].
+
   Official record name: "Local file header".
 
   signature, 4, 'PK\x03\x04'
