@@ -1,16 +1,16 @@
 --[[
-  Parse command-line parameters placed in <.args>.
+  Parse command-line parameters placed in <.params>.
   Match their types with parameters from <.allowed_params>.
   Raise error on mismatch.
   Return key-value table.
 ]]
 
 return
-  function(self, args)
+  function(self, params)
     local result = {}
     local num_strings = 0
 
-    for _, item in ipairs(args) do
+    for _, item in ipairs(params) do
       local item_type, key, value = self:classify_item(item)
       if (item_type == 'string') then
         num_strings = num_strings + 1
