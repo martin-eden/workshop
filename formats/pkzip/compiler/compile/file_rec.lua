@@ -57,6 +57,7 @@ return
     end
 
     if rec.post_rec then
-      compile_post_file_rec(rec.post_rec, stream)
+      local raw_post_rec = compile_post_file_rec(rec.post_rec)
+      stream:write(raw_post_rec)
     end
   end
