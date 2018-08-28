@@ -2,6 +2,8 @@
   In this great format, post-file record MAY contain 4-byte
   signature. Or maybe not. Looks like design was made by woman.
 
+  What if (crc32 == signature)?
+
   Official record name: "Data descriptor".
 
   [signature, 4, 'PK\x07\x08']
@@ -17,7 +19,6 @@ local expected_sign = 'PK\x07\x08'
 
 return
   function(stream)
-    local rec_offset = stream:get_position() - 1
     local chunk = stream:read(rec_size)
 
     local
@@ -40,7 +41,6 @@ return
         meta =
           {
             type = 'post_file_rec',
-            offset = rec_offset,
             signature = signature,
           },
         crc32 = crc32,
