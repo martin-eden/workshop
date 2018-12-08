@@ -1,8 +1,13 @@
 --[[
   Add file copy operation to queue.
 
-  - tbl ----- str ------ str ---- -> nil
-   (self) (src_name) (dest_name)
+  Specification:
+
+    self: tbl
+    src_name: str
+    dest_name: str
+    ->
+    nil
 ]]
 
 return
