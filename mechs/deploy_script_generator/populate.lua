@@ -22,6 +22,8 @@ return
     assert_string(deploy_dir)
     deploy_dir = add_dir_postfix(deploy_dir)
 
+    self.bash_script_writer:delete_dir(deploy_dir)
+
     local files = get_modules_dependencies(modules)
     for i = 1, #files do
       files[i] = get_module_location(files[i])
