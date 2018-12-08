@@ -12,6 +12,7 @@
 
 local get_cmd_mkdir = request('!.bare.file_system.get_cmd_mkdir')
 local get_cmd_copy = request('!.bare.file_system.get_cmd_copy')
+local get_cmd_rmdir = request('!.bare.file_system.get_cmd_rmdir')
 local parse_pathname = request('!.formats.path_name.parse')
 
 local compare =
@@ -48,7 +49,16 @@ return
     result =
       {
         '#! /bin/bash',
+        '',
       }
+
+    if next(self.dirs_to_delete) then
+      table.sort(self.dirs_to_delete)
+      for i, dir_name in ipairs(self.dirs_to_delete) do
+        table.insert(result, get_cmd_rmdir(dir_name))
+      end
+      table.insert(result, '')
+    end
 
     table.sort(self.files_to_copy, compare)
     for i, rec in ipairs(self.files_to_copy) do
