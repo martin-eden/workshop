@@ -2,14 +2,11 @@ return
   function(s)
     assert_string(s)
 
+    -- see (1)
+    s = s .. ']'
+
     local min_needed_quotes = 0
-
-    if (s:sub(-1) == ']') then
-      -- case "abc]". We do not want "[[abc]]]"
-      min_needed_quotes = 1
-    end
-
-    local postfix, eq_chunk
+    local eq_chunk, postfix
     while true do
       eq_chunk = ('='):rep(min_needed_quotes)
       postfix = ']' .. eq_chunk .. ']'
@@ -29,5 +26,25 @@ return
       prefix = prefix .. '\n'
     end
 
-    return prefix .. s .. postfix
+    return prefix .. s .. eq_chunk .. ']'
   end
+
+--[===[
+  [1] Quoted result string will consist of
+
+    "[" "="^N "[" s "]" "="^N "]"
+              ^^^   ~~~
+
+    We may safely concatenate parts "^" and "~" to <s> before
+    determining <N>.
+
+    We add part "~" to avoid following cases
+
+      s     | unpatched   |  patched
+      ------+-------------+--------------
+      "]"   | "[[]]]"     | "[=[]]=]"
+      "]]=" | "[=[]]=]=]" | "[==[]]=]==]"
+
+    Case pointed by Roberto Ierusalimschy 2018-12-14 in Lua Mail
+    List.
+]===]
