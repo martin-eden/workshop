@@ -5,15 +5,14 @@ return
     -- see (1)
     s = s .. ']'
 
-    local min_needed_quotes = 0
-    local eq_chunk, postfix
+    local eq_chunk = ''
+    local postfix
     while true do
-      eq_chunk = ('='):rep(min_needed_quotes)
       postfix = ']' .. eq_chunk .. ']'
       if not s:find(postfix, 1, true) then
         break
       end
-      min_needed_quotes = min_needed_quotes + 1
+      eq_chunk = eq_chunk .. '='
     end
 
     local prefix = '[' .. eq_chunk .. '['
