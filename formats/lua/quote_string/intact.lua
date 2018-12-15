@@ -29,15 +29,12 @@ return
   end
 
 --[===[
-  [1] Quoted result string will consist of
+  [1] Quoted result string will have following structure:
 
-    "[" "="^N "[" s "]" "="^N "]"
-              ^^^   ~~~
+    "[" "="^N "[" ["\n"] s "]" "="^N "]"
 
-    We may safely concatenate parts "^" and "~" to <s> before
-    determining <N>.
-
-    We add part "~" to avoid following cases
+    We may safely concatenate "]" to <s> before determining <N>.
+    This is done to avoid following cases:
 
       s     | unpatched   |  patched
       ------+-------------+--------------
