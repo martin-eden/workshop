@@ -17,5 +17,6 @@ return
       -- internal:
       f = nil,
       original_init = original_init,
+      assert_no_error = request('assert_no_error'),
     }
   )
