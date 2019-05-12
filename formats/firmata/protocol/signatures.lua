@@ -1,11 +1,13 @@
 return
   {
-    protocol_version = 0xF9,
     pin_mode = 0xF4,
     pin_value = 0xF5,
+    protocol_version = 0xF9,
 
     sysex_start = 0xF0,
     sysex_end = 0xF7,
+
+    system_reset = 0xFF,
 
     firmware = 0x79,
     query_analog_mapping = 0x69,

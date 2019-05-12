@@ -1,5 +1,7 @@
 return
   {
+    system_reset = request('system_reset'),
+
     get_version = request('get_version'),
     report_version = request('report_version'),
 
