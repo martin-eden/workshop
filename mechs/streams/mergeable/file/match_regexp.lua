@@ -24,10 +24,11 @@ return
 
       window = part_a .. part_b
 
-      local start, finish = window:find(pattern)
+      local start, finish, capture = window:find(pattern)
       if start then
         self:set_relative_position(-#window + finish)
-        return window:sub(start, finish)
+        capture = capture or window:sub(start, finish)
+        return capture
       end
     end
     self:set_position(orig_pos)
