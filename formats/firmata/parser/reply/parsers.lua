@@ -1,6 +1,22 @@
-return
+local signatures = request('!.formats.firmata.protocol.signatures')
+
+local result =
   {
-    request('report_protocol_version'),
-    request('report_version'),
-    request('i2c_reply'),
+    [signatures.protocol_version] =
+      {
+        name = 'report_protocol_version',
+        parser = request('report_protocol_version'),
+      },
   }
+
+local analog_report_parser =
+  {
+    name = 'analog_report',
+    parser = request('analog_report'),
+  }
+
+for k, v in pairs(signatures.analog_report) do
+  result[k] = analog_report_parser
+end
+
+return result

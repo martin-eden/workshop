@@ -1,5 +1,5 @@
 return
-  function(s)
+  function(self, s)
     assert_string(s)
     assert(#s % 2 == 0)
     local result = {}
@@ -8,7 +8,7 @@ return
       assert(code_low <= 0x7F)
       local code_high = c_high:byte()
       assert(code_high <= 1)
-      local code = code_low | (code_high >> 7)
+      local code = code_low | (code_high << 7)
       table.insert(result, string.char(code))
     end
     result = table.concat(result)
