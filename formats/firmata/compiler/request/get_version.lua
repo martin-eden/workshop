@@ -1,9 +1,8 @@
 local signatures = request('!.formats.firmata.protocol.signatures')
-local emit = request('^.implementation.emit')
 
 return
-  function()
-    emit(
+  function(self)
+    self:emit(
       signatures.sysex_start,
       signatures.firmware,
       signatures.sysex_end

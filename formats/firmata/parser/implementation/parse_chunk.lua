@@ -1,22 +1,84 @@
+--[[
+  In Firmata format all data bytes have 8th bit clear. And all command
+  bytes have 8th bit set.
+
+  So theoretically we may start processing data even from middle of
+  data stream. But this implementation dont like this. For simplicity
+  and cause no practical case encountered yet.
+]]
+
+local sysex_start =
+  request('!.formats.firmata.protocol.signatures').sysex_start
+
+local parsers =
+  {
+    -- is_request ?
+    [true] =
+      {
+        sysex = request('^.request.sysex.parsers'),
+        base = request('^.request.parsers'),
+      },
+    [false] =
+      {
+        sysex = request('^.reply.sysex.parsers'),
+        base = request('^.reply.parsers'),
+      },
+  }
+
 return
-  function(stream, parsers, results)
-    local orig_pos = stream:get_position()
-    local longest_pos = 0
-    local best_result
-    for _, parser in ipairs(parsers) do
-      local record = parser(stream)
-      if record then
-        local current_pos = stream:get_position()
-        if (current_pos > longest_pos) then
-          best_result = record
-          longest_pos = current_pos
-        end
-      end
-      stream:set_position(orig_pos)
+  function(self, is_request, results)
+    assert_boolean(is_request)
+
+    local cur_char = self.stream:get_slot()
+
+    if not cur_char then
+      return
     end
-    if best_result then
-      table.insert(results, best_result)
-      stream:set_position(longest_pos)
-      return true
+
+    local type_id = cur_char:byte()
+    local is_sysex
+    local chunk
+    local parser_rec
+
+    local orig_pos = self.stream:get_position()
+
+    if (type_id & 0x80 == 0) then
+      local msg =
+        ('Current byte (%02X) have 8th bit clear, not a command.'):
+        format(type_id)
+      error(msg)
+    elseif (type_id == sysex_start) then
+      is_sysex = true
+      type_id, chunk = self:frame_sysex()
+      parser_rec = parsers[is_request].sysex[type_id]
+    else
+      type_id, chunk = self:frame_command()
+      parser_rec = parsers[is_request].base[type_id]
     end
+
+    if not chunk then
+      self.stream:set_position(orig_pos)
+      return
+    end
+
+    if not parser_rec then
+      local cmd_type = is_sysex and 'sysex' or 'base'
+      local msg =
+        ('No parser found. (type: %s, id: %02X, chunk: %s)'):
+        format(cmd_type, type_id, self:dump_chunk(chunk))
+      error(msg)
+    end
+
+    local record = parser_rec.parser(self, chunk, type_id)
+
+    if not record then
+      self.stream:set_position(orig_pos)
+      return
+    end
+
+    record.type = parser_rec.name
+
+    table.insert(results, record)
+
+    return true
   end
