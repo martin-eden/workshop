@@ -14,6 +14,10 @@ return
     disable_analog_reporting = request('disable_analog_reporting'),
     toggle_analog_reporting = request('toggle_analog_reporting'),
 
+    enable_digital_reporting = request('enable_digital_reporting'),
+    disable_digital_reporting = request('disable_digital_reporting'),
+    toggle_digital_reporting = request('toggle_digital_reporting'),
+
     i2c_config = request('i2c_config'),
     i2c_read = request('i2c_read'),
     i2c_read_cont = request('i2c_read_cont'),
