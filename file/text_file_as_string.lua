@@ -14,8 +14,8 @@ local file_as_string = request('as_string')
 local utf8_prefix = '\xef\xbb\xbf'
 
 return
-  function(file_name)
-    local result = file_as_string(file_name)
+  function(file_name, create_missing_file)
+    local result = file_as_string(file_name, create_missing_file)
     local prefix = utf8_prefix
     if (result:sub(1, #prefix) == prefix) then
       result = result:sub(#prefix + 1)
