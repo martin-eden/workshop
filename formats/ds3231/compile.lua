@@ -58,13 +58,13 @@ return
   function(rec)
     local result =
       {
-        [0] = to_bcd(rec.second),
-        [1] = to_bcd(rec.minute),
-        [2] = compile_hour(rec.hour, rec.is_12h_format),
-        [3] = to_bcd(rec.dow),
-        [4] = to_bcd(rec.date),
-        [5] = to_bcd(rec.month),
-        [6] = to_bcd(rec.year % 100),
+        [0] = to_bcd(rec.moment.second),
+        [1] = to_bcd(rec.moment.minute),
+        [2] = compile_hour(rec.moment.hour, rec.moment.is_12h_format),
+        [3] = to_bcd(rec.moment.dow),
+        [4] = to_bcd(rec.moment.date),
+        [5] = to_bcd(rec.moment.month),
+        [6] = to_bcd(rec.moment.year % 100),
         [16] = to_int8(rec.aging),
       }
 
