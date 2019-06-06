@@ -1,3 +1,5 @@
+-- Get specified bit range from integer number
+
 local assert_bit_offs = request('assert_bit_offs')
 
 return
