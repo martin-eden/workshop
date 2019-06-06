@@ -84,19 +84,6 @@ return
             is_next_century = get_bit(dump[5], 7),
             year = base_century * 100 + from_bcd(dump[6]),
           },
-        aging = uint8_to_int8(dump[16]),
-        temperature = parse_temperature(dump[17], dump[18]),
-        battery =
-          {
-            clock_enabled = not get_bit(dump[14], 7),
-            custom_wave_output_allowed = get_bit(dump[14], 6),
-          },
-        converting_temperature = get_bit(dump[14], 5),
-        custom_wave_freq = wave_freqs[slice_bits(dump[14], 3, 4)],
-        output_alarms_not_custom_wave = get_bit(dump[14], 2),
-        clock_was_stopped = get_bit(dump[15], 7),
-        fixed_wave_32k_enabled = get_bit(dump[15], 3),
-        is_busy = get_bit(dump[15], 2),
         alarm =
           {
             [1] =
@@ -124,6 +111,19 @@ return
                 triggered = get_bit(dump[15], 1),
               },
           },
+        output_alarms_not_custom_wave = get_bit(dump[14], 2),
+        custom_wave_freq = wave_freqs[slice_bits(dump[14], 3, 4)],
+        converting_temperature = get_bit(dump[14], 5),
+        battery =
+          {
+            custom_wave_output_allowed = get_bit(dump[14], 6),
+            clock_disabled = get_bit(dump[14], 7),
+          },
+        is_busy = get_bit(dump[15], 2),
+        fixed_wave_32k_enabled = get_bit(dump[15], 3),
+        clock_was_stopped = get_bit(dump[15], 7),
+        aging = uint8_to_int8(dump[16]),
+        temperature = parse_temperature(dump[17], dump[18]),
       }
 
     local hour = parse_hour(slice_bits(dump[2], 0, 6))
