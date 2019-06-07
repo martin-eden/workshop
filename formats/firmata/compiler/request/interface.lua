@@ -18,6 +18,8 @@ return
     disable_digital_reporting = request('disable_digital_reporting'),
     toggle_digital_reporting = request('toggle_digital_reporting'),
 
+    set_sampling_interval = request('set_sampling_interval'),
+
     i2c_config = request('i2c_config'),
     i2c_read = request('i2c_read'),
     i2c_read_cont = request('i2c_read_cont'),
