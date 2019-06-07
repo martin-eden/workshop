@@ -1,12 +1,9 @@
-local assert_byte = request('!.number.assert_byte')
-local emit = request('emit')
+local slice_bits = request('!.number.slice_bits')
 
 return
   function(self, ...)
-    local num_terms = select('#', ...)
-    for i = 1, num_terms do
+    for i = 1, select('#', ...) do
       local term = select(i, ...)
-      assert_byte(term)
-      self:emit(term & 0x7F, term >> 7)
+      self:emit(slice_bits(term, 0, 6), slice_bits(term, 7, 13))
     end
   end
