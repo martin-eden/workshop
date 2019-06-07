@@ -63,12 +63,27 @@ do
       add(tostring(node.value))
     end
 
-  local tostring_datatypes = {'number', 'boolean', 'nil'}
-
-  for i = 1, #tostring_datatypes do
-    node_handlers[tostring_datatypes[i]] = serialize_tostring
-  end
+  node_handlers.boolean = serialize_tostring
+  node_handlers['nil'] = serialize_tostring
 end
+
+--[[
+  tostring() of 1/0, 2/0, ... yields unloadable "inf".
+  (-1/0, -2/0, ...) -> "-inf". (0/0, -0/0, -0/-0.0, ...) -> "-nan".
+  We can compare "inf" values (1/0 == 2/0 -> true) but
+  can't compare "nan" values (0/0 == 0/0 -> false).
+  For "inf" cases we emit loadable "1/0" or "-1/0".
+]]
+node_handlers.number =
+  function(node)
+    if (node.value == 1/0) then
+      add('1/0')
+    elseif (node.value == -1/0) then
+      add('-1/0')
+    else
+      add(tostring(node.value))
+    end
+  end
 
 do
   local quote = request('!.lua.string.quote')
