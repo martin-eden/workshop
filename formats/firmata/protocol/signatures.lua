@@ -98,5 +98,7 @@ return
     i2c_request = 0x76,
     i2c_reply = 0x77,
     i2c_config = 0x78,
+
+    set_sampling_interval = 0x7A,
     --)
   }
