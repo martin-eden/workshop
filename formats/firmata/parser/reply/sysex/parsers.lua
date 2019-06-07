@@ -12,6 +12,11 @@ return
         name = 'analog_mapping',
         parser = request('report_analog_mapping'),
       },
+    [signatures.report_capabilities] =
+      {
+        name = 'pin_capabilities',
+        parser = request('report_capabilities'),
+      },
     [signatures.send_string] =
       {
         name = 'send_string',

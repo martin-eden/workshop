@@ -94,6 +94,7 @@ return
     query_analog_mapping = 0x69,
     report_analog_mapping = 0x6A,
     query_capabilities = 0x6B,
+    report_capabilities = 0x6C,
     set_pin_value_long = 0x6F,
     send_string = 0x71,
 
