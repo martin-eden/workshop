@@ -5,6 +5,7 @@ return
     get_version = request('get_version'),
     get_protocol_version = request('get_protocol_version'),
 
+    get_capabilities = request('get_capabilities'),
     get_analog_mapping = request('get_analog_mapping'),
 
     set_pin_mode = request('set_pin_mode'),
