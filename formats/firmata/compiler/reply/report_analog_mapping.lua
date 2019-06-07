@@ -5,7 +5,7 @@ return
   function(self)
     self:emit(
       signatures.sysex_start,
-      signatures.response_analog_mapping
+      signatures.report_analog_mapping
     )
     for pin_number = 0, (board.num_pins - 1) do
       local analog_index = board.get_pin_analog_index(pin_number) or 127

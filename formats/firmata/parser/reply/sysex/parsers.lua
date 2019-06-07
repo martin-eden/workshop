@@ -7,6 +7,11 @@ return
         name = 'report_version',
         parser = request('report_version'),
       },
+    [signatures.report_analog_mapping] =
+      {
+        name = 'analog_mapping',
+        parser = request('report_analog_mapping'),
+      },
     [signatures.send_string] =
       {
         name = 'send_string',
