@@ -92,7 +92,7 @@ return
     -- sysex signatures(
     firmware = 0x79,
     query_analog_mapping = 0x69,
-    response_analog_mapping = 0x6A,
+    report_analog_mapping = 0x6A,
     set_pin_value_long = 0x6F,
     send_string = 0x71,
 
