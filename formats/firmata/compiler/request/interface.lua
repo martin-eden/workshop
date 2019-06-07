@@ -9,6 +9,7 @@ return
 
     set_pin_mode = request('set_pin_mode'),
     set_pin_value = request('set_pin_value'),
+    set_pin_value_long = request('set_pin_value_long'),
 
     enable_analog_reporting = request('enable_analog_reporting'),
     disable_analog_reporting = request('disable_analog_reporting'),
