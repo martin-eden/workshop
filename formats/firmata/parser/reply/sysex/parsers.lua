@@ -7,15 +7,15 @@ return
         name = 'report_version',
         parser = request('report_version'),
       },
-    [signatures.report_analog_mapping] =
-      {
-        name = 'analog_mapping',
-        parser = request('report_analog_mapping'),
-      },
     [signatures.report_capabilities] =
       {
         name = 'pin_capabilities',
         parser = request('report_capabilities'),
+      },
+    [signatures.report_analog_mapping] =
+      {
+        name = 'analog_mapping',
+        parser = request('report_analog_mapping'),
       },
     [signatures.report_pin_state] =
       {
