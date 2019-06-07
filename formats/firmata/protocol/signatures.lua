@@ -93,6 +93,7 @@ return
     firmware = 0x79,
     query_analog_mapping = 0x69,
     report_analog_mapping = 0x6A,
+    query_capabilities = 0x6B,
     set_pin_value_long = 0x6F,
     send_string = 0x71,
 
