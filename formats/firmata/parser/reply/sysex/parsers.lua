@@ -17,6 +17,11 @@ return
         name = 'pin_capabilities',
         parser = request('report_capabilities'),
       },
+    [signatures.report_pin_state] =
+      {
+        name = 'pin_state',
+        parser = request('report_pin_state'),
+      },
     [signatures.send_string] =
       {
         name = 'send_string',
