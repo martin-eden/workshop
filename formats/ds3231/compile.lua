@@ -99,8 +99,8 @@ return
     result[14] =
       splice_bits(result[14], 3, 4, wave_ids[rec.custom_wave_freq]),
     set_bit(result[14], 5, rec.converting_temperature)
-    set_bit(result[14], 6, rec.battery.custom_wave_output_allowed)
-    set_bit(result[14], 7, rec.battery.clock_disabled)
+    set_bit(result[14], 6, rec.at_battery.custom_wave_output_allowed)
+    set_bit(result[14], 7, rec.at_battery.clock_disabled)
 
     set_bit(result[15], 0, rec.alarm[1].triggered)
     set_bit(result[15], 1, rec.alarm[2].triggered)
