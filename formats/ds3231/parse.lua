@@ -114,7 +114,7 @@ return
         output_alarms_not_custom_wave = get_bit(dump[14], 2),
         custom_wave_freq = wave_freqs[slice_bits(dump[14], 3, 4)],
         converting_temperature = get_bit(dump[14], 5),
-        battery =
+        at_battery =
           {
             custom_wave_output_allowed = get_bit(dump[14], 6),
             clock_disabled = get_bit(dump[14], 7),
