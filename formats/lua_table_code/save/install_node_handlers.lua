@@ -1,7 +1,5 @@
 local text_block
 
-local node_handlers = {}
-
 local add =
   function(s)
     text_block:add_curline(s)
@@ -12,6 +10,7 @@ local request_clean_line =
     text_block:request_clean_line()
   end
 
+local node_handlers = {}
 local raw_compile = request('!.struc.compile')
 
 local compile =
@@ -19,7 +18,7 @@ local compile =
     add(raw_compile(t, node_handlers))
   end
 
-node_handlers.local_definition =
+local handle_local_definition =
   function(node)
     request_clean_line()
     add('local ')
@@ -30,7 +29,7 @@ node_handlers.local_definition =
 
 local is_identifier = request('!.formats.lua.is_identifier')
 
-node_handlers.index =
+local handle_index =
   function(node)
     if
       (node.value.type == 'string') and
@@ -45,7 +44,7 @@ node_handlers.index =
     end
   end
 
-node_handlers.assignment =
+local handle_assignment =
   function(node)
     request_clean_line()
     add(node.name)
@@ -54,7 +53,7 @@ node_handlers.assignment =
     compile(node.value)
   end
 
-node_handlers.return_statement =
+local handle_return_statement =
   function(node)
     request_clean_line()
     add('return ')
@@ -65,6 +64,15 @@ local merge = request('!.table.merge')
 
 return
   function(a_node_handlers, a_text_block)
-    node_handlers = merge(a_node_handlers, node_handlers)
+    node_handlers =
+      merge(
+        a_node_handlers,
+        {
+          local_definition = handle_local_definition,
+          index = handle_index,
+          assignment = handle_assignment,
+          return_statement = handle_return_statement,
+        }
+      )
     text_block = a_text_block
   end
