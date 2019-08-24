@@ -118,5 +118,27 @@ return
         value = table_serializer.value_names[data],
       }
 
+    --[[
+      Apply shortcut:
+
+        ...
+        local t_x = {...}
+        return t_x
+
+      can be shortened to
+
+        ...
+        return {...}
+    ]]
+    assert(#result >= 2)
+    if (result[#result - 1].type == 'local_definition') then
+      result[#result] = nil
+      result[#result] =
+        {
+          type = 'return_statement',
+          value = result[#result].value,
+        }
+    end
+
     return result
   end
