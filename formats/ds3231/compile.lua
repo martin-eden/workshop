@@ -79,34 +79,34 @@ return
         [16] = int8_to_uint8(rec.aging),
       }
 
-    set_bit(result[5], 7, rec.moment.is_next_century)
-    set_bit(result[7], 7, rec.alarm[1].ignore_second)
-    set_bit(result[8], 7, rec.alarm[1].ignore_minute)
-    set_bit(result[9], 7, rec.alarm[1].ignore_hour)
+    result[5] = set_bit(result[5], 7, rec.moment.is_next_century)
+    result[7] = set_bit(result[7], 7, rec.alarm[1].ignore_second)
+    result[8] = set_bit(result[8], 7, rec.alarm[1].ignore_minute)
+    result[9] = set_bit(result[9], 7, rec.alarm[1].ignore_hour)
 
-    set_bit(result[10], 6, rec.alarm[1].is_date_not_day)
-    set_bit(result[10], 7, rec.alarm[1].ignore_date_day)
+    result[10] = set_bit(result[10], 6, rec.alarm[1].is_date_not_day)
+    result[10] = set_bit(result[10], 7, rec.alarm[1].ignore_date_day)
 
-    set_bit(result[11], 7, rec.alarm[2].ignore_minute)
-    set_bit(result[12], 7, rec.alarm[2].ignore_hour)
+    result[11] = set_bit(result[11], 7, rec.alarm[2].ignore_minute)
+    result[12] = set_bit(result[12], 7, rec.alarm[2].ignore_hour)
 
-    set_bit(result[13], 6, rec.alarm[2].is_date_not_day)
-    set_bit(result[13], 7, rec.alarm[2].ignore_date_day)
+    result[13] = set_bit(result[13], 6, rec.alarm[2].is_date_not_day)
+    result[13] = set_bit(result[13], 7, rec.alarm[2].ignore_date_day)
 
-    set_bit(result[14], 0, rec.alarm[1].enabled)
-    set_bit(result[14], 1, rec.alarm[2].enabled)
-    set_bit(result[14], 2, rec.output_alarms_not_custom_wave)
+    result[14] = set_bit(result[14], 0, rec.alarm[1].enabled)
+    result[14] = set_bit(result[14], 1, rec.alarm[2].enabled)
+    result[14] = set_bit(result[14], 2, rec.output_alarms_not_custom_wave)
     result[14] =
-      splice_bits(result[14], 3, 4, wave_ids[rec.custom_wave_freq]),
-    set_bit(result[14], 5, rec.converting_temperature)
-    set_bit(result[14], 6, rec.at_battery.custom_wave_output_allowed)
-    set_bit(result[14], 7, rec.at_battery.clock_disabled)
+      splice_bits(result[14], 3, 4, wave_ids[rec.custom_wave_freq])
+    result[14] = set_bit(result[14], 5, rec.converting_temperature)
+    result[14] = set_bit(result[14], 6, rec.at_battery.custom_wave_output_allowed)
+    result[14] = set_bit(result[14], 7, rec.at_battery.clock_disabled)
 
-    set_bit(result[15], 0, rec.alarm[1].triggered)
-    set_bit(result[15], 1, rec.alarm[2].triggered)
-    set_bit(result[15], 2, rec.is_busy)
-    set_bit(result[15], 3, rec.fixed_wave_32k_enabled)
-    set_bit(result[15], 7, rec.clock_was_stopped)
+    result[15] = set_bit(result[15], 0, rec.alarm[1].triggered)
+    result[15] = set_bit(result[15], 1, rec.alarm[2].triggered)
+    result[15] = set_bit(result[15], 2, rec.is_busy)
+    result[15] = set_bit(result[15], 3, rec.fixed_wave_32k_enabled)
+    result[15] = set_bit(result[15], 7, rec.clock_was_stopped)
 
     result[17], result[18] = compile_temperature(rec.temperature)
 
