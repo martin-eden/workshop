@@ -30,7 +30,7 @@ local set_non_blocking_read =
     local cmd =
       ('stty --file=%s cs8 raw min 0 time %d %d'):
       format(tty_name, sleep_time, baud)
-    print(cmd)
+    -- print(cmd)
     assert(os.execute(cmd))
   end
 
