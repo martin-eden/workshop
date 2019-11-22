@@ -96,6 +96,10 @@ return
     result[14] = set_bit(result[14], 0, rec.alarm[1].enabled)
     result[14] = set_bit(result[14], 1, rec.alarm[2].enabled)
     result[14] = set_bit(result[14], 2, rec.output_alarms_not_custom_wave)
+    assert(
+      wave_ids[rec.custom_wave_freq],
+      ('No wave id for given freq of %s Hz'):format(rec.custom_wave_freq)
+    )
     result[14] =
       splice_bits(result[14], 3, 4, wave_ids[rec.custom_wave_freq])
     result[14] = set_bit(result[14], 5, rec.converting_temperature)
