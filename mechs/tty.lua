@@ -21,16 +21,21 @@ local load_port_params =
   end
 
 local set_non_blocking_read =
-  function(tty_name, sleep_time, baud)
+  function(tty_name, max_wait_time, baud)
     assert_string(tty_name)
+
+    max_wait_time = max_wait_time or 0.5
+    max_wait_time = max_wait_time * 10
+    max_wait_time = max_wait_time // 1
+
     baud = baud or 57600
-    sleep_time = sleep_time or 0.5
-    sleep_time = sleep_time * 10
-    sleep_time = sleep_time // 1
+
     local cmd =
-      ('stty --file=%s cs8 raw min 0 time %d %d'):
-      format(tty_name, sleep_time, baud)
+      -- ('stty --file=%s %d -echo -echoctl -echoe -echok -echoke -icanon -icrnl -iexten -isig -ixon -opost raw cs8 min 0 time %d'):
+      ('stty --file=%s %d raw time %d min 0 -echo -iexten cs8'):
+      format(tty_name, baud, max_wait_time)
     -- print(cmd)
+
     assert(os.execute(cmd))
   end
 
