@@ -31,8 +31,8 @@ local set_non_blocking_read =
     baud = baud or 57600
 
     local cmd =
-      -- ('stty --file=%s %d -echo -echoctl -echoe -echok -echoke -icanon -icrnl -iexten -isig -ixon -opost raw cs8 min 0 time %d'):
-      ('stty --file=%s %d raw time %d min 0 -echo -iexten cs8'):
+      ('stty --file=%s %d raw time %d min 0 cs8 -echo -echoctl -echoe -echok -echoke -icanon -icrnl -iexten -isig -ixon -opost'):
+      -- ('stty --file=%s %d -echoctl raw time %d min 0 cs8'):
       format(tty_name, baud, max_wait_time)
     -- print(cmd)
 
