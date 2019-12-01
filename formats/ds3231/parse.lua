@@ -1,72 +1,15 @@
 local slice_bits = request('!.number.slice_bits')
 local get_bit = request('!.number.get_bit')
 local from_bcd = request('!.number.from_bcd')
+local uint8_to_int8 = request('!.number.uint8_to_int8')
 local merge = request('!.table.merge')
 
-local parse_hour =
-  function(v)
-    local is_12h_format = get_bit(v, 6)
-    local hour
+local parse_hour = request('parse.hour')
+local parse_temperature = request('parse.temperature')
 
-    if is_12h_format then
-      hour = from_bcd(slice_bits(v, 0, 4))
-      local is_pm = get_bit(v, 5)
-      if is_pm then
-        -- 12 p.m. is 12:xx, 1 p.m. is 13:xx
-        if (hour ~= 12) then
-          hour = hour + 12
-        end
-      else
-        -- 12 a.m. is 00:xx, 1 a.m. is 01:xx
-        if (hour == 12) then
-          hour = 0
-        end
-      end
-    else
-      hour = from_bcd(v)
-    end
-
-    return
-      {
-        hour = hour,
-        is_12h_format = is_12h_format,
-      }
-  end
-
---[[
-  Temperature encoded in two's complement format.
-  Temperature is 10-bit value, two high bits in <frac_part>
-  is two bits of fractional part.
-]]
-local parse_temperature =
-  function(int_part, frac_part)
-    local result
-
-    result = (int_part << 2) | slice_bits(frac_part, 6, 7)
-
-    -- is negative value?
-    if (result & 0x200 ~= 0) then
-      result = -(((result & 0x1FF) ~ 0x1FF) + 1)
-    end
-
-    result = result / 4
-
-    return result
-  end
-
-local uint8_to_int8 =
-  function(v)
-    return (('b'):unpack(('B'):pack(v)))
-  end
+local wave_freqs = request('wave_freqs')
 
 local base_century = 20
-local wave_freqs =
-  {
-    [0] = 1,
-    [1] = 1024,
-    [2] = 4096,
-    [3] = 8192,
-  }
 
 return
   function(dump)
