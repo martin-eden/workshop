@@ -2,59 +2,12 @@ local to_bcd = request('!.number.to_bcd')
 local set_bit = request('!.number.set_bit')
 local splice_bits = request('!.number.splice_bits')
 
-local compile_hour =
-  function(rec)
-    local hour = rec.hour
-    local is_12h_format = rec.is_12h_format
-    local result
-    if is_12h_format then
-      local is_pm
-      if (hour <= 11) then
-        is_pm = false
-        if (hour == 0) then
-          hour = 12
-        end
-      else
-        is_pm = true
-        if (hour ~= 12) then
-          hour = hour - 12
-        end
-      end
-      result = (1 << 6) | to_bcd(hour)
-      if is_pm then
-        result = result | (1 << 5)
-      end
-    else
-      result = to_bcd(hour)
-    end
-    return result
-  end
+local compile_hour = request('compile.hour')
+local compile_temperature = request('compile.temperature')
 
-local compile_temperature =
-  function(temp)
-    assert((temp >= -128) and (temp <= 127.75))
+local int8_to_uint8 = request('!.number.int8_to_uint8')
 
-    temp = math.modf(temp * 4)
-    temp = math.tointeger(temp)
-    -- <temp> now is signed integer holding 10-bit value
-    local int_part = (temp >> 2) & 0xFF
-    local frac_part = (temp & 0x3)
-
-    return int_part, frac_part
-  end
-
-local int8_to_uint8 =
-  function(v)
-    return ('B'):unpack(('b'):pack(v))
-  end
-
-local wave_ids =
-  {
-    [1] = 0,
-    [1024] = 1,
-    [4096] = 2,
-    [8192] = 3,
-  }
+local wave_ids = request('wave_ids')
 
 return
   function(rec)
