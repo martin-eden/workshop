@@ -10,12 +10,13 @@
   see code. Also returns nil if given flags does not match recurrence.
 ]]
 
+local complement_record = request('multiplicity_to_period.complement_record')
 local match = request('multiplicity_to_period.match')
 local fill_offset = request('multiplicity_to_period.fill_offset')
 
 return
   function(alarm_rec)
-    assert_table(alarm_rec)
+    complement_record(alarm_rec)
 
     local result =
       {
