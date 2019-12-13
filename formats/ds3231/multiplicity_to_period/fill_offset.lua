@@ -3,7 +3,10 @@ local offset_fields = {'hour', 'minute', 'second'}
 local set_fields =
   function(alarm_rec, result, start_offs)
     for i = start_offs, #offset_fields do
-      result[offset_fields[i]] = alarm_rec[offset_fields[i]]
+      local val = alarm_rec[offset_fields[i]]
+      if val then
+        result[offset_fields[i]] = val
+      end
     end
   end
 
