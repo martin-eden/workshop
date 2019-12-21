@@ -1,3 +1,10 @@
+--[[
+  Parse table with sequence of bytes (assumed to be read from
+  device memory) to structured table with named keys.
+
+  See code for result table structure.
+]]
+
 local slice_bits = request('!.number.slice_bits')
 local get_bit = request('!.number.get_bit')
 local from_bcd = request('!.number.from_bcd')
