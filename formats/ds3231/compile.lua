@@ -1,3 +1,8 @@
+--[[
+  Compile table with DS3231 parameters to table with sequence of
+  bytes. This result table is supposed to be written to device.
+]]
+
 local to_bcd = request('!.number.to_bcd')
 local set_bit = request('!.number.set_bit')
 local splice_bits = request('!.number.splice_bits')
