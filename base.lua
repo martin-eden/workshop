@@ -129,8 +129,8 @@ if not _G.request then
   -- First element is invocation module name, second - module file path
   local base_require_name = (...)
   push('', base_require_name)
-  request('!.system.install_is_functions')
-  request('!.system.install_assert_functions')
+  request('!.system.install_is_functions')()
+  request('!.system.install_assert_functions')()
   _G.new = request('!.table.new')
   pop()
 end
