@@ -1,21 +1,18 @@
 --[[
-  Lua base libraries extensions. Used almost in any piece of my code.
+  Lua base libraries extension. Used almost in any piece of my code.
 
   This module installs global function "request" which is based on
-  "require" and makes relative module names possible.
+  "require" and makes possible relative module names.
 
   Also this function tracks module dependencies. This allows to
-  get dependencies list for any module. Which is used in creating
+  get dependencies list for any module. Which is used to create
   deploys without unused code.
 
-  Price for this is exported global table "dependencies" and function
-  "get_require_name".
+  Price for tracking dependencies  is global table "dependencies"
+  and function "get_require_name".
 
-  And lastly, global functions are added for convenience. Such
-  functions are families of "is_<type>", "assert_<type>" and "new".
-
-  "new" basically clones given table. But may override fields in
-  clone with fields of second table argument.
+  Lastly, global functions are added for convenience. Such functions
+  are "new" and families of "is_<type>" and "assert_<type>".
 ]]
 
 -- Export request function:
