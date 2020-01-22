@@ -57,7 +57,6 @@ return
       for i, dir_name in ipairs(self.dirs_to_delete) do
         table.insert(result, get_cmd_rmdir(dir_name))
       end
-      table.insert(result, '')
     end
 
     table.sort(self.files_to_copy, compare)
@@ -66,6 +65,7 @@ return
       local to = rec.dest_name
       local directory = parse_pathname(to).directory
       if not directories_created[directory] then
+        table.insert(result, '')
         table.insert(result, get_cmd_mkdir(directory))
         mark_directory_created(directory)
       end
