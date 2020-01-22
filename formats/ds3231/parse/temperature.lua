@@ -2,7 +2,7 @@
   Parse two bytes with temperature value.
 
   Temperature encoded in two's complement format.
-  Temperature is 10-bit value, two high bits in <frac_part>
+  Temperature is 10-bit value, two low bits in <frac_part>
   are two bits of fractional part.
 ]]
 
@@ -12,7 +12,7 @@ return
   function(int_part, frac_part)
     local result
 
-    result = (int_part << 2) | slice_bits(frac_part, 6, 7)
+    result = (int_part << 2) | (frac_part & 3)
 
     -- is negative value?
     if (result & 0x200 ~= 0) then
