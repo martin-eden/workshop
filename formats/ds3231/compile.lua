@@ -70,7 +70,9 @@ return
     result[15] = set_bit(result[15], 3, rec.fixed_wave_32k_enabled)
     result[15] = set_bit(result[15], 7, rec.clock_was_stopped)
 
-    result[17], result[18] = compile_temperature(rec.temperature)
+    local temp_int, temp_frac = compile_temperature(rec.temperature)
+    result[17] = temp_int
+    result[18] = splice_bits(0, 6, 7, temp_frac)
 
     return result
   end
