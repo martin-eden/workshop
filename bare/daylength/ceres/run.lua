@@ -18,7 +18,7 @@ local sin, cos, acos = math.sin, math.cos, math.acos
 local rad = math.rad
 local max = math.max
 
-local get_daylength =
+return
   function(self)
     self.sun_pos_addon_deg = 6.0
 
@@ -41,12 +41,3 @@ local get_daylength =
 
     return day_length
   end
-
-return
-  new(
-    request('interface'),
-    {
-      name = 'CERES-Wheat model',
-      get_daylength = get_daylength,
-    }
-  )
