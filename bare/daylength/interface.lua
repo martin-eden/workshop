@@ -8,5 +8,5 @@ return
     sun_pos_addon_deg = 0.0,
     latitude_deg = 0.0,
     day_number = 1,
-    get_daylength = '* function *',
+    run = '* function *',
   }

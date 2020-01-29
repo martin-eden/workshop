@@ -18,7 +18,7 @@
 local sin = math.sin
 local exp = math.exp
 
-local get_daylength =
+return
   function(self)
     self.sun_pos_addon_deg = 0.0
 
@@ -31,12 +31,3 @@ local get_daylength =
 
     return day_length
   end
-
-return
-  new(
-    request('interface'),
-    {
-      name = 'Forest-BGC model',
-      get_daylength = get_daylength,
-    }
-  )

@@ -1,7 +1,7 @@
 return
   {
-    bgc = request('bgc'),
-    brock = request('brock'),
-    cbm = request('cbm'),
-    ceres = request('ceres'),
+    bgc = request('bgc.interface'),
+    brock = request('brock.interface'),
+    cbm = request('cbm.interface'),
+    ceres = request('ceres.interface'),
   }

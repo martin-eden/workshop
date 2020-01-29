@@ -18,7 +18,7 @@ local sin, asin, cos, acos, tan, atan =
   math.sin, math.asin, math.cos, math.acos, math.tan, math.atan
 local rad, pi = math.rad, math.pi
 
-local get_daylength =
+return
   function(self)
     local sun_pos_addon_angle = rad(self.sun_pos_addon_deg)
     local latitude = rad(self.latitude_deg)
@@ -36,12 +36,3 @@ local get_daylength =
       )
     return day_length
   end
-
-return
-  new(
-    request('interface'),
-    {
-      name = 'CBM model',
-      get_daylength = get_daylength,
-    }
-  )
