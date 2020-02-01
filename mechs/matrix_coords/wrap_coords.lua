@@ -6,7 +6,7 @@
   No checks.
 ]]
 
-local wrap_coord = request('!.bare.geometry.1d.segment.wrap_coord')
+local wrap_coord = request('!.mechs.geometry.1d.segments.wrap_coord')
 
 return
   function(self, coords)

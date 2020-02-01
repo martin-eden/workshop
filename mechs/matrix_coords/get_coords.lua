@@ -4,7 +4,7 @@
   No checks.
 ]]
 
-local get_coords = request('!.bare.geometry.2d.matrix.idx_to_coord')
+local get_coords = request('!.mechs.geometry.2d.matrix.idx_to_coord')
 
 return
   function(self, index)

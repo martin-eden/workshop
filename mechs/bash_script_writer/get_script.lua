@@ -10,9 +10,9 @@
     mkdir -p a/b/". To reach this goal we sort files list.
 ]]
 
-local get_cmd_mkdir = request('!.bare.file_system.get_cmd_mkdir')
-local get_cmd_copy = request('!.bare.file_system.get_cmd_copy')
-local get_cmd_rmdir = request('!.bare.file_system.get_cmd_rmdir')
+local get_cmd_mkdir = request('!.mechs.cmdline.get_cmd_mkdir')
+local get_cmd_copy = request('!.mechs.cmdline.get_cmd_copy')
+local get_cmd_rmdir = request('!.mechs.cmdline.get_cmd_rmdir')
 local parse_pathname = request('!.formats.path_name.parse')
 
 local compare =

@@ -2,7 +2,7 @@
   Return list of file names in <.start_dir>.
 ]]
 
-local get_cmd_listfiles = request('!.bare.file_system.get_cmd_listfiles')
+local get_cmd_listfiles = request('!.mechs.cmdline.get_cmd_listfiles')
 local get_program_output_lines = request('!.system.get_program_output_lines')
 
 return

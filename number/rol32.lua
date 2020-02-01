@@ -1,4 +1,8 @@
-local rol = request('!.bare.bin_ops.rol32')
+--[[
+  ROL32 with argument checks for early errors detection.
+]]
+
+local rol = request('rol32_')
 
 return
   function(n, num_bits)
