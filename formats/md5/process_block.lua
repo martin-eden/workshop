@@ -1,5 +1,5 @@
 local unpack_chunk = request('unpack_chunk')
-local rol = request('!.bare.bin_ops.rol32')
+local rol = request('!.number.rol32_')
 
 return
   function(self, s, read_pos)

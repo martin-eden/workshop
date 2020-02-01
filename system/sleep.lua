@@ -5,7 +5,7 @@
   GNU/bash assumed.
 ]]
 
-local get_cmd_sleep = request('!.bare.file_system.get_cmd_sleep')
+local get_cmd_sleep = request('!.mechs.cmdline.get_cmd_sleep')
 
 return
   function(secs)
