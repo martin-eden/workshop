@@ -1,5 +1,5 @@
 --[[
-  Base for implementers of day length function.
+  Base for implementers of light day length function.
 ]]
 
 return
