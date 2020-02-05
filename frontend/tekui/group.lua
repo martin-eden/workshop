@@ -3,16 +3,16 @@ local merge = request('!.table.merge')
 
 return
   function(header, overrides, ...)
-    local result =
-      tui.Group:new(
+    local params =
+      merge(
         {
           Width = 'fill',
           Height = 'auto',
           Legend = header,
-        }
+          Children = {...},
+        },
+        overrides
       )
-    result.Children = {...}
-    merge(result, overrides)
 
-    return result
+    return tui.Group:new(params)
   end

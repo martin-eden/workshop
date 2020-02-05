@@ -3,15 +3,15 @@ local merge = request('!.table.merge')
 
 return
   function(text, overrides)
-    local result =
-      tui.Text:new(
+    local params =
+      merge(
         {
           Class = 'caption',
           Width = 'fill',
           Text = text,
-        }
+        },
+        overrides
       )
-    merge(result, overrides)
 
-    return result
+    return tui.Text:new(params)
   end

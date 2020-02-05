@@ -3,8 +3,8 @@ local merge = request('!.table.merge')
 
 return
   function(title, overrides, content)
-    local result =
-      tui.Window:new(
+    local params =
+      merge(
         {
           Id = 'main-window',
           Title = title,
@@ -12,9 +12,9 @@ return
           HideOnEscape = true,
           Orientation = 'vertical',
           Children = {content},
-        }
+        },
+        overrides
       )
-    merge(result, overrides)
 
-    return result
+    return tui.Window:new(params)
   end
