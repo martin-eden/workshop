@@ -3,14 +3,22 @@
 
   This algorithm is called "Forest-BGC model".
 
-  Sunrise/sunset is when center of sun is even with horizon
-  (<sun_pos_addon_deg> = 0).
+  Limitations:
 
-  Works only for non-negative latitudes.
+    * <sun_pos_addon_deg> fixed to 0.
+      (Sunrise/sunset is when center of sun is even with horizon.)
+    * Earth orbit considered circular (not sure).
+    * Works only for non-negative latitudes.
 
-  Reference description:
-    Journal "Ecological Modelling"
-      issue 80, year 1995, pp. 87-95
+  Complexity:
+
+    sin  1 cos  - tan  -
+    asin - acos - atan -
+
+  Reference:
+
+    journal "Ecological Modelling"
+      issue 80, year 1995
       paper "A model comparision for daylength as function of latitude
         and day of the year"
 ]]

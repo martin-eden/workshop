@@ -3,13 +3,20 @@
 
   This algorithm is called "CBM model".
 
-  Earth orbit considered elliptical.
+  Advantages:
 
-  <sun_pos_addon_deg> adjustable.
+    * Earth orbit considered elliptical.
+    * <sun_pos_addon_deg> adjustable.
 
-  Reference description:
-    Journal "Ecological Modelling"
-      issue 80, year 1995, pp. 87-95
+  Complexity:
+
+    sin  3 cos  3 tan  1
+    asin 1 acos 1 atan 1
+
+  Reference:
+
+    journal "Ecological Modelling"
+      issue 80, year 1995
       paper "A model comparision for daylength as function of latitude
         and day of the year"
 ]]
