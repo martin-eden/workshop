@@ -3,15 +3,23 @@
 
   This algorithm is called "CERES-Wheat model".
 
-  Daylength include civil twilight (<sun_pos_addon_deg> = 6).
+  Limitations:
 
-  Earth orbit considered circular.
+    * <sun_pos_addon_deg> fixed to 6.
+      (Daylength include civil twilight.)
+    * Earth orbit considered circular.
 
-  Reference description:
-    Journal "Ecological Modelling"
-      paper "A model comparision for daylength as function of
-        latitude and day of the year"
-      issue 80, year 1995, pp. 87-95
+  Complexity:
+
+    sin  3 cos  2 tan  -
+    asin - acos 1 atan -
+
+  Reference:
+
+    journal "Ecological Modelling"
+      issue 80, year 1995
+      paper "A model comparision for daylength as function of latitude
+        and day of the year"
 ]]
 
 local sin, cos, acos = math.sin, math.cos, math.acos

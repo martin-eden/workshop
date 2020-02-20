@@ -3,14 +3,21 @@
 
   This algorithm is called "Brock model".
 
-  Sunrise/sunset is when center of sun is even with horizon
-  (<sun_pos_addon_deg> = 0).
+  Limitations:
 
-  Earth orbit considered circular.
+    * <sun_pos_addon_deg> fixed to 0.
+      (Sunrise/sunset is when center of sun is even with horizon.)
+    * Earth orbit considered circular.
 
-  Reference description:
-    Journal "Ecological Modelling"
-      issue 80, year 1995, pp. 87-95
+  Complexity:
+
+    sin  1 cos  - tan  2
+    asin - acos 1 atan -
+
+  Reference:
+
+    journal "Ecological Modelling"
+      issue 80, year 1995
       paper "A model comparision for daylength as function of latitude
         and day of the year"
 ]]
