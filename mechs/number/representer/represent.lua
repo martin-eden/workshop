@@ -53,7 +53,7 @@ return
       result = '-' .. result
     end
 
-    result = result .. unit_name
+    result = result .. ' ' .. unit_name
 
     return result
   end
