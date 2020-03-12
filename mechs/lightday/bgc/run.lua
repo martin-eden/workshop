@@ -30,7 +30,7 @@ return
   function(self)
     self.sun_pos_addon_deg = 0.0
 
-    assert(self.latitude_deg >= 0)
+    assert(self.latitude_deg >= 0, 'Works only for non-negative latitudes.')
 
     local amplitude = exp(7.42 + 0.045 * self.latitude_deg) / 3600
 
