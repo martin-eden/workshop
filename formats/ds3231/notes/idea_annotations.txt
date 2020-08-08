@@ -1,0 +1,36 @@
+In this project I've tested approach of annotating functionality as
+
+  local do_check =
+    function [...]
+
+  return
+    {
+      name = 'byte mask pass',
+      description = 'Verify we have zeros in specifics bytes.',
+      func = do_check,
+    }
+
+Idea was to help in investigation of reasons of failures in data
+processing. Annotations was never used so I dropped it. But it could
+be reused in merging existing chunks into one.
+
+So file "byte_mask_pass.lua" [1] with contents
+
+  --[[
+    Verify we have zeros in specifics bytes. [2]
+
+    Receives verified array of bytes with fixed length. [3]
+    Verifies it has zero bits in specific places.
+  ]]
+
+  return
+    function [...]  [4]
+
+can be embedded as record
+
+  {
+    name = (1),
+    description = (2),
+    details = (3),
+    func = (4),
+  }

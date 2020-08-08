@@ -12,32 +12,31 @@
 
   Return
     {
-      hour: int
       is_12h_format: bool
+      hour_bcd: int
+      is_pm: bool or nil
     }
 ]]
 
 local get_bit = request('!.number.get_bit')
 local slice_bits = request('!.number.slice_bits')
-local from_bcd = request('!.number.from_bcd')
-local from_ampm_hour = request('!.formats.time.from_ampm_hour')
 
 return
   function(v)
     local is_12h_format = get_bit(v, 6)
-    local hour
+    local hour_bcd, is_pm
 
     if is_12h_format then
-      hour = from_bcd(slice_bits(v, 0, 4))
-      local is_pm = get_bit(v, 5)
-      hour = from_ampm_hour(hour, is_pm)
+      hour_bcd = slice_bits(v, 0, 4)
+      is_pm = get_bit(v, 5)
     else
-      hour = from_bcd(v)
+      hour_bcd = slice_bits(v, 0, 5)
     end
 
     return
       {
-        hour = hour,
         is_12h_format = is_12h_format,
+        hour_bcd = hour_bcd,
+        is_pm = is_pm,
       }
   end
