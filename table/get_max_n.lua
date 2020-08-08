@@ -1,14 +1,19 @@
+--[[
+  Gets table. Returns maximum integer key of it.
+
+  Table may still have holes from index 1 to this value.
+]]
+
 return
   function(t)
     assert_table(t)
     local result
-    for k, v in pairs(t) do
+    for key in pairs(t) do
       if
-        is_number(k) and
-        is_integer(k) and
-        (not result or (k > result))
+        is_integer(key) and
+        (not result or (key > result))
       then
-        result = k
+        result = key
       end
     end
     return result
