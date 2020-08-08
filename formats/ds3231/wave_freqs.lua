@@ -1,3 +1,7 @@
+--[[
+  Mapping of frequency id to frequency (in Hz).
+]]
+
 return
   {
     [0] = 1,
