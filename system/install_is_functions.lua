@@ -8,7 +8,14 @@ local generic_is =
   function(type_name)
     return
       function(val)
-        return (type(val) == type_name)
+        local result, err_msg
+        result = (type(val) == type_name)
+        if not result then
+          err_msg =
+            ('Value "%s" has type <%s>, not <%s>.'):
+            format(val, type(val), type_name)
+        end
+        return result, err_msg
       end
   end
 
@@ -20,6 +27,11 @@ return
 
     _G.is_integer =
       function(n)
-        return (math.type(n) == 'integer')
+        local result, err_msg
+        result = (math.type(n) == 'integer')
+        if not result then
+          err_msg = ('math.type(<%s> %s) ~= "integer"'):format(type(n), n)
+        end
+        return result, err_msg
       end
   end
