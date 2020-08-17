@@ -27,7 +27,7 @@ return
   end
 
 --[[
-* Metatables is shared, not cloned.
+* Metatables are shared, not cloned.
 
 * This code optimized for performance.
 
