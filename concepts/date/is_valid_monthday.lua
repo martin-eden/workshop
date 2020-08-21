@@ -12,12 +12,7 @@
 local is_valid_month = request('is_valid_month')
 local is_valid_year = request('is_valid_year')
 local is_leap_year = request('is_leap_year')
-
-local days_in_month =
-  {
-    [false] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
-    [true] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
-  }
+local days_in_month = request('days_in_month')
 
 return
   function(day, month, year)
