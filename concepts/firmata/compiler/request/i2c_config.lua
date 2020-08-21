@@ -6,7 +6,7 @@
   pins used as SDA, SCL.
 ]]
 
-local signatures = request('!.formats.firmata.protocol.signatures')
+local signatures = request('!.concepts.firmata.protocol.signatures')
 local assert_byte = request('!.number.assert_byte')
 
 return

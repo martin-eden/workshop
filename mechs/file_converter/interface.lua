@@ -20,7 +20,7 @@ return
     f_out_name = arg[2] or '',
     action_name = 'Generic file conversion',
     load = request('!.file.text_file_as_string'),
-    parse = request('!.formats.lua_table_code.load'),
+    parse = request('!.concepts.lua_table_code.load'),
     transform = request('!.function.identity'),
     compile = request('!.table.as_string'),
     save = request('!.string.save_to_file'),

@@ -11,7 +11,7 @@
     Lua code is indented and wrapped at right margin. So printable.
 ]]
 
-local table_to_str = request('!.formats.lua_table_code.save')
+local table_to_str = request('!.concepts.lua_table_code.save')
 
 local get_ast = request('!.lua.code.get_ast')
 local get_code = request('!.lua.code.ast_as_code')

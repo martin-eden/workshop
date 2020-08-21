@@ -1,4 +1,4 @@
-local table_to_string = request('!.formats.lua_table.save')
+local table_to_string = request('!.concepts.lua_table.save')
 local trim_head = request('!.string.trim_head')
 
 return

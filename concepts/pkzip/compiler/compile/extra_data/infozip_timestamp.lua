@@ -1,5 +1,5 @@
-local from_bit_field = request('!.formats.bit_field.encode')
-local iso_to_nixtime = request('!.formats.unix_time.encode')
+local from_bit_field = request('!.concepts.bit_field.encode')
+local iso_to_nixtime = request('!.concepts.unix_time.encode')
 
 local pack_time =
   function(ts_str)

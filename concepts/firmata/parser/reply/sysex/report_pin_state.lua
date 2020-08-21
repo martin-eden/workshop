@@ -1,4 +1,4 @@
-local mode_names = request('!.formats.firmata.protocol.mode_names')
+local mode_names = request('!.concepts.firmata.protocol.mode_names')
 
 return
   function(self, chunk)

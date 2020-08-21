@@ -8,7 +8,7 @@
 ]]
 
 local sysex_start =
-  request('!.formats.firmata.protocol.signatures').sysex_start
+  request('!.concepts.firmata.protocol.signatures').sysex_start
 
 local parsers =
   {

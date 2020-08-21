@@ -22,7 +22,7 @@ details = {
   },
   usage = {
     "require('workshop.base')",
-    "local table_to_str = request('!.formats.lua_table_code.save')",
+    "local table_to_str = request('!.concepts.lua_table_code.save')",
     'print(table_to_str(_G))',
   },
 
@@ -36,12 +36,12 @@ details = {
   3. Provide changed object to generic table serializer, <.c_table_serializer>.
 ]]
 -- (1)
-local terser = new(request('!.formats.lua_table.save.interface'))
+local terser = new(request('!.concepts.lua_table.save.interface'))
 -- (2)
 terser.install_node_handlers =
-  request('!.formats.lua_table.save.install_node_handlers.minimal')
+  request('!.concepts.lua_table.save.install_node_handlers.minimal')
 -- (3)
-local table_to_str_orig = request('!.formats.lua_table_code.save')
+local table_to_str_orig = request('!.concepts.lua_table_code.save')
 local table_to_str =
   function(t)
     return table_to_str_orig(t, {c_table_serializer = terser})

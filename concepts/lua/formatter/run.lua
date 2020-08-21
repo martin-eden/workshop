@@ -1,4 +1,4 @@
-local transform_ast = request('!.formats.lua.transform_ast')
+local transform_ast = request('!.concepts.lua.transform_ast')
 
 return
   function(self)

@@ -1,5 +1,5 @@
 local c_line_iterator = request('!.mechs.string.lines_iterator')
-local table_to_str = request('!.formats.lua_table.save')
+local table_to_str = request('!.concepts.lua_table.save')
 
 local get_block = request('get_block')
 

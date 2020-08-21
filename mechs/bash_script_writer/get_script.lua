@@ -13,7 +13,7 @@
 local get_cmd_mkdir = request('!.mechs.cmdline.get_cmd_mkdir')
 local get_cmd_copy = request('!.mechs.cmdline.get_cmd_copy')
 local get_cmd_rmdir = request('!.mechs.cmdline.get_cmd_rmdir')
-local parse_pathname = request('!.formats.path_name.parse')
+local parse_pathname = request('!.concepts.path_name.parse')
 
 local compare =
   function(rec_a, rec_b)

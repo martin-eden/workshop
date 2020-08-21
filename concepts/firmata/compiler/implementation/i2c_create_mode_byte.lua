@@ -22,7 +22,7 @@
         implementation on Arduino.)
 ]]
 
-local assert_device_id = request('!.formats.i2c.assert_device_id')
+local assert_device_id = request('!.concepts.i2c.assert_device_id')
 local modes = request('i2c_modes')
 
 return

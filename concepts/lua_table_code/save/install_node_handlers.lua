@@ -27,7 +27,7 @@ local handle_local_definition =
     compile(node.value)
   end
 
-local is_identifier = request('!.formats.lua.is_identifier')
+local is_identifier = request('!.concepts.lua.is_identifier')
 
 local handle_index =
   function(node)

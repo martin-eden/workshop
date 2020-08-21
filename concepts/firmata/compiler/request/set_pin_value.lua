@@ -1,7 +1,7 @@
-local signatures = request('!.formats.firmata.protocol.signatures')
+local signatures = request('!.concepts.firmata.protocol.signatures')
 local assert_bit = request('!.number.assert_bit')
 local assert_valid_pin_number =
-  request('!.formats.arduino_uno.assert_valid_pin_number')
+  request('!.concepts.arduino_uno.assert_valid_pin_number')
 
 return
   function(self, pin_number, pin_value)

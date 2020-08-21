@@ -9,7 +9,7 @@
   absent.
 ]]
 
-local t2s = request('!.formats.lua_table.save')
+local t2s = request('!.concepts.lua_table.save')
 
 return
   function(...)

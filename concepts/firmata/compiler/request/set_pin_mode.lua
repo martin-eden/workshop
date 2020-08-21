@@ -1,6 +1,6 @@
-local firmata = request('!.formats.firmata.protocol.interface')
+local firmata = request('!.concepts.firmata.protocol.interface')
 local assert_valid_pin_number =
-  request('!.formats.arduino_uno.assert_valid_pin_number')
+  request('!.concepts.arduino_uno.assert_valid_pin_number')
 
 return
   function(self, pin_number, mode_name)

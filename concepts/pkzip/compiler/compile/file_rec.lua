@@ -19,9 +19,9 @@
   data, <compressed_size>
 ]]
 
-local from_bit_field = request('!.formats.bit_field.encode')
-local encode_date = request('!.formats.msdos_time.encode_date')
-local encode_time = request('!.formats.msdos_time.encode_time')
+local from_bit_field = request('!.concepts.bit_field.encode')
+local encode_date = request('!.concepts.msdos_time.encode_date')
+local encode_time = request('!.concepts.msdos_time.encode_time')
 local compile_extra_data = request('extra_data')
 local compile_post_file_rec = request('post_file_rec')
 

@@ -4,7 +4,7 @@
   "/.////a" -> "a"
 ]]
 
-local parse_pathname = request('!.formats.path_name.parse')
+local parse_pathname = request('!.concepts.path_name.parse')
 
 return
   function(path_name)
