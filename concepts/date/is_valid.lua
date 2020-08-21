@@ -4,9 +4,7 @@
   Date is passed as three integer fields "year", "month", "day".
   Gregorian calender assumed.
 
-  In case of invalid date returns
-    false,
-    string with error
+  In case of invalid date returns false and string with error.
 ]]
 
 local is_valid_year = request('is_valid_year')
