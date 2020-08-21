@@ -1,5 +1,5 @@
-local signatures = request('!.formats.firmata.protocol.signatures')
-local board = request('!.formats.arduino_uno.interface')
+local signatures = request('!.concepts.firmata.protocol.signatures')
+local board = request('!.concepts.arduino_uno.interface')
 
 return
   function(self)

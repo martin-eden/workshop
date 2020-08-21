@@ -25,9 +25,9 @@
   comment, <comment_length>
 ]]
 
-local from_bit_field = request('!.formats.bit_field.encode')
-local encode_date = request('!.formats.msdos_time.encode_date')
-local encode_time = request('!.formats.msdos_time.encode_time')
+local from_bit_field = request('!.concepts.bit_field.encode')
+local encode_date = request('!.concepts.msdos_time.encode_date')
+local encode_time = request('!.concepts.msdos_time.encode_time')
 local compile_extra_data = request('extra_data')
 
 local record = '< c4 I2 I2 c2 I2 c2 c2 c4 I4 I4 I2 I2 I2 I2 c2 c4 I4'

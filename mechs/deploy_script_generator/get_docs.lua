@@ -7,7 +7,7 @@
     <directory> <name>.txt
 ]]
 
-local parse_pathname = request('!.formats.path_name.parse')
+local parse_pathname = request('!.concepts.path_name.parse')
 local exists = request('!.file.exists')
 local get_keys = request('!.table.get_keys')
 

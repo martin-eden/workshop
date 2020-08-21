@@ -18,7 +18,7 @@ local match_regexp = request('!.mechs.parser.handy').match_regexp
 local opt_spc = request('opt_spc')
 
 local name_pattern = '^[_A-Za-z][_A-Za-z0-9]*'
-local keywords = request('!.formats.lua.keywords')
+local keywords = request('!.concepts.lua.keywords')
 
 local is_name =
   function(in_stream, out_stream)

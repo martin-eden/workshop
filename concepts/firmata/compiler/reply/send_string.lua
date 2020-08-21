@@ -1,4 +1,4 @@
-local signatures = request('!.formats.firmata.protocol.signatures')
+local signatures = request('!.concepts.firmata.protocol.signatures')
 
 return
   function(self, s)

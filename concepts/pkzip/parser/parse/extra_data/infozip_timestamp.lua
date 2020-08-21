@@ -17,8 +17,8 @@
   <modified> and then boil out as there is no more data to parse.
 ]]
 
-local to_bit_field = request('!.formats.bit_field.decode')
-local ts_to_iso = request('!.formats.unix_time.decode')
+local to_bit_field = request('!.concepts.bit_field.decode')
+local ts_to_iso = request('!.concepts.unix_time.decode')
 
 local unpack_time =
   function(data, start_pos)

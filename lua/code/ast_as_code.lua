@@ -1,1 +1,1 @@
-return request('!.formats.lua.run_formatter')
+return request('!.concepts.lua.run_formatter')

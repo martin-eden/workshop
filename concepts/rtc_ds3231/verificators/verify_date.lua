@@ -2,7 +2,7 @@
   Check that date is valid.
 ]]
 
-local is_valid_date = request('!.formats.date.is_valid')
+local is_valid_date = request('!.concepts.date.is_valid')
 
 return
   function(data)

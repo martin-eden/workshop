@@ -1,6 +1,6 @@
-local signatures = request('!.formats.firmata.protocol.signatures')
-local assert_offset = request('!.formats.i2c.assert_offset')
-local assert_num_bytes = request('!.formats.i2c.assert_num_bytes')
+local signatures = request('!.concepts.firmata.protocol.signatures')
+local assert_offset = request('!.concepts.i2c.assert_offset')
+local assert_num_bytes = request('!.concepts.i2c.assert_num_bytes')
 
 return
   function(self, device_id, offset, num_bytes)

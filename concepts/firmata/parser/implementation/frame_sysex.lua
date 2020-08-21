@@ -1,4 +1,4 @@
-local signatures = request('!.formats.firmata.protocol.signatures')
+local signatures = request('!.concepts.firmata.protocol.signatures')
 local sysex_start = signatures.sysex_start
 local sysex_end = signatures.sysex_end
 

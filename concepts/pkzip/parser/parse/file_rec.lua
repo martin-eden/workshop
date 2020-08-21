@@ -25,9 +25,9 @@
 ]]
 
 local assert_signature = request('assert_signature')
-local to_bit_field = request('!.formats.bit_field.decode')
-local decode_date = request('!.formats.msdos_time.decode_date')
-local decode_time = request('!.formats.msdos_time.decode_time')
+local to_bit_field = request('!.concepts.bit_field.decode')
+local decode_date = request('!.concepts.msdos_time.decode_date')
+local decode_time = request('!.concepts.msdos_time.decode_time')
 local parse_extra_data = request('extra_data')
 
 local record = '< c4 I2 c2 I2 c2 c2 c4 I4 I4 I2 I2'

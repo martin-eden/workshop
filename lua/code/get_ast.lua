@@ -7,8 +7,8 @@
 ]]
 
 local parse = request('!.mechs.generic_loader')
-local syntax = request('!.formats.lua.syntax')
-local parse_sh = request('!.formats.sh.load')
+local syntax = request('!.concepts.lua.syntax')
+local parse_sh = request('!.concepts.sh.load')
 
 return
   function(s)

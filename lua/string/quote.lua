@@ -1,1 +1,1 @@
-return request('!.formats.lua.quote_string')
+return request('!.concepts.lua.quote_string')

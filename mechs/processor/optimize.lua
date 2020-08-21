@@ -9,7 +9,7 @@
 
 ]]
 
-local to_str = request('!.formats.lua_table_code.save')
+local to_str = request('!.concepts.lua_table_code.save')
 local assembly_order = request('!.mechs.graph.assembly_order')
 
 local get_num_refs =
