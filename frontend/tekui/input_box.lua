@@ -9,6 +9,7 @@ return
           Text = text,
           Id = id,
           Width = 'free',
+          MinWidth = 0,
         }
       )
     merge(result, overrides)
