@@ -12,6 +12,8 @@ return
           HideOnEscape = true,
           Orientation = 'vertical',
           Children = {content},
+          Width = 'free',
+          Height = 'free',
         },
         overrides
       )
