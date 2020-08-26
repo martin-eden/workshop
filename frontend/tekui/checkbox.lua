@@ -8,6 +8,7 @@ return
         Text = text,
         Selected = value,
         Id = id,
+        Width = 'fill',
       }
     local result = tui.CheckMark:new(params)
     merge(result, overrides)
