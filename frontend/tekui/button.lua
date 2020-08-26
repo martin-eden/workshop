@@ -10,6 +10,7 @@ return
           Class = 'button',
           Text = text,
           KeyCode = true,
+          Width = 'free',
         }
       )
     merge(result, overrides)
