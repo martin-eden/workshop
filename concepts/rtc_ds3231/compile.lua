@@ -37,7 +37,7 @@ return
         [16] = int8_to_uint8(rec.clock_speed),
       }
 
-    result[5] = set_bit(result[5], 7, rec.moment.is_next_century)
+    result[5] = set_bit(result[5], 7, rec.moment.year >= 2100)
     result[7] = set_bit(result[7], 7, rec.alarm[1].ignore_second)
     result[8] = set_bit(result[8], 7, rec.alarm[1].ignore_minute)
     result[9] = set_bit(result[9], 7, rec.alarm[1].ignore_hour)
@@ -53,22 +53,22 @@ return
 
     result[14] = set_bit(result[14], 0, rec.alarm[1].enabled)
     result[14] = set_bit(result[14], 1, rec.alarm[2].enabled)
-    result[14] = set_bit(result[14], 2, rec.output_alarms_not_custom_wave)
+    result[14] = set_bit(result[14], 2, rec.output_alarms_not_wave)
     assert(
-      wave_ids[rec.custom_wave_freq],
-      ('No wave id for given freq of %s Hz'):format(rec.custom_wave_freq)
+      wave_ids[rec.wave_freq],
+      ('No wave id for given freq of %s Hz'):format(rec.wave_freq)
     )
     result[14] =
-      splice_bits(result[14], 3, 4, wave_ids[rec.custom_wave_freq])
-    result[14] = set_bit(result[14], 5, rec.converting_temperature)
-    result[14] = set_bit(result[14], 6, rec.at_battery.custom_wave_output_allowed)
-    result[14] = set_bit(result[14], 7, rec.at_battery.clock_disabled)
+      splice_bits(result[14], 3, 4, wave_ids[rec.wave_freq])
+    result[14] = set_bit(result[14], 5, rec.get_temperature)
+    result[14] = set_bit(result[14], 6, rec.at_battery.allow_wave_output)
+    result[14] = set_bit(result[14], 7, rec.at_battery.stop_clock)
+    result[15] = set_bit(result[15], 7, rec.at_battery.clock_was_stopped)
 
     result[15] = set_bit(result[15], 0, rec.alarm[1].occurred)
     result[15] = set_bit(result[15], 1, rec.alarm[2].occurred)
     result[15] = set_bit(result[15], 2, rec.is_busy)
-    result[15] = set_bit(result[15], 3, rec.fixed_wave_32k_enabled)
-    result[15] = set_bit(result[15], 7, rec.clock_was_stopped)
+    result[15] = set_bit(result[15], 3, rec.enable_wave_32k)
 
     local temp_int, temp_frac = compile_temperature(rec.temperature)
     result[17] = temp_int

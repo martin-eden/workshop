@@ -11,7 +11,7 @@
 local set_bit = request('!.number.set_bit')
 local to_bcd = request('!.number.to_bcd')
 local splice_bits = request('!.number.splice_bits')
-local to_ampm_hour = request('!.concepts.time.to_ampm_hour')
+local to_ampm_hour = request('!.concepts.daytime.to_ampm_hour')
 
 return
   function(rec)
