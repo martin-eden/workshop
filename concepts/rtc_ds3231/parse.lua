@@ -26,6 +26,35 @@ local stages =
     {
       parse = request('parsers.augment_year'),
     },
+    {
+      verify = request('verificators.verify_moment_year'),
+      validate = request('validators.fix_moment_year'),
+    },
+    {
+      verify = request('verificators.verify_moment_month'),
+      validate = request('validators.fix_moment_month'),
+    },
+    {
+      verify = request('verificators.verify_moment_monthday'),
+      validate = request('validators.fix_moment_monthday'),
+    },
+    {
+      verify = request('verificators.verify_moment_hour'),
+      validate = request('validators.fix_moment_hour'),
+      parse = request('parsers.adjust_moment_hour'),
+    },
+    {
+      verify = request('verificators.verify_moment_minute'),
+      validate = request('validators.fix_moment_minute'),
+    },
+    {
+      verify = request('verificators.verify_moment_second'),
+      validate = request('validators.fix_moment_second'),
+    },
+    {
+      -- verify = request('verificators.verify_alarm_flags'),
+      -- validate = request('validators.fix_alarm_flags'),
+    },
   }
 
 local default_options =

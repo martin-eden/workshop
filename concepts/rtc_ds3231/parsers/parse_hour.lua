@@ -1,21 +1,25 @@
 --[[
   Parse byte with hour value.
 
-  Format is
+  There are two formats to store hour: 24h and 12h with am/pm flag.
+  For 24h format valid hours are 0..23, for 12h - 1..12.
+
+  24h format:
 
     7 6 5 4 3 2 1 0
-    ~ ~ ------------- 0 - 24h format
-    0   ~~~~~~~~~~~ ---- BCD value 00..23
-      ~ ------------- 1 - am/pm 12h format
-        ~ -------------- 0 - AM, 1 - PM
-          ~~~~~~~~~ ---- BCD value 01..12
+    0 0 ~~~~~~~~~~~ BCD value 0..23
 
-  Return
-    {
-      is_12h_format: bool
-      hour_bcd: int
-      is_pm: bool or nil
-    }
+  12h format:
+
+    7 6 5 4 3 2 1 0
+    0 1 | ~~~~~~~~~ BCD value 1..12
+        ~ 0 - AM, 1 - PM
+
+  Returns table with following fields:
+
+    is_12h_format
+    hour_bcd
+    is_pm (bool or nil)
 ]]
 
 local get_bit = request('!.number.get_bit')

@@ -58,30 +58,25 @@ return
                 occurred = get_bit(data[15], 1),
               },
           },
-        output_alarms_not_custom_wave = get_bit(data[14], 2),
-        custom_wave_freq = wave_freqs[slice_bits(data[14], 3, 4)],
-        converting_temperature = get_bit(data[14], 5),
+        output_alarms_not_wave = get_bit(data[14], 2),
+        wave_freq = wave_freqs[slice_bits(data[14], 3, 4)],
+        get_temperature = get_bit(data[14], 5),
         at_battery =
           {
-            custom_wave_output_allowed = get_bit(data[14], 6),
-            clock_disabled = get_bit(data[14], 7),
+            allow_wave_output = get_bit(data[14], 6),
+            stop_clock = get_bit(data[14], 7),
+            clock_was_stopped = get_bit(data[15], 7),
           },
         is_busy = get_bit(data[15], 2),
-        fixed_wave_32k_enabled = get_bit(data[15], 3),
-        clock_was_stopped = get_bit(data[15], 7),
+        enable_wave_32k = get_bit(data[15], 3),
         clock_speed = uint8_to_int8(data[16]),
         temperature =
           parse_temperature(data[17], slice_bits(data[18], 6, 7)),
       }
 
-    local hour = parse_hour(slice_bits(data[2], 0, 6))
-    merge(result.moment, hour)
-
-    local alarm_1_hour = parse_hour(slice_bits(data[9], 0, 6))
-    merge(result.alarm[1], alarm_1_hour)
-
-    local alarm_2_hour = parse_hour(slice_bits(data[12], 0, 6))
-    merge(result.alarm[2], alarm_2_hour)
+    merge(result.moment, parse_hour(slice_bits(data[2], 0, 6)))
+    merge(result.alarm[1], parse_hour(slice_bits(data[9], 0, 6)))
+    merge(result.alarm[2], parse_hour(slice_bits(data[12], 0, 6)))
 
     return result
   end
