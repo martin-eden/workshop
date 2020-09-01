@@ -1,9 +1,16 @@
+--[[
+  Calculate 12h hour and AM/PM flag from 24h hour.
+
+  In AM/PM there are no zero hour. 00h -> 12 a.m., 12h -> 12p.m.
+
+  This function does not check that given hour number in valid
+  range [0, 23]. It's job for other functions.
+]]
+
 return
   function(hour)
     assert_integer(hour)
-    assert((hour >= 0) and (hour <= 23))
 
-    -- There is no zero hour. 00h -> 12 a.m., 12h -> 12p.m.
     local is_pm = (hour >= 12)
     if is_pm then
       hour = hour - 12
