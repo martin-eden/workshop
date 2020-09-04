@@ -1,17 +1,17 @@
 --[[
   Grammar for name.
 
-  "Name" is alphanumeric sequence of characters. With exclusion of
-  reserved keywords.
+  "Name" is alphanumeric (plus underscore) sequence of characters
+  which is not reserved keyword.
 
-  Checking implemented as function because it is a hot code and
-  you can't exclude list of words via Lua patterns.
+  This matching implemented as function because it is a hot code and
+  you can't use Lua regexps to exclude list of words.
 
-  You can implement this in existing elements as
+  You can implement same idea as grammar
 
-    { is_not(cho(<keyword>, ...)), match_regexp(<pattern>) }
+    { is_not(cho(<keyword>, ...)), match_regexp(<name_pattern>) }
 
-  but this is less effective algorithmically.
+  but this is less effective in practic sense.
 ]]
 
 local match_regexp = request('!.mechs.parser.handy').match_regexp
