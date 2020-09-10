@@ -1,17 +1,18 @@
--- Set specified bit range in integer number to integer number.
+-- Insert given integer into specified bit range.
 
 local assert_bit_offs = request('assert_bit_offs')
 
 return
-  function(n, start_offs, end_offs, v)
+  function(v, start_offs, end_offs, n)
+    n = is_nil(n) and 0 or n
     assert_integer(n)
+    assert_integer(v)
     assert(v >= 0)
     assert_integer(start_offs)
     assert_bit_offs(start_offs)
     assert_integer(end_offs)
     assert_bit_offs(end_offs)
     assert(start_offs <= end_offs)
-    assert_integer(v)
     assert((v << start_offs) < (1 << (end_offs + 1)))
 
     local mask
