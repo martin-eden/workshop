@@ -8,8 +8,13 @@ local generic_convert = request('mechs.generic_convert')
 
 local stages =
   {
+    {convert = request('converters.hours_denormalize')},
+    {convert = request('converters.year_pack')},
+    {convert = request('converters.ints_to_bcds')},
+    {convert = request('converters.serialize')},
     {
-      convert = request('converters.serialize'),
+      verify = request('verificators.pass_masks'),
+      validate = request('validators.pass_masks'),
     },
   }
 

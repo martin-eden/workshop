@@ -30,24 +30,12 @@ local byte_masks =
 
 return
   function(data)
-    local result, err_msg, err_report = true, nil, {}
-
-    for offset, mask in pairs(byte_masks) do
-      if (data[offset] & mask ~= data[offset]) then
-        result = false
-        err_msg = 'Impossible data values.'
-        table.insert(
-          err_report,
-          {
-            msg =
-              ("Element [%d]: value 0x%02X doesn't match mask 0x%02X."):
-              format(offset, data[offset], mask),
-            idx = offset,
-            mask = mask,
-          }
-        )
+    for idx, mask in pairs(byte_masks) do
+      if (data[idx] & mask ~= data[idx]) then
+        local err_msg =
+          ("Element [%d]: value 0x%02X doesn't match mask 0x%02X."):
+          format(idx, data[idx], mask)
+        coroutine.yield(idx, mask, err_msg)
       end
     end
-
-    return result, err_msg, err_report
   end
