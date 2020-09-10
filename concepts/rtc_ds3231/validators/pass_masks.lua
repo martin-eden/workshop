@@ -1,5 +1,5 @@
 --[[
-  Make sure given bytes have zeroes in specific places.
+  Make sure given bytes have zeros in specific places.
 
   Receives report table with invalid byte slots and their masks.
   Masks that byte values to make them valid.

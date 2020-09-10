@@ -11,8 +11,8 @@ In this project I've tested approach of annotating functionality as
     }
 
 Idea was to help in investigation of reasons of failures in data
-processing. Annotations was never used so I dropped it. But it could
-be reused in merging existing chunks into one.
+processing. Annotations was never used so I dropped it. But this idea
+could be reused in merging existing chunks into one.
 
 So file "byte_mask_pass.lua" [1] with contents
 
