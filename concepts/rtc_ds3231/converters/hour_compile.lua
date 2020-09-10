@@ -3,13 +3,14 @@
 
   For format description see [parse_hour].
 
-  Receives table with fields (hour: int, is_12h_format: bool).
+  Receives table with fields
+    hour_bcd: int
+    is_12h_format: bool
+    [is_pm: bool]
 
   Returns byte.
 ]]
 
-local to_ampm_hour = request('!.concepts.daytime.to_ampm_hour')
-local to_bcd = request('!.number.to_bcd')
 local set_bit = request('!.number.set_bit')
 local splice_bits = request('!.number.splice_bits')
 
@@ -17,13 +18,12 @@ return
   function(rec)
     local result = 0
 
-    if rec.store_hour_in_12h then
-      local hour, is_pm = to_ampm_hour(rec.hour)
+    if rec.is_12h_format then
       result = set_bit(0, 6, true)
-      result = set_bit(result, 5, is_pm)
-      result = splice_bits(to_bcd(hour), 0, 4, result)
+      result = set_bit(result, 5, rec.is_pm)
+      result = splice_bits(rec.hour_bcd, 0, 4, result)
     else
-      result = splice_bits(to_bcd(rec.hour), 0, 5, result)
+      result = splice_bits(rec.hour_bcd, 0, 5, result)
     end
 
     return result

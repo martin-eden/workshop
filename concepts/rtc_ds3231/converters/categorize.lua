@@ -50,7 +50,7 @@ return
             minute_bcd = slice_bits(data[11], 0, 6),
             ignore_hour = get_bit(data[12], 7),
             ignore_date_dow = get_bit(data[13], 7),
-            is_date_not_dow = get_bit(data[13], 0, 6),
+            is_date_not_dow = get_bit(data[13], 6),
             date_dow_bcd = slice_bits(data[13], 0, 5),
             enabled = get_bit(data[14], 1),
             occurred = get_bit(data[15], 1),
