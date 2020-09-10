@@ -2,7 +2,7 @@
   Restore year from two last digits and overflow flag.
 
   Year is stored as two digits and "is_next_century" flag.
-  Change it to Gregorian year number by adding base year,
+  Change it to Gregorian year number by adding base year 2000,
   honoring flag. It removes flag field after conversion.
 ]]
 

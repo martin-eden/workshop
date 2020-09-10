@@ -1,70 +1,32 @@
 --[[
   Convert table with DS3231 array of bytes to structured table.
 
-  Has options to verify (and validate) data. Table with behavior
-  options may be passed as second argument.
+  In additional arguments you can pass two optional boolean values
+  to override default values for <do_verify> and <do_validate>.
+  Default values for them are both true.
+
+  Returns table with parsed data.
 ]]
 
-local generic_parse = request('generic_parse')
+local generic_convert = request('mechs.generic_convert')
 
 local stages =
   {
     {
-      verify = request('verificators.pass_1'),
-      validate = request('validators.pass_1'),
+      verify = request('verificators.pass_bytes'),
+      validate = request('validators.pass_bytes'),
+      convert = request('converters.categorize'),
     },
     {
-      verify = request('verificators.pass_2'),
-      validate = request('validators.pass_2'),
-      parse = request('parsers.categorize'),
+      verify = request('verificators.pass_bcds'),
+      validate = request('validators.pass_bcds'),
+      convert = request('converters.bcds_to_ints'),
     },
-    {
-      verify = request('verificators.pass_bcd'),
-      validate = request('validators.pass_bcd'),
-      parse = request('parsers.convert_bcds'),
-    },
-    {
-      parse = request('parsers.augment_year'),
-    },
-    {
-      verify = request('verificators.verify_moment_year'),
-      validate = request('validators.fix_moment_year'),
-    },
-    {
-      verify = request('verificators.verify_moment_month'),
-      validate = request('validators.fix_moment_month'),
-    },
-    {
-      verify = request('verificators.verify_moment_monthday'),
-      validate = request('validators.fix_moment_monthday'),
-    },
-    {
-      verify = request('verificators.verify_moment_hour'),
-      validate = request('validators.fix_moment_hour'),
-      parse = request('parsers.adjust_moment_hour'),
-    },
-    {
-      verify = request('verificators.verify_moment_minute'),
-      validate = request('validators.fix_moment_minute'),
-    },
-    {
-      verify = request('verificators.verify_moment_second'),
-      validate = request('validators.fix_moment_second'),
-    },
-    {
-      -- verify = request('verificators.verify_alarm_flags'),
-      -- validate = request('validators.fix_alarm_flags'),
-    },
-  }
-
-local default_options =
-  {
-    do_verify = true,
-    do_validate = true,
+    {convert = request('converters.year_unpack')},
+    {convert = request('converters.hours_normalize')},
   }
 
 return
-  function(data, options)
-    local options = new(default_options, options)
-    return generic_parse(data, stages, options.do_verify, options.do_validate)
+  function(data, do_verify, do_validate)
+    return generic_convert(data, stages, do_verify, do_validate)
   end
