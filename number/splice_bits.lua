@@ -13,7 +13,13 @@ return
     assert_integer(end_offs)
     assert_bit_offs(end_offs)
     assert(start_offs <= end_offs)
-    assert((v << start_offs) < (1 << (end_offs + 1)))
+    if ((v << start_offs) > (1 << (end_offs + 1))) then
+      error(
+        ('Value 0x%X is too large to fit given bit range [%d, %d].'):
+        format(v, start_offs, end_offs)
+      )
+    end
+
 
     local mask
     -- start_offs: 2, end_offs: 5
