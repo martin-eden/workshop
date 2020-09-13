@@ -1,7 +1,7 @@
 --[[
   Change hour record to 24h format.
 
-  This function renames field "is_12h_format" to "store_hour_in_12h".
+  Renames field "is_12h_format" to "store_hour_in_12h".
   For 12h format it also removes field "is_pm".
 
   24h hour record is 6-bit BCD so it can store values up to 29.

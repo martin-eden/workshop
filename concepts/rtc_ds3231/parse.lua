@@ -8,18 +8,18 @@
   Returns table with parsed data.
 ]]
 
-local generic_convert = request('mechs.generic_convert')
+local generic_convert = request('!.mechs.generic_convert')
 
 local stages =
   {
     {
-      verify = request('verificators.pass_bytes'),
-      validate = request('validators.pass_bytes'),
+      verify = request('verificators.check_bytes'),
+      validate = request('validators.fix_byte'),
       convert = request('converters.categorize'),
     },
     {
-      verify = request('verificators.pass_bcds'),
-      validate = request('validators.pass_bcds'),
+      verify = request('verificators.check_bcds'),
+      validate = request('validators.to_bcd'),
       convert = request('converters.bcds_to_ints'),
     },
     {convert = request('converters.year_unpack')},
