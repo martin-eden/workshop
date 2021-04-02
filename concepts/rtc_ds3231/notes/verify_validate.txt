@@ -7,34 +7,34 @@ Verification (and validation) and parsing
   Parsers contract is produce data for further usage. Parsers MAY
   change given data. This decision is up to them, usually depends
   of what type of conversions they do. Parsers MUST accurately
-  represent data at given level. So no semantic sense in them.
+  represent data at given level. Not on more general levels.
   Parsers may blow in work, so we need validators.
 
-  Validator can't just look at blown parser stack trace and fix data.
-  So we need verifiers to do diagnosis. Indeed it makes sense to call
-  verifier before calling parser. As parsers are situation-unaware
-  and may hang or consume all memory in case of malformed data.
+  Validator can't just look at blown parser stack trace and magically
+  fix data. So we need verifiers to do diagnosis. Indeed it makes
+  sense to call verifier before calling parser. As parsers are
+  situation-unaware things and may hang or consume all memory in case
+  of malformed data.
 
-  Verifiers implementation depend of parsers. Verifiers contract is
+  Verifier implementation depend of parser. Verifier contract is
   that if data passed it without complains, parser WILL NOT fail for
   that data. Verifier MUST NOT change given data. This job is for
   validator. Verifier MUST produce diagnosis.
 
   Verifier checks data only on given level. It's typical that input of
   current verifier is result from previous parser. So if parser result
-  assumed to be array of integers, verifier should rely for that.
+  assumed to be array of integers, verifier should rely on that.
 
   (We do not check that parser output is suitable for next verifier.
-  This can be fixed by adding a posteriori verifier to concept. A
-  posteriori verifier will be handy in case of several parsers with
-  same input and output format. But practically I had no need in this
-  yet.)
+  This can be fixed by adding aposteriori verifier to concept.
+  Aposteriori verifier will be handy in case of several parsers with
+  same input and output format. I had no practical need in this yet.)
 
   In case of malformed data, verifier returns some results for
   validator or for caller (as and explanation why parsing was not
-  done). (There can be different ways to implement this detail.
-  In my initial implementation verifier returned table. Later
-  I reimplemented it to yield() bad cases for caller, which decides
+  done). (There can be different ways to implement this detail. In my
+  initial implementation verifier returned table. Later I implemented
+  it via coroutines: yield() bad cases for caller, which decides
   should he call verifier or just complain and terminate.)
 
   So validator does not need to do diagnosis, he just needs to know
