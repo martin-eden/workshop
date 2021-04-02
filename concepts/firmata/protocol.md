@@ -16,7 +16,7 @@ It's OK to raise issue for grammar errors. I'm not native English writer.
 
 ## Protocol
 
-Variable-sized messages with byte granulatiry. Format of message is determined by value of first byte(s).
+Variable-sized messages with byte granularity. Format of message is determined by value of first byte(s).
 
 All "command" bytes have 8-th bit set, so lie in `80`..`FF`. All data bytes have 8-th bit clear, so lie in `00`..`7F`. So simple parser can ignore all data bytes while looking for predefined command.
 
