@@ -25,14 +25,17 @@ specific bit stripes represent numbers in certain range) up to
 common-sense level (that those numbers represent possible time or
 date). Compiling passes same levels in reverse order.
 
-Verify-validate-process concept means that we do not trust input data.
-(But trust our output data.) "Verify" means we check it and produce
-list of errors (there are any). "Validate" means that we correct that
-errors by changing input data. And "process" means that we producing
-result for next level without distracting on checks of input data. We
-do not check output data as next-level "verify" will check it. (Except
-for the last level. But we can workaround this by adding one more
-level with just "verify" function.)
+Verify-validate-process concept means how we handle input data.
+"Verify" means that we check data on logical level we working and
+produce list of errors (if there are any). "Validate" means that we
+correct that errors by changing input data. And "process" means that
+we produce result for next level without distracting on checks of
+input data.
+
+We do not check output data. So if "process" returns string when
+next-level "verify" assumes list of integers, it will blow. We can
+add some "verify-result" stage to keep concept flawless, but there
+was no practical need in that.
 
 Other are implementation details. Levels passed as Lua table with
 array of verify-validate-process records. "generic_convert.lua"
