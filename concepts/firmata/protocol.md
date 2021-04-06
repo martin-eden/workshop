@@ -2,13 +2,9 @@
 
 ## Preface
 
-This is my personal interpretation of "Firmata" protocol. It's based on [protocol v2.6.0 description][proto] and [C++ implementation for Arduino][impl].
-
-All literal two-digit numbers here are hexadecimal.
-
-Read tables from left to right.
-
-It's OK to raise issue for grammar errors. I'm not native English writer.
+This is my personal interpretation of "Firmata" protocol. It's based
+on [Firmata protocol v2.6.0][proto] and [C++ implementation for
+Arduino][impl].
 
 [proto]: https://github.com/firmata/protocol/blob/master/protocol.md
 [impl]: https://github.com/firmata/arduino
@@ -16,267 +12,347 @@ It's OK to raise issue for grammar errors. I'm not native English writer.
 
 ## Protocol
 
-Variable-sized messages with byte granularity. Format of message is determined by value of first byte(s).
-
-All "command" bytes have 8-th bit set, so lie in `80`..`FF`. All data bytes have 8-th bit clear, so lie in `00`..`7F`. So simple parser can ignore all data bytes while looking for predefined command.
-
-
-## Data format
-
-Indeed there are two formats of messages:
-
-* Core commands
-
-  command    | data_bytes ...
-  -----------|-------------------
-  `80`..`FF` | `00`..`7F` ...
-
-* Extended commands
-
-   * Base id
-
-      sysex_start | command      | data_bytes ... | sysex_end |
-      ------------|--------------|----------------|-----------|
-      `F0`        | `0x10`..`7F` | `00`..`7F` ... | `F7`      |
-
-   * Extended id.
-
-      sysex_start | zero | command_byte_2 | command_byte_1 | data_bytes ... | sysex_end |
-      ------------|------|----------------|----------------|----------------|-----------|
-      `F0`        | `00` | `00`..`7F`     | `00`..`7F`     | `00`..`7F` ... | `F7`      |
-
-      Currently extended ids are not used and just pure theoretical extension.
-
-      Extended ids do not intersect with core ids. So core command `10` is not equal to extended command `0010`.
+Command-data protocol with byte granularity. All "command" bytes have
+8-th bit set, so lie in `80`..`FF`. All data bytes have 8-th bit
+clear, so lie in `00`..`7F`.
 
 
 ## Commands
 
-* Core
+* Pin mode
+  * [Set pin mode](#set_pin_mode)
+  * [Get pins modes](#get_pins_modes)
+  * [Get analog pins mapping](#get_analog_pins_mapping)
+* Pin value
+  * [Set digital pin value](#set_pin_value_digital)
+  * [Set analog pin value](#set_pin_value_analog)
+  * [Enable/disable digital port value reporting](#digital_port_reporting)
+  * [Enable/disable analog pin value reporting](#analog_pin_reporting)
+  * [Get pin state](#get_pin_state)
+* Misc
+  * [System reset](#reset)
+  * [Get firmware version](#get_firmware_version)
+  * [Get firmware name and version](#get_firmware_name_version)
+  * [Set sampling interval](#set_sampling_interval)
+  * [String reply](#string_reply)
+
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+
+### Set pin mode <a name="set_pin_mode"/>
+
+Set mode for given pin. Usually mode is input or output.
+
+```
+  ╭────╮ ╭───────╮ ╭──────╮
+→ │ F4 ├─┤ Pin # ├─┤ Mode │
+  ╰────╯ ╰───────╯ ╰──────╯
+```
+
+```
+← ∅
+```
+
+__Mode__<a name="pin_modes"/>
+
+  Value | Description
+ -------|-----------------
+  `00`  | Digital input
+  `01`  | Digital output
+  `02`  | Analog input
+  `03`  | PWM (pseudo-analog output)
+  `04`  | Servo
+  `05`  | Shift
+  `06`  | I2C
+  `07`  | One-wire
+  `08`  | Stepper
+  `09`  | Encoder
+  `0A`  | Serial
+  `0B`  | Digital input-pullup
+
+----------------------------------------------------------------------
+
+### Get pins modes <a name="get_pins_modes"/>
+
+For each pin on board list all modes it can support.
+
+```
+  ╭────╮ ╭────╮ ╭────╮
+→ │ F0 ├─┤ 6B ├─┤ F7 │
+  ╰────╯ ╰────╯ ╰────╯
+```
+
+```
+  ╭────╮ ╭────╮                                   ╭────╮   ╭────╮
+← │ F0 ├─┤ 6C ├─┬─┬─────────────────────────────┬─┤ 7F ├─┬─┤ F7 │
+  ╰────╯ ╰────╯ ↑ │   ╭──────╮ ╭────────────╮   │ ╰────╯ │ ╰────╯
+                │ ╰─┬─┤ Mode ├─┤ Resolution ├─┬─╯        │
+                │   ↑ ╰──────╯ ╰────────────╯ │          │
+                │   ╰───── #(Pin modes) ──────╯          │
+                ╰────────────── #Pins ───────────────────╯
+```
+
+[__Mode__](#pin_modes) - same mapping as for "Set pin mode".
+
+__Resolution__ - number of bits in value for given mode.
+
+  Mode # | Mode name             | Resolution
+ --------|-----------------------|----------------
+  `00`   | Digital input         | 1
+  `01`   | Digital output        | 1
+  `0B`   | Digital input-pullup  | 1
+  `06`   | I2C                   | 1
+  `03`   | PWM                   | 8
+  `02`   | Analog input          | 10
+  `04`   | Servo                 | 14
+  `0A`   | Serial                | 0..15: Bit.3 .. Bit.1 - UART port number, Bit.0: 0 - RX, 1 -TX
+
+----------------------------------------------------------------------
+
+### Get analog pins mapping <a name="get_analog_pins_mapping"/>
+
+Returns byte array _A_ with length of _#Pins_. For given index _i_,
+(A[i] == 7F) means that pin _i_ doesn't support analog mode. Other
+value of A[i] means __analog pin index__: 0 - A0, 1 - A1, etc.
+
+```
+  ╭────╮ ╭────╮ ╭────╮
+→ │ F0 ├─┤ 69 ├─┤ F7 │
+  ╰────╯ ╰────╯ ╰────╯
+```
+
+```
+  ╭────╮ ╭────╮     ╭──────────────────╮     ╭────╮
+← │ F0 ├─┤ 6A ├─┬─┬─┤ Analog pin index ├─┬─┬─┤ F7 │
+  ╰────╯ ╰────╯ ↑ │ ╰──────────────────╯ │ │ ╰────╯
+                │ │ ╭────╮               │ │
+                │ ╰─┤ 7F ├───────────────╯ │
+                │   ╰────╯                 │
+                ╰──────── #Pins ───────────╯
+```
+
+----------------------------------------------------------------------
+
+### Set digital pin value <a name="set_pin_value_digital"/>
+
+```
+  ╭────╮ ╭───────╮ ╭────────────────╮
+→ │ F5 ├─┤ Pin # ├─┤ LOW/HIGH (0/1) │
+  ╰────╯ ╰───────╯ ╰────────────────╯
+```
+
+```
+← ∅
+```
+
+----------------------------------------------------------------------
+
+### Set analog pin value <a name="set_pin_value_analog"/>
+
+```
+  ╭────╮ ╭────╮ ╭───────╮ ╭──────────────────────╮           ╭────╮
+→ │ F0 ├─┤ 6F ├─┤ Pin # ├─┤ Value.Bit.6 .. Bit.0 ├──────┬────┤ F7 │
+  ╰────╯ ╰────╯ ╰───────╯ ╰─┬────────────────────╯      │    ╰────╯
+                            │ ╭───────────────────────╮ │
+                            ╰─┤ Value.Bit.13 .. Bit.7 ├─┤
+                              ╰─┬─────────────────────╯ │
+                                │                       │
+                                ╰─ ... ─────────────────╯
+```
+
+```
+← ∅
+```
+
+----------------------------------------------------------------------
+
+### Enable/disable digital port value reporting <a name="digital_port_reporting"/>
+
+Port value is byte where every bit represents pin. So _port 0_ are
+pins 0 to 7, _port 1_ are pins 8 to 15, etc. 16 ports are possible,
+so this command capacity is 128 digital pins.
 
-  * System reset
+Port value is reported every time firmware main loop executed (as fast
+as possible).
 
-    command |
-    --------|
-    `FF`    |
+```
+  ╭───────────────╮ ╭──────────────────────╮
+→ │ D0 + (Port #) ├─┤ Enable/disable (1/0) │
+  ╰───────────────╯ ╰──────────────────────╯
+```
 
-    No reply
+```
+     ╭───────────────╮ ╭────────────────╮ ╭─────────────╮
+← ─┬─┤ 90 + (Port #) ├─┤ Pin.6 .. Pin.0 ├─┤ Pin.7 (0/1) ├─╮
+   ↑ ╰───────────────╯ ╰────────────────╯ ╰─────────────╯ │
+   ╰──────────────────────────────────────────────────────╯
+```
 
-    Resets state to default and executes initialization sequence (report version).
+__Port #__ - value between 0 and 15.
 
-  * Request firmware version
+----------------------------------------------------------------------
 
-    command |
-    --------|
-    `F9`    |
+### Enable/disable analog pin value reporting <a name="analog_pin_reporting"/>
 
-    Reply
+Pin value is reported every 19 ms by default. This time may be changed
+via [set sampling interval](#set_sampling_interval) command.
 
-    command | major_version | minor_version |
-    --------|---------------|---------------|
-    `F9`    | `00`..`7F`    | `00`..`7F`    |
+```
+  ╭─────────────────────╮ ╭──────────────────────╮
+→ │ C0 + (Analog pin #) ├─┤ Enable/disable (1/0) │
+  ╰─────────────────────╯ ╰──────────────────────╯
+```
 
-  * Set pin mode
+```
+     ╭─────────────────────╮ ╭────────────────╮ ╭─────────────────╮
+← ─┬─┤ E0 + (Analog pin #) ├─┤ Bit.6 .. Bit.0 ├─┤ Bit.13 .. Bit.7 ├─ delay ─╮
+   ↑ ╰─────────────────────╯ ╰────────────────╯ ╰─────────────────╯         │
+   ╰────────────────────────────────────────────────────────────────────────╯
+```
+
+__Analog pin #__ - value between 0 and 15. 0 means A0, 1 - A1, etc.
+
+----------------------------------------------------------------------
 
-    command | pin_number | pin_mode   |
-    --------|------------|------------|
-    `F4`    | `00`..`7F` | `00`..`0B` |
+### Get pin state <a name="get_pin_state"/>
 
-      ***pin_mode***
+```
+  ╭────╮ ╭────╮ ╭───────╮ ╭────╮
+→ │ F0 ├─┤ 6D ├─┤ Pin # ├─┤ F7 │
+  ╰────╯ ╰────╯ ╰───────╯ ╰────╯
+```
 
-      > value | mode
-      > ------|----------------
-      > `00`  | digital input
-      > `01`  | digital output
-      > `02`  | analog input
-      > `03`  | PWM
-      > `04`  | servo
-      > `05`  | shift
-      > `06`  | I2C
-      > `07`  | one-wire
-      > `08`  | stepper
-      > `09`  | encoder
-      > `0A`  | serial
-      > `0B`  | input_pullup
+```
+  ╭────╮ ╭────╮ ╭───────╮ ╭──────────╮ ╭──────────────────────╮        ╭────╮
+← │ F0 ├─┤ 6E ├─┤ Pin # ├─┤ Pin mode ├─┤ State.Bit.6 .. Bit.0 ├──────┬─┤ F7 │
+  ╰────╯ ╰────╯ ╰───────╯ ╰──────────╯ ╰─┬────────────────────╯      │ ╰────╯
+                                         │ ╭───────────────────────╮ │
+                                         ╰─┤ State.Bit.13 .. Bit.7 ├─┤
+                                           ╰─┬─────────────────────╯ │
+                                             │                       │
+                                             ╰─ ... ─────────────────╯
+```
 
-    No reply
+__State__ - pin state value, meaning depends of pin mode:
 
-  * Set digital pin value
+  Mode                                | Value or meaning
+  ------------------------------------|----------------------------------------
+  digital output, PWM, servo          | value, previously written to pin
+  analog input                        | 0
+  digital input-pullup, digital input | 1/0 - pullup resistor enabled/disabled
 
-    command | pin_number | LOW/HIGH   |
-    --------|------------|------------|
-    `F5`    | `00`..`7F` | `00`..`01` |
+----------------------------------------------------------------------
 
-    No reply
+### System reset <a name="reset"/>
 
-  * Enable/disable analog pin value reporting
+Reset to initial state and execute initialization sequence.
 
-    command    | disable/enable |
-    -----------|----------------|
-    `C0`..`CF` | `00`..`01`     |
+```
+  ╭────╮
+→ │ FF │
+  ╰────╯
+```
 
-    Low nibble of command byte is analog pin number.
+```
+                   ╭──────────────────╮ ╭───────────────────────────╮
+← ─ Blink version ─┤ Firmware version ├─┤ Firmware name and version │
+                   ╰──────────────────╯ ╰───────────────────────────╯
+```
 
-    Replies are
+__Blink version__ - blink version on built-in LED. Unary code. First
+major version blinked, then pause and minor version.
 
-    command    | bits(0..6) | bits(7..13) |
-    -----------|------------|-------------|
-    `E0`..`EF` | `00`..`7F` | `00`..`7F`  |
+__[Firmware version](#get_firmware_version)__
 
-    Low nibble of command byte is analog pin number.
+__[Firmware name and version](#get_firmware_name_version)__
 
-    Pin value is queried every 19ms by default. This time may be changed via "set sampling interval" command.
+----------------------------------------------------------------------
 
-  * Enable/disable digital port value reporting
+### Get firmware version <a name="get_firmware_version"/>
 
-    (Port value is byte where every bit represents pin. Port 0 is pins 0 to 7, port 1 is pins 8 to 15 etc.)
+Report major and minor version of protocol in two 7-bit bytes.
 
-    command    | disable/enable |
-    -----------|----------------|
-    `D0`..`DF` | `00`..`01`     |
+```
+  ╭────╮
+→ │ F9 │
+  ╰────╯
+```
 
-    Low nibble of command byte is port number.
+```
+  ╭────╮ ╭───────────────╮ ╭───────────────╮
+← │ F9 ├─┤ Major version ├─┤ Minor version │
+  ╰────╯ ╰───────────────╯ ╰───────────────╯
+```
 
-    Replies are
+----------------------------------------------------------------------
 
-    command    | pins(0..6) | pin_7      |
-    -----------|------------|------------|
-    `90`..`9F` | `00`..`7F` | `00`..`01` |
+### Get firmware name and version <a name="get_firmware_name_version"/>
 
-    Low nibble of command byte is port number.
+Every byte of ASCII name is split in two: first byte contains lower 7
+bits, second contains 8-th bit (at bit 0).
 
-    Port value is reported every time firmware main loop executed (as fast as possible).
+```
+  ╭────╮ ╭────╮ ╭────╮
+→ │ F0 ├─┤ 79 ├─┤ F7 │
+  ╰────╯ ╰────╯ ╰────╯
+```
 
+```
+  ╭────╮ ╭────╮ ╭───────────────╮ ╭───────────────╮                                               ╭────╮
+→ │ F0 ├─┤ 79 ├─┤ Major version ├─┤ Minor version ├──┬──────────────────────────────────────────┬─┤ F7 │
+  ╰────╯ ╰────╯ ╰───────────────╯ ╰───────────────╯  │   ╭─────────────────────╮ ╭────────────╮ │ ╰────╯
+                                                     ╰─┬─┤ Char.Bit.6 .. Bit.0 ├─┤ Char.Bit.7 ├─┤
+                                                       ↑ ╰─────────────────────╯ ╰────────────╯ │
+                                                       ╰────────── #(Firmware name) ────────────╯
+```
 
-* Extended
+__Firmware name__ - name of the Firmata client file, minus the file
+extension. So for `StandardFirmata.ino` _firmware_name_ is
+`StandardFirmata`. But in practice name is __with__ `.ino` extension
+as implementation code strips only `.cpp` extension.
 
-  (Mind that every extended command must be embraced in `F0` `F7` bytes.)
+----------------------------------------------------------------------
 
-  * Request firmware name and version
+### Set sampling interval <a name="set_sampling_interval"/>
 
-     command |
-     --------|
-     `79`    |
+Sampling interval is time interval between analog pin value reporting.
+Used in [enable/disable analog pin value reporting](#analog_pin_reporting)
+command.
 
-     Reply
+Default value is __19 ms__.
 
-     command | major_version | minor_version | name_char_low, name_char_high  ... |
-     --------|---------------|---------------|------------------------------------|
-     `79`    | `00`..`7F`    | `00`..`7F`    | `00`..`7F`, `00`..`01` ...         |
+```
+  ╭────╮ ╭────╮ ╭────────────────────────────╮ ╭─────────────────╮ ╭────╮
+→ │ F0 ├─┤ 7A ├─┤ Sampling_ms.bit.6 .. Bit.0 ├─┤ Bit.13 .. Bit.7 ├─┤ F7 │
+  ╰────╯ ╰────╯ ╰────────────────────────────╯ ╰─────────────────╯ ╰────╯
+```
 
-     ***firmware_name***
+```
+← ∅
+```
 
-     The name of the Firmata client file, minus the file extension. So for `StandardFirmata.ino` *firmware_name* is `StandardFirmata`.
+----------------------------------------------------------------------
 
-     Every byte of ASCII name is split in two: first byte contains lower 7 bits, second contains 8-th bit (at bit 0).
+### String reply <a name="string_reply"/>
 
-  * Request board pin modes
+This is possible reply to some commands. Typically it means that error
+occurred and string contains reason.
 
-    command |
-    --------|
-    `6B`    |
+Maximum message length for Arduino Uno version is 30 characters.
 
-    Reply
+```
+→ ∅
+```
 
-    command | pin_modes_list ... |
-    --------|--------------------|
-    `6C`    | `00`..`7F` ...     |
+```
+  ╭────╮ ╭────╮                                                 ╭────╮
+← │ F0 ├─┤ 71 ├──┬────────────────────────────────────────────┬─┤ F7 │
+  ╰────╯ ╰────╯  │   ╭─────────────────────╮ ╭────────────╮   │ ╰────╯
+                 ╰─┬─┤ Char.Bit.6 .. Bit.0 ├─┤ Char.Bit.7 ├─┬─╯
+                   ↑ ╰─────────────────────╯ ╰────────────╯ │
+                   ╰────────────── #Message ────────────────╯
 
-    ***pin_modes_list***
+```
 
-    Delimited list of pairs mode-resolution for each pin. Items delimiter is `7F`. Item can be empty.
-
-    Each item is
-
-    mode           | mode_resolution |
-    ---------------|-----------------|
-    `00`..`0B`     | `00`..`7F`      |
-
-      ***mode***
-
-      > value | mode
-      > ------|----------------
-      > `00`  | digital input
-      > `01`  | digital output
-      > `02`  | analog input
-      > `03`  | PWM
-      > `04`  | servo
-      > `05`  | shift
-      > `06`  | I2C
-      > `07`  | one-wire
-      > `08`  | stepper
-      > `09`  | encoder
-      > `0A`  | serial
-      > `0B`  | input_pullup
-
-      ***mode_resolution***
-
-      > Number of bits in value for given mode. 1 for binary, 10 fo analog. For "servo" it's a bit length of maximum number of steps.
-      >
-      > For "serial" it has different meaning. It stores RX/TX pin type and UART index according to following table.
-      >
-      > value | mode
-      > ------|------------
-      > `00`  | RX, UART 0
-      > `01`  | TX, UART 0
-      > `02`  | RX, UART 1
-      > ...   | ...
-      > `0F`  | TX, UART 7
-
-  * List analog pins
-
-    command |
-    --------|
-    `69`    |
-
-    Reply
-
-    command | analog_index_mapping ... |
-    --------|--------------------------|
-    `6A`    | `00`..`7F` ...           |
-
-    ***analog_index_mapping***
-
-    Analog index mapping for every pin. `7F` means given pin does not support analog input mode. 0 means `A0`, 1 - `A1`, etc.
-
-  * String reply
-
-    This message is possible reply to some commands. Typically it means error occurred and string contains reason.
-
-    command | char\_(i)\_bits(0..6), char\_(i)\_bits(7..13) ... |
-    --------|---------------------------------------------------|
-    `71`    | `00`..`7F`, `00`..`7F` ...                        |
-
-    Maximum message length for Arduino Uno version is 30 characters.
-
-  * Get pin state
-
-    For output modes (digital output, PWM, servo), the state is value previously written to pin. For input modes (except digital input) it is zero. For digital input mode it is status of pull-up resistor: 1 means enabled, 0 - disabled.
-
-    command | pin        |
-    --------|------------|
-    `6D`    | `00`..`7F` |
-
-    Reply
-
-    command | pin        | pin_mode   | state_bits(0..6) [state_bits(7..13) [...]] |
-    --------|------------|------------|--------------------------------------------|
-    `6E`    | `00`..`7F` | `00`..`0B` | `00`..`7F` [`00`..`7F` [...]]              |
-
-  * Set pin value, 14+ bits resolution
-
-     command | pin        | value_bits(0..6) [value_bits(7..13) [...]] |
-     --------|------------|--------------------------------------------|
-     `6F`    | `00`..`7F` | `00`..`7F` [`00`..`7F` [...]]              |
-
-  * Set sampling interval
-
-    command | sampling_ms_bits(0..6) | sampling_ms_bits(7..13) |
-    --------|------------------------|-------------------------|
-    `7A`    | `00`..`7F`             | `00`..`7F`              |
-
-    No reply
-
-    Sampling interval is time interval between analog pin value reporting. See "enable/disable analog pin value reporting" command.
-
-    Default value is 19ms.
+----------------------------------------------------------------------
