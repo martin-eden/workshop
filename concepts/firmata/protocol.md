@@ -255,17 +255,8 @@ Reset to initial state and execute initialization sequence.
 ```
 
 ```
-                   ╭──────────────────╮ ╭───────────────────────────╮
-← ─ Blink version ─┤ Firmware version ├─┤ Firmware name and version │
-                   ╰──────────────────╯ ╰───────────────────────────╯
+← ─ ∅
 ```
-
-__Blink version__ - blink version on built-in LED. Unary code. First
-major version blinked, then pause and minor version.
-
-__[Firmware version](#get_firmware_version)__
-
-__[Firmware name and version](#get_firmware_name_version)__
 
 ----------------------------------------------------------------------
 
