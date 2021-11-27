@@ -8,8 +8,5 @@
 
 return
   function(coord, start, len)
-    coord = coord - start
-    coord = coord % len
-    coord = coord + start
-    return coord
+    return start + ((coord - start) % len)
   end
