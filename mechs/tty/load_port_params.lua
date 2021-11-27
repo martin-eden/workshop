@@ -10,6 +10,6 @@ return
     assert_string(tty_name)
     assert_string(params)
     local cmd = ('stty --file=%s %s'):format(tty_name, params)
-    -- print(cmd)
+    -- print(('%q'):format(cmd))
     assert(os.execute(cmd))
   end

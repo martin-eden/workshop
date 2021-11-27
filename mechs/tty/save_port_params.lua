@@ -10,6 +10,5 @@ return
     local f_output = assert(io.popen(cmd))
     local result = f_output:read('l')
     f_output:close()
-    -- print(result)
     return result
   end
