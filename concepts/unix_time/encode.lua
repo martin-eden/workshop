@@ -1,6 +1,6 @@
 --[[
-  Encode timestamp in Unix format (number of seconds since epoch).
-  Input is string with timestamp in ISO 8601 format.
+  Encode string with timestamp in ISO 8601 format to
+  Unix format (number of seconds since epoch).
 
   This implementation will work only on *nix machines!
 ]]
