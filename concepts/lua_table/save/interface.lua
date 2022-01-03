@@ -5,6 +5,8 @@ return
     get_ast = request('get_ast'),
     serialize_ast = request('serialize_ast'),
 
+    OnlyRestorableItems = false,
+
     node_handlers = {},
     c_text_block = request('!.mechs.text_block.interface'),
     text_block = nil,
