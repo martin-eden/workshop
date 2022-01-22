@@ -5,7 +5,7 @@
   This implementation will work only on *nix machines!
 ]]
 
-local iso8601_fmt = '(%d%d%d%d)-(%d%d)-(%d%d) (%d%d):(%d%d):(%d%d)'
+local iso8601_fmt = '^(%d%d%d%d)-(%d%d)-(%d%d) (%d%d):(%d%d):(%d%d)$'
 
 return
   function(dt_str)
