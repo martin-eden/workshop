@@ -22,4 +22,5 @@ return
       _G['assert_' .. type_name] = generic_assert(_G['is_' .. type_name])
     end
     _G.assert_integer = generic_assert(_G.is_integer)
+    _G.assert_float = generic_assert(_G.is_float)
   end
