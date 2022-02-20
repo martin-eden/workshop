@@ -56,14 +56,9 @@ prepare =
     return t
   end
 
-local autofix_root_table_name = 'data'
-
 return
   function(t)
     assert_table(t)
-    if is_arrayable(t) then
-      t = {[autofix_root_table_name] = t}
-    end
     visited = {}
     prepare(t)
   end
@@ -71,5 +66,7 @@ return
 --[[
   [1]
     Corner case: empty table field value {} may be presented both as
-    empty object {} or empty array [].
+    empty object {} or empty array []. Actual format depends of
+    [mechs.array.is_array] implementation. Currently it saves empty
+    tables as object.
 ]]

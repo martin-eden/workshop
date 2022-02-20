@@ -121,5 +121,4 @@ link(value)
 local optimize = request('!.mechs.processor.optimize')
 optimize(object)
 
-
-return object
+return cho(object, array)

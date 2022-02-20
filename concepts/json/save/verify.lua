@@ -36,9 +36,6 @@ verify =
 return
   function(t)
     assert_table(t)
-    if (#t > 0) then
-      error('Root table is array, not object.')
-    end
     visited = {}
     verify(t)
   end
