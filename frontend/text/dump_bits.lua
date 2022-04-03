@@ -24,37 +24,50 @@ local to_bcd_str =
 
 local to_bit_str =
   function(n)
+    local bit_map = {[0] = '.', [1] = 'X'}
     assert_integer(n)
     local num_bits = 8
     local bits = {}
     for i = 1, num_bits do
-      bits[i] = (n >> (i - 1)) & 1
+      bits[num_bits - i + 1] = bit_map[(n >> (i - 1)) & 1]
     end
-    local result = table.concat(bits)
-    result = result:reverse()
+    local result = table.concat(bits, ' ')
+    -- result = result:reverse()
     return result
+  end
+
+local to_dec_str =
+  function(n)
+    assert_integer(n)
+    return ('%03d'):format(n)
   end
 
 return
   function(t, start_idx)
+    local format_str = '%4s | %3s | %3s | %3s | %15s'
     assert_table(t)
     start_idx = start_idx or 1
     local result = {}
-    table.insert(result, '-offs-  --bin--    -hex- -bcd-  -dec-')
+    table.insert(
+      result,
+      format_str:format('Offs', 'Hex', 'BCD', 'Dec', 'Bin')
+    )
+    table.insert(result, ('-'):rep(#result[#result]))
     for i = start_idx, #t do
       local n = t[i]
       table.insert(
         result,
-        ('%4s %11s %5s %5s     %03d'):
-        format(
-          to_hex_str(i),
-          to_bit_str(n),
-          to_hex_str(n),
-          to_bcd_str(n),
-          n
-        )
+        format_str:
+          format(
+            to_hex_str(i),
+            to_hex_str(n),
+            to_bcd_str(n),
+            to_dec_str(n),
+            to_bit_str(n)
+          )
       )
     end
+    table.insert(result, '')
     result = table.concat(result, '\n')
     return result
   end
