@@ -1,5 +1,5 @@
 --[[
-  Save TTY device parameters as special-format string for later
+  Get TTY device parameters as special-format string for later
   restoration.
 ]]
 
