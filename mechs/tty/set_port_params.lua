@@ -11,5 +11,8 @@ return
     assert_string(params)
     local cmd = ('stty --file=%s %s'):format(tty_name, params)
     -- print(('%q'):format(cmd))
-    assert(os.execute(cmd))
+
+    local isOk, errorMsg, errorCode = os.execute(cmd)
+
+    return errorMsg
   end
