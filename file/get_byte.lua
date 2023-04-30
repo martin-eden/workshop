@@ -3,8 +3,6 @@
 
   Read one character from file object. If it's not the end
   of file, return character as byte (0x00 .. 0xFF).
-
-  Returns integer value of character read.
 ]]
 
 return
