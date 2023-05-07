@@ -29,7 +29,6 @@ local stages =
 return
   function(data, do_verify, do_validate)
     assert_table(data)
-    assert(is_integer(data[0]), 'First byte index should be 0.')
 
     return generic_convert(data, stages, do_verify, do_validate)
   end

@@ -17,61 +17,61 @@ return
   function(rec)
     local result =
       {
-        [0] = splice_bits(rec.moment.second_bcd, 0, 6),
-        [1] = splice_bits(rec.moment.minute_bcd, 0, 6),
-        [2] = compile_hour(rec.moment),
-        [3] = splice_bits(rec.moment.dow_bcd, 0, 2),
-        [4] = splice_bits(rec.moment.date_bcd, 0, 5),
-        [5] = splice_bits(rec.moment.month_bcd, 0, 4),
-        [6] = splice_bits(rec.moment.year_bcd, 0, 7),
-        [7] = splice_bits(rec.alarm_1.second_bcd, 0, 6),
-        [8] = splice_bits(rec.alarm_1.minute_bcd, 0, 6),
-        [9] = compile_hour(rec.alarm_1),
-        [10] = splice_bits(rec.alarm_1.date_dow_bcd, 0, 5),
-        [11] = splice_bits(rec.alarm_2.minute_bcd, 0, 6),
-        [12] = compile_hour(rec.alarm_2),
-        [13] = splice_bits(rec.alarm_2.date_dow_bcd, 0, 5),
-        [14] = 0,
+        [1] = splice_bits(rec.moment.second_bcd, 0, 6),
+        [2] = splice_bits(rec.moment.minute_bcd, 0, 6),
+        [3] = compile_hour(rec.moment),
+        [4] = splice_bits(rec.moment.dow_bcd, 0, 2),
+        [5] = splice_bits(rec.moment.date_bcd, 0, 5),
+        [6] = splice_bits(rec.moment.month_bcd, 0, 4),
+        [7] = splice_bits(rec.moment.year_bcd, 0, 7),
+        [8] = splice_bits(rec.alarm_1.second_bcd, 0, 6),
+        [9] = splice_bits(rec.alarm_1.minute_bcd, 0, 6),
+        [10] = compile_hour(rec.alarm_1),
+        [11] = splice_bits(rec.alarm_1.date_dow_bcd, 0, 5),
+        [12] = splice_bits(rec.alarm_2.minute_bcd, 0, 6),
+        [13] = compile_hour(rec.alarm_2),
+        [14] = splice_bits(rec.alarm_2.date_dow_bcd, 0, 5),
         [15] = 0,
-        [16] = int8_to_uint8(rec.clock_speed),
+        [16] = 0,
+        [17] = int8_to_uint8(rec.clock_speed),
       }
 
-    result[5] = set_bit(result[5], 7, rec.moment.is_next_century)
-    result[7] = set_bit(result[7], 7, rec.alarm_1.ignore_second)
-    result[8] = set_bit(result[8], 7, rec.alarm_1.ignore_minute)
-    result[9] = set_bit(result[9], 7, rec.alarm_1.ignore_hour)
+    result[6] = set_bit(result[6], 7, rec.moment.is_next_century)
+    result[8] = set_bit(result[8], 7, rec.alarm_1.ignore_second)
+    result[9] = set_bit(result[9], 7, rec.alarm_1.ignore_minute)
+    result[10] = set_bit(result[10], 7, rec.alarm_1.ignore_hour)
 
-    result[10] = set_bit(result[10], 6, rec.alarm_1.is_date_not_dow)
-    result[10] = set_bit(result[10], 7, rec.alarm_1.ignore_date_dow)
+    result[11] = set_bit(result[11], 6, rec.alarm_1.is_date_not_dow)
+    result[12] = set_bit(result[12], 7, rec.alarm_1.ignore_date_dow)
 
-    result[11] = set_bit(result[11], 7, rec.alarm_2.ignore_minute)
-    result[12] = set_bit(result[12], 7, rec.alarm_2.ignore_hour)
+    result[12] = set_bit(result[12], 7, rec.alarm_2.ignore_minute)
+    result[13] = set_bit(result[13], 7, rec.alarm_2.ignore_hour)
 
-    result[13] = set_bit(result[13], 6, rec.alarm_2.is_date_not_dow)
-    result[13] = set_bit(result[13], 7, rec.alarm_2.ignore_date_dow)
+    result[14] = set_bit(result[14], 6, rec.alarm_2.is_date_not_dow)
+    result[14] = set_bit(result[14], 7, rec.alarm_2.ignore_date_dow)
 
-    result[14] = set_bit(result[14], 0, rec.alarm_1.enabled)
-    result[14] = set_bit(result[14], 1, rec.alarm_2.enabled)
-    result[14] = set_bit(result[14], 2, rec.output_alarms_not_wave)
+    result[15] = set_bit(result[15], 0, rec.alarm_1.enabled)
+    result[15] = set_bit(result[15], 1, rec.alarm_2.enabled)
+    result[15] = set_bit(result[15], 2, rec.output_alarms_not_wave)
     assert(
       wave_ids[rec.wave_freq],
       ('No wave id for given freq of %s Hz'):format(rec.wave_freq)
     )
-    result[14] =
-      splice_bits(wave_ids[rec.wave_freq], 3, 4, result[14])
-    result[14] = set_bit(result[14], 5, rec.get_temperature)
-    result[14] = set_bit(result[14], 6, rec.at_battery.allow_wave_output)
-    result[14] = set_bit(result[14], 7, rec.at_battery.stop_clock)
-    result[15] = set_bit(result[15], 7, rec.at_battery.clock_was_stopped)
+    result[15] =
+      splice_bits(wave_ids[rec.wave_freq], 3, 4, result[15])
+    result[15] = set_bit(result[15], 5, rec.get_temperature)
+    result[15] = set_bit(result[15], 6, rec.at_battery.allow_wave_output)
+    result[15] = set_bit(result[15], 7, rec.at_battery.stop_clock)
+    result[16] = set_bit(result[16], 7, rec.at_battery.clock_was_stopped)
 
-    result[15] = set_bit(result[15], 0, rec.alarm_1.occurred)
-    result[15] = set_bit(result[15], 1, rec.alarm_2.occurred)
-    result[15] = set_bit(result[15], 2, rec.is_busy)
-    result[15] = set_bit(result[15], 3, rec.enable_wave_32k)
+    result[16] = set_bit(result[16], 0, rec.alarm_1.occurred)
+    result[16] = set_bit(result[16], 1, rec.alarm_2.occurred)
+    result[16] = set_bit(result[16], 2, rec.is_busy)
+    result[16] = set_bit(result[16], 3, rec.enable_wave_32k)
 
     local temp_raw = compile_temperature(rec.temperature)
-    result[17] = slice_bits(temp_raw, 2, 9)
-    result[18] = splice_bits(slice_bits(temp_raw, 0, 1), 6, 7)
+    result[18] = slice_bits(temp_raw, 2, 9)
+    result[19] = splice_bits(slice_bits(temp_raw, 0, 1), 6, 7)
 
     return result
   end
