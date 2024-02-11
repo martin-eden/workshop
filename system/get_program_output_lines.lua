@@ -1,9 +1,8 @@
 --[[
   Execute shell command from given string.
-  Return text output as a sequence of lines.
+  Return text output as table with a sequence of lines.
 
-  Input: <command>
-  Output: <sequence of strings>
+  (cmd:string) -> { ...:string }
 ]]
 
 return
@@ -17,3 +16,8 @@ return
     result_file:close()
     return result
   end
+
+--[[
+  2017-08-11
+  2024-02-11 Documentation change
+]]
