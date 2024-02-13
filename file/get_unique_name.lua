@@ -21,6 +21,6 @@ return
   [1]
     os.tmpname() is not used because in my case /tmp is really
     partition in memory. So it does not solve problem when I have
-    data structure occupuing 80% of RAM and write raw data to file
+    data structure occupying 80% of RAM and write raw data to file
     which is 40% of RAM.
 ]]
