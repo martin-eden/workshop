@@ -11,5 +11,5 @@ return
   function(PathName)
     assert_string(PathName)
     local Result = string.format(CmdFormatStr, PathName)
-    return result
+    return Result
   end
