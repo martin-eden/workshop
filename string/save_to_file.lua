@@ -1,9 +1,10 @@
-local safe_open = request('!.file_system.file.safe_open')
+-- Create file with given contents. Deprecated, removal imminent!
 
-return
-  function(f_out_name, s)
-    assert_string(s)
-    local f_out = safe_open(f_out_name, 'wb')
-    f_out:write(s)
-    f_out:close()
-  end
+--[[
+  Design version: 2
+  Last mod.: 2024-02-17
+]]
+
+local CreateFile = request('!.file_system.file.create')
+
+return CreateFile
