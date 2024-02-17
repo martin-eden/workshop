@@ -1,3 +1,7 @@
+-- Open file and return handle or throw an error.
+
+-- Last mod.: 2017-10-12
+
 return
   function(file_name, mode)
     assert_string(file_name)
