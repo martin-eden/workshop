@@ -8,7 +8,7 @@
 ]]
 
 local parse_pathname = request('!.concepts.path_name.parse')
-local exists = request('!.file.exists')
+local exists = request('!.file_system.file.exists')
 local get_keys = request('!.table.get_keys')
 
 return

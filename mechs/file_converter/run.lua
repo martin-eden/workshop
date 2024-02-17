@@ -1,4 +1,4 @@
-local file_size = request('!.file.get_size')
+local file_size = request('!.file_system.file.get_size')
 local represent_size = request('!.number.represent_size')
 local table_to_str = request('!.table.as_string')
 

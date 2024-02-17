@@ -1,4 +1,4 @@
-local safe_open = request('!.file.safe_open')
+local safe_open = request('!.file_system.file.safe_open')
 
 return
   function(f_out_name, s)

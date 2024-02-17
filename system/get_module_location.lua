@@ -10,7 +10,7 @@
     * module is loaded via custom function in <package.searchers>
 ]]
 
-local normalize_name = request('!.file.normalize_name')
+local normalize_name = request('!.file_system.file.normalize_name')
 
 return
   function(module_name)

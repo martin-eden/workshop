@@ -8,7 +8,7 @@
   file_name - Bash script file name. Default: "run.sh".
 ]]
 
-local safe_open = request('!.file.safe_open')
+local safe_open = request('!.file_system.file.safe_open')
 
 return
   function(self, file_name)

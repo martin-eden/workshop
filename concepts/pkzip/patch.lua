@@ -1,7 +1,7 @@
 local run = request('compiler.run')
 
 local c_stream = request('!.mechs.streams.mergeable.file.interface')
-local open = request('!.file.safe_open')
+local open = request('!.file_system.file.safe_open')
 
 return
   function(file_name, ast)
