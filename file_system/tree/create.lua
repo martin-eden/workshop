@@ -34,20 +34,31 @@
 ]]
 
 --[[
-  Version: 2
-  Last mod.: 2024-02-17
+  Version: 3
+  Last mod.: 2024-02-19
 ]]
 
 local OrderedPass = request('!.table.ordered_pass')
 
 local ParsePathName = request('!.file_system.parse_pathname')
-local CreateDirectory = request('!.file_system.directory.create')
+local CreateDir = request('!.file_system.directory.create')
 local CreateFile = request('!.file_system.file.create')
+
+--[[
+  Handle DirTree structure: if key is a string and value is a table then
+  create directory with key name and do a recursive call.
+
+  It's not possible to change current directory in Lua in Linux:
+  "os.execute('cd test/')" will spawn child process and change directory
+  for it. So instead we are passing additional string <DirPrefix> in
+  recursive call.
+]]
 
 local CreateTree
 
 CreateTree =
-  function(DirTree, Problems)
+  function(DirPrefix, DirTree, Problems)
+    assert_string(DirPrefix)
     assert_table(DirTree)
     assert_table(Problems)
 
@@ -57,23 +68,28 @@ CreateTree =
     end
 
     for PathName, Contents in OrderedPass(DirTree) do
-      if is_string(Contents) then
-        -- Parse pathname to path and name
-        local Path, Name = ParsePathName(PathName)
-        if (Path ~= '') then
-          -- Create directory at path (existing directory is okay).
-          if not CreateDirectory(Path) then
-            -- We can't create directory.
-            local ProblemMsgFmt = 'Problem creating directory "%s".'
-            local ProblemMsg = string.format(ProblemMsgFmt, Path)
-            table.insert(Problems, ProblemMsg)
-            goto Continue
-          end
+      local FullPathname = DirPrefix .. PathName
+      local Path, Name = ParsePathName(FullPathname)
+
+      if (Path ~= '') then
+        -- Create directory at path (existing directory is okay).
+        if not CreateDir(Path) then
+          -- We can't create directory.
+          local ProblemMsgFmt = 'Problem creating directory "%s".'
+          local ProblemMsg = string.format(ProblemMsgFmt, Path)
+          table.insert(Problems, ProblemMsg)
+          goto Continue
         end
-        CreateFile(PathName, Contents)
-      elseif is_table(Contents) then
-        CreateTree(Contents, Problems)
       end
+
+      if is_string(Contents) then
+        -- Okay, create file and write <Contents> to it.
+        CreateFile(FullPathname, Contents)
+      elseif is_table(Contents) then
+        -- Recursive call.
+        CreateTree(Path, Contents, Problems)
+      end
+
       ::Continue::
     end
   end
@@ -81,7 +97,7 @@ CreateTree =
 local CreateTree_Outer =
   function(DirTree)
     local Problems = {}
-    CreateTree(DirTree, Problems)
+    CreateTree('', DirTree, Problems)
     return Problems
   end
 
