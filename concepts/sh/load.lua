@@ -1,16 +1,35 @@
---[[
-  Shebang script files splitter.
+-- Get program name from string with Bash script
 
-  Input:
+--[[
+  Input
 
     string - file data
 
-  Output:
+  Output
 
     table
       tool: string or nil
       data: string
+
+  Example
+
+    Input:
+      ```
+      #! /bin/bash
+      echo "Line 1"
+      echo "Line 2"
+      ```
+
+    Output:
+      {
+        tool = '/bin/bash',
+        data =
+          'echo "Line 1"' .. '\n' ..
+          'echo "Line 2"' .. '\n',
+      }
 ]]
+
+-- Last mod.: 2024-02-28
 
 local get_next_line = request('!.string.get_next_line')
 
@@ -32,3 +51,7 @@ return
 
     return result
   end
+
+--[[
+  2018-02-05
+]]
