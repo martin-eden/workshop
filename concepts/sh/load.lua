@@ -12,7 +12,7 @@
       data: string
 ]]
 
-local get_next_line = request('!.string.lines.get_next_line')
+local get_next_line = request('!.string.get_next_line')
 
 return
   function(s)
