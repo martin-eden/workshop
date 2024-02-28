@@ -15,7 +15,7 @@
 
     If <start_pos> is beyond <s>, return
 
-      <nil>
+      <nil>, <nil>
 
     Else return
 
@@ -66,7 +66,7 @@ return
 
     -- Termination condition:
     if (start_pos > #s) then
-      return nil
+      return nil, nil
     end
 
     -- Here <start_pos> is index inside string <s>.
