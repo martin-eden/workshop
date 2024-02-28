@@ -4,6 +4,8 @@
   Main intention - encapsulate parameters (string, index) to object.
 ]]
 
+-- Last mod.: 2024-02-28
+
 local get_next_line = request('!.string.get_next_line')
 
 return
@@ -14,7 +16,7 @@ return
       function(self, s)
         assert_string(s)
         self.s = s
-        self.idx_start = 1
+        self.idx_start = nil
       end,
     get_next_line =
       function(self)
