@@ -15,7 +15,7 @@
     end
 ]]
 
-local get_next_line = request('lines.get_next_line')
+local get_next_line = request('get_next_line')
 
 return
   function(s, start_pos)
