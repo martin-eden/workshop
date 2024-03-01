@@ -15,9 +15,8 @@
 
     Table with sequence of strings.
 
-    Each string describes problem encountered.
-
-    In case of no problems table is empty.
+    Each string describes action done (file or directory created)
+    of problem encountered while doing this.
 ]]
 
 --[[
@@ -34,13 +33,14 @@
 ]]
 
 --[[
-  Version: 3
-  Last mod.: 2024-02-19
+  Version: 4
+  Last mod.: 2024-02-29
 ]]
 
 local OrderedPass = request('!.table.ordered_pass')
 
 local ParsePathName = request('!.file_system.parse_pathname')
+local DirectoryExists = request('!.file_system.directory.exists')
 local CreateDir = request('!.file_system.directory.create')
 local CreateFile = request('!.file_system.file.create')
 
@@ -57,10 +57,10 @@ local CreateFile = request('!.file_system.file.create')
 local CreateTree
 
 CreateTree =
-  function(DirPrefix, DirTree, Problems)
+  function(DirPrefix, DirTree, Report)
     assert_string(DirPrefix)
     assert_table(DirTree)
-    assert_table(Problems)
+    assert_table(Report)
 
     for PathName, Contents in pairs(DirTree) do
       assert_string(PathName)
@@ -72,22 +72,32 @@ CreateTree =
       local Path, Name = ParsePathName(FullPathname)
 
       if (Path ~= '') then
-        -- Create directory at path (existing directory is okay).
-        if not CreateDir(Path) then
-          -- We can't create directory.
-          local ProblemMsgFmt = 'Problem creating directory "%s".'
-          local ProblemMsg = string.format(ProblemMsgFmt, Path)
-          table.insert(Problems, ProblemMsg)
-          goto Continue
+        if not DirectoryExists(Path) then
+          -- Create directory at path.
+          if not CreateDir(Path) then
+            -- We can't create directory.
+            local ProblemMsgFmt = 'Problem creating directory "%s".'
+            local ProblemMsg = string.format(ProblemMsgFmt, Path)
+            table.insert(Report, ProblemMsg)
+            goto Continue
+          end
+          table.insert(
+            Report,
+            string.format('Created directory "%s".', Path)
+          )
         end
       end
 
       if is_string(Contents) then
         -- Okay, create file and write <Contents> to it.
         CreateFile(FullPathname, Contents)
+        table.insert(
+          Report,
+          string.format('Created file "%s".', FullPathname)
+        )
       elseif is_table(Contents) then
         -- Recursive call.
-        CreateTree(Path, Contents, Problems)
+        CreateTree(Path, Contents, Report)
       end
 
       ::Continue::
@@ -96,9 +106,14 @@ CreateTree =
 
 local CreateTree_Outer =
   function(DirTree)
-    local Problems = {}
-    CreateTree('', DirTree, Problems)
-    return Problems
+    local Report = {}
+    CreateTree('', DirTree, Report)
+    return Report
   end
 
 return CreateTree_Outer
+
+--[[
+  2024-02-19
+  2024-02-29
+]]
