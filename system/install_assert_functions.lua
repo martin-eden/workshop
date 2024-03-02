@@ -1,17 +1,25 @@
---[[
-  Function to spawn "assert_<type>" family of global functions.
-]]
+-- Function to spawn "assert_<type>" family of global functions
 
 local data_types = request('!.lua.data_types')
+local data_mathtypes = request('!.lua.data_mathtypes')
 
 local generic_assert =
-  function(is_checker)
+  function(type_name)
+    -- assert_string(type_name)
+    assert(type(type_name) == 'string')
+
+    local checker_name = 'is_'.. type_name
+    local checker = _G[checker_name]
+
+    -- assert_function(checker)
+    assert(type(checker) == 'function')
+
     return
-      function(val, responsibility_level)
-        local responsibility_level = (responsibility_level or 1)
-        local result, err_msg = is_checker(val)
-        if not result then
-          error(err_msg, responsibility_level + 1)
+      function(val)
+        if not checker(val) then
+          local err_msg =
+            string.format('assert_%s(%s)', type_name, tostring(val))
+          error(err_msg)
         end
       end
   end
@@ -19,8 +27,19 @@ local generic_assert =
 return
   function()
     for _, type_name in ipairs(data_types) do
-      _G['assert_' .. type_name] = generic_assert(_G['is_' .. type_name])
+      local global_name = 'assert_' .. type_name
+      _G[global_name] = generic_assert(type_name)
     end
-    _G.assert_integer = generic_assert(_G.is_integer)
-    _G.assert_float = generic_assert(_G.is_float)
+
+    for _, number_type_name in ipairs(data_mathtypes) do
+      local global_name = 'assert_' .. number_type_name
+      _G[global_name] = generic_assert(number_type_name)
+    end
   end
+
+--[[
+  2018-02
+  2020-01
+  2022-01
+  2024-03
+]]
