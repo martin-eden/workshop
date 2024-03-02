@@ -1,36 +1,54 @@
---[[
-  Return set of modules required for given set of modules.
+-- Return set of modules required for given set of modules
 
-  Input is table sequence of module names. Output too.
+--[[
+  Input
+
+    table
+
+      Sequence of module names.
+
+  Output
+
+    table
+
+      Sequence of module names.
 
   So if module "a" requires "lib" and module "b" requires it,
   result of call ({'a', 'b'}) will be ({'lib'}).
 ]]
 
-local get_module_dependencies = request('get_module_dependencies')
+-- Last mod.: 2024-03-02
+
+local GetModuleDependencies = request('get_module_dependencies')
 
 return
-  function(modules)
-    assert_table(modules)
-    local deps = {}
-    for i = 1, #modules do
-      local module_name = modules[i]
-      assert_string(module_name)
-      deps[i] = get_module_dependencies(module_name)
-    end
+  function(Modules)
+    assert_table(Modules)
 
-    local result = {}
+    local UnitedSet = {}
+    local UnitedList = {}
 
-    local processed = {}
-    for i = 1, #deps do
-      for j = 1, #deps[i] do
-        local module_name = deps[i][j]
-        if not processed[module_name] then
-          result[#result + 1] = module_name
-          processed[module_name] = true
+    for _, ModuleName in ipairs(Modules) do
+      local ModuleDependencies = {}
+
+      ModuleDependencies = GetModuleDependencies(ModuleName)
+
+      for _, DependencyName in ipairs(ModuleDependencies) do
+        if UnitedSet[DependencyName] then
+          goto Continue
         end
+
+        UnitedSet[DependencyName] = true
+        table.insert(UnitedList, DependencyName)
+
+        ::Continue::
       end
     end
 
-    return result
+    return UnitedList
   end
+
+--[[
+  2018-02-05
+  2024-03-02
+]]
