@@ -3,21 +3,25 @@
 --[[
   Input
 
-    table -- sequence of strings without newlines
+    table
+
+      Sequence of strings without newlines
 
   Output
 
-    string - concatenated string from sequence, separated by newlines.
-      NB: There is always tail newline at result string.
+    string
+
+      Concatenated string from sequence, separated by newlines.
+      Result string will always end with newline.
 ]]
 
--- Last mod.: 2024-02-29
+-- Last mod.: 2024-03-02
 
 --[[
-  Good design is not about avoiding implementing simple things.
-  Good design is providing uniform interface to any things.
+  Good design is not about implementing complex things.
+  Good design is providing uniform interface to many things.
 
-  2024-02-28
+  2024-02-28, -03-02
 ]]
 
 return
@@ -32,3 +36,7 @@ return
 
     return Result
   end
+
+--[[
+  2024-02-28
+]]
