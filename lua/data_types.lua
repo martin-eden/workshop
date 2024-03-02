@@ -1,10 +1,19 @@
+-- Return table sequence with type names of all Lua data types
+
 --[[
-  Return table with string names of all Lua datatypes.
+  Output
 
-  Used in generating assert_<type> functions.
+    table
 
-  -> table
+      Sequence of strings with type names. As they are returned
+      by type() function.
+
+  Note
+
+    This list is used in code generation.
 ]]
+
+-- Last mod.: 2024-03-02
 
 return
   {
@@ -17,3 +26,7 @@ return
     'userdata',
     'table',
   }
+
+--[[
+  2018-02
+]]
