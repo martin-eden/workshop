@@ -5,7 +5,7 @@
     <str> error_message
     <table> error_details
 
-  In standard Lua third paramater in case of error is integer or
+  In standard Lua third parameter in case of error is integer or
   absent.
 ]]
 
