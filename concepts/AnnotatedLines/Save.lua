@@ -1,46 +1,30 @@
 -- Serialize table to "annotated strings" format
 
 --[[
-  Status: passed maiden flight
-  Version: 2
-  Last mod.: 2024-02-28
-]]
+  Input
 
---[[
-  Arguments
+    table - <Data>
 
-      table -- Data
-    | table -- KeysOrder
+      Table with string keys and string values.
 
-  Returns
+    [table] - <KeysOrder>
+
+      Optional table sequence with string values.
+      Each such value expected to be a key name for <Data>.
+      We serialize <Data> according to order of this sequence.
+
+      If <KeysOrder> is not present
+        We create it as list of all keys in <Data>
+
+  Output
 
     string
 
-  --
-
-  Data:
-
-    string: string, ...
-    ~~~~~~~ ~~~~~~
-      key    value
-
-  KeysOrder:
-
-    string, ...
-    ~~~~~~~~
-    key name
-
-  --
-
-  If <KeysOrder> is not present
-    Create it for string key-value pairs in <Data>
-
-  Iterate <Key> over <KeysOrder>
-    // We don't care about duplicate or omitted keys
-    <Value> = <Data>.<Key>
-    <Line> = Serialize(<Key>, <Value>)
-    <Result> = <Result> + '\n' + <Line>
+  In case of problems with input data, we just throw error().
+  It's outer code responsibility to provide us with valid input.
 ]]
+
+-- Last mod.: 2024-03-03
 
 local GetKeys = request('!.table.get_keys')
 local CompareKeys = request('!.table.ordered_pass.default_comparator')
@@ -51,32 +35,29 @@ return
   function(Data, KeysOrder)
     assert_table(Data)
 
-    --[[
-      When no key order is given, get all keys and sort them.
-
-      We will filter suitable key-values at serialization stage.
-      I don't want to meddle with table.remove() here.
-    ]]
+    -- When no key order is given, get all keys and sort them:
     if is_nil(KeysOrder) then
       KeysOrder = GetKeys(Data)
       table.sort(KeysOrder, CompareKeys)
     end
-
     assert_table(KeysOrder)
 
-    local Lines = {}
-
-    for _, Key in ipairs(KeysOrder) do
-      local Value = Data[Key]
-      if is_string(Key) and is_string(Value) then
+    local Lines
+    do
+      Lines = {}
+      for _, Key in ipairs(KeysOrder) do
+        local Value = Data[Key]
         local Line = SerializeKeyVal(Key, Value)
         table.insert(Lines, Line)
       end
     end
+    assert_table(Lines)
 
-    local Result = ''
-
-    Result = LinesToString(Lines)
+    local Result
+    do
+      Result = LinesToString(Lines)
+    end
+    assert_string(Result)
 
     return Result
   end
@@ -85,4 +66,5 @@ return
   2024-02-13
   2024-02-25
   2024-02-28
+  2024-03-03
 ]]
