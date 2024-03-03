@@ -12,9 +12,11 @@
   Output
 
     string
+
+  Throws error() if we got bad input.
 ]]
 
--- Last mod.: 2024-02-28
+-- Last mod.: 2024-03-03
 
 local AssertNoNewlines = request('!.string.assert_no_newlines')
 local AssertNotContains = request('!.string.assert_not_contains')

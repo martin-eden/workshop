@@ -3,34 +3,23 @@
 --[[
   Design
 
-    Load(string): table
+    Load(string): table, table
 
-      Parse contents of file to table indexed by key names.
+      Parse string with "annotated lines" to table indexed by key names.
+      Second result is string list of problems. Ideally empty.
 
-    Save(table): string
+    Save(table [, table]): string
 
-      Compile table with string key/values.
-
-    Tools:
-
-      SerializeKeyVal(string, string): string
-
-        Serialize key-value.
-
-      ParseLine(string): (string, string)
-
-        Parse annotated line.
+      Serialize table with string key/values. Second optional argument
+      is a list with keys to serialize them in that order.
 
   See [ReadMe] and specific files for more info.
 ]]
 
--- Last mod.: 2024-02-28
+-- Last mod.: 2024-03-03
 
 return
   {
     Load = request('Load'),
     Save = request('Save'),
-    --
-    SerializeKeyVal = request('Compiler.SerializeKeyVal'),
-    ParseLine = request('Parser.ParseLine'),
   }
