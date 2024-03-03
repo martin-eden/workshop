@@ -3,8 +3,8 @@
 Works with simple `key=some one-line string` format.
 
 "Annotated lines" name is too generic as there are many ways to express
- binding of one-line string to identifier. But for now that's the only
- type of family I'm implementing, so I won't qualify name any further.
+binding of one-line string to identifier. But for now that's the only
+type of family I've implemented, so I won't qualify name any further.
 
 ## Details and background
 
@@ -22,24 +22,47 @@ So the general format is
   ```
   format:
 
-    (<line> "\n")*
-     ~~~~~~
-     annotated_line
+    list(<annotated_line>, \n) [\n]
 
   annotated_line:
 
-    <any_char_except_"="> "=" <any_char>
-    ~~~~~~~~~~~~~~~~~~~~~     ~~~~~~~~~~
-             key                 value
+    any_char_except("=", \n)* "=" any_char_except(\n)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~     ~~~~~~~~~~~~~~~~~~~
+             key                         value
   ```
 
 ### Internal data structures
 
-Of course `Load(Data: string): table` returns Lua table indexed by key
-names.
+`Load(Data: string): table, table` return two tables.
 
-For Save() I want an option to specify keys ordering. So `Save` method
-accepts optional parameter with key names to serialize records in that
-order: `Save(Data: table [, Keys: table]): string`.
+First is parsed data indexed by key: string key, string value.
 
--- Martin, 2024-02-13/2024-02-28
+Second is list of lines. Each line is an error/warning message about
+problems encountered while parsing. If there are no problems, table
+is empty.
+
+There are two types of problems.
+
+First is when we can't parse line. For example we cant parse `a`.
+(But can parse `a=`.)
+
+Second is when we overwriting already already parsed data. For example
+`a=A<newline>a=B`. We can have only one value for key. In current
+implementation we are keeping the last value.
+
+Original order of keys is lost after Load(). I don't need it for
+my current project.
+
+`Save(Data: table [, Keys: table]): string` takes two arguments.
+
+First is table with data to serialize. String keys, string values.
+No newlines in keys or values and no `=` in keys please.
+Or else we will blow with error().
+
+Second optional parameter is a list with key names to serialize records
+in that order. If it's absent we will create it internally. Current
+implementation uses alphabetical order
+
+Well, I think that's all that ought to be said about public interface.
+
+-- Martin, 2024-02-13/2024-03-03

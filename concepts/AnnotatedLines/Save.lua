@@ -47,8 +47,19 @@ return
       Lines = {}
       for _, Key in ipairs(KeysOrder) do
         local Value = Data[Key]
+
+        --[[
+          No value for given key. This can happen if we got <KeysOrder>
+          from outside. Just silently skip this key.
+        ]]
+        if is_nil(Value) then
+          goto Continue
+        end
+
         local Line = SerializeKeyVal(Key, Value)
         table.insert(Lines, Line)
+
+        ::Continue::
       end
     end
     assert_table(Lines)
