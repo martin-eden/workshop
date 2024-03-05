@@ -1,11 +1,31 @@
+-- Return table list of documentation files for given list of ".lua" files
+
 --[[
-  Get documentation files for deploy script. Internal function.
+  Input
 
-  Files added:
+    table - self
 
-    <directory> wtf.txt
-    <directory> <name>.txt
+    table - files list
+
+      String list. Each entry is pathname.
+
+  Output
+
+    table - docs list
+
+      String list. Each entry is pathname to documentation file.
+      We guarantee there will be no duplicate entries.
+      Only files that really exists are included.
+
+  Details
+
+    Given pathname "d/e.lua" we check for existence following names:
+
+      "d/wtf.txt"
+      "d/e.txt"
 ]]
+
+-- Last mod.: 2024-03-05
 
 local parse_pathname = request('!.concepts.path_name.parse')
 local exists = request('!.file_system.file.exists')
@@ -33,3 +53,8 @@ return
     docs = get_keys(docs)
     return docs
   end
+
+--[[
+  2018-06-05
+  2024-03-05
+]]
