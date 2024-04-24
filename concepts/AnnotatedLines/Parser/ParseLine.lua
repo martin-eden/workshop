@@ -14,7 +14,7 @@
 
     Mind the spaces:
 
-      ParseLine('a = A == B') -> {'a ', ' A == a'}
+      ParseLine('a = A == B') -> {'a ', ' A == B'}
 
     If we can't parse string to key-value
       Return nils
