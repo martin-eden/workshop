@@ -1,19 +1,19 @@
--- Return table sequence with string values returned by math.type()
+-- Return list of numeric type names
 
 --[[
   Output
 
     table
 
-      Sequence of strings with number type names. As they are returned
+      List with number type names as they are returned
       by math.type() function.
 
   Note
 
-    This list is used in code generation.
+    Used in code generation.
 ]]
 
--- Last mod.: 2024-03-02
+-- Last mod.: 2024-08-06
 
 return
   {
