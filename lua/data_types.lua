@@ -1,19 +1,19 @@
--- Return table sequence with type names of all Lua data types
+-- Return list with names of all Lua data types
 
 --[[
   Output
 
     table
 
-      Sequence of strings with type names. As they are returned
+      List of strings with type names as they are returned
       by type() function.
 
   Note
 
-    This list is used in code generation.
+    Used in code generation.
 ]]
 
--- Last mod.: 2024-03-02
+-- Last mod.: 2024-08-06
 
 return
   {
