@@ -1,0 +1,39 @@
+/*
+  I wrote this code like 6 years ago, in 2018. Now I would style
+  it differently. Here I'm trying to provide design overview.
+*/
+
+We are serializing Lua table. Lua table is list of (key-value) tuples.
+Type of any tuple elements can be terminal (like string or number) or
+reference to another table. Self-references are allowed.
+
+Serializer is implemented as table of handlers. (string-function) tuples.
+
+Data is provided in annotated tree (table).
+  Each node of tree has string field "type".
+    It's value determines what handler will be called.
+  Node data is encapsulated in field "value".
+
+--
+
+Module design
+
+Each module returns function which builds table of handlers.
+(Sometimes we want to pass behavior options or use different
+virtual printer. So no hardcoded table.)
+
+Yes, handlers are just routines that emit text to virtual printer.
+It's another abstraction with methods to indent/unindent, write text,
+assure we have exactly one empty line (idempotence again).
+
+Exports:
+
+  (Handlers, Printer, Options) - setup node handlers table
+
+  Handlers: table - with node handlers
+  Printer: table - virtual printer
+  Options: table - behavior options
+
+--
+
+-- Martin, 2024-08
