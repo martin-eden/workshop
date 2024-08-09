@@ -1,3 +1,35 @@
+-- Provide data tree for Lua table without cycles (for tree)
+
+--[[
+  /*
+    That's a pseudocode. Implementation uses lowercase field names.
+  */
+
+  MakeTree(Data)
+  ~~~~~~~~~~~~~~
+    if not IsTable(Data)
+      if
+        @OnlyRestorableItems and
+        (TypeOf(Data) not in @RestorableTypes)
+
+        return
+
+      Result.Type = TypeOf(Data)
+      Result.Value = Data
+      return
+
+    if @NamedValues[Data]
+      Result.Type = "name"
+      Result.Value = Name of node. Used in cycled table serializer.
+      return
+
+    AssertTable(Data)
+
+    Result.Type = "table"
+    for (Key, Val) in Data
+      Result[i] = { Key = MakeTree(Key), Value = MakeTree(Val) }
+]]
+
 local RestorableTypes =
   {
     ['boolean'] = true,
@@ -50,3 +82,10 @@ return
     end
     return result
   end
+
+--[[
+  2018-02
+  2020-09
+  2022-01
+  2024-08
+]]
