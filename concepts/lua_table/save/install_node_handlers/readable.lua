@@ -1,86 +1,123 @@
-local text_block
+-- Implementation of "readable" Lua table serialization
 
-local add =
+local RawCompile = request('!.struc.compile')
+local IsName = request('!.concepts.lua.is_identifier')
+
+local Handlers = {}
+
+-- State (
+-- Virtual printer interface
+local Printer
+-- Do not emit integer indices when possible
+local CompactSequences = true
+-- )
+
+-- Mostly aliasing printers methods (
+local GoToEmptyLine =
+  function()
+    Printer:request_clean_line()
+  end
+
+local Indent =
+  function()
+    Printer:inc_indent()
+  end
+
+local Unindent =
+  function()
+    Printer:dec_indent()
+  end
+
+local Emit =
   function(s)
-    text_block:add_curline(s)
+    Printer:add_curline(s)
+  end
+-- )
+
+local Compile =
+  function(Tree)
+    Emit(RawCompile(Tree, Handlers))
   end
 
-local request_clean_line =
-  function()
-    text_block:request_clean_line()
-  end
-
-local inc_indent =
-  function()
-    text_block:inc_indent()
-  end
-
-local dec_indent =
-  function()
-    text_block:dec_indent()
-  end
-
-local node_handlers = {}
-
-local raw_compile = request('!.struc.compile')
-
-local compile =
-  function(t)
-    add(raw_compile(t, node_handlers))
-  end
-
-local is_identifier = request('!.concepts.lua.is_identifier')
-local compact_sequences = true
-
-node_handlers.table =
-  function(node)
-    if (#node == 0) then
-      add('{}')
+Handlers.table =
+  function(Node)
+    -- Shortcut: empty table
+    if (#Node == 0) then
+      Emit('{}')
       return
     end
-    local last_integer_key = 0
-    add('{')
-    inc_indent()
-    for i = 1, #node do
-      local key, value = node[i].key, node[i].value
-      request_clean_line()
-      if
-        compact_sequences and
-        (key.type == 'number') and
-        is_integer(key.value) and
-        (key.value == last_integer_key + 1)
-      then
-        last_integer_key = key.value
-      else
-        if
-          (key.type == 'string') and
-          is_identifier(key.value)
-        then
-          add(key.value)
-        else
-          add('[')
-          compile(key)
-          add(']')
-        end
-        add(' = ')
+
+    --[[
+      One-element table
+
+      We'll put it on one line and wont write trailing delimiter.
+    ]]
+    local TheOneAndOnly = (#Node == 1)
+
+    -- Array part tracking for <CompactSequences>
+    local LastIntKey = 0
+
+    Emit('{')
+    Indent()
+
+    for Idx, El in ipairs(Node) do
+      local Key, Value = El.key, El.value
+
+      if not TheOneAndOnly then
+        GoToEmptyLine()
       end
-      compile(value)
-      add(',')
+
+      --[[
+        if CompactSequences
+          Do not emit integer index while we are on array part
+      ]]
+      local IsOnArray =
+        is_integer(Key.value) and (Key.value == LastIntKey + 1)
+
+      if CompactSequences and IsOnArray then
+        LastIntKey = Key.value
+      else
+        -- No brackets required for identifiers
+        if IsName(Key.value) then
+          Emit(Key.value)
+        else
+          Emit('[')
+          Compile(Key)
+          Emit(']')
+        end
+        Emit(' = ')
+      end
+
+      Compile(Value)
+
+      if not TheOneAndOnly then
+        Emit(',')
+      end
     end
-    dec_indent()
-    request_clean_line()
-    add('}')
+
+    if not TheOneAndOnly then
+      GoToEmptyLine()
+    end
+
+    Unindent()
+    Emit('}')
   end
 
-local merge = request('!.table.merge')
-local install_minimal_handlers = request('minimal')
+local Merge = request('!.table.merge')
+local InstallMinimalHandlers = request('minimal')
 
+-- Exports:
 return
-  function(a_node_handlers, a_text_block, options)
-    install_minimal_handlers(a_node_handlers, a_text_block, options)
-    node_handlers = merge(a_node_handlers, node_handlers)
-    text_block = a_text_block
-    if options and is_boolean(options.compact_sequences) then
-      compact_sequences = options.compact_sequences
+  function(a_Handlers, a_Printer, Options)
+    InstallMinimalHandlers(a_Handlers, a_Printer, Options)
+    Handlers = Merge(a_Handlers, Handlers)
+    Printer = a_Printer
+    if is_table(Options) and is_boolean(Options.compact_sequences) then
+      CompactSequences = options.compact_sequences
     end
   end
+
+--[[
+  2018-02-05
+  2024-08-09
+]]
