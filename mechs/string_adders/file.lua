@@ -1,9 +1,9 @@
 -- Concatter implementation via writing to file.
 
 --[[
-  With comparision of array implementation:
+  With comparison of array implementation:
   + speed
-    In my case it's a bit (about 7%) faster that array implementation
+    In my case it's a bit (about 7%) faster than array implementation
     as it has no table maintenance overhead.
 
   + capacity
