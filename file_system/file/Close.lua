@@ -31,11 +31,9 @@ return
       return true
     end
 
-    local IsOpened = (io.type(File) == 'file')
-    if IsOpened then
-      local IsOk, Error = io.close(File)
-      return IsOk
-    end
+    local IsOk = io.close(File)
+
+    return IsOk
   end
 
 --[[
