@@ -1,0 +1,55 @@
+/*
+  Counter class, lol!
+
+  What may be simpler? Isn't it vast overengineering?
+
+  Memory reads and writes are simpler. Overengineering? How you know
+  what is enough when you don't know what is too much?
+
+  Clean interface is independent of simple implementation.
+  I believe triviality of implementation is not stopper for
+  interface design.
+
+  Why I want counter class?
+
+  I want to rewrite indented printer. Indent is just a counter. So
+  "IncreaseIndent()" implementation will be "Counter.Increase()".
+
+  Chain calls for the sake of names that are suitable for concept.
+*/
+
+Concept
+
+  Counter is integer coordinate in fixed range that can be moved
+  only by one unit.
+
+  If it's already at the border, it's not moved and Increase() or
+  Decrease() will return false.
+
+  Counter can be set to any value in range in Init().
+
+Interface
+
+  Init(InitialValue (= Value (= MinValue))
+
+    Set initial value of counter. Blows if initial value is out of range.
+
+  Get(): int
+
+    Return current value
+
+  Increase()/Decrease(): bool
+
+    Move one unit forward/backward if possible. Stops at borders.
+
+Intensities
+
+  MinValue: int
+
+    Minimum value of range.
+
+  MaxValue: int
+
+    Maximum value of range.
+
+2024-08-31
