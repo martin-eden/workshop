@@ -1,8 +1,9 @@
+-- Return string with indent and text
 return
   function(self)
-    if (self.text == '') then
+    if self:is_empty() then
       return ''
-    else
-      return self.indents_obj.indents[self.indent] .. self.text
     end
+
+    return self.indent .. self.text
   end
