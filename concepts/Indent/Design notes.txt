@@ -1,0 +1,34 @@
+Indents concept
+
+You know, that serie of spaces that starts the line are called "indent"?
+Some geeks believe TAB character suits better for this role. I don't
+care.
+
+This concept is to return of some substring repeated N times.
+
+Interface
+
+  Init([IndentValue = 0], (ChunkValue))
+
+    Initialization setup.
+
+  Increase()/Decrease(): bool
+
+    Increase/decrease current indent.
+
+  GetDepth(): int
+
+    Return current indent depth.
+
+  GetString(): str
+
+    Return current indent string.
+
+Intensities
+
+  Chunk: str
+
+    Indent chunk string. Typical values are "  " or "\t".
+
+
+2024-08-31
