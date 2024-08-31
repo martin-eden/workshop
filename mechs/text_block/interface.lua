@@ -32,4 +32,7 @@ return
     get_block_width = request('text.get_block_width'),
 
     init = request('init'),
+
+    -- Intensities
+    Indent = request('!.concepts.Indent.Interface'),
   }

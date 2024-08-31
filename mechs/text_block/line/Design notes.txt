@@ -1,0 +1,44 @@
+/*
+  Kinda murky interface written seven years ago in 2017.
+
+  I've just discovered that design pattern and was wildly exploring it.
+*/
+
+Concept
+
+  Indented string. Two length methods: one considers indent length,
+  other doesn't.
+
+Naming
+
+  String is called "text". It really should not contain newlines.
+
+  Indent plus "text" is called "line".
+
+Interface
+
+  init(indent: str)
+
+    Set indent string. Empty text.
+
+  is_empty()
+
+    True if text is empty string.
+
+  add(str)
+
+    Add string to current text.
+
+  get_line(): str
+
+    Return indented string.
+
+  get_line_length(): int
+
+    Return length of line (in characters).
+
+  get_text_length(): int
+
+    Return length of text (in characters).
+
+2024-08-31

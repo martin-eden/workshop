@@ -9,7 +9,7 @@ Also it can concatenate with friendly text block.
 
 General architecture
 
-  Changable text is last added line with non-empty text. It is
+  Changeable text is last added line with non-empty text. It is
   accessed via <line_with_text> field. All previously lines added
   to <processed_text> object which have no methods to return it
   individually. (This is for low memory consumption as <processed_text>
@@ -20,7 +20,7 @@ General architecture
 
     [[
     do
-      local a;     <-- <processed_text>, {"do", \n, "  local a", \n}
+      local a      <-- <processed_text>, {"do", \n, "  local a", \n}
       local b      <-- current entry point for add_textline()
 
                    <-- current entry point for add_curline()
@@ -134,3 +134,5 @@ Supported operations
 
 All other methods not described here are probably implementation
 details and may de changed/dropped any moment.
+
+2017-09

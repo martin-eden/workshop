@@ -8,8 +8,5 @@ return
       ]]
       self:store_textline()
     end
-    if (self.line_with_text.text == '') then
-      self.line_with_text.indent = self.next_line_indent
-    end
     self.line_with_text:add(s)
   end
