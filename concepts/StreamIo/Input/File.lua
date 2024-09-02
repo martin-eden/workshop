@@ -1,12 +1,15 @@
--- Reads strings from file. Implements [Reader]
+-- Reads strings from file. Implements [Input]
 
 --[[
-  Stream reader from file
+  Contract
 
-  OpenFile(FileName): bool
-    sets File
-  Read(NumBytes): string, bool
-  CloseFile(): bool
+    Read(NumBytes): string, bool
+
+  Intestines
+
+    OpenFile(FileName): bool
+
+    CloseFile(): bool
 ]]
 
 local OpenForReading = request('!.file_system.file.OpenForReading')
@@ -25,7 +28,7 @@ local Read =
 
     local IsEof = is_nil(Data)
 
-    -- No End-of-File state in [Reader]
+    -- No End-of-File state in [Input]
     if IsEof then
       Data = ''
     end
@@ -35,7 +38,7 @@ local Read =
     return Data, IsComplete
   end
 
--- Additions: Open file for reading
+-- Intestines: Open file for reading
 local OpenFile =
   function(self, FileName)
     local FileHandle = OpenForReading(FileName)
@@ -49,7 +52,7 @@ local OpenFile =
     return true
   end
 
--- Additions: close file
+-- Intestines: close file
 local CloseFile =
   function(self)
     return (CloseFileFunc(self.File) == true)
@@ -61,14 +64,15 @@ local Interface =
     -- Interface
     Read = Read,
 
-    -- Intensities
+    -- Intestines
     File = {},
 
-    -- Intensities management
+    -- Intestines management
     OpenFile = OpenFile,
     CloseFile = CloseFile,
   }
 
+-- Close file at garbage collection
 setmetatable(Interface, { __gc = function(self) self:CloseFile() end } )
 
 return Interface

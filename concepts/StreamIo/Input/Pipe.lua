@@ -1,4 +1,4 @@
--- Reads strings from standard input. Implements [Reader]
+-- Reads strings from standard input. Implements [Input]
 
 -- Contract: Read string from stdin
 local Read =
@@ -8,7 +8,7 @@ local Read =
 
     local Data = io.stdin:read(NumBytes)
 
-    -- No end-of-file concept in [Reader]
+    -- No end-of-file concept in [Input]
     if is_nil(Data) then
       Data = ''
     end

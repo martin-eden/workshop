@@ -1,4 +1,4 @@
--- Writes strings to standard output. Implements [Writer]
+-- Writes strings to standard output. Implements [Output]
 
 -- Contract: Write string
 local Write =

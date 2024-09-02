@@ -1,18 +1,43 @@
--- Writes strings to memory. Implements [Writer]
+-- Writes strings to memory. Implements [Output]
 
 --[[
-  Writer over string
+  Implementation
 
+  Example
                   Chunks
     ---------------------
                 | {}
     Write("a")  | {'a'}
     Write("bc") | {'a', 'bc'}
-    Write("")   |
-    GetString() |
+    Write("")   | ditto
+    GetString() | ditto
       > "abc"   |
     Aggregate() | {'abc'}
     Flush()     | {}
+
+  Data
+
+    Chunks: {}
+
+      List of strings.
+
+  Methods
+
+    Write(string): int, bool
+
+      Actually adds string to chunks.
+
+    GetString(): str
+
+      Returns string as chunks concatenation.
+
+    Flush()
+
+      Empties chunks.
+
+    Aggregate()
+
+      Merges several chunks to one
 ]]
 
 -- Contract: Write string
@@ -27,19 +52,19 @@ local Write =
     return #Data, true
   end
 
--- Additional: flush chunks
+-- Intestines: flush chunks
 local Flush =
   function(self)
     self.Chunks = {}
   end
 
--- Additional: return sum of chunks
+-- Intestines: return sum of chunks
 local GetString =
   function(self)
     return table.concat(self.Chunks)
   end
 
--- Additional: merge chunks
+-- Intestines: merge chunks
 local Aggregate =
   function(self)
     if (#self.Chunks >= 2) then
@@ -54,10 +79,10 @@ return
     -- Interface
     Write = Write,
 
-    -- Intensities
+    -- Intestines
     Chunks = {},
 
-    -- Intensities management
+    -- Intestines management
     Flush = Flush,
     GetString = GetString,
     Aggregate = Aggregate,
