@@ -1,11 +1,14 @@
--- Writes strings to file. Implements [Writer]
+-- Writes strings to file. Implements [Output]
 
 --[[
-  Stream writer over file
+  Contract
+
+    Write(string): int, bool
+
+  Intestines
 
     OpenFile(FileName)
-      sets File
-    Write(string): int, bool
+
     CloseFile(): bool
 ]]
 
@@ -26,7 +29,7 @@ local Write =
     return #Data, true
   end
 
--- Additional: Open file for writing
+-- Intestines: Open file for writing
 local OpenFile =
   function(self, FileName)
     local FileHandle = OpenForWriting(FileName)
@@ -40,7 +43,7 @@ local OpenFile =
     return true
   end
 
--- Additional: close file
+-- Intestines: close file
 local CloseFile =
   function(self)
     return (CloseFileFunc(self.File) == true)
@@ -52,14 +55,15 @@ local Interface =
     -- Interface
     Write = Write,
 
-    -- Intensities
+    -- Intestines
     File = {},
 
-    -- Intensities management
+    -- Intestines management
     OpenFile = OpenFile,
     CloseFile = CloseFile,
   }
 
+-- Close file at garbage collection
 setmetatable(Interface, { __gc = function(self) self:CloseFile() end } )
 
 return Interface

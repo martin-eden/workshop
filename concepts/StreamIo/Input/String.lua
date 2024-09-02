@@ -1,7 +1,7 @@
--- Reads strings from base string. Implements [Reader]
+-- Reads strings from base string. Implements [Input]
 
 --[[
-  Reader over string.
+  Implementation
 
     abc
     ^
@@ -10,7 +10,10 @@
   ReadPos: 1
 
   Init(Base)
-  Reset(): ReadPos = 1
+    Set base string, reset read position
+
+  Reset()
+    Reset read position
 ]]
 
 -- Contract: Read string from base string
@@ -39,7 +42,7 @@ local Read =
     return Data, IsComplete
   end
 
--- Additions: Set base string
+-- Intestines: Set base string
 local Init =
   function(self, NewBase)
     assert_string(NewBase)
@@ -48,7 +51,7 @@ local Init =
     self:Reset()
   end
 
--- Additions: Reset reading position
+-- Intestines: Reset reading position
 local Reset =
   function(self)
     self.ReadPos = 1
@@ -60,11 +63,11 @@ return
     -- Interface
     Read = Read,
 
-    -- Intensities
+    -- Intestines
     Base = '',
     ReadPos = 1,
 
-    -- Intensities management
+    -- Intestines management
     Init = Init,
     Reset = Reset,
   }
