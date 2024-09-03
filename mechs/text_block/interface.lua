@@ -33,6 +33,6 @@ return
 
     init = request('init'),
 
-    -- Intensities
+    -- Intestines
     Indent = request('!.concepts.Indent.Interface'),
   }
