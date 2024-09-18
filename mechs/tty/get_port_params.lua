@@ -1,6 +1,14 @@
 --[[
   Get TTY device parameters as special-format string for later
   restoration.
+
+  Input:
+
+    string - Port name
+
+  Output:
+
+    string - Encoded port configuration
 ]]
 
 return
@@ -12,3 +20,10 @@ return
     f_output:close()
     return result
   end
+
+--[[
+  2020-01
+  2021-11
+  2023-04
+  2024-09
+]]

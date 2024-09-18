@@ -1,8 +1,12 @@
 --[[
   Set TTY device parameters from stty-readable string.
 
-  Stty-readable string usually produced by "$ stty --save"
-  or from save_port_params().
+  Stty-readable string usually produced by "$ stty --save".
+
+  Input:
+
+    string - Port name
+    string - Encoded port configuration
 ]]
 
 return
@@ -16,3 +20,10 @@ return
 
     return errorMsg
   end
+
+--[[
+  2020-01
+  2021-11
+  2023-04
+  2024-09
+]]
