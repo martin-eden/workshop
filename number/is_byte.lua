@@ -1,17 +1,28 @@
+-- Check that given argument is integer in byte range
+
 --[[
-  Checks that given integer fits in byte range.
+  Input
+
+    Value: any - any value
+
+  Output
+
+    Yes: bool - value is integer in byte range
 ]]
 
 return
-  function(n)
-    local result, err_msg = is_integer(n)
-    if result then
-      result = (n == n & 0xFF)
-      if not result then
-        err_msg =
-          ('Given integer %d is not in byte range [0, 255].'):
-          format(n)
-      end
+  function(Value)
+    if not is_integer(Value) then
+      return false
     end
-    return result, err_msg
+
+    -- Masking integer with low byte changes nothing for byte range
+    local Result = (Value == (Value & 0xFF))
+
+    return Result
   end
+
+--[[
+  2020-08-09
+  2024-09-30
+]]
