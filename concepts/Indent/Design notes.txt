@@ -1,6 +1,6 @@
 Indents concept
 
-You know, that serie of spaces that starts the line are called "indent"?
+You know, that serie of spaces that starts the line is called "indent"?
 Some geeks believe TAB character suits better for this role. I don't
 care.
 
