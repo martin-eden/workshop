@@ -19,66 +19,81 @@
 
   Details
 
-    Given pathname "dir/e.lua" we check for existence following names
-    in "dir/":
+    We are working directory-wise and considering that file is
+    documentation just by it's extension.
 
-      e.txt
-      wtf.txt
-      readme.txt
-      readme.md
-      readme.markdown
-      ReadMe.txt
-      ReadMe.md
-      ReadMe.markdown
-
+    Previous implementation picked documentation by module-dependent
+    name and extension. Plus hardcoded names. Hardcoded list was never
+    enough. Module-dependent name was not used widely enough.
 ]]
 
--- Last mod.: 2024-03-05
+-- Last mod.: 2024-10-03
 
-local parse_pathname = request('!.concepts.path_name.parse')
-local exists = request('!.file_system.file.exists')
-local get_keys = request('!.table.get_keys')
+local ParsePathname = request('!.concepts.path_name.parse')
+local FileLister = request('!.mechs.file_lister.interface')
 
-local hardcoded_doc_filenames =
+-- Regexps for documentation file names
+local DocNameRegexps =
   {
-    'wtf.txt',
-    'readme.txt',
-    'readme.md',
-    'readme.markdown',
-    'ReadMe.txt',
-    'ReadMe.md',
-    'ReadMe.markdown',
+    --[[
+      ".+" - filler
+      "%." - dot
+      "txt$" - ends with "txt"
+      "[mM]" - "m" or "M"
+    ]]
+    '.+%.txt$',
+    '.+%.md$',
+    '.+%.[mM]ark[dD]own',
   }
 
-return
-  function(self, files)
-    local docs = {}
-    local was_checked = {}
-    for i = 1, #files do
-      local possible_docs = {}
-      do
-        local name_txt = files[i]:gsub('%.lua$', '.txt')
-        table.insert(possible_docs, name_txt)
-
-        local basedir = parse_pathname(files[i]).directory
-        for _, doc_filename in ipairs(hardcoded_doc_filenames) do
-          table.insert(possible_docs, basedir .. doc_filename)
-        end
-      end
-      for _, file_name in ipairs(possible_docs) do
-        if not was_checked[file_name] then
-          if exists(file_name) then
-            docs[file_name] = true
-          end
-          was_checked[file_name] = true
-        end
+local IsDocumentationName =
+  function(FileName)
+    for Index, Regexp in ipairs(DocNameRegexps) do
+      if string.find(FileName, Regexp) then
+        return true
       end
     end
-    docs = get_keys(docs)
-    return docs
+
+    return false
+  end
+
+return
+  function(self, FileList)
+    local Result = {}
+
+    local ProcessedDirectories = {}
+    for Index, Pathname in ipairs(FileList) do
+      local ParsedPathname = ParsePathname(Pathname)
+
+      assert(not ParsedPathname.is_directory)
+
+      local Dirname = ParsePathname(Pathname).directory
+
+      if ProcessedDirectories[Dirname] then
+        goto Continue
+      end
+
+      FileLister.start_dir = Dirname
+      FileLister:init()
+      local Files = FileLister:get_files_list()
+
+      for Index, FileName in ipairs(Files) do
+        if IsDocumentationName(FileName) then
+          local FullFileName = Dirname .. FileName
+          table.insert(Result, FullFileName)
+        end
+      end
+
+      ProcessedDirectories[Dirname] = true
+
+      ::Continue::
+    end
+
+    return Result
   end
 
 --[[
   2018-06-05
   2024-03-05
+  2024-10-03
 ]]
