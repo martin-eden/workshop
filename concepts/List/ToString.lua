@@ -5,12 +5,12 @@
 --[[
   Implementer may or may not check input arguments.
 
-  Usually implemented do check input parameters for convenience of
+  Usually implementer do check input parameters for convenience of
   debugging. But for performance reasons it may not check them.
 
   If something explodes we blame party that violated contract.
   Contract is stated in comments. If comment says you should pass
-  string and you passed nil, don't blame implementer.
+  string and you passed table, take the blame.
 ]]
 
 return
