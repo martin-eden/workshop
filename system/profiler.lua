@@ -20,6 +20,54 @@
   For additional info see "profiler.txt".
 ]]
 
+--[[
+  Below comes "profiler.txt" documentation.
+
+  I have no time to revise it and code below.
+
+  Moving "documentation" here because now deploy scripts considers
+  all "*.txt" files in module's directory as documentation.
+
+  This module was used in profiling [lcf] like seven years ago.
+  Not used since.
+]]
+
+--[=[ profiler.txt
+
+Active Lua code profiler. Current state is ugly but works.
+
+Wrapping functions is bad idea. You will see only what you wrapped.
+
+Counting function calls is bad idea too. You will get most called
+functions, not functions where code spends time.
+
+So idea is to store current function in certain periods of time.
+This is done by setting debug hook function which may be called
+after every instruction. When called it checks whether it is time
+to do measurement. And if it is, it retrieves current function
+and line what code just finished executing and stores it in some
+roster table.
+
+When we're asked to print statistics we normalize that table
+to convert number of calls to relative percents, sort that adjusted
+table and print it.
+
+Surely it should be done as class. But now I've just overhelmed
+with slow [parser] performance and going to work with it,
+starting from documenting it's structure and algorithms and
+converting it to class.
+
+
+Usage
+
+  local profiler = request('workshop.mechs.profiler')
+  profiler.start()
+  --[[ your code here ]]
+  profiler.stop()
+]=]
+
+-- Last mod.: 2024-10-21
+
 local func_call_count = {}  -- [name] = {[line] = count, total_calls = count}
 
 local parent_offset = 0
@@ -196,3 +244,9 @@ return
     start = start_profile,
     stop = stop_profile,
   }
+
+--[[
+  2017-02-06
+  2017-09-05
+  2024-10-21
+]]
