@@ -1,9 +1,6 @@
 -- Get GNU/Bash command to remove file by pathname
 
---[[
-  Status: passed maiden flight
-  Last mod.: 2024-02-13
-]]
+-- Last mod.: 2024-10-21
 
 local CmdFormatStr = 'rm %q'
 
@@ -13,3 +10,8 @@ return
     local Result = string.format(CmdFormatStr, PathName)
     return Result
   end
+
+--[[
+  2024-02-13
+  2024-10-21
+]]
