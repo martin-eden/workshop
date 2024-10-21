@@ -1,7 +1,17 @@
 -- Convert table to flat list of values
 
 --[[
+  Table may have folded tables.
+
+    YES: t = { 'a', b = 'b', { c = 'c' } }
+
   Table should not have cycles.
+
+    NO: t = {} t.t = t
+
+  Only values of table table key-values are processed.
+
+    NO LUCK: t = { [{ 'a' }] = {} }
 ]]
 
 -- Last mod.: 2024-10-20
