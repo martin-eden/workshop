@@ -3,7 +3,8 @@
 --[[
   Table may have folded tables.
 
-    YES: t = { 'a', b = 'b', { c = 'c' } }
+    YES: t = { 'a', b = 'b', { c = 'a' } }
+      => { 'a', 'b', 'a' }
 
   Table should not have cycles.
 
@@ -14,7 +15,7 @@
     NO LUCK: t = { [{ 'a' }] = {} }
 ]]
 
--- Last mod.: 2024-10-20
+-- Last mod.: 2024-10-24
 
 local OrderedPairs = request('ordered_pass')
 
