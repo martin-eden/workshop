@@ -1,35 +1,47 @@
---[[
-  Set baud rate and non-blocking read mode for TTY device given by name.
+-- Set baud rate and read timeout for TTY device given by name
 
-  Non-blocking read means that if we do read(10) (reading ten bytes) and
-  receive buffer has only five bytes, we wait up to <max_wait_time>
-  seconds for more and then return bytes we have.
+-- Last mod.: 2024-10-29
+
+--[[
+  Non-blocking read means that if we reading ten bytes and
+  receive buffer has only seven bytes, we wait up to given
+  amount of time awaiting that three bytes. And then return
+  bytes we got.
+
+  In multithreading sense it's still blocking operation.
+  But at worst case here we're wasting given amount of time
+  versus infinite wait.
 
   Input:
 
     string - Port name
-    [float] - Max wait time (seconds). Default: 0.5
+    [float] - Read timeout (seconds). Default: 0.1
     [int] - Port baud. Default: 57600
 ]]
 
 return
-  function(tty_name, max_wait_time, baud)
-    assert_string(tty_name)
+  function(
+    DeviceName,
+    ReadTimeout_S,
+    Speed_Bps
+  )
+    assert_string(DeviceName)
 
-    max_wait_time = max_wait_time or 0.5
-    -- "stty" accepts waiting time as tenths of seconds, so we multiply by 10:
-    max_wait_time = math.floor(max_wait_time * 10)
+    ReadTimeout_S = ReadTimeout_S or 0.1
 
-    baud = baud or 57600
+    Speed_Bps = Speed_Bps or 57600
+
+    -- "stty" accepts waiting time in deciseconds
+    ReadTimeout_dS = math.floor(ReadTimeout_S * 10)
 
     --[[
       Kinda long I know. I tried simpler
 
         stty --file=%s %d -echoctl raw time %d min 0 cs8
 
-      but looks like it didn't work. Code was commented.
+      but looks like that didn't work. Code was commented.
     ]]
-    local cmd_fmt =
+    local CommandFmt =
       'stty' ..
       ' --file=%s' ..
       ' %d' ..
@@ -49,13 +61,20 @@ return
       ' -ixon' ..
       ' -opost'
 
-    local cmd = string.format(cmd_fmt, tty_name, baud, max_wait_time)
+    local Command =
+      string.format(
+        CommandFmt,
+        DeviceName,
+        Speed_Bps,
+        ReadTimeout_dS
+      )
 
-    assert(os.execute(cmd))
+    assert(os.execute(Command))
   end
 
 --[[
   2020-01
   2021-11
   2024-09
+  2024-10-29
 ]]
