@@ -1,6 +1,6 @@
 -- Serialization event handler
 
--- Last mod.: 2024-10-21
+-- Last mod.: 2024-11-01
 
 -- ( Delimiting functions
 
@@ -42,7 +42,7 @@ local DecisionMatrix =
     StartList =
       {
         StartList = NewlineIndentFunc,
-        WriteString = NewlineIndentFunc,
+        WriteString = SpaceFunc,
         EndList = EmptyFunc,
         Nothing = EmptyFunc,
       },
@@ -50,7 +50,7 @@ local DecisionMatrix =
       {
         StartList = NewlineIndentFunc,
         WriteString = SpaceFunc,
-        EndList = NewlineIndentFunc,
+        EndList = SpaceFunc,
         Nothing = EmptyFunc,
       },
     EndList =
