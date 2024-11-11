@@ -1,5 +1,7 @@
 -- Implementation of "readable" Lua table serialization
 
+-- Last mod.: 2024-11-11
+
 local RawCompile = request('!.struc.compile')
 local IsName = request('!.concepts.lua.is_identifier')
 
@@ -103,14 +105,14 @@ Handlers.table =
     Emit('}')
   end
 
-local Merge = request('!.table.merge')
+local ForceMerge = request('!.table.merge_and_patch')
 local InstallMinimalHandlers = request('minimal')
 
 -- Exports:
 return
   function(a_Handlers, a_Printer, Options)
     InstallMinimalHandlers(a_Handlers, a_Printer, Options)
-    Handlers = Merge(a_Handlers, Handlers)
+    Handlers = ForceMerge(a_Handlers, Handlers)
     Printer = a_Printer
     if is_table(Options) and is_boolean(Options.compact_sequences) then
       CompactSequences = options.compact_sequences
