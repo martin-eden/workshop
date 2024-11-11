@@ -1,8 +1,13 @@
-local merge = request('!.table.merge')
+-- File stream interface
+
+-- Last mod.: 2024-11-11
+
+local force_merge = request('!.table.merge_and_patch')
 local result = new(request('^.interface'))
 local original_init = result.init
+
 return
-  merge(
+  force_merge(
     result,
     {
       init = request('init'),
@@ -20,3 +25,9 @@ return
       assert_no_error = request('assert_no_error'),
     }
   )
+
+--[[
+  2017-05
+  2017-08
+  2018-08
+]]

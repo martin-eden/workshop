@@ -1,8 +1,13 @@
-local merge = request('!.table.merge')
+-- String stream interface
+
+-- Last mod.: 2024-11-11
+
+local force_merge = request('!.table.merge_and_patch')
 local result = new(request('^.interface'))
 local original_init = result.init
+
 return
-  merge(
+  force_merge(
     result,
     {
       init = request('init'),
@@ -19,3 +24,7 @@ return
       original_init = original_init,
     }
   )
+
+--[[
+  2017-05
+]]
