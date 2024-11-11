@@ -1,15 +1,16 @@
 -- Raise error if instance does not supports interface
 
--- Last mod.: 2024-07-19
+-- Last mod.: 2024-11-11
 
 local Is = request('Is')
 
 return
   function(Instance, Interface)
     if not Is(Instance, Interface) then
-      local ErrorMsg =
-        ('Instance %s does not support interface %s.'):
-        format(tostring(Instance), tostring(Interface))
-      error(ErrorMsg)
+      error('Instance does not support interface.')
     end
   end
+
+--[[
+  2024-07-19
+]]
