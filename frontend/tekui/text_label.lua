@@ -1,10 +1,14 @@
+-- Return text label object
+
+-- Last mod.: 2024-11-11
+
 local tui = require('tek.ui')
-local merge = request('!.table.merge')
+local force_merge = request('!.table.merge_and_patch')
 
 return
   function(text, overrides)
     local params =
-      merge(
+      force_merge(
         {
           Class = 'caption',
           Width = 'fill',
@@ -15,3 +19,7 @@ return
 
     return tui.Text:new(params)
   end
+
+--[[
+  2020-02
+]]

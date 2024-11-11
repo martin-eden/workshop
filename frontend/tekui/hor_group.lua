@@ -1,10 +1,14 @@
+-- Return horizontal group object
+
+-- Last mod.: 2024-11-11
+
 local group = request('group')
-local merge = request('!.table.merge')
+local force_merge = request('!.table.merge_and_patch')
 
 return
   function(...)
     local result = group(...)
-    merge(
+    force_merge(
       result,
       {
         Orientation = 'horizontal',
@@ -13,3 +17,7 @@ return
 
     return result
   end
+
+--[[
+  2020-02
+]]

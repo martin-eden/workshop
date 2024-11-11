@@ -1,10 +1,14 @@
+-- Return group object
+
+-- Last mod.: 2024-11-11
+
 local tui = require('tek.ui')
-local merge = request('!.table.merge')
+local force_merge = request('!.table.merge_and_patch')
 
 return
   function(header, overrides, ...)
     local params =
-      merge(
+      force_merge(
         {
           Width = 'fill',
           Height = 'auto',
@@ -16,3 +20,7 @@ return
 
     return tui.Group:new(params)
   end
+
+--[[
+  2020-02
+]]
