@@ -6,8 +6,8 @@
 local Patch = request('patch')
 
 local SoftPatch =
-  function(Dest, Patch)
-    return Patch(Dest, Patch, true)
+  function(Dest, PatchTable)
+    return Patch(Dest, PatchTable, true)
   end
 
 -- Exports:
