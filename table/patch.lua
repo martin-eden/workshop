@@ -1,53 +1,72 @@
 -- Apply patch to table
 
---[[
-  Status: should work
-  Version: 2
-  Last mod.: 2024-02-11
-]]
+-- Last mod.: 2024-11-11
 
 --[[
-  Example
+  Basically it means that we're writing every entity from patch table to
+  destination table.
 
-    local MainConfig =
-      {
-        Name = 'PathName',
-        PathName = { Path = 'Data/Results/', Name = 'Default.json'},
-      }
+  If no key in destination table, we'll explode.
 
-    local PatchConfig =
-      {
-        PathName = { Name = 'Custom.json' },
-      }
+  Additional third parameter means that we're not overwriting
+  entity in destination table if it's value type is same as
+  in patch's entity.
 
-    DoPatch(MainConfig, PatchConfig)
+  That's useful when we want to force values to given types but
+  keep values if they have correct type:
+
+    ({ x = 42, y = '?' }, { x = 0, y = 0 }, false) -> { x = 0, y = 0 }
+    ({ x = 42, y = '?' }, { x = 0, y = 0 }, true) -> { x = 42, y = 0 }
+
+  Examples:
+
+    Always overwriting values:
+
+      ({ a = 'A' }, { a = '_A' }, false) -> { a = '_A' }
+
+    Overwriting values if different types:
+
+      ({ a = 'A' }, { a = '_A' }, true) -> { a = 'A' }
+      ({ a = 0 }, { a = '_A' }, true) -> { a = '_A' }
+
+    Nested values are supported:
+
+      ({ b = { bb = 'BB' } }, { b = { bb = '_BB' } }, false) ->
+      { b = { bb = '_BB' } }
 ]]
 
-local DoPatch
-DoPatch =
-  function(MainTable, PatchTable)
+local Patch
+Patch =
+  function(MainTable, PatchTable, IfDifferentTypesOnly)
     assert_table(MainTable)
     assert_table(PatchTable)
 
     for PatchKey, PatchValue in pairs(PatchTable) do
-      -- We work only with string and integer keys in patch table
-      if (is_string(PatchKey) or is_integer(PatchKey)) then
-        local MainValue = MainTable[PatchKey]
+      local MainValue = MainTable[PatchKey]
 
-        -- Raise error if main table doesn't have patch key
-        if is_nil(MainValue) then
-          local ErrorMsg =
-            ([[Destination table doesn't have key "%s".]]):
-            format(
-              tostring(PatchKey)
-            )
+      -- Missing key in destination
+      if is_nil(MainValue) then
+        local ErrorMsg =
+          string.format(
+            [[Destination table doesn't have key "%s".]],
+            tostring(PatchKey)
+          )
 
-          error(ErrorMsg, 2)
-        end
+        error(ErrorMsg, 2)
+      end
 
-        -- Recursive call when we writing table to table
+      local DoPatch = true
+
+      if IfDifferentTypesOnly then
+        MainValueType = type(MainValue)
+        PatchValueType = type(PatchValue)
+        DoPatch = (MainValueType ~= PatchValueType)
+      end
+
+      if DoPatch then
+        -- Recursive call when we're writing table to table
         if is_table(MainValue) and is_table(PatchValue) then
-          DoPatch(MainValue, PatchValue)
+          Patch(MainValue, PatchValue)
         -- Else just overwrite value
         else
           MainTable[PatchKey] = PatchValue
@@ -56,4 +75,11 @@ DoPatch =
     end
   end
 
-return DoPatch
+-- Exports:
+return Patch
+
+--[[
+  2016-09
+  2024-02
+  2024-11
+]]
