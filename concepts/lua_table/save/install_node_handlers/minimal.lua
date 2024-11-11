@@ -1,3 +1,7 @@
+-- Minificating table serializer methods
+
+-- Last mod.: 2024-11-11
+
 local text_block
 
 local add =
@@ -116,13 +120,18 @@ node_handlers.name =
     compile(node.value)
   end
 
-local merge = request('!.table.merge')
+local force_merge = request('!.table.merge_and_patch')
 
 return
   function(a_node_handlers, a_text_block, options)
-    node_handlers = merge(a_node_handlers, node_handlers)
+    node_handlers = force_merge(a_node_handlers, node_handlers)
     text_block = a_text_block
     if options and is_boolean(options.compact_sequences) then
       compact_sequences = options.compact_sequences
     end
   end
+
+--[[
+  2017-05
+  2019-06
+]]
