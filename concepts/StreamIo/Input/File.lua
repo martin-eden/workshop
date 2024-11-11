@@ -1,16 +1,6 @@
 -- Reads strings from file. Implements [Input]
 
---[[
-  Contract
-
-    Read(NumBytes): string, bool
-
-  Intestines
-
-    OpenFile(FileName): bool
-
-    CloseFile(): bool
-]]
+-- Last mod.: 2024-11-11
 
 local OpenForReading = request('!.file_system.file.OpenForReading')
 local CloseFileFunc = request('!.file_system.file.Close')
@@ -24,7 +14,7 @@ local Read =
     local Data = ''
     local IsComplete = false
 
-    Data = self.File:read(NumBytes)
+    Data = self.FileHandle:read(NumBytes)
 
     local IsEof = is_nil(Data)
 
@@ -47,7 +37,7 @@ local OpenFile =
       return false
     end
 
-    self.File = FileHandle
+    self.FileHandle = FileHandle
 
     return true
   end
@@ -55,26 +45,30 @@ local OpenFile =
 -- Intestines: close file
 local CloseFile =
   function(self)
-    return (CloseFileFunc(self.File) == true)
+    return (CloseFileFunc(self.FileHandle) == true)
   end
 
--- Exports:
 local Interface =
   {
-    -- Interface
+    -- [New]
+
+    -- Open file by name
+    Open = OpenFile,
+
+    -- Close file
+    Close = CloseFile,
+
+    -- [Main]: Read bytes
     Read = Read,
 
     -- Intestines
-    File = {},
-
-    -- Intestines management
-    OpenFile = OpenFile,
-    CloseFile = CloseFile,
+    FileHandle = 0,
   }
 
 -- Close file at garbage collection
-setmetatable(Interface, { __gc = function(self) self:CloseFile() end } )
+setmetatable(Interface, { __gc = function(self) self:Close() end } )
 
+-- Exports:
 return Interface
 
 --[[
@@ -82,4 +76,5 @@ return Interface
   2024-07-24
   2024-08-05
   2024-08-09
+  2024-11-11
 ]]
