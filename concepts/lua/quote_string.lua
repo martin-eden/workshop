@@ -8,6 +8,7 @@ local has_backslashes = content_funcs.has_backslashes
 local has_single_quotes = content_funcs.has_single_quotes
 local has_double_quotes = content_funcs.has_double_quotes
 local is_nonascii = content_funcs.is_nonascii
+local has_newlines = content_funcs.has_newlines
 
 local binary_entities_lengths =
   {
@@ -23,22 +24,27 @@ local binary_entities_lengths =
 return
   function(s)
     assert_string(s)
-    local quote_func
+
+    local quote_func = quote_escaped
+
     if binary_entities_lengths[#s] and is_nonascii(s) then
       quote_func = quote_dump
-    elseif has_control_chars(s) then
-      quote_func = quote_escaped
     elseif
       has_backslashes(s) or
+      has_newlines(s) or
       (
-        has_single_quotes(s) and
-        has_double_quotes(s)
+        has_single_quotes(s) and has_double_quotes(s)
       )
     then
       quote_func = quote_long
-    else
-      quote_func = quote_escaped
     end
+
     local result = quote_func(s)
     return result
   end
+
+--[[
+  2016-09
+  2017-08
+  2024-11
+]]
