@@ -1,3 +1,22 @@
+-- Quote string in long quotes
+
+-- Last mod.: 2024-11-19
+
+--[==[
+  Long quotes
+
+  Long quotes is multi-character quotes in Lua. String data inside them
+  are not processed. So no need to worry about quoting some "special"
+  characters.
+
+  That's all the same:
+
+    > s = [[
+    Hello!]]
+    > s = [[Hello!]]
+    > s = [=[Hello!]=]
+]==]
+
 local has_newlines = request('!.string.content_attributes').has_newlines
 
 return
@@ -22,15 +41,15 @@ return
     -- (2)
     local first_char = s:sub(1, 1)
     if
-      (first_char == '\x0d') or
-      (first_char == '\x0a')
+      (first_char == '\x0D') or
+      (first_char == '\x0A')
     then
       prefix = prefix .. first_char
     end
 
     -- (3)
     if has_newlines(s) then
-      prefix = prefix .. '\x0a'
+      prefix = prefix .. '\x0A'
     end
 
     return prefix .. s .. eq_chunk .. ']'
