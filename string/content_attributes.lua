@@ -23,6 +23,11 @@ local is_nonascii =
     return s:find('[^%w%s_%p]')
   end
 
+local has_newlines =
+  function(s)
+    return s:find('[\n\r]')
+  end
+
 return
   {
     has_control_chars = has_control_chars,
@@ -30,4 +35,12 @@ return
     has_single_quotes = has_single_quotes,
     has_double_quotes = has_double_quotes,
     is_nonascii = is_nonascii,
+    has_newlines = has_newlines,
   }
+
+--[[
+  2016-09
+  2017-02
+  2017-08
+  2024-11
+]]
