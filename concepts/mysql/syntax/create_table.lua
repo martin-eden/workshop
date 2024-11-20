@@ -1,3 +1,14 @@
+-- Parsing CREATE TABLE statements from MySQL
+
+--[[
+  It's frozen as practical exercise in reformulating documentation.
+  I'm fixing syntax errors.
+
+  2024-11-20
+]]
+
+-- Last mod.: 2024-11-20
+
 local handy = request('!.mechs.processor.handy')
 local opt = handy.opt
 local rep = handy.rep
@@ -28,7 +39,7 @@ local data_type =
           'int',
           'integer',
           'bigint'
-        )
+        ),
         opt('(', int, ')'),
         opt('unsigned'),
         opt('zerofill'),
@@ -38,7 +49,7 @@ local data_type =
           'real',
           'double',
           'float'
-        )
+        ),
         opt('(', int, ',', int, ')'),
         opt('unsigned'),
         opt('zerofill'),
@@ -47,7 +58,7 @@ local data_type =
         cho(
           'decimal',
           'numeric'
-        )
+        ),
         opt('(', int, opt(',', int, ')')),
         opt('unsigned'),
         opt('zerofill'),
@@ -66,7 +77,7 @@ local data_type =
         cho(
           'char',
           'varchar',
-          'text',
+          'text'
         ),
         opt('(', int, ')'),
         opt('character', 'set', name),
@@ -100,7 +111,7 @@ local data_type =
       'mediumblob',
       'longblob',
       'json',
-      spatial_type,
+      spatial_type
     ),
   }
 
@@ -111,7 +122,7 @@ local reference_option =
       'cascade',
       {'set', 'null'},
       {'no', 'action'},
-      {'set', 'default'},
+      {'set', 'default'}
     ),
   }
 
@@ -172,7 +183,7 @@ local index_option =
       {'key_block_size', opt_eq, value},
       index_type,
       {'with', 'parser', name},
-      {'comment', "'", str, "'"},
+      {'comment', "'", str, "'"}
     ),
   }
 
@@ -215,7 +226,7 @@ local create_definition =
       },
       {
         'check', '(', expression, ')',
-      },
+      }
     ),
   }
 
@@ -249,7 +260,7 @@ local table_option =
           'fixed',
           'compressed',
           'redundant',
-          'compact',
+          'compact'
         ),
       },
       {'stats_auto_recalc', opt_eq, cho('0', '1', 'default')},
@@ -257,7 +268,7 @@ local table_option =
       {'stats_sample_pages', opt_eq, value},
       {'tablespace', name, opt('storage', cho('disk', 'memory', 'default'))},
       {'stats_auto_recalc', opt_eq, cho('0', '1', 'default')},
-      {'union', opt_eq, '(', list(name, ','), ')'},
+      {'union', opt_eq, '(', list(name, ','), ')'}
     ),
   }
 
@@ -323,7 +334,7 @@ local partition_options =
       },
       {
         opt('linear'), 'key',
-        opt('algorithm', '=', cho('1', '2'))},
+        opt('algorithm', '=', cho('1', '2')),
         '(', list(field_name, ','), ')',
       },
       {
@@ -333,9 +344,9 @@ local partition_options =
           {
             'columns',
             '(', list(field_name, ','), ')',
-          },
+          }
         ),
-      },
+      }
     ),
     opt('partitions', int),
     opt(
@@ -347,11 +358,11 @@ local partition_options =
         },
         {
           opt('linear'), 'key',
-          opt('algorithm', '=', cho('1', '2'))},
+          opt('algorithm', '=', cho('1', '2')),
           '(', list(field_name, ','), ')',
-        },
+        }
       ),
-      opt('subpartitions', int),
+      opt('subpartitions', int)
     ),
     opt('(', list(partition_definition, ','), ')'),
   }
@@ -386,7 +397,7 @@ local create_like =
     common_prefix,
     cho(
       {'(', 'like', name, ')'},
-      {'like', name},
+      {'like', name}
     ),
   }
 
@@ -394,3 +405,7 @@ local result =
   cho(create_straight, create_query, create_like)
 
 return result
+
+--[[
+  2018-01
+]]
