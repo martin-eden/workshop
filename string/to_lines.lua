@@ -1,17 +1,24 @@
--- Convert string to table with sequence of lines
+-- Convert string to list of lines
 
---[[
-  Sequence of lines is useful if you want to add/remove lines
-  and pass it further to chain.
-]]
+-- Last mod.: 2024-11-20
 
--- Last mod.: 2024-02-29
-
+-- Imports:
 local LinesIterator = request('!.string.lines')
 
-return
+--[[
+  Explode string to list of lines.
+
+  For empty string '', we're returning empty table {}.
+  Not table with empty string {''}.
+]]
+local StringToLines =
   function(s)
     assert_string(s)
+
+    -- Special case: return "{}" for empty string
+    if (s == '') then
+      return {}
+    end
 
     local Result = {}
 
@@ -21,3 +28,12 @@ return
 
     return Result
   end
+
+-- Exports:
+return StringToLines
+
+--[[
+  2024-02
+  2024-03
+  2024-11
+]]
