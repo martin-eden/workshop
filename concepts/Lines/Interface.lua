@@ -2,7 +2,7 @@
 
 -- Last mod.: 2024-10-31
 
--- "Line" is a string with newline. "String" is a line with newline.
+-- "Line" is a string with newline. "String" is a line without newline.
 
 --[[
   This class is about storing list of lines.
