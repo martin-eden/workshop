@@ -1,6 +1,6 @@
--- Load image
+-- Load image from stream
 
--- Last mod.: 2024-11-04
+-- Last mod.: 2024-11-23
 
 -- Imports:
 local Parser_PpmToIs = request('Parser_PpmToIs.Interface')

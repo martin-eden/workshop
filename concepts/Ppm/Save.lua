@@ -1,6 +1,6 @@
--- Save image
+-- Save image to stream
 
--- Last mod.: 2024-11-04
+-- Last mod.: 2024-11-23
 
 -- Imports:
 local Compiler_LuaToIs = request('Compiler_LuaToIs.Interface')
