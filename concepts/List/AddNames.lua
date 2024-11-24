@@ -1,6 +1,6 @@
 -- Add names to list entries
 
--- Last mod.: 2024-11-23
+-- Last mod.: 2024-11-24
 
 -- Imports:
 local InvertTable = request('!.table.invert')
@@ -17,13 +17,22 @@ local InvertTable = request('!.table.invert')
 ]]
 local NameList =
   function(List, Names)
-    local NameKeys = InvertTable(Names)
+    local NamesKeys = InvertTable(Names)
 
     local Metatable = {}
 
     Metatable.__index =
       function(Table, Key)
-        return rawget(List, NameKeys[Key])
+        return rawget(List, NamesKeys[Key])
+      end
+
+    Metatable.__newindex =
+      function(Table, Key, Value)
+        if NamesKeys[Key] then
+          rawset(Table, NamesKeys[Key], Value)
+          return
+        end
+        rawset(Table, Key, Value)
       end
 
     setmetatable(List, Metatable)
@@ -34,4 +43,5 @@ return NameList
 
 --[[
   2024-11-23
+  2024-11-24
 ]]
