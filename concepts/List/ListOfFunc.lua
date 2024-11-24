@@ -3,7 +3,7 @@
 -- Last mod.: 2024-11-24
 
 -- Imports:
-local ApplyFunc = request('ApplyFunctionInPlace')
+local ApplyFunc = request('FuncToList')
 
 -- Exports:
 return
