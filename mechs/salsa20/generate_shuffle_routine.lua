@@ -1,14 +1,17 @@
 --[[
   Creates lua function that executes block shuffle.
 
-  I was upset with low performance of my [shuffle_block] in comparision
-  with [plc.salsa20].
+  I was upset with low performance of my [shuffle_block]
+  in comparison with [plc.salsa20].
 
   I do not like writing code with low entropy and low clarity
-  (like "f(1, 5, 9, 13) f(2, 6, 10, 14) ..."). So I wrote
-  function that generates such code, compiles it to function
-  and return.
+  (like "f(1, 5, 9, 13) f(2, 6, 10, 14) ...").
+
+  So I wrote function that generates such code,
+  compiles it to function and runs.
 ]]
+
+-- Last mod.: 2024-11-24
 
 local text_block = new(request('!.mechs.text_block.interface'))
 
@@ -131,3 +134,7 @@ return
 
     return result
   end
+
+--[[
+  2017-08
+]]
