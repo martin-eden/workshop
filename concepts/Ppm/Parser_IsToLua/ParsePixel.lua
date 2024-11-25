@@ -1,6 +1,9 @@
 -- Parse raw pixel data
 
--- Last mod.: 2024-11-03
+-- Last mod.: 2024-11-25
+
+-- Imports:
+local CreateColor = request('!.concepts.Image.Color.Spawner.Create')
 
 --[[
   Parses raw pixel data to custom Lua table.
@@ -19,12 +22,7 @@ local ParsePixel =
       return
     end
 
-    return
-      {
-        Red = Red,
-        Green = Green,
-        Blue = Blue,
-      }
+    return CreateColor({ Red, Green, Blue })
   end
 
 -- Exports:
@@ -32,4 +30,5 @@ return ParsePixel
 
 --[[
   2024-11-03
+  2024-11-25
 ]]
