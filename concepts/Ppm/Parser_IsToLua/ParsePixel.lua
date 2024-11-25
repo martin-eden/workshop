@@ -3,7 +3,7 @@
 -- Last mod.: 2024-11-25
 
 -- Imports:
-local CreateColor = request('!.concepts.Image.Color.Spawner.Create')
+local BaseColor = request('!.concepts.Image.Color.Interface')
 
 --[[
   Parses raw pixel data to custom Lua table.
@@ -22,7 +22,7 @@ local ParsePixel =
       return
     end
 
-    return CreateColor({ Red, Green, Blue })
+    return new(BaseColor, { Red, Green, Blue })
   end
 
 -- Exports:
