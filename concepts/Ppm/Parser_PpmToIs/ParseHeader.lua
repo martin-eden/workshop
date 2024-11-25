@@ -1,31 +1,35 @@
 -- Parse header from list to table
 
--- Last mod.: 2024-11-03
+-- Last mod.: 2024-11-25
 
 -- Imports:
--- Higher-level parser. We need it to parse header chunk
-local HigherParser = request('^.Parser_IsToLua.Interface')
+local IsNaturalNumber = request('!.number.is_natural')
 
 --[[
-  Semantics is out of scope of this class. We're grouping lexer.
+  Parse header in Itness format to Lua table
 
-  However.. However to group pixels data we need to know
-  how much pixels there are. We have header chunk. But we don't
-  know values in it. But higher-level parser can parse it for us.
-]]
+  Example:
 
---[[
-  Calling higher-level code pisses me. Alternative is to
-  split higher-level parser by separating header parsing.
-  But it uglyfies design in some other way.
+    { '60', '30', '255' } -> { Width = 60, Height = 30 }
 ]]
+local ParseHeader =
+  function(self, HeaderIs)
+    local WidthIs = HeaderIs[1]
+    local HeightIs = HeaderIs[2]
+
+    local Width = tonumber(WidthIs)
+    assert(IsNaturalNumber(Width))
+
+    local Height = tonumber(HeightIs)
+    assert(IsNaturalNumber(Height))
+
+    return { Width = Width, Height = Height }
+  end
 
 -- Exports:
-return
-  function(self, HeaderIs)
-    return HigherParser:ParseHeader(HeaderIs)
-  end
+return ParseHeader
 
 --[[
   2024-11-03
+  2024-11-25
 ]]

@@ -1,36 +1,30 @@
 -- Convert from .is to .ppm
 
--- Last mod.: 2024-11-06
+-- Last mod.: 2024-11-25
 
--- Exports:
-return
-  --[[
-    Gets list of strings/lists structure.
-    Writes to output in .ppm format.
+--[[
+  Gets list of strings/lists structure. Writes in .ppm format.
 
-    When failed returns false.
-  ]]
+  When failed returns false.
+]]
+local SerializePpm =
   function(self, PpmIs)
     local Label = self.Constants.FormatLabel
+    local HeaderIs = PpmIs[1]
+    local DataIs = PpmIs[2]
 
     self:WriteLabel(Label)
-
-    local HeaderIs = PpmIs[1]
     self:WriteHeader(HeaderIs)
-
-    local Header = self:ParseHeader(HeaderIs)
-
-    if not Header then
-      return false
-    end
-
-    local DataIs = PpmIs[2]
-    self:WriteData(DataIs, Header)
+    self:WriteData(DataIs)
 
     return true
   end
 
+-- Exports:
+return SerializePpm
+
 --[[
   2024-11-02
   2024-11-03
+  2024-11-25
 ]]

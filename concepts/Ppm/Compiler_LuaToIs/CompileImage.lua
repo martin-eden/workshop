@@ -5,31 +5,30 @@
 -- Exports:
 return
   function(self, Image)
-    local ColorIs = {}
+    local MatrixIs = {}
 
-    for RowIndex, Row in ipairs(Image.Lines) do
-      local RowIs = {}
+    for RowIndex, Row in ipairs(Image) do
+      MatrixIs[RowIndex] = {}
 
-      for ColumnIndex, Color in ipairs(Row.Colors) do
+      for ColumnIndex, Color in ipairs(Row) do
         if not Color then
           return
         end
 
-        local PixelIs = self:CompileColor(Color)
+        local ValueIs = self:CompileColor(Color)
 
-        if not PixelIs then
+        if not ValueIs then
           return
         end
 
-        table.insert(RowIs, PixelIs)
+        MatrixIs[RowIndex][ColumnIndex] = ValueIs
       end
-
-      table.insert(ColorIs, RowIs)
     end
 
-    return ColorIs
+    return MatrixIs
   end
 
 --[[
   2024-11-03
+  2024-11-25
 ]]

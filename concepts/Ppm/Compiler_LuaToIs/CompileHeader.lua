@@ -5,11 +5,11 @@
 -- Exports:
 return
   function(self, Image)
-    local ImageHeight = #Image.Lines
+    local ImageHeight = #Image
 
     local ImageWidth = 0
-    if Image.Lines[1] then
-      ImageWidth = #Image.Lines[1].Colors
+    if Image[1] then
+      ImageWidth = #Image[1]
     end
 
     local WidthIs = string.format(self.DimensionFmt, ImageWidth)

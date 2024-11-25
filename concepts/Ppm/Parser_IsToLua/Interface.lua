@@ -1,6 +1,6 @@
 -- Parse from anonymous structure to custom Lua format
 
--- Last mod.: 2024-11-06
+-- Last mod.: 2024-11-25
 
 -- Exports:
 return
@@ -12,9 +12,6 @@ return
 
     -- .ppm format constants
     Constants = request('^.Constants.Interface'),
-
-    -- Parse header from raw list data
-    ParseHeader = request('ParseHeader'),
 
     -- Parse raw pixels data
     ParsePixels = request('ParsePixels'),
