@@ -2,17 +2,15 @@
 
 -- Last mod.: 2024-11-25
 
-local BaseMatrix = request('Interface')
-
 --[[
   Stack line image N times
 ]]
 local StackLineImage =
   function(NumTimes, LineImage)
-    local Result = new(BaseMatrix)
+    local Result = {}
 
     for Index = 1, NumTimes do
-      Result.Lines[Index] = new(LineImage)
+      Result[Index] = new(LineImage)
     end
 
     return Result
