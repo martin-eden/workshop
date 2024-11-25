@@ -2,9 +2,14 @@
 
 -- Last mod.: 2024-11-25
 
+-- Imports:
+local DenormalizeColor = request('!.concepts.Image.Color.Denormalize')
+
 -- Exports:
 return
   function(self, Color)
+    DenormalizeColor(Color)
+
     local RedIs = self:CompileColorComponent(Color.Red)
     local GreenIs = self:CompileColorComponent(Color.Green)
     local BlueIs = self:CompileColorComponent(Color.Blue)
@@ -18,4 +23,5 @@ return
 
 --[[
   2024-11-03
+  2024-11-25
 ]]
