@@ -1,14 +1,14 @@
 -- Anonymize parsed .ppm
 
--- Last mod.: 2024-11-24
+-- Last mod.: 2024-11-25
 
 --[[
   Compile Lua table to anonymous structure
 ]]
 local Compile =
-  function(self, Ppm)
-    local HeaderIs = self:CompileHeader(Ppm)
-    local DataIs = self:CompileData(Ppm)
+  function(self, Image)
+    local HeaderIs = self:CompileHeader(Image)
+    local DataIs = self:CompileImage(Image)
 
     if not (HeaderIs and DataIs) then
       return

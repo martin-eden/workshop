@@ -1,6 +1,6 @@
 -- Compile named Lua table to anonymous structure (list of strings/lists)
 
--- Last mod.: 2024-11-06
+-- Last mod.: 2024-11-25
 
 -- Exports:
 return
@@ -24,11 +24,11 @@ return
     -- Compile header
     CompileHeader = request('CompileHeader'),
 
-    -- Compile data
-    CompileData = request('CompileData'),
+    -- Compile image data
+    CompileImage = request('CompileImage'),
 
-    -- Compile pixel
-    CompilePixel = request('CompilePixel'),
+    -- Compile color
+    CompileColor = request('CompileColor'),
 
     -- Serialize color component
     CompileColorComponent = request('CompileColorComponent'),
@@ -38,4 +38,5 @@ return
   2024-11-03
   2024-11-04
   2024-11-06
+  2024-11-25
 ]]
