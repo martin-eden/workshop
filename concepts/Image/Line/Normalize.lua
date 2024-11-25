@@ -3,7 +3,7 @@
 -- Last mod.: 2024-11-25
 
 -- Imports:
-local NormalizeColor = request('^.Color.NormalizeBytes')
+local NormalizeColor = request('^.Color.Normalize')
 local ApplyFunc = request('!.concepts.List.ApplyFunc')
 
 local Normalize =
