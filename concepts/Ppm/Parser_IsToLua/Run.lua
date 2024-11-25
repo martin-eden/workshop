@@ -1,5 +1,7 @@
 -- Gets structure as grouped strings. Returns table with nice names
 
+-- Last mod.: 2024-11-25
+
 --[[
   Custom Lua format
 
@@ -16,13 +18,18 @@
   is converted to
 
     {
-      Width = 1,
-      Height = 2,
-      Pixels =
+      -- aka .Lines
+      {
         {
-          { { Red = 0, Green = 128, Blue = 255 } },
-          { { Red = 128, Green = 255, Blue = 0 } },
-        }
+          -- aka .Colors
+          { 0, 128, 255 },
+          -- aka .Length
+          1
+        },
+        { { 128, 255, 0 }, 1 },
+      }
+      -- aka .NumLines
+      2,
     }
 
   On fail it returns nil.
@@ -38,8 +45,6 @@
       Here we're breaking standard by overnarrowing accepted
       values. Let it be so.
 ]]
-
--- Last mod.: 2024-11-06
 
 -- Exports:
 return
@@ -60,15 +65,11 @@ return
       return
     end
 
-    return
-      {
-        Width = Header.Width,
-        Height = Header.Height,
-        Pixels = Pixels,
-      }
+    return Pixels
   end
 
 --[[
   2024-11-02
   2024-11-03
+  2024-11-25
 ]]
