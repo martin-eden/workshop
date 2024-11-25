@@ -2,46 +2,32 @@
 
 -- Last mod.: 2024-11-25
 
--- Imports:
-local BaseMatrix = request('!.concepts.Image.Matrix.Interface')
-local BaseImageLine = request('!.concepts.Image.Line.Interface')
-
---[[
+--[=[
   Parse raw pixels data.
 
   { { { '0', '128', '255' } } } ->
 
-  -- aka .Lines
-  {
-    -- aka .Colors
-    {
-      -- aka .Red, .Green, .Blue
-      { 0, 128, 255 }
-    }
-  }
-]]
+  { { { 0, 128, 255 --[[ aka .Red, .Green, .Blue ]] } } }
+]=]
 local ParsePixels =
-  function(self, DataIs, Header)
-    local Result = new(BaseMatrix)
+  function(self, DataIs)
+    local Matrix = {}
 
-    for Row = 1, Header.Height do
-      local PixelsRow = new(BaseImageLine)
+    for RowIndex, Row in ipairs(DataIs) do
+      Matrix[RowIndex] = {}
 
-      for Column = 1, Header.Width do
-        local PixelIs = DataIs[Row][Column]
+      for ColumnIndex, PixelIs in ipairs(Row) do
         local Pixel = self:ParsePixel(PixelIs)
 
         if not Pixel then
           return
         end
 
-        PixelsRow.Colors[Column] = Pixel
+        Matrix[RowIndex][ColumnIndex] = Pixel
       end
-
-      Result.Lines[Row] = PixelsRow
     end
 
-    return Result
+    return Matrix
   end
 
 -- Exports:

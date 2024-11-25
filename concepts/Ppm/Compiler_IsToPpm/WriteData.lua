@@ -7,17 +7,20 @@ local ListToString = request('!.concepts.List.ToString')
 
 -- Exports:
 return
-  function(self, DataIs, Header)
+  function(self, DataIs)
+    local Height = #DataIs
+    local Width = #DataIs[1]
+
     local ChunkSize = self.NumColumns
     local ColumnsDelim = self.ColumnsDelimiter
     local LinesDelim = self.LinesDelimiter
 
     self:WriteLine(LinesDelim)
 
-    for Row = 1, Header.Height do
+    for Row = 1, Height do
       local Chunks = {}
 
-      for Column = 1, Header.Width do
+      for Column = 1, Width do
         local PixelIs = DataIs[Row][Column]
         local PixelStr = self:CompilePixel(PixelIs)
 
@@ -32,7 +35,7 @@ return
       end
 
       -- Write remained chunk
-      if (Header.Width % ChunkSize ~= 0) then
+      if (Width % ChunkSize ~= 0) then
         local ChunksStr = ListToString(Chunks, ColumnsDelim)
         self:WriteLine(ChunksStr)
       end

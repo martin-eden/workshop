@@ -1,6 +1,6 @@
 -- Serialize to pixmap format
 
--- Last mod.: 2024-11-06
+-- Last mod.: 2024-11-25
 
 -- Exports:
 return
@@ -38,9 +38,6 @@ return
 
     -- Write label
     WriteLabel = request('WriteLabel'),
-
-    -- Parse header
-    ParseHeader = request('ParseHeader'),
 
     -- Write header
     WriteHeader = request('WriteHeader'),
