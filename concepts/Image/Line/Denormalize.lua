@@ -8,7 +8,7 @@ local ApplyFunc = request('!.concepts.List.ApplyFunc')
 
 local Denormalize =
   function(Line)
-    return ApplyFunc(DenormalizeColor, Line.Colors)
+    return ApplyFunc(DenormalizeColor, Line)
   end
 
 -- Exports:

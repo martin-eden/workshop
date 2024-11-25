@@ -3,12 +3,12 @@
 -- Last mod.: 2024-11-25
 
 -- Imports:
-local DenormalizeLine = request('^.1-d image.Denormalize')
+local DenormalizeLine = request('^.Line.Denormalize')
 local ApplyFunc = request('!.concepts.List.ApplyFunc')
 
 local Denormalize =
   function(Image)
-    return ApplyFunc(DenormalizeLine, Image.Lines)
+    return ApplyFunc(DenormalizeLine, Image)
   end
 
 -- Exports:
