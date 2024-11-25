@@ -1,6 +1,6 @@
 -- Add names to list entries
 
--- Last mod.: 2024-11-24
+-- Last mod.: 2024-11-25
 
 -- Imports:
 local InvertTable = request('!.table.invert')
@@ -23,7 +23,7 @@ local NameList =
 
     Metatable.__index =
       function(Table, Key)
-        return rawget(List, NamesKeys[Key])
+        return rawget(Table, NamesKeys[Key])
       end
 
     Metatable.__newindex =
