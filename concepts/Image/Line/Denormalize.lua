@@ -3,7 +3,7 @@
 -- Last mod.: 2024-11-25
 
 -- Imports:
-local DenormalizeColor = request('^.Color.DenormalizeToBytes')
+local DenormalizeColor = request('^.Color.Denormalize')
 local ApplyFunc = request('!.concepts.List.ApplyFunc')
 
 local Denormalize =
