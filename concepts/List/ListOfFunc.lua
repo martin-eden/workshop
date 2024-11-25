@@ -1,6 +1,6 @@
--- Apply function to each element in list. Return new list
+-- Apply function to each element in list. Returns new list
 
--- Last mod.: 2024-11-24
+-- Last mod.: 2024-11-25
 
 -- Imports:
 local ApplyFunc = request('ApplyFunc')
@@ -8,11 +8,7 @@ local ApplyFunc = request('ApplyFunc')
 -- Exports:
 return
   function(Func, List)
-    local Result = new(List)
-
-    ApplyFunc(Func, Result)
-
-    return Result
+    return ApplyFunc(Func, new(List))
   end
 
 --[[
