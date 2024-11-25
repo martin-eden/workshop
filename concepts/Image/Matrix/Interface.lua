@@ -10,14 +10,17 @@
 
 -- Last mod.: 2024-11-25
 
+-- Imports:
+local NameList = request('!.concepts.List.AddNames')
+
+local Matrix = { {}, 0, }
+
+local Names = { 'Lines', 'NumLines' }
+
+NameList(Matrix, Names)
+
 -- Exports:
-return
-  {
-    -- Lines
-    {},
-    -- NumLines
-    0,
-  }
+return Matrix
 
 --[[
   2024-11-24
