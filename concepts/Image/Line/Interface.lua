@@ -5,9 +5,9 @@
 -- Imports:
 local NameList = request('!.concepts.List.AddNames')
 
-local ImageLine = { {}, 0 }
+local ImageLine = { {} }
 
-local Names = { 'Colors', 'Length' }
+local Names = { 'Colors' }
 
 NameList(ImageLine, Names)
 
