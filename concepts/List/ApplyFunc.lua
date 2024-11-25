@@ -1,11 +1,11 @@
--- Modify list by applying function to each element
+-- Modify list by applying function to each element. Returns list
 
 --[[
   Here we're breaking functional paradigm "result of function is new
   value". We're modifying argument. It's practical.
 ]]
 
--- Last mod.: 2024-11-24
+-- Last mod.: 2024-11-25
 
 -- Exports:
 return
@@ -16,6 +16,8 @@ return
     for Index = 1, #List do
       List[Index] = Func(List[Index])
     end
+
+    return List
   end
 
 --[[
