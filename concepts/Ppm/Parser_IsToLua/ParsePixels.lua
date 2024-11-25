@@ -38,12 +38,8 @@ local ParsePixels =
         PixelsRow.Colors[Column] = Pixel
       end
 
-      PixelsRow.Length = Header.Width
-
       Result.Lines[Row] = PixelsRow
     end
-
-    Result.NumLines = #Result.Lines
 
     return Result
   end
