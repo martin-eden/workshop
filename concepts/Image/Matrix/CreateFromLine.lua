@@ -15,8 +15,6 @@ local StackLineImage =
       Result.Lines[Index] = new(LineImage)
     end
 
-    Result.NumLines = NumTimes
-
     return Result
   end
 

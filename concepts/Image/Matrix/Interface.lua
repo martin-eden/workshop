@@ -13,9 +13,9 @@
 -- Imports:
 local NameList = request('!.concepts.List.AddNames')
 
-local Matrix = { {}, 0, }
+local Matrix = { {} }
 
-local Names = { 'Lines', 'NumLines' }
+local Names = { 'Lines' }
 
 NameList(Matrix, Names)
 
