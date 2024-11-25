@@ -3,8 +3,8 @@
 -- Last mod.: 2024-11-25
 
 -- Imports:
-local CreateMatrix = request('!.concepts.Image.Matrix.Spawner.Create')
-local CreateLine = request('!.concepts.Image.Line.Spawner.Create')
+local BaseMatrix = request('!.concepts.Image.Matrix.Interface')
+local BaseImageLine = request('!.concepts.Image.Line.Interface')
 
 --[[
   Parse raw pixels data.
@@ -22,10 +22,10 @@ local CreateLine = request('!.concepts.Image.Line.Spawner.Create')
 ]]
 local ParsePixels =
   function(self, DataIs, Header)
-    local Result = CreateMatrix()
+    local Result = new(BaseMatrix)
 
     for Row = 1, Header.Height do
-      local PixelsRow = CreateLine()
+      local PixelsRow = new(BaseImageLine)
 
       for Column = 1, Header.Width do
         local PixelIs = DataIs[Row][Column]
