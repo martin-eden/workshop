@@ -8,7 +8,7 @@
   get dependencies list for any module. Which is used to create
   deploys without unused code.
 
-  Price for tracking dependencies  is global table "dependencies"
+  Price for tracking dependencies is global table "dependencies"
   and function "get_require_name".
 
   Lastly, global functions are added for convenience. Such functions
