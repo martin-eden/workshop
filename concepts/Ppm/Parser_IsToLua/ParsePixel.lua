@@ -24,6 +24,7 @@ local ParsePixel =
     end
 
     local Color = new(BaseColor, { Red, Green, Blue })
+
     NormalizeColor(Color)
 
     return Color
