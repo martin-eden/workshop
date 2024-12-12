@@ -1,10 +1,10 @@
 -- Distance noise calculation
 
--- Last mod.: 2024-11-30
+-- Last mod.: 2024-12-12
 
 -- Imports:
 local Clamp = request('!.number.constrain')
-local SymmetricRandom = request('!.number.symmetric_random')
+local SymmetricRandom = request('!.number.float.symmetric_random')
 
 -- Noise function [0.0, 1.0] -> [-1.0, 1.0]
 local MakeDistanceNoise =
