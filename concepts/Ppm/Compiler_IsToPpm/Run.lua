@@ -1,6 +1,6 @@
 -- Convert from .is to .ppm
 
--- Last mod.: 2024-11-25
+-- Last mod.: 2024-12-12
 
 --[[
   Gets list of strings/lists structure. Writes in .ppm format.
@@ -9,13 +9,9 @@
 ]]
 local SerializePpm =
   function(self, PpmIs)
-    local Label = self.Constants.FormatLabel
-    local HeaderIs = PpmIs[1]
-    local DataIs = PpmIs[2]
-
-    self:WriteLabel(Label)
-    self:WriteHeader(HeaderIs)
-    self:WriteData(DataIs)
+    self:WriteLabel()
+    self:WriteHeader(PpmIs)
+    self:WriteData(PpmIs)
 
     return true
   end
@@ -27,4 +23,5 @@ return SerializePpm
   2024-11-02
   2024-11-03
   2024-11-25
+  2024-12-12
 ]]

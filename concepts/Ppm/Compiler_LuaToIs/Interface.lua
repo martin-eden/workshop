@@ -1,6 +1,6 @@
 -- Compile named Lua table to anonymous structure (list of strings/lists)
 
--- Last mod.: 2024-11-25
+-- Last mod.: 2024-12-12
 
 -- Exports:
 return
@@ -10,9 +10,6 @@ return
 
     -- [Config]
 
-    -- Dimension (width and height) serialization format
-    DimensionFmt = '%d',
-
     -- Color component serialization format
     ColorComponentFmt = '%03d',
 
@@ -20,9 +17,6 @@ return
 
     -- Format constants
     Constants = request('^.Constants.Interface'),
-
-    -- Compile header
-    CompileHeader = request('CompileHeader'),
 
     -- Compile image data
     CompileImage = request('CompileImage'),
@@ -39,4 +33,5 @@ return
   2024-11-04
   2024-11-06
   2024-11-25
+  2024-12-12
 ]]
