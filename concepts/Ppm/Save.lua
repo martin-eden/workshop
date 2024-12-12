@@ -1,6 +1,6 @@
 -- Save image to stream
 
--- Last mod.: 2024-11-23
+-- Last mod.: 2024-12-12
 
 -- Imports:
 local Compiler_LuaToIs = request('Compiler_LuaToIs.Interface')
@@ -12,7 +12,7 @@ return
     local ImageIs = Compiler_LuaToIs:Run(Image)
 
     if not ImageIs then
-      return
+      return false
     end
 
     Compiler_IsToPpm.Output = self.Output
@@ -20,7 +20,7 @@ return
     local IsOkay = Compiler_IsToPpm:Run(ImageIs)
 
     if not IsOkay then
-      return
+      return false
     end
 
     return true
