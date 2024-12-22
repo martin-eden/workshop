@@ -1,6 +1,6 @@
 -- Apply patch to table
 
--- Last mod.: 2024-11-11
+-- Last mod.: 2024-12-22
 
 --[[
   Basically it means that we're writing every entity from patch table to
@@ -39,6 +39,11 @@ local Patch
 Patch =
   function(MainTable, PatchTable, IfDifferentTypesOnly)
     assert_table(MainTable)
+
+    if is_nil(PatchTable) then
+      return
+    end
+
     assert_table(PatchTable)
 
     for PatchKey, PatchValue in pairs(PatchTable) do
