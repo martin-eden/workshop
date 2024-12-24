@@ -1,10 +1,9 @@
 -- Open UART device by name
 
--- Last mod.: 2024-11-11
+-- Last mod.: 2024-12-24
 
 local Config =
   {
-    Speed_Bps = 57600,
     ReadTimeout_Sec = 0.1,
     WarmupDelay_Sec = 3.5,
   }
@@ -32,6 +31,7 @@ local SleepSec = request('!.system.sleep')
 local Open =
   function(self, PortName, Speed_Bps)
     assert_string(PortName)
+    assert_integer(Speed_Bps)
 
     if not FileExists(PortName) then
       error(string.format("Can't see device '%s'.", PortName))
@@ -44,8 +44,6 @@ local Open =
     end
 
     self.OriginalPortParams = GetPortParams(PortName)
-
-    local Speed_Bps = Speed_Bps or Config.Speed_Bps
 
     SetNonBlockingRead(PortName, Config.ReadTimeout_Sec, Speed_Bps)
 
@@ -67,4 +65,5 @@ return Open
 --[[
   2024-09-18
   2024-10-24 setvbuf('no')
+  2024-12-24 no default speed
 ]]
