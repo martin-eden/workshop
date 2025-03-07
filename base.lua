@@ -110,6 +110,11 @@ local get_require_name =
     return prefix .. name, prefix, name
   end
 
+local table_pack =
+  function(...)
+    return {n = select('#', ...), ...}
+  end
+
 local request =
   function(qualified_name)
     local src_name = get_caller_name()
@@ -119,7 +124,7 @@ local request =
     push(prefix, name)
     local dest_name = get_caller_name()
     add_dependency(src_name, dest_name)
-    local results = table.pack(require(require_name))
+    local results = table_pack(require(require_name))
     pop()
 
     return table.unpack(results)
@@ -131,6 +136,7 @@ if IsFirstRun then
   _G.request = request
   _G.dependencies = dependencies
   _G.get_require_name = get_require_name
+  _G.table.pack = table_pack
 
   --[[
     At this point we installed "request()", so it's usable from
