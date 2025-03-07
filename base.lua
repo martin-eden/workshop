@@ -137,6 +137,7 @@ if IsFirstRun then
   _G.dependencies = dependencies
   _G.get_require_name = get_require_name
   _G.table.pack = table_pack
+  _G.table.unpack = _G.unpack
 
   --[[
     At this point we installed "request()", so it's usable from
