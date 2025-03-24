@@ -5,5 +5,5 @@ return
       return 0
     end
 
-    return utf8.len(self.indent) + self:get_text_length()
+    return string.len(self.indent) + self:get_text_length()
   end
