@@ -1,6 +1,6 @@
 -- Get next item
 
--- Last mod.: 2024-11-04
+-- Last mod.: 2025-03-27
 
 local IsSpace =
   function(Char)
@@ -55,8 +55,6 @@ local GetNextItem =
       if not IsDelimiter(Char) then
         break
       end
-
-      PrevChar = Char
     end
 
     -- Check for line comment
@@ -91,4 +89,5 @@ return GetNextItem
 
 --[[
   2024-11-02
+  2025-03-27
 ]]
