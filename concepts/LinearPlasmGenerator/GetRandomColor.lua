@@ -1,9 +1,8 @@
 -- Return random color
 
--- Last mod.: 2024-11-25
+-- Last mod.: 2025-03-28
 
 -- Imports:
-local BaseColor = request('!.concepts.Image.Color.Interface')
 local Random = math.random
 local ApplyFunc = request('!.concepts.List.ApplyFunc')
 
@@ -18,7 +17,7 @@ local GetRandom_Ui =
 
 local CreateRandomColor =
   function(self)
-    local Result = new(BaseColor)
+    local Result = new(self.BaseColor)
 
     ApplyFunc(GetRandom_Ui, Result)
 
