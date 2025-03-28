@@ -3,7 +3,7 @@
 -- Last mod.: 2024-11-25
 
 -- Imports:
-local BaseColor = request('!.concepts.Image.Color.Interface')
+local BaseColor = request('!.concepts.Image.Color.Rgb')
 local NormalizeColor = request('!.concepts.Image.Color.Normalize')
 
 --[=[
