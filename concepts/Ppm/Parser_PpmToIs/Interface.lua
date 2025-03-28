@@ -9,6 +9,8 @@ return
     -- Input stream
     Input = request('!.concepts.StreamIo.Input'),
 
+    NumColorComponents = 3,
+
     -- [Main]
     -- Load pixmap to itness format
     Run = request('Run'),
