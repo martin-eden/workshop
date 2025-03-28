@@ -1,9 +1,10 @@
 -- Parse color component value
 
--- Last mod.: 2024-11-06
+-- Last mod.: 2025-03-28
 
 -- Imports:
 local NumberInRange = request('!.number.in_range')
+local MaxColorValue = request('^.Constants.Interface').MaxColorValue
 
 --[[
   Parse color component value from string to integer.
@@ -14,8 +15,6 @@ local NumberInRange = request('!.number.in_range')
 ]]
 local ParseColorComponent =
   function(self, Value)
-    local MaxColorValue = self.Constants.MaxColorValue
-
     Value = tonumber(Value)
 
     if not is_integer(Value) then
@@ -34,4 +33,5 @@ return ParseColorComponent
 
 --[[
   2024-11-03
+  2025-03-28
 ]]

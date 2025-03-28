@@ -13,9 +13,6 @@ return
 
     -- [Internal]
 
-    -- .ppm format constants
-    Constants = request('^.Constants.Interface'),
-
     -- Parse raw pixels data
     ParsePixels = request('ParsePixels'),
 
