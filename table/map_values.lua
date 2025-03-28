@@ -3,11 +3,10 @@
 --[[
   Useful when you want to check presence and have list.
 
-    { 'A', 'A', a = 'A', b = 'A'} ->
-    { [1] = true, [2] = true, A = true }
+    { 'A', _ = 'a'} -> { A = true, a = true }
 ]]
 
--- Last mod.: 2024-10-20
+-- Last mod.: 2025-03-28
 
 return
   function(t)
@@ -25,4 +24,5 @@ return
 --[[
   2016-09-06
   2024-10-20
+  2025-03-28
 ]]
