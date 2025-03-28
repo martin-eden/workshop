@@ -1,6 +1,6 @@
 -- Read in .ppm format. Return structure in itness format (grouped strings)
 
--- Last mod.: 2024-11-06
+-- Last mod.: 2025-03-28
 
 --[[
   Normally it returns Lua list with strings and lists.
@@ -9,8 +9,7 @@
 
   Fail conditions:
 
-    * There are less values than required for (width x height x 3)
-      matrix
+    * Not enough data
 
   .ppm format allows line comments "# blah blah\n". They are lost.
 
@@ -31,6 +30,15 @@
       }
 ]]
 
+-- Imports:
+local IsValidLabel = request('^.Constants.Interface').IsValidLabel
+
+local Init =
+  function(self)
+    self.ItemGetter.Input = self.Input
+    ItemGetter:Init()
+  end
+
 --[[
   Convert from pixmap to itness
 
@@ -40,7 +48,7 @@ local Parse =
   function(self)
     local Label = self:GetNextItem()
 
-    if not self.Constants:IsValidLabel(Label) then
+    if not IsValidLabel(Label) then
       return
     end
 
@@ -67,10 +75,16 @@ local Parse =
   end
 
 -- Exports:
-return Parse
+return
+  function(self)
+    Init(self)
+
+    return Parse(self)
+  end
 
 --[[
   2024-11-02
   2024-11-03
   2024-11-05
+  2025-03-28
 ]]
