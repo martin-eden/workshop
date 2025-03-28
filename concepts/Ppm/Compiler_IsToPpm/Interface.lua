@@ -1,6 +1,6 @@
 -- Serialize to pixmap format
 
--- Last mod.: 2024-11-25
+-- Last mod.: 2025-03-28
 
 -- Exports:
 return
@@ -28,9 +28,6 @@ return
     -- Number of serialized pixels per line of output
     NumColumns = 4,
 
-    -- Pixel serialization format
-    PixelFmt = '%3s %3s %3s',
-
     -- [Internal]
 
     -- .ppm format constants
@@ -55,4 +52,5 @@ return
 --[[
   2024-11-02
   2024-11-03
+  2025-03-28
 ]]
