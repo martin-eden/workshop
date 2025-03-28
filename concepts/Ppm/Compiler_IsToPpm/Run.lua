@@ -1,11 +1,12 @@
 -- Convert from .is to .ppm
 
--- Last mod.: 2024-12-12
+-- Last mod.: 2025-03-28
 
 --[[
-  Gets list of strings/lists structure. Writes in .ppm format.
+  Receives list of strings/lists structure.
+  Writes to <.Output> in .ppm format.
 
-  When failed returns false.
+  Contract obliges us to return true at end.
 ]]
 local SerializePpm =
   function(self, PpmIs)
