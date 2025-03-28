@@ -1,9 +1,8 @@
 -- Calculate midway pixel with noise
 
--- Last mod.: 2024-11-30
+-- Last mod.: 2025-03-28
 
 -- Imports:
-local BaseColor = request('!.concepts.Image.Color.Interface')
 local GetGap = request('!.number.integer.get_gap')
 local GetMiddleInt = request('!.number.integer.get_middle')
 local GetMiddleFloat = request('!.number.float.get_middle')
@@ -40,7 +39,7 @@ local CalculateMidwayPixel =
     local Index = GetMiddleInt(LeftPixel.Index, RightPixel.Index)
 
     -- Calculate color components
-    local Color = new(BaseColor)
+    local Color = new(self.BaseColor)
 
     for Index in ipairs(Color) do
       local Noise = self:MakeDistanceNoise(Distance)
