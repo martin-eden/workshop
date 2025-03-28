@@ -5,7 +5,7 @@
 -- Exports:
 return
   function(self, PixelIs)
-    return string.concat(PixelIs, ' ')
+    return table.concat(PixelIs, ' ')
   end
 
 --[[
