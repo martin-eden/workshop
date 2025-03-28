@@ -30,9 +30,6 @@ return
 
     -- [Internal]
 
-    -- .ppm format constants
-    Constants = request('^.Constants.Interface'),
-
     -- Write label
     WriteLabel = request('WriteLabel'),
 

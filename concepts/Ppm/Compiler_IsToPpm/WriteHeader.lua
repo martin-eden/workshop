@@ -1,13 +1,15 @@
 -- Write header to output
 
--- Last mod.: 2024-12-12
+-- Last mod.: 2025-03-28
+
+-- Imports:
+local MaxColorValue = request('^.Constants.Interface').MaxColorValue
 
 -- Exports
 return
   function(self, DataIs)
     local Height = #DataIs
     local Width = #DataIs[1]
-    local MaxColorValue = self.Constants.MaxColorValue
 
     self:WriteLine(
       string.format(
@@ -22,4 +24,5 @@ return
 --[[
   2024-11-03
   2024-12-12
+  2025-03-28
 ]]
