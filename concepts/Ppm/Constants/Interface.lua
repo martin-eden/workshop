@@ -1,12 +1,15 @@
 -- Format constants
 
--- Last mod.: 2024-11-02
+-- Last mod.: 2025-03-28
 
 -- Exports:
 return
   {
     -- Format label
     FormatLabel = 'P3',
+
+    -- Line comment character
+    LineCommentChar = '#',
 
     --[[
        Max color component value
