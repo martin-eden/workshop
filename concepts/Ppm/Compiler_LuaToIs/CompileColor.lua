@@ -1,6 +1,6 @@
 -- Anonymize color to list
 
--- Last mod.: 2024-12-12
+-- Last mod.: 2025-03-28
 
 -- Imports:
 local DenormalizeColor = request('!.concepts.Image.Color.Denormalize')
@@ -8,21 +8,28 @@ local DenormalizeColor = request('!.concepts.Image.Color.Denormalize')
 -- Exports:
 return
   function(self, Color)
-    DenormalizeColor(Color)
+    local ByteColor = new(Color)
 
-    local RedIs = self:CompileColorComponent(Color[1])
-    local GreenIs = self:CompileColorComponent(Color[2])
-    local BlueIs = self:CompileColorComponent(Color[3])
+    DenormalizeColor(ByteColor)
 
-    if not (RedIs and GreenIs and BlueIs) then
-      return
+    local Result = {}
+
+    for _, Component in ipairs(ByteColor) do
+      local SerializedComponent = self:CompileColorComponent(Component)
+
+      if not SerializedComponent then
+        return
+      end
+
+      table.insert(Result, SerializedComponent)
     end
 
-    return { RedIs, GreenIs, BlueIs }
+    return Result
   end
 
 --[[
   2024-11-03
   2024-11-25
-  2021-12-12
+  2024-12-12
+  2025-03-28
 ]]

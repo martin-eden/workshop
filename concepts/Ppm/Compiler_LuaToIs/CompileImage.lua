@@ -1,6 +1,6 @@
 -- Compile pixels to anonymous structure
 
--- Last mod.: 2024-11-25
+-- Last mod.: 2025-03-28
 
 -- Exports:
 return
@@ -11,10 +11,6 @@ return
       MatrixIs[RowIndex] = {}
 
       for ColumnIndex, Color in ipairs(Row) do
-        if not Color then
-          return
-        end
-
         local ValueIs = self:CompileColor(Color)
 
         if not ValueIs then
@@ -31,4 +27,5 @@ return
 --[[
   2024-11-03
   2024-11-25
+  2025-03-28
 ]]

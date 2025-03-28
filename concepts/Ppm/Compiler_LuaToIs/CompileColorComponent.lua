@@ -9,8 +9,6 @@ local NumberInRange = request('!.number.in_range')
 -- Exports:
 return
   function(self, ColorComponent)
-    local FormatStr = self.ColorComponentFmt
-
     if not is_integer(ColorComponent) then
       return
     end
@@ -19,7 +17,7 @@ return
       return
     end
 
-    return string.format(FormatStr, ColorComponent)
+    return string.format(self.ColorComponentFmt, ColorComponent)
   end
 
 --[[
