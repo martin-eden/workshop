@@ -1,29 +1,33 @@
 -- Parse raw pixel data
 
--- Last mod.: 2024-11-25
+-- Last mod.: 2025-03-28
 
 -- Imports:
-local BaseColor = request('!.concepts.Image.Color.Rgb')
 local NormalizeColor = request('!.concepts.Image.Color.Normalize')
 
 --[=[
-  Parses raw pixel data to annotated list
+  Parses raw pixel data to color record:
 
-  { '0', '128', '255' } -> { 0, 128, 255 --[[ aka .Red, .Green, .Blue ]] }
+    { '0', '128', '255' } -> { 0, 128, 255 }
+
+  Note that number of color components is not fixed to three.
+  We should work fine with one-component (grayscale) colors.
 
   In case of problems returns nil.
 ]=]
 local ParsePixel =
   function(self, PixelIs)
-    local Red = self:ParseColorComponent(PixelIs[1])
-    local Green = self:ParseColorComponent(PixelIs[2])
-    local Blue = self:ParseColorComponent(PixelIs[3])
+    local Color = new(self.BaseColor)
 
-    if not (Red and Green and Blue) then
-      return
+    for Index, ValueIs in ipairs(PixelIs) do
+      local ComponentValue = self:ParseColorComponent(ValueIs)
+
+      if not ComponentValue then
+        return
+      end
+
+      Color[Index] = ComponentValue
     end
-
-    local Color = new(BaseColor, { Red, Green, Blue })
 
     NormalizeColor(Color)
 
@@ -36,4 +40,5 @@ return ParsePixel
 --[[
   2024-11-03
   2024-11-25
+  2025-03-28
 ]]
