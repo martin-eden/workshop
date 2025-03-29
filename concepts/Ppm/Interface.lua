@@ -1,27 +1,43 @@
 -- Encode/decode .ppm file to Lua table
 
--- Last mod.: 2024-11-06
+-- Last mod.: 2025-03-29
+
+local ColorFormats =
+  {
+    Bw = 'bw',
+    Grayscale = 'grayscale',
+    Rgb = 'rgb',
+  }
+
+local DataEncodings =
+  {
+    Binary = 'binary',
+    Text = 'text',
+  }
 
 -- Exports:
 return
   {
     -- [Config]
+    ColorFormat = ColorFormats.Rgb,
+    DataEncoding = DataEncodings.Text,
 
-    -- Input stream
     Input = request('!.concepts.StreamIo.Input'),
-
-    -- Output stream
     Output = request('!.concepts.StreamIo.Output'),
 
     -- [Main]
-
-    -- Load image from stream
     Load = request('Load'),
-
-    -- Save image to stream
     Save = request('Save'),
+
+    -- [Internals]
+    -- ( Discoverability
+    ColorFormats = ColorFormats,
+    DataEncodings = DataEncodings,
+    -- )
+
   }
 
 --[[
   2024-11-04
+  2025-03-29
 ]]
