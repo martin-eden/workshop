@@ -1,20 +1,33 @@
 -- Anonymize parsed .ppm
 
--- Last mod.: 2024-12-12
+-- Last mod.: 2025-03-29
 
 --[[
-  Compile Lua table to anonymous structure
+  Compile Lua table with pixels to anonymous structure
 ]]
-local Compile =
+return
   function(self, Image)
-    return self:CompileImage(Image)
+    local MatrixIs = {}
+
+    for RowIndex, Row in ipairs(Image) do
+      MatrixIs[RowIndex] = {}
+
+      for ColumnIndex, Color in ipairs(Row) do
+        local ValueIs = self:CompileColor(Color)
+
+        if not ValueIs then
+          return
+        end
+
+        MatrixIs[RowIndex][ColumnIndex] = ValueIs
+      end
+    end
+
+    return MatrixIs
   end
 
--- Exports:
-return Compile
-
 --[[
-  2024-11-03
-  2024-11-06
+  2024-11 # # #
   2024-12-12
+  2025-03-29
 ]]

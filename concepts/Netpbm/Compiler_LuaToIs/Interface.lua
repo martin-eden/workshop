@@ -5,18 +5,17 @@
 -- Exports:
 return
   {
-    -- Main: Convert table with .ppm to anonymous tree
-    Run = request('Run'),
-
     -- [Config]
 
     -- Color component serialization format
     ColorComponentFmt = '%03d',
 
-    -- [Internal]
+    -- [Main]
 
-    -- Compile image data
-    CompileImage = request('CompileImage'),
+    -- Convert table with image to anonymous tree
+    Run = request('Run'),
+
+    -- [Internals]
 
     -- Compile color
     CompileColor = request('CompileColor'),
