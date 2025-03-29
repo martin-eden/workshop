@@ -81,7 +81,7 @@ Patch =
       if DoPatch then
         -- Recursive call when we're writing table to table
         if is_table(MainValue) and is_table(PatchValue) then
-          Patch(MainValue, PatchValue)
+          Patch(MainValue, PatchValue, IfDifferentTypesOnly)
         -- Else just overwrite value
         else
           MainTable[PatchKey] = PatchValue
@@ -97,4 +97,5 @@ return Patch
   2016-09
   2024-02
   2024-11
+  2025-03-29
 ]]
