@@ -1,12 +1,18 @@
 -- Apply patch to table
 
--- Last mod.: 2024-12-22
+-- Last mod.: 2025-03-29
 
 --[[
+  In-place table modification
+
   Basically it means that we're writing every entity from patch table to
   destination table.
 
-  If no key in destination table, we'll explode.
+  Function returns nothing but may explode.
+
+  If there is no key in destination table, we'll explode:
+
+    ( { a = 'a'}, { a = 'a', b = 'b' } ) -> BOOM
 
   Additional third parameter means that we're not overwriting
   entity in destination table if it's value type is same as
@@ -33,6 +39,10 @@
 
       ({ b = { bb = 'BB' } }, { b = { bb = '_BB' } }, false) ->
       { b = { bb = '_BB' } }
+
+  See also:
+
+    table.merge
 ]]
 
 local Patch
@@ -71,7 +81,7 @@ Patch =
       if DoPatch then
         -- Recursive call when we're writing table to table
         if is_table(MainValue) and is_table(PatchValue) then
-          Patch(MainValue, PatchValue)
+          Patch(MainValue, PatchValue, IfDifferentTypesOnly)
         -- Else just overwrite value
         else
           MainTable[PatchKey] = PatchValue
@@ -87,4 +97,5 @@ return Patch
   2016-09
   2024-02
   2024-11
+  2025-03-29
 ]]
