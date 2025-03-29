@@ -1,10 +1,10 @@
 -- Save image to stream
 
--- Last mod.: 2024-12-12
+-- Last mod.: 2025-03-29
 
 -- Imports:
 local Compiler_LuaToIs = request('Compiler_LuaToIs.Interface')
-local Compiler_IsToPpm = request('Compiler_IsToPpm.Interface')
+local Compiler_IsToPpm = request('Compiler_IsToNif.Interface')
 
 -- Exports:
 return

@@ -1,9 +1,9 @@
 -- Load image from stream
 
--- Last mod.: 2024-11-23
+-- Last mod.: 2025-03-29
 
 -- Imports:
-local Parser_PpmToIs = request('Parser_PpmToIs.Interface')
+local Parser_PpmToIs = request('Parser_NifToIs.Interface')
 local Parser_IsToLua = request('Parser_IsToLua.Interface')
 
 -- Exports:
