@@ -1,9 +1,9 @@
 -- Calculate midway pixel with noise
 
--- Last mod.: 2025-03-28
+-- Last mod.: 2025-04-02
 
 -- Imports:
-local GetGap = request('!.number.integer.get_gap')
+local GetDistance = request('!.number.integer.get_distance')
 local GetMiddleInt = request('!.number.integer.get_middle')
 local GetMiddleFloat = request('!.number.float.get_middle')
 local Clamp = request('!.number.constrain')
@@ -26,15 +26,15 @@ local Clamp = request('!.number.constrain')
 ]]
 local CalculateMidwayPixel =
   function(self, LeftPixel, RightPixel)
-    local Gap = GetGap(LeftPixel.Index, RightPixel.Index)
+    local Distance = GetDistance(LeftPixel.Index, RightPixel.Index)
 
-    assert(Gap >= 0)
+    assert(Distance >= 1)
 
-    if (Gap == 0) then
+    if (Distance == 1) then
       return
     end
 
-    local Distance = Gap / self.MaxGap
+    local NormalizedDistance = Distance / self.MaxDistance
 
     local Index = GetMiddleInt(LeftPixel.Index, RightPixel.Index)
 
@@ -42,7 +42,7 @@ local CalculateMidwayPixel =
     local Color = new(self.BaseColor)
 
     for Index in ipairs(Color) do
-      local Noise = self:MakeDistanceNoise(Distance)
+      local Noise = self:MakeDistanceNoise(NormalizedDistance)
 
       local Value
       Value = GetMiddleFloat(LeftPixel.Color[Index], RightPixel.Color[Index])

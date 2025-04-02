@@ -1,9 +1,9 @@
 -- Plasm generator wrapper
 
--- Last mod.: 2024-11-30
+-- Last mod.: 2025-04-02
 
 -- Imports:
-local GetGap = request('!.number.integer.get_gap')
+local GetDistance = request('!.number.integer.get_distance')
 
 --[[
   Draw "linear plasm" to <self.Image>.
@@ -26,7 +26,7 @@ local Run =
       RightPixel.Color = new(LeftPixel.Color)
     end
 
-    self.MaxGap = GetGap(LeftPixel.Index, RightPixel.Index)
+    self.MaxDistance = GetDistance(LeftPixel.Index, RightPixel.Index)
 
     self:SetPixel(LeftPixel)
     self:SetPixel(RightPixel)
