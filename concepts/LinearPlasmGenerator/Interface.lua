@@ -1,6 +1,6 @@
 -- Plasm generator interface
 
--- Last mod.: 2025-03-28
+-- Last mod.: 2025-04-04
 
 -- Exports:
 return
@@ -41,9 +41,6 @@ return
     -- Set pixel
     SetPixel = request('SetPixel'),
 
-    -- Generate random color
-    GetRandomColor = request('GetRandomColor'),
-
     -- Midway pixel calculator
     CalculateMidwayPixel = request('CalculateMidwayPixel'),
 
@@ -56,4 +53,5 @@ return
   2024-11-06
   2024-11-24
   2025-03-28
+  2025-04-04
 ]]
