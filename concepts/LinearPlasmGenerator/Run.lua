@@ -1,8 +1,9 @@
 -- Plasm generator wrapper
 
--- Last mod.: 2025-04-02
+-- Last mod.: 2025-04-04
 
 -- Imports:
+local RandomizeColor = request('!.concepts.Image.Color.Randomize')
 local GetDistance = request('!.number.integer.get_distance')
 
 --[[
@@ -16,10 +17,16 @@ local Run =
     local StopIndex = self.Image.Length
 
     local LeftPixel =
-      { Index = StartIndex, Color = self:GetRandomColor() }
+      {
+        Index = StartIndex,
+        Color = RandomizeColor(new(self.BaseColor)),
+      }
 
     local RightPixel =
-      { Index = StopIndex, Color = self:GetRandomColor() }
+      {
+        Index = StopIndex,
+        Color = RandomizeColor(new(self.BaseColor)),
+      }
 
     -- If tileable pattern (stripe is ring) then end color is the same
     if self.OnRing then
@@ -42,4 +49,5 @@ return Run
   2024-09-25
   2024-09-30
   2024-11-24
+  2025-04-04
 ]]
