@@ -1,8 +1,9 @@
--- Convert list contents to strings. Accepts folded lists
+-- Change list contents to strings. Accepts folded lists
 
--- Last mod.: 2024-11-01
+-- Last mod.: 2025-04-05
 
-local Stringify =
+local Stringify
+Stringify =
   function(List)
     for Index, Value in ipairs(List) do
       if is_table(Value) then
@@ -18,4 +19,5 @@ return Stringify
 
 --[[
   2024-11-01
+  2025-04-05
 ]]
