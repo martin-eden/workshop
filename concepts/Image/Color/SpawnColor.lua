@@ -11,7 +11,7 @@ return
   function(ColorType)
     if (ColorType == 'Rgb') then
       return new(RgbColor)
-    elseif (ColorType == 'Grayscale') then
+    elseif (ColorType == 'Gs') then
       return new(GsColor)
     end
   end

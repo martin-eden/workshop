@@ -37,13 +37,13 @@ local FormatLabels =
     Text =
       {
         Bw = 'P1',
-        Grayscale = 'P2',
+        Gs = 'P2',
         Rgb = 'P3',
       },
     Binary =
       {
         Bw = 'P4',
-        Grayscale = 'P5',
+        Gs = 'P5',
         Rgb = 'P6',
       },
   }
