@@ -1,6 +1,6 @@
 -- RGB color structure for images
 
--- Last mod.: 2025-03-28
+-- Last mod.: 2025-04-05
 
 --[[
   For our processing "color" is just a fixed-length list of
@@ -11,7 +11,7 @@
   For grayscale it's list of one float.
   For bitmap it's list of one integer.
 
-  (Text above is not a contract, just try to describe structure
+  (Text above is not a contract, just trying describe structure
   in simple terms.)
 ]]
 
