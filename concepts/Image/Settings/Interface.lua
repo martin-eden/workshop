@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-03-30
+  Last mod.: 2025-04-05
 ]]
 
 --[[
@@ -14,23 +14,17 @@
   for discoverability.
 ]]
 
-local ColorFormats =
-  {
-    Bw = 'bw',
-    Grayscale = 'gs',
-    Rgb = 'rgb',
-  }
-
 -- Exports:
 return
   {
     Width = 0,
     Height = 0,
 
-    ColorFormats = ColorFormats,
-    ColorFormat = ColorFormats.Rgb,
+    ColorFormats = { 'bw', 'gs', 'rgb' },
+    ColorFormat = 'rgb',
   }
 
 --[[
   2025-03-30
+  2025-04-05
 ]]
