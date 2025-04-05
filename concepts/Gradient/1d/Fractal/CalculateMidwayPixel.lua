@@ -1,6 +1,6 @@
 -- Calculate midway pixel with noise
 
--- Last mod.: 2025-04-02
+-- Last mod.: 2025-04-06
 
 -- Imports:
 local GetDistance = request('!.number.integer.get_distance')
@@ -59,9 +59,6 @@ local CalculateMidwayPixel =
 return CalculateMidwayPixel
 
 --[[
-  2024-09-30
-  2024-11-06
-  2024-11-18
-  2024-11-24
-  2024-11-30
+  2024-09 #
+  2024-11 # # # #
 ]]

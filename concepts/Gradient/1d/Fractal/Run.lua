@@ -1,8 +1,9 @@
 -- Plasm generator wrapper
 
--- Last mod.: 2025-04-04
+-- Last mod.: 2025-04-06
 
 -- Imports:
+local SpawnColorFromFormat = request('!.concepts.Image.Color.SpawnColor')
 local RandomizeColor = request('!.concepts.Image.Color.Randomize')
 local GetDistance = request('!.number.integer.get_distance')
 
@@ -11,10 +12,13 @@ local GetDistance = request('!.number.integer.get_distance')
 ]]
 local Run =
   function(self)
-    self.Image.Length = self.ImageLength
+    self.BaseColor = SpawnColorFromFormat(self.ColorFormat)
+    assert(self.BaseColor, 'Unknown color format.')
+
+    self.Line.Length = self.ImageLength
 
     local StartIndex = 1
-    local StopIndex = self.Image.Length
+    local StopIndex = self.Line.Length
 
     local LeftPixel =
       {
@@ -28,11 +32,6 @@ local Run =
         Color = RandomizeColor(new(self.BaseColor)),
       }
 
-    -- If tileable pattern (stripe is ring) then end color is the same
-    if self.OnRing then
-      RightPixel.Color = new(LeftPixel.Color)
-    end
-
     self.MaxDistance = GetDistance(LeftPixel.Index, RightPixel.Index)
 
     self:SetPixel(LeftPixel)
@@ -45,9 +44,9 @@ local Run =
 return Run
 
 --[[
-  2024-09-18
-  2024-09-25
-  2024-09-30
-  2024-11-24
+  2024-09 # # #
+  2024-11 #
   2025-04-04
+  2025-04-05
+  2025-04-06
 ]]

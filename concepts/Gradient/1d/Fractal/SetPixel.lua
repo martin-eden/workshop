@@ -7,7 +7,7 @@ local SetPixel =
     local Index = Pixel.Index
     local Color = Pixel.Color
 
-    self.Image[Index] = Color
+    self.Line[Index] = Color
   end
 
 -- Exports:
