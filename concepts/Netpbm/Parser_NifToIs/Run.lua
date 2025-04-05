@@ -68,7 +68,7 @@ local Parse =
       local ColorFormat = self.Settings.ColorFormat
       if
         (ColorFormat == 'Bw') or
-        (ColorFormat == 'Grayscale')
+        (ColorFormat == 'Gs')
       then
         NumColorComponents = 1
       elseif (ColorFormat == 'Rgb') then
