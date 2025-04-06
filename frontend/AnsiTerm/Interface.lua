@@ -1,3 +1,7 @@
+-- Interface to ANSI text terminal
+
+-- Last mod.: 2025-04-06
+
 local CSI = '\027['
 
 return
@@ -29,3 +33,9 @@ return
         return Width, Height
       end,
   }
+
+--[[
+  2021-11-28
+  2021-12-07
+  2022-01-31
+]]
