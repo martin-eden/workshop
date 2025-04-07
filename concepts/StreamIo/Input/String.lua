@@ -1,22 +1,12 @@
--- Reads strings from base string. Implements [Input]
+-- [Input] stream interface for string
+
+-- Last mod.: 2025-04-07
 
 --[[
-  Implementation
+  Read bytes from host string
 
-    abc
-    ^
-
-  Base: "abc"
-  ReadPos: 1
-
-  Init(Base)
-    Set base string, reset read position
-
-  Reset()
-    Reset read position
+  Contract method.
 ]]
-
--- Contract: Read string from base string
 local Read =
   function(self, NumBytes)
     assert_integer(NumBytes)
@@ -29,50 +19,33 @@ local Read =
 
     local StartPos = self.ReadPos
     local EndPos = StartPos + NumBytes - 1
-    if (EndPos > #self.Base) then
-      EndPos = #self.Base
+
+    if (EndPos > #self.String) then
+      EndPos = #self.String
     end
 
-    local Data = string.sub(self.Base, StartPos, EndPos)
+    local ResultStr = string.sub(self.String, StartPos, EndPos)
 
-    local IsComplete = (#Data == NumBytes)
+    local IsComplete = (#ResultStr == NumBytes)
 
     self.ReadPos = EndPos + 1
 
-    return Data, IsComplete
-  end
-
--- Intestines: Set base string
-local Init =
-  function(self, NewBase)
-    assert_string(NewBase)
-
-    self.Base = NewBase
-    self:Reset()
-  end
-
--- Intestines: Reset reading position
-local Reset =
-  function(self)
-    self.ReadPos = 1
+    return ResultStr, IsComplete
   end
 
 -- Exported implementation
 return
   {
-    -- Interface
+    -- [Interface]
+    String = '',
     Read = Read,
 
-    -- Intestines
-    Base = '',
+    -- [Internals]
     ReadPos = 1,
-
-    -- Intestines management
-    Init = Init,
-    Reset = Reset,
   }
 
 --[[
   2024-07-24
   2024-08-09
+  2025-04-07
 ]]
