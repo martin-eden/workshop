@@ -1,10 +1,10 @@
 -- 1-D "plasm" gradient generation core
 
--- Last mod.: 2024-11-30
+-- Last mod.: 2025-04-09
 
 --[[
   Generate "1-D plasm": midway linear interpolation between pixels with
-  some distance-dependent noise.
+  distance-dependent noise.
 
   Input
 
