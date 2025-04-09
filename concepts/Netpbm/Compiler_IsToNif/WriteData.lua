@@ -1,6 +1,6 @@
--- Write pixels to output. We're doing some formatting
+-- Write pixels to output
 
--- Last mod.: 2024-11-06
+-- Last mod.: 2025-04-09
 
 -- Imports:
 local ListToString = request('!.concepts.List.ToString')
@@ -8,43 +8,56 @@ local ListToString = request('!.concepts.List.ToString')
 -- Exports:
 return
   function(self, DataIs)
+    local Settings = self.Settings
+
+    assert(Settings.DataEncoding == 'Text')
+
+    local ColorFormat = Settings.ColorFormat
+
+    local NumColorsPerDataLine
+
+    if (ColorFormat == 'Rgb') then
+      NumColorsPerDataLine = 4
+    elseif (ColorFormat == 'Gs') then
+      NumColorsPerDataLine = 12
+    end
+
     local Height = #DataIs
     local Width = #DataIs[1]
 
-    local ChunkSize = self.NumColumns
-    local ColumnsDelim = self.ColumnsDelimiter
-    local LinesDelim = self.LinesDelimiter
+    local ColumnsDelim = '  '
 
     self:WriteLine(LinesDelim)
 
     for Row = 1, Height do
-      local Chunks = {}
+      local Chunk = {}
+
+      self:WriteLine('')
+      self:WriteLine(nil, ('Line %d'):format(Row))
 
       for Column = 1, Width do
-        local PixelIs = DataIs[Row][Column]
-        local PixelStr = self:CompilePixel(PixelIs)
+        local ColorIs = DataIs[Row][Column]
+        local ColorStr = self:CompileColor(ColorIs)
 
-        table.insert(Chunks, PixelStr)
+        table.insert(Chunk, ColorStr)
 
-        if (Column % ChunkSize == 0) then
-          local ChunksStr = ListToString(Chunks, ColumnsDelim)
-          Chunks = {}
+        if (Column % NumColorsPerDataLine == 0) then
+          local ChunksStr = ListToString(Chunk, ColumnsDelim)
+          Chunk = {}
 
           self:WriteLine(ChunksStr)
         end
       end
 
       -- Write remained chunk
-      if (Width % ChunkSize ~= 0) then
-        local ChunksStr = ListToString(Chunks, ColumnsDelim)
+      if (Width % NumColorsPerDataLine ~= 0) then
+        local ChunksStr = ListToString(Chunk, ColumnsDelim)
         self:WriteLine(ChunksStr)
       end
-
-      self:WriteLine(LinesDelim)
     end
   end
 
 --[[
-  2024-11-02
-  2024-11-03
+  2024-11 # #
+  2025-04-09
 ]]

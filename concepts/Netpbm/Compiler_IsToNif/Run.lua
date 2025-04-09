@@ -1,6 +1,6 @@
 -- Convert from .is to .ppm
 
--- Last mod.: 2025-03-28
+-- Last mod.: 2025-04-09
 
 --[[
   Receives list of strings/lists structure.
@@ -10,7 +10,6 @@
 ]]
 local SerializePpm =
   function(self, PpmIs)
-    self:WriteLabel()
     self:WriteHeader(PpmIs)
     self:WriteData(PpmIs)
 
@@ -21,8 +20,7 @@ local SerializePpm =
 return SerializePpm
 
 --[[
-  2024-11-02
-  2024-11-03
-  2024-11-25
+  2024-11 # # #
   2024-12-12
+  2025-04-09
 ]]
