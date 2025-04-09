@@ -1,6 +1,6 @@
--- Plasm generator wrapper
+-- Wrapper for 1-d fractal gradient generator
 
--- Last mod.: 2025-04-06
+-- Last mod.: 2025-04-09
 
 -- Imports:
 local SpawnColorFromFormat = request('!.concepts.Image.Color.SpawnColor')
@@ -8,29 +8,34 @@ local RandomizeColor = request('!.concepts.Image.Color.Randomize')
 local GetDistance = request('!.number.integer.get_distance')
 
 --[[
-  Draw "linear plasm" to <self.Image>.
+  Fill <.Line> with fractal gradient.
+
+  If <.StartColor> is specified, gradient will start
+  from that color. Else it will be set to random color.
+
+  Same for <.EndColor>.
 ]]
 local Run =
   function(self)
     self.BaseColor = SpawnColorFromFormat(self.ColorFormat)
     assert(self.BaseColor, 'Unknown color format.')
 
-    self.Line.Length = self.ImageLength
-
     local StartIndex = 1
-    local StopIndex = self.Line.Length
+    local StopIndex = self.ImageLength
 
-    local LeftPixel =
-      {
-        Index = StartIndex,
-        Color = RandomizeColor(new(self.BaseColor)),
-      }
+    if not self.StartColor then
+      self.StartColor = RandomizeColor(new(self.BaseColor))
+    end
 
-    local RightPixel =
-      {
-        Index = StopIndex,
-        Color = RandomizeColor(new(self.BaseColor)),
-      }
+    if not self.EndColor then
+      self.EndColor = RandomizeColor(new(self.BaseColor))
+    end
+
+    local LeftPixel = { Index = StartIndex, Color = self.StartColor }
+
+    local RightPixel = { Index = StopIndex, Color = self.EndColor }
+
+    self.Line.Length = self.ImageLength
 
     self.MaxDistance = GetDistance(LeftPixel.Index, RightPixel.Index)
 

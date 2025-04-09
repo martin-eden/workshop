@@ -1,22 +1,25 @@
--- Plasm generator interface
+-- 1-d plasm generator interface
 
--- Last mod.: 2025-04-06
+-- Last mod.: 2025-04-09
 
 -- Exports:
 return
   {
     -- [Before]
 
-    -- Image line length
+    -- Image line length in pixels
     ImageLength = 60,
 
     -- Color format: "Gs" for grayscale, "Rgb" for RGB
     ColorFormat = 'Gs',
 
-    -- Scaling factor
+    StartColor = nil,
+    EndColor = nil,
+
+    -- Scale
     Scale = 1.0,
 
-    -- Distance scaling function [0.0, 1.0] -> [0.0, 1.0]
+    -- Distance transforming function [0.0, 1.0] -> [0.0, 1.0]
     TransformDistance = request('TransformDistance'),
 
     -- [At]
@@ -34,11 +37,11 @@ return
     -- Type of color. Filled in Run()
     BaseColor = nil,
 
-    -- Recursive filler
-    Plasm = request('Plasm'),
-
     -- Distance between leftmost and rightmost pixels. Calculated in Run()
     MaxDistance = 0,
+
+    -- Recursive filler
+    Plasm = request('Plasm'),
 
     -- Set pixel
     SetPixel = request('SetPixel'),

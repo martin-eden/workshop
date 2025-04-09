@@ -1,28 +1,19 @@
 -- Calculate midway pixel with noise
 
--- Last mod.: 2025-04-06
+-- Last mod.: 2025-04-09
 
 -- Imports:
 local GetDistance = request('!.number.integer.get_distance')
 local GetMiddleInt = request('!.number.integer.get_middle')
-local GetMiddleFloat = request('!.number.float.get_middle')
+local MixFloats = request('!.number.mix_numbers')
 local Clamp = request('!.number.constrain')
 
 --[[
-  Given left and right pixels calculate midway pixel,
-  adding distance-dependent noise.
+  Calculate midway pixel with distance-dependent noise
 
-  Type TPixel
+  Returns pixel in internal format.
 
-    { Index: int, Color: { 1=Red, 2=Green, 3=Blue: float_ui } }
-
-  Input
-
-    LeftPixel, RightPixel: TPixel
-
-  Output
-
-    TPixel
+  On fail returns nothing.
 ]]
 local CalculateMidwayPixel =
   function(self, LeftPixel, RightPixel)
@@ -36,23 +27,29 @@ local CalculateMidwayPixel =
 
     local NormalizedDistance = Distance / self.MaxDistance
 
-    local Index = GetMiddleInt(LeftPixel.Index, RightPixel.Index)
+    local MidIndex = GetMiddleInt(LeftPixel.Index, RightPixel.Index)
+
+    local LeftColorPortion =
+      1.0 - GetDistance(LeftPixel.Index, MidIndex) / Distance
 
     -- Calculate color components
     local Color = new(self.BaseColor)
 
     for Index in ipairs(Color) do
-      local Noise = self:MakeDistanceNoise(NormalizedDistance)
-
       local Value
-      Value = GetMiddleFloat(LeftPixel.Color[Index], RightPixel.Color[Index])
-      Value = Value + Noise
-      Value = Clamp(Value, 0.0, 1.0)
+      do
+        local LeftColor = LeftPixel.Color[Index]
+        local RightColor = RightPixel.Color[Index]
+        local Noise = self:MakeDistanceNoise(NormalizedDistance)
 
+        Value = MixFloats(LeftColor, RightColor, LeftColorPortion)
+        Value = Value + Noise
+        Value = Clamp(Value, 0.0, 1.0)
+      end
       Color[Index] = Value
     end
 
-    return { Index = Index, Color = Color }
+    return { Index = MidIndex, Color = Color }
   end
 
 -- Exports:
@@ -61,4 +58,5 @@ return CalculateMidwayPixel
 --[[
   2024-09 #
   2024-11 # # # #
+  2025-04-09
 ]]
