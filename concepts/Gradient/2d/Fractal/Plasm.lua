@@ -1,85 +1,186 @@
 -- 2-d gradient noise recursive filler
 
--- Last mod.: 2025-04-04
+-- Last mod.: 2025-04-11
 
 -- Imports:
 local IntDistance = request('!.number.integer.get_distance')
+local IntMid = request('!.number.integer.get_middle')
+
+local PrintPoint =
+  function(self, Point, Name)
+    local Name = Name or 'P'
+
+    local Color = self:GetColor(Point)
+    if Color then
+      Color = ('%.2f'):format(Color[1])
+    else
+      Color = 'empty'
+    end
+
+    print(('%s (%d %d %s)'):format(Name, Point.X, Point.Y, Color))
+  end
+
+local Queue = {}
+
+local Enqueue =
+  function(...)
+    local Record = table.pack(...)
+    table.insert(Queue, Record)
+  end
+
+local Dequeue =
+  function()
+    local Record = Queue[1]
+    table.remove(Queue, 1)
+    return table.unpack(Record)
+  end
+
+local IsEmptyQueue =
+  function()
+    return (#Queue == 0)
+  end
+
+local GetXCorrection =
+  function(Offset, Width)
+    if
+      ((Offset == 'right') or (Offset == 'left')) and
+      (Width % 2 == 0)
+    then
+      return 1
+    end
+
+    return 0
+  end
+
+local GetYCorrection =
+  function(Offset, Height)
+    if
+      ((Offset == 'up') or (Offset == 'down')) and
+      (Height % 2 == 0)
+    then
+      return 1
+    end
+
+    return 0
+  end
 
 --[[
-  Receives corners of image rectangle. Makes 4 subrectangles from
-  them. Calls itself.
+  Receives image rectangle description. And generation mode: square or
+  diamond.
 
-  +--------------------------------------------+
-  | LU                  CU                  RU |
-  |  *                   *                   * |
-  |                                            |
-  |                                            |
-  | LC                  CC                  RC |
-  |  *                   *                   * |
-  |                                            |
-  |                                            |
-  | LB                  CB                  RB |
-  |  *                   *                   * |
-  +--------------------------------------------+
+      Left
+  Top +------------------- Width ------------------+
+      |                                            |
+      |  *                   *                   * |
+      |                                            |
+      |                                            |
+      |                                            | Height
+      |  *                   *                   * |
+      |                                            |
+      |                                            |
+      |                                            |
+      |  *                   *                   * |
+      +--------------------------------------------+
 ]]
 
 local Plasm =
-  function(self, LU, RU, LB, RB)
-    local dx = IntDistance(LU.X, RU.X)
-    local dy = IntDistance(LU.Y, LB.Y)
+  function(self)
+    while true do
+      ::Next::
 
-    -- print(LU.X, LU.Y, RB.X, RB.Y)
-    -- print(dx, dy)
+      if IsEmptyQueue() then
+        break
+      end
 
-    if ((dx <= 1) and (dy <= 1)) then
-      return
-    end
+      local Left, Top, Width, Height, Mode, Offset = Dequeue()
 
-    local CC = self:CalculateMidwayPixel(LU, RU, LB, RB)
+      -- print(('(%d %d) %dx%d %s %s'):format(Left, Top, Width, Height, Mode, Offset))
 
-    self:SetPixel(CC)
+      if (Width <= 2) or (Height <= 2) then
+        goto Next
+      end
 
-    local CU = self:CalculateSidePixel(LU, RU, CC)
-    if CU then
-      self:SetPixel(CU)
-    end
+      local Right = Left + Width - 1
+      local Bottom = Top + Height - 1
 
-    local LC = self:CalculateSidePixel(LU, LB, CC)
-    if LC then
-      self:SetPixel(LC)
-    end
+      local MidX = IntMid(Left, Right)
+      local MidY = IntMid(Top, Bottom)
 
-    local RC = self:CalculateSidePixel(RU, RB, CC)
-    if RC then
-      self:SetPixel(RC)
-    end
+      if (Mode == 'square') then
+        local LU = { X = Left, Y = Top }
+        -- PrintPoint(self, LU, 'Left top')
 
-    local CB = self:CalculateSidePixel(LB, RB, CC)
+        local RU = { X = Left + Width - 1, Y = Top }
+        -- PrintPoint(self, RU, 'Right top')
 
-    if CB then
-      self:SetPixel(CB)
-    end
+        local LB = { X = Left, Y = Top + Height - 1 }
+        -- PrintPoint(self, LB, 'Left bottom')
 
-    if CU and LC then
-      self:Plasm(LU, CU, LC, CC)
-    end
+        local RB = { X = Left + Width - 1, Y = Top + Height - 1 }
+        -- PrintPoint(self, RB, 'Right bottom')
 
-    if CU and RC then
-      self:Plasm(CU, RU, CC, RC)
-    end
+        local C = { X = MidX, Y = MidY }
+        -- PrintPoint(self, C, 'Center')
 
-    if LC and CB then
-      self:Plasm(LC, CC, LB, CB)
-    end
+        self:SpawnPoint(C, LU, RU, LB, RB)
+        -- PrintPoint(self, C, 'Center')
 
-    if RC and CB then
-      self:Plasm(CC, RC, CB, RB)
+        Enqueue(Left, Top - Height // 2, Width, Height, 'diamond', 'up')
+        Enqueue(C.X, Top, Width, Height, 'diamond', 'right')
+        Enqueue(Left, C.Y, Width, Height, 'diamond', 'down')
+        Enqueue(Left - Width // 2, Top, Width, Height, 'diamond', 'left')
+
+      elseif (Mode == 'diamond') then
+        local U = { X = MidX, Y = Top }
+        U.X = U.X + GetXCorrection(Offset, Width)
+        -- PrintPoint(self, U, 'Upper corner')
+
+        local R = { X = Left + Width - 1, Y = MidY }
+        R.Y = R.Y + GetYCorrection(Offset, Height)
+        -- PrintPoint(self, R, 'Right corner')
+
+        local D = { X = MidX, Y = Top + Height - 1 }
+        D.X = D.X + GetXCorrection(Offset, Width)
+        -- PrintPoint(self, D, 'Down corner')
+
+        local L = { X = Left, Y = MidY }
+        L.Y = L.Y + GetYCorrection(Offset, Height)
+        -- PrintPoint(self, L, 'Left corner')
+
+        local C = { X = MidX, Y = MidY }
+        C.X = C.X + GetXCorrection(Offset, Width)
+        C.Y = C.Y + GetYCorrection(Offset, Height)
+        -- PrintPoint(self, C, 'Center')
+
+        self:SpawnPoint(C, U, R, D, L)
+        -- PrintPoint(self, C, 'Center')
+
+        local HalfWidth = (Width + 1) // 2
+        local HalfHeight = (Height + 1) // 2
+        if (Offset == 'up') then
+          Enqueue(Left, C.Y, HalfWidth, HalfHeight, 'square', Offset)
+        elseif (Offset == 'right') then
+          Enqueue(Left, Top, HalfWidth, HalfHeight, 'square', Offset)
+        elseif (Offset == 'down') then
+          Enqueue(C.X, Top, HalfWidth, HalfHeight, 'square', Offset)
+        elseif (Offset == 'left') then
+          Enqueue(C.X, C.Y, HalfWidth, HalfHeight, 'square', Offset)
+        end
+      end
     end
   end
 
+local PlasmWrapper =
+  function(self, Left, Top, Width, Height)
+    Enqueue(Left, Top, Width, Height, 'square', '')
+
+    Plasm(self)
+  end
+
 -- Exports:
-return Plasm
+return PlasmWrapper
 
 --[[
   2025-04-04
+  2025-04-11
 ]]

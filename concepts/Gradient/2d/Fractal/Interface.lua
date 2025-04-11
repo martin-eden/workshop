@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-04-04
+  Last mod.: 2025-04-11
 ]]
 
 -- Exports:
@@ -22,12 +22,20 @@ return
     Image = {},
 
     -- [Internals]
-    SetPixel = request('SetPixel'),
+    MaxDistance = 0.0,
+    IsValidCoord = request('IsValidCoord'),
+    SetColor = request('SetColor'),
+    GetColor = request('GetColor'),
     Plasm = request('Plasm'),
+    CalcDistance = request('CalcDistance'),
+    ObservePoint = request('ObservePoint'),
+    GetDistanceNoise = request('GetDistanceNoise'),
+    SpawnPoint = request('SpawnPoint'),
     CalculateMidwayPixel = request('CalculateMidwayPixel'),
     CalculateSidePixel = request('CalculateSidePixel'),
   }
 
 --[[
   2025-04-04
+  2025-04-11
 ]]
