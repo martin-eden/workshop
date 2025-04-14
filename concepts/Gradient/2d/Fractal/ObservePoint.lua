@@ -1,6 +1,6 @@
 -- Observe point (with distance noise)
 
--- Last mod.: 2025-04-11
+-- Last mod.: 2025-04-14
 
 local ApplyFunc = request('!.concepts.List.ApplyFunc')
 local SymmetricRandom = request('!.number.float.symmetric_random')
@@ -23,7 +23,13 @@ local ObservePoint =
       return
     end
 
+    assert(not self:GetColor(OurPoint))
+
     local Distance = self:CalcDistance(OurPoint, OtherPoint)
+
+    Distance = self.Scale * Distance
+    Distance = Clamp(Distance, 0.0, 1.0)
+
     local Noise = self:GetDistanceNoise(Distance)
 
     local ObservedColor = new(OtherColor)
@@ -48,4 +54,5 @@ return ObservePoint
 
 --[[
   2025-04-11
+  2025-04-14
 ]]
