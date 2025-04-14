@@ -20,11 +20,11 @@ return
     local RB = { X = self.ImageWidth, Y = self.ImageHeight }
     local RB_Color = RandomizeColor(new(self.BaseColor))
 
-    --[[
-    LU_Color = { 0.2 }
-    RU_Color = { 0.8 }
-    LB_Color = { 0.8 }
-    RB_Color = { 0.2 }
+    -- [[
+    LU_Color = { 0.0 }
+    RU_Color = { 0.0 }
+    LB_Color = { 200 / 255 }
+    RB_Color = { 0.0 }
     --]]
 
     -- <.CalcDistance> uses <.MaxDistance>
@@ -36,7 +36,7 @@ return
     self:SetColor(LB_Color, LB)
     self:SetColor(RB_Color, RB)
 
-    self:Plasm(1, 1, self.ImageWidth, self.ImageHeight, 'diamond')
+    self:Plasm(1, 1, self.ImageWidth, self.ImageHeight)
 
     self.Image.Width = self.ImageWidth
     self.Image.Height = self.ImageHeight
