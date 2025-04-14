@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-04-11
+  Last mod.: 2025-04-14
 ]]
 
 -- Exports:
@@ -11,6 +11,7 @@ return
     -- [Before]
     ImageWidth = 5,
     ImageHeight = 5,
+    Scale = 1.0,
     BaseColor = request('!.concepts.Image.Color.Grayscale'),
 
     -- [At]
@@ -39,4 +40,5 @@ return
 --[[
   2025-04-04
   2025-04-11
+  2025-04-14
 ]]

@@ -9,8 +9,10 @@ local CalcDistance =
   function(self, PointA, PointB)
     return
       (
-        math.abs(PointB.X - PointA.X) +
-        math.abs(PointB.Y - PointA.Y)
+        math.max(
+          math.abs(PointB.X - PointA.X),
+          math.abs(PointB.Y - PointA.Y)
+        )
       ) /
       self.MaxDistance
   end

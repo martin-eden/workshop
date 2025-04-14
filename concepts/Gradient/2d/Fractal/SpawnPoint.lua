@@ -1,9 +1,8 @@
 -- Calculate color at given coordinates considering neighbors
 
--- Last mod.: 2025-04-11
+-- Last mod.: 2025-04-14
 
 local t2s = request('!.table.as_string')
-local MixNumbers = request('!.number.mix_numbers')
 
 local NormalizeNumbers =
   function(Numbers)
@@ -54,9 +53,10 @@ local SpawnPoint =
     -- print('DistancesTo', t2s(DistancesTo))
 
     local Influences = new(DistancesTo)
-    -- Influences = NormalizeNumbers(Influences)
-    for Key, Value in ipairs(Influences) do
-      Influences[Key] = 1 - Value
+    Influences = NormalizeNumbers(Influences)
+    -- print('Influences', t2s(Influences))
+    for NeighborIndex = 1, #DistancesTo do
+      Influences[NeighborIndex] = 1 - Influences[NeighborIndex]
     end
     Influences = NormalizeNumbers(Influences)
     -- print('Influences', t2s(Influences))
@@ -82,7 +82,7 @@ local SpawnPoint =
           ('[%d][%d] = %.2f'):
           format(ColorComponentIndex, NeighborIndex, WeightedSum)
         )
-        ]]
+        --]]
       end
 
       Color[ColorComponentIndex] = WeightedSum
@@ -97,4 +97,5 @@ return SpawnPoint
 
 --[[
   2025-04-11
+  2025-04-14
 ]]

@@ -23,12 +23,8 @@ local SetColor =
       Image[y] = {}
     end
 
-    -- assert_nil(Image[y][x])
-    -- if is_nil(Image[y][x]) then
-      Image[y][x] = Color
-    -- else
-      -- Image[y][x] = new(self.BaseColor)
-    -- end
+    assert_nil(Image[y][x])
+    Image[y][x] = Color
 
     -- print(('SetColor(%d, %d, %.2f)'):format(x, y, Color[1]))
   end
