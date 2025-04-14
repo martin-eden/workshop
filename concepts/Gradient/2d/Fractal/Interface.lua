@@ -23,6 +23,7 @@ return
 
     -- [Internals]
     MaxDistance = 0.0,
+    PrintPoint = request('PrintPoint'),
     IsValidCoord = request('IsValidCoord'),
     SetColor = request('SetColor'),
     GetColor = request('GetColor'),

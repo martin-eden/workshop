@@ -5,18 +5,18 @@
 local t2s = request('!.table.as_string')
 local MixNumbers = request('!.number.mix_numbers')
 
-local NormalizeDistances =
-  function(Distances)
+local NormalizeNumbers =
+  function(Numbers)
     local Sum = 0.0
 
-    for Index = 1, #Distances do
-      Sum = Sum + Distances[Index]
+    for Index = 1, #Numbers do
+      Sum = Sum + Numbers[Index]
     end
 
     local NormalizedDistances = {}
 
-    for Index = 1, #Distances do
-      NormalizedDistances[Index] = Distances[Index] / Sum
+    for Index = 1, #Numbers do
+      NormalizedDistances[Index] = Numbers[Index] / Sum
     end
 
     return NormalizedDistances
@@ -30,6 +30,12 @@ local NormalizeDistances =
 ]]
 local SpawnPoint =
   function(self, Point, ...)
+    if self:GetColor(Point) then
+      return
+    end
+
+    -- self:PrintPoint(Point)
+
     local Neighbors = {}
     for Index = 1, select('#', ...) do
       local Point = select(Index, ...)
@@ -47,15 +53,20 @@ local SpawnPoint =
     end
     -- print('DistancesTo', t2s(DistancesTo))
 
+    local Influences = new(DistancesTo)
+    -- Influences = NormalizeNumbers(Influences)
+    for Key, Value in ipairs(Influences) do
+      Influences[Key] = 1 - Value
+    end
+    Influences = NormalizeNumbers(Influences)
+    -- print('Influences', t2s(Influences))
+
     local ColorsOf = {}
     for Index = 1, NumNeighbors do
       local Neighbor = Neighbors[Index]
       ColorsOf[Index] = self:ObservePoint(Neighbor, Point)
     end
     -- print('ColorsOf', t2s(ColorsOf))
-
-    local Influences = NormalizeDistances(DistancesTo)
-    -- print('Influences', t2s(Influences))
 
     local Color = new(self.BaseColor)
 

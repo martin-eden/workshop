@@ -1,17 +1,17 @@
 -- Calculate distance between two 2-d points
 
--- Last mod.: 2025-04-11
+-- Last mod.: 2025-04-12
 
 --[[
-  It's typical Euclidean distance normed to <.MaxDistance>
+  Some distance func normed to <.MaxDistance>
 ]]
 local CalcDistance =
   function(self, PointA, PointB)
     return
       (
-        (PointB.X - PointA.X) ^ 2 +
-        (PointB.Y - PointA.Y) ^ 2
-      ) ^ 0.5 /
+        math.abs(PointB.X - PointA.X) +
+        math.abs(PointB.Y - PointA.Y)
+      ) /
       self.MaxDistance
   end
 
@@ -20,4 +20,5 @@ return CalcDistance
 
 --[[
   2025-04-11
+  2025-04-12
 ]]
