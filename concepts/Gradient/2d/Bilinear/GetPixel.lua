@@ -1,18 +1,12 @@
 -- Get image's pixel color
 
--- Last mod.: 2025-04-11
+-- Last mod.: 2025-04-16
 
 --[[
   Get color by given coordinates from image
-
-  On fail returns nil.
 ]]
 local GetPixel =
   function(self, Point)
-    if not self:IsValidCoord(Point) then
-      return
-    end
-
     local x = Point.X
     local y = Point.Y
     local Image = self.Image
@@ -34,4 +28,5 @@ return GetPixel
 
 --[[
   2025-04-11
+  2025-04-16
 ]]

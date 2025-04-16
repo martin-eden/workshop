@@ -2,16 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-04-15
+  Last mod.: 2025-04-16
 ]]
 
 -- Exports:
 return
   {
     -- [Before]
+    ColorFormat = 'Gs',
+
     ImageWidth = 5,
     ImageHeight = 5,
-    ColorFormat = 'Gs',
+
     StartingColors =
       {
         Left =
@@ -27,22 +29,23 @@ return
       },
 
     -- [At]
-    -- Generate
     Run = request('Run'),
 
     -- [After]
-    -- Resulting 2-d image
     Image = {},
 
     -- [Internals]
     BaseColor = request('!.concepts.Image.Color.Grayscale'),
+    LinearGenerator = request('!.concepts.Gradient.1d.Linear.Interface'),
+
+    Init = request('Init'),
     Generate = request('Generate'),
 
-    IsValidCoord = request('IsValidCoord'),
-    SetColor = request('SetColor'),
-    GetColor = request('GetColor'),
+    SetPixel = request('SetPixel'),
+    GetPixel = request('GetPixel'),
   }
 
 --[[
   2025-04-15
+  2025-04-16
 ]]
