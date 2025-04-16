@@ -1,6 +1,6 @@
 -- Create 2-d image by duplicating line
 
--- Last mod.: 2025-04-06
+-- Last mod.: 2025-04-16
 
 --[[
   Stack line image N times
@@ -13,6 +13,9 @@ local StackLineImage =
       Result[Index] = new(ImageLine)
     end
 
+    Result.Width = #ImageLine
+    Result.Height = NumTimes
+
     return Result
   end
 
@@ -22,4 +25,5 @@ return StackLineImage
 --[[
   2024-11-25
   2025-04-06
+  2025-04-16
 ]]
