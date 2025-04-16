@@ -1,40 +1,31 @@
 -- 1-D "plasm" gradient generation core
 
--- Last mod.: 2025-04-09
+-- Last mod.: 2025-04-16
 
+-- Imports:
+local IntDist = request('!.number.integer.get_distance')
+
+-- Exports:
 --[[
-  Generate "1-D plasm": midway linear interpolation between pixels with
-  distance-dependent noise.
-
-  Input
-
-    LeftPixel, RightPixel: TPixel
-      {
-        Index: int
-        Color: { 1=Red, 2=Green, 3=Blue: float_ui }
-      }
-
-  Output
-
-    Calls <self:SetPixel()>
+  Generate "1-D plasm": midway linear interpolation
+  with distance-dependent noise.
 ]]
-local MakePlasm =
-  function(self, LeftPixel, RightPixel)
-    local MidwayPixel = self:CalculateMidwayPixel(LeftPixel, RightPixel)
-
-    if not MidwayPixel then
+return
+  function(self, FirstIndex, LastIndex)
+    if (IntDist(FirstIndex, LastIndex) <= 1) then
       return
     end
 
-    self:SetPixel(MidwayPixel)
+    local MidIndex, MidColor =
+      self:CalculateMidwayPixel(FirstIndex, LastIndex)
 
-    self:Plasm(LeftPixel, MidwayPixel)
-    self:Plasm(MidwayPixel, RightPixel)
+    self:SetPixel(MidIndex, MidColor)
+
+    self:Plasm(FirstIndex, MidIndex)
+    self:Plasm(MidIndex, LastIndex)
   end
-
--- Exports:
-return MakePlasm
 
 --[[
   2024-10-30
+  2025-04-16
 ]]

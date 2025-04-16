@@ -1,57 +1,33 @@
 -- 1-d plasm generator interface
 
--- Last mod.: 2025-04-09
+-- Last mod.: 2025-04-16
 
--- Exports:
-return
+-- Imports:
+local LinearGenerator = request('^.Linear.Interface')
+local MergeAndPatch = request('!.table.merge_and_patch')
+
+local InterfaceExtensions =
   {
     -- [Before]
-
-    -- Image line length in pixels
-    ImageLength = 60,
-
-    -- Color format: "Gs" for grayscale, "Rgb" for RGB
-    ColorFormat = 'Gs',
-
-    StartColor = nil,
-    EndColor = nil,
-
-    -- Scale
     Scale = 1.0,
-
-    -- Distance transforming function [0.0, 1.0] -> [0.0, 1.0]
-    TransformDistance = request('TransformDistance'),
+    GetDistanceNoiseAmplitude = request('GetDistanceNoiseAmplitude'),
 
     -- [At]
-
-    -- Generate 1-D gradient
     Run = request('Run'),
 
-    -- [After]
-
-    -- Result image line
-    Line = {},
-
-    -- [Internal]
-
-    -- Type of color. Filled in Run()
-    BaseColor = nil,
-
-    -- Distance between leftmost and rightmost pixels. Calculated in Run()
-    MaxDistance = 0,
-
-    -- Recursive filler
+    -- [Internals]
+    MaxDistance = 0.0,
     Plasm = request('Plasm'),
-
-    -- Set pixel
-    SetPixel = request('SetPixel'),
-
-    -- Midway pixel calculator
     CalculateMidwayPixel = request('CalculateMidwayPixel'),
-
-    -- Noise function [0.0, 1.0] -> [-1.0, 1.0]
+    GetPixel = request('GetPixel'),
     MakeDistanceNoise = request('MakeDistanceNoise'),
   }
+
+local Interface =
+  MergeAndPatch(new(LinearGenerator), InterfaceExtensions)
+
+-- Export:
+return Interface
 
 --[[
   2024-09 #
@@ -60,4 +36,5 @@ return
   2025-04-04
   2025-04-05
   2024-04-06
+  2024-04-15
 ]]
