@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-04-06
+  Last mod.: 2025-04-16
 ]]
 
 -- Exports:
@@ -10,9 +10,10 @@ return
   {
     -- [Before]
     ColorFormat = 'Gs',
+    LineLength = 30,
+
     StartColor = nil,
     EndColor = nil,
-    LineLength = 30,
 
     -- [At]
     Run = request('Run'),
@@ -22,11 +23,17 @@ return
 
     -- [Internals]
     BaseColor = nil,
-    GetColor = request('GetColor'),
-    SetColor = request('SetColor'),
+
+    Init = request('Init'),
+    SetPixel = request('SetPixel'),
   }
 
 --[[
+  2024-09 #
+  2024-11 # #
+  2025-03 #
   2025-04-05
   2025-04-06
+  2025-04-15
+  2025-04-16
 ]]

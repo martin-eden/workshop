@@ -1,10 +1,8 @@
 -- Linear 1-d generator
 
--- Last mod.: 2025-04-05
+-- Last mod.: 2025-04-16
 
 -- Imports:
-local SpawnColorFromFormat = request('!.concepts.Image.Color.SpawnColor')
-local RandomizeColor = request('!.concepts.Image.Color.Randomize')
 local GetIntDistance = request('!.number.integer.get_distance')
 local MixNumbers = request('!.number.mix_numbers')
 
@@ -15,55 +13,38 @@ local MixNumbers = request('!.number.mix_numbers')
 ]]
 local Run =
   function(self)
-    self.BaseColor = SpawnColorFromFormat(self.ColorFormat)
-    assert(self.BaseColor, 'Unknown color format.')
+    self:Init()
 
-    if not self.StartColor then
-      self.StartColor = RandomizeColor(new(self.BaseColor))
-    end
-
-    local LeftColor = self.StartColor
-
-    if not self.EndColor then
-      self.EndColor = RandomizeColor(new(self.BaseColor))
-    end
-
-    local RightColor = self.EndColor
-
-    local FirstIndex = 1
-    local LastIndex = self.LineLength
-
-    self:SetColor(FirstIndex, LeftColor)
-    self:SetColor(LastIndex, RightColor)
+    local StartColor = self.StartColor
+    local EndColor = self.EndColor
 
     if (self.LineLength <= 2) then
       return
     end
 
-    local TotalDist = GetIntDistance(FirstIndex, LastIndex)
+    local FirstIndex = 1
+    local LastIndex = self.LineLength
+
+    local MaxDist = GetIntDistance(FirstIndex, LastIndex)
 
     for PixelIndex = FirstIndex + 1, LastIndex - 1 do
-      local NormDistToRight = GetIntDistance(PixelIndex, LastIndex) / TotalDist
-
-      local LeftSideInfluence = NormDistToRight
+      local StartInfluence = GetIntDistance(PixelIndex, LastIndex) / MaxDist
 
       local Color = new(self.BaseColor)
 
       for ColorComponentIndex in ipairs(Color) do
         local ColorComponentValue =
           MixNumbers(
-            LeftColor[ColorComponentIndex],
-            RightColor[ColorComponentIndex],
-            LeftSideInfluence
+            StartColor[ColorComponentIndex],
+            EndColor[ColorComponentIndex],
+            StartInfluence
           )
 
         Color[ColorComponentIndex] = ColorComponentValue
       end
 
-      self:SetColor(PixelIndex, Color)
+      self:SetPixel(PixelIndex, Color)
     end
-
-    self.Line.Length = self.LineLength
   end
 
 -- Exports:
@@ -71,4 +52,5 @@ return Run
 
 --[[
   2025-04-05
+  2025-04-15
 ]]
