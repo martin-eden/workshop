@@ -1,55 +1,52 @@
 -- Calculate midway pixel with noise
 
--- Last mod.: 2025-04-09
+-- Last mod.: 2025-04-16
 
 -- Imports:
-local GetDistance = request('!.number.integer.get_distance')
-local GetMiddleInt = request('!.number.integer.get_middle')
-local MixFloats = request('!.number.mix_numbers')
-local Clamp = request('!.number.constrain')
+local GetIntDistance = request('!.number.integer.get_distance')
+local GetIntMiddle = request('!.number.integer.get_middle')
+local MixNumbers = request('!.number.mix_numbers')
+local ClampUi = request('!.number.constrain_ui')
 
 --[[
   Calculate midway pixel with distance-dependent noise
 
-  Returns pixel in internal format.
+  Returns index and color.
 
-  On fail returns nothing.
+  On fail explodes.
 ]]
 local CalculateMidwayPixel =
-  function(self, LeftPixel, RightPixel)
-    local Distance = GetDistance(LeftPixel.Index, RightPixel.Index)
+  function(self, FirstIndex, LastIndex)
+    local IntDistance = GetIntDistance(FirstIndex, LastIndex)
 
-    assert(Distance >= 1)
+    assert(IntDistance > 1)
 
-    if (Distance == 1) then
-      return
+    local MidIndex = GetIntMiddle(FirstIndex, LastIndex)
+
+    local FirstColor = self:GetPixel(FirstIndex)
+    local LastColor = self:GetPixel(LastIndex)
+    local FirstInfluence = GetIntDistance(MidIndex, LastIndex) / IntDistance
+
+    local FloatDistance = IntDistance / self.MaxDistance
+
+    local MidColor = new(self.BaseColor)
+
+    for ComponentIndex = 1, #MidColor do
+      local MidValue =
+        MixNumbers(
+          FirstColor[ComponentIndex],
+          LastColor[ComponentIndex],
+          FirstInfluence
+        )
+
+      MidValue = MidValue + self:MakeDistanceNoise(FloatDistance)
+
+      MidValue = ClampUi(MidValue)
+
+      MidColor[ComponentIndex] = MidValue
     end
 
-    local NormalizedDistance = Distance / self.MaxDistance
-
-    local MidIndex = GetMiddleInt(LeftPixel.Index, RightPixel.Index)
-
-    local LeftColorPortion =
-      1.0 - GetDistance(LeftPixel.Index, MidIndex) / Distance
-
-    -- Calculate color components
-    local Color = new(self.BaseColor)
-
-    for Index in ipairs(Color) do
-      local Value
-      do
-        local LeftColor = LeftPixel.Color[Index]
-        local RightColor = RightPixel.Color[Index]
-        local Noise = self:MakeDistanceNoise(NormalizedDistance)
-
-        Value = MixFloats(LeftColor, RightColor, LeftColorPortion)
-        Value = Value + Noise
-        Value = Clamp(Value, 0.0, 1.0)
-      end
-      Color[Index] = Value
-    end
-
-    return { Index = MidIndex, Color = Color }
+    return MidIndex, MidColor
   end
 
 -- Exports:
@@ -59,4 +56,5 @@ return CalculateMidwayPixel
   2024-09 #
   2024-11 # # # #
   2025-04-09
+  2025-04-16
 ]]
