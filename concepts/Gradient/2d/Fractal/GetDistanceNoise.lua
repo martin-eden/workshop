@@ -9,7 +9,7 @@
 ]]
 local GetDistanceNoise =
   function(self, Distance)
-    print(Distance)
+    -- print(Distance)
 
     -- return 0.0
     return Distance ^ 0.9
