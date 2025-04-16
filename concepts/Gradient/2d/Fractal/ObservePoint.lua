@@ -1,36 +1,31 @@
 -- Observe point (with distance noise)
 
--- Last mod.: 2025-04-14
+-- Last mod.: 2025-04-16
 
-local ApplyFunc = request('!.concepts.List.ApplyFunc')
+local ClampUi = request('!.number.constrain_ui')
 local SymmetricRandom = request('!.number.float.symmetric_random')
-local Clamp = request('!.number.constrain')
+local ApplyFunc = request('!.concepts.List.ApplyFunc')
 
 --[[
   Return color of distant point
 
   Distance noise applies.
-
-  On fail returns nothing.
 ]]
 local ObservePoint =
   function(self, OtherPoint, OurPoint)
-    assert(self:IsValidCoord(OurPoint))
-
-    local OtherColor = self:GetColor(OtherPoint)
+    local OtherColor = self:GetPixel(OtherPoint)
 
     if not OtherColor then
       return
     end
 
-    assert(not self:GetColor(OurPoint))
-
     local Distance = self:CalcDistance(OurPoint, OtherPoint)
 
     Distance = self.Scale * Distance
-    Distance = Clamp(Distance, 0.0, 1.0)
 
-    local Noise = self:GetDistanceNoise(Distance)
+    Distance = ClampUi(Distance)
+
+    local Noise = self:GetDistanceNoiseAmplitude(Distance)
 
     local ObservedColor = new(OtherColor)
 
@@ -39,7 +34,7 @@ local ObservePoint =
         local ObservedComponent
 
         ObservedComponent = ColorComponent + SymmetricRandom() * Noise
-        ObservedComponent = Clamp(ObservedComponent, 0.0, 1.0)
+        ObservedComponent = ClampUi(ObservedComponent)
 
         return ObservedComponent
       end
@@ -55,4 +50,5 @@ return ObservePoint
 --[[
   2025-04-11
   2025-04-14
+  2025-04-16
 ]]

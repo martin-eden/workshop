@@ -29,7 +29,7 @@ local NormalizeNumbers =
 ]]
 local SpawnPoint =
   function(self, Point, ...)
-    if self:GetColor(Point) then
+    if self:GetPixel(Point) then
       return
     end
 
@@ -38,7 +38,7 @@ local SpawnPoint =
     local Neighbors = {}
     for Index = 1, select('#', ...) do
       local Point = select(Index, ...)
-      if self:GetColor(Point) then
+      if self:GetPixel(Point) then
         table.insert(Neighbors, Point)
       end
     end
@@ -89,7 +89,7 @@ local SpawnPoint =
     end
     -- print('Color', t2s(Color))
 
-    self:SetColor(Color, Point)
+    self:SetPixel(Color, Point)
   end
 
 -- Exports:
