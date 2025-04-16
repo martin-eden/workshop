@@ -25,7 +25,7 @@ local ObservePoint =
 
     Distance = ClampUi(Distance)
 
-    local Noise = self:GetDistanceNoiseAmplitude(Distance)
+    local NoiseAmpl = self:GetDistanceNoiseAmplitude(Distance)
 
     local ObservedColor = new(OtherColor)
 
@@ -33,7 +33,7 @@ local ObservePoint =
       function(ColorComponent)
         local ObservedComponent
 
-        ObservedComponent = ColorComponent + SymmetricRandom() * Noise
+        ObservedComponent = ColorComponent + SymmetricRandom() * NoiseAmpl
         ObservedComponent = ClampUi(ObservedComponent)
 
         return ObservedComponent
