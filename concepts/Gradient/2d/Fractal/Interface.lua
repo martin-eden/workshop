@@ -2,43 +2,39 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-04-14
+  Last mod.: 2025-04-16
 ]]
 
--- Exports:
-return
+-- Imports:
+local MergeAndPatch = request('!.table.merge_and_patch')
+local BaseInterface = request('^.Bilinear.Interface')
+
+local InterfaceExtensions =
   {
     -- [Before]
-    ImageWidth = 5,
-    ImageHeight = 5,
     Scale = 1.0,
-    BaseColor = request('!.concepts.Image.Color.Grayscale'),
 
     -- [At]
-    -- Generate
     Run = request('Run'),
 
-    -- [After]
-    -- Resulting 2-d image
-    Image = {},
-
     -- [Internals]
-    MaxDistance = 0.0,
+    MaxDistance = 1.0,
     PrintPoint = request('PrintPoint'),
-    IsValidCoord = request('IsValidCoord'),
-    SetColor = request('SetColor'),
-    GetColor = request('GetColor'),
     Plasm = request('Plasm'),
     CalcDistance = request('CalcDistance'),
     ObservePoint = request('ObservePoint'),
-    GetDistanceNoise = request('GetDistanceNoise'),
+    GetDistanceNoiseAmplitude = request('GetDistanceNoiseAmplitude'),
     SpawnPoint = request('SpawnPoint'),
-    CalculateMidwayPixel = request('CalculateMidwayPixel'),
-    CalculateSidePixel = request('CalculateSidePixel'),
   }
+
+local Interface = MergeAndPatch(new(BaseInterface), InterfaceExtensions)
+
+-- Exports:
+return Interface
 
 --[[
   2025-04-04
   2025-04-11
   2025-04-14
+  2025-04-16
 ]]

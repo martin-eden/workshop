@@ -1,6 +1,6 @@
 -- Return distance noise amplitude
 
--- Last mod.: 2025-04-11
+-- Last mod.: 2025-04-16
 
 --[[
   Return distance noise amplitude
@@ -9,10 +9,7 @@
 ]]
 local GetDistanceNoise =
   function(self, Distance)
-    -- print(Distance)
-
-    -- return 0.0
-    return Distance ^ 0.9
+    return Distance ^ 0.5
   end
 
 -- Exports:
