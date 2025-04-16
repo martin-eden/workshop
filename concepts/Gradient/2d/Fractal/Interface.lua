@@ -13,18 +13,17 @@ local InterfaceExtensions =
   {
     -- [Before]
     Scale = 1.0,
+    GetDistanceNoiseAmplitude = request('GetDistanceNoiseAmplitude'),
 
     -- [At]
     Run = request('Run'),
 
     -- [Internals]
     MaxDistance = 1.0,
-    PrintPoint = request('PrintPoint'),
     Plasm = request('Plasm'),
+    SpawnMiddlePoint = request('SpawnMiddlePoint'),
     CalcDistance = request('CalcDistance'),
     ObservePoint = request('ObservePoint'),
-    GetDistanceNoiseAmplitude = request('GetDistanceNoiseAmplitude'),
-    SpawnPoint = request('SpawnPoint'),
   }
 
 local Interface = MergeAndPatch(new(BaseInterface), InterfaceExtensions)

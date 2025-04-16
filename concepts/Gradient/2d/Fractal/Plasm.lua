@@ -1,9 +1,10 @@
 -- 2-d gradient noise filler
 
--- Last mod.: 2025-04-14
+-- Last mod.: 2025-04-16
 
 -- Imports:
 local IntMid = request('!.number.integer.get_middle')
+local SegLen = request('!.number.integer.get_segment_length')
 
 --[[
   Receives image rectangle description with four corner points set.
@@ -46,28 +47,22 @@ local Plasm =
         return
       end
 
-      local TopMid = { X = MidX, Y = Top }
-      local BottomMid = { X = MidX, Y = Bottom }
+      self:SpawnMiddlePoint(TopLeft, TopRight)
+      self:SpawnMiddlePoint(BottomLeft, BottomRight)
 
-      self:SpawnPoint(TopMid, TopLeft, TopRight)
-      self:SpawnPoint(BottomMid, BottomLeft, BottomRight)
-
-      self:Plasm(Left, Top, MidX - Left + 1, Height)
-      self:Plasm(MidX, Top, Right - MidX + 1, Height)
+      self:Plasm(Left, Top, SegLen(Left, MidX), Height)
+      self:Plasm(MidX, Top, SegLen(MidX, Right), Height)
 
     else
       if (Height <= 2) then
         return
       end
 
-      local MidLeft = { X = Left, Y = MidY }
-      local MidRight = { X = Right, Y = MidY }
+      self:SpawnMiddlePoint(TopLeft, BottomLeft)
+      self:SpawnMiddlePoint(TopRight, BottomRight)
 
-      self:SpawnPoint(MidLeft, TopLeft, BottomLeft)
-      self:SpawnPoint(MidRight, TopRight, BottomRight)
-
-      self:Plasm(Left, Top, Width, MidY - Top + 1)
-      self:Plasm(Left, MidY, Width, Bottom - MidY + 1)
+      self:Plasm(Left, Top, Width, SegLen(Top, MidY))
+      self:Plasm(Left, MidY, Width, SegLen(MidY, Bottom))
     end
   end
 
@@ -78,4 +73,5 @@ return Plasm
   2025-04-04
   2025-04-11
   2024-04-14
+  2024-04-16
 ]]
