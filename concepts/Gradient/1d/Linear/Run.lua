@@ -15,12 +15,12 @@ local Run =
   function(self)
     self:Init()
 
-    local StartColor = self.StartColor
-    local EndColor = self.EndColor
-
     if (self.LineLength <= 2) then
       return
     end
+
+    local StartColor = self.StartColor
+    local EndColor = self.EndColor
 
     local FirstIndex = 1
     local LastIndex = self.LineLength
