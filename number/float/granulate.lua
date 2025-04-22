@@ -1,6 +1,9 @@
 -- Stick float number to middle of bucket
 
--- Last mod.: 2025-04-18
+-- Last mod.: 2025-04-21
+
+-- Imports:
+local constrain_ui = request('!.number.constrain_ui')
 
 --[[
   Some abstractions illustration:
@@ -21,7 +24,7 @@
 
 local Granulate =
   function(n, NumBuckets)
-    assert((n >= 0.0) and (n <= 1.0))
+    n = constrain_ui(n)
 
     assert_integer(NumBuckets)
     assert(NumBuckets >= 1)
