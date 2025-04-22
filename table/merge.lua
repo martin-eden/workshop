@@ -1,5 +1,7 @@
 -- Merge one table onto another
 
+-- Last mod.: 2025-04-21
+
 --[[
   Union:
     ({ a = 'A'}, { b = 'B' }) -> { a = 'A', b = 'B' }
@@ -8,7 +10,8 @@
     ({ a = 'A'}, { a = 'a' }) -> { a = 'A' }
 ]]
 
-local MergeTable =
+local MergeTable
+MergeTable =
   function(Result, Additions)
     assert_table(Result)
     if (Additions == nil) then
@@ -19,6 +22,8 @@ local MergeTable =
     for Addition_Key, Addition_Value in pairs(Additions) do
       if is_nil(Result[Addition_Key]) then
         Result[Addition_Key] = Addition_Value
+      elseif is_table(Result[Addition_Key]) then
+        MergeTable(Result[Addition_Key], Addition_Value)
       end
     end
 
@@ -34,4 +39,5 @@ return MergeTable
   2017-09
   2019-12
   2024-08
+  2025-04-21
 ]]
