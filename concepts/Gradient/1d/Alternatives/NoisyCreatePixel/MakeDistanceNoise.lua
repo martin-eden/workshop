@@ -10,10 +10,11 @@ local ClampSui = request('!.number.constrain_sui')
 -- Noise function [0.0, 1.0] -> [-1.0, 1.0]
 local MakeDistanceNoise =
   function(self, Distance)
-    Distance = ClampUi(self.Scale * Distance)
+    Distance = ClampUi(Distance * self.Scale)
 
-    local Noise
-    Noise = self:GetDistanceNoiseAmplitude(Distance) * SymmetricRandom()
+    local Noise =
+      self:GetDistanceNoiseAmplitude(Distance) * SymmetricRandom()
+
     Noise = ClampSui(Noise)
 
     return Noise
