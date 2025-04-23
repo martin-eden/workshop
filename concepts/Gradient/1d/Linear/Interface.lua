@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-04-16
+  Last mod.: 2025-04-23
 ]]
 
 -- Exports:
@@ -12,8 +12,8 @@ return
     ColorFormat = 'Gs',
     LineLength = 30,
 
-    StartColor = nil,
-    EndColor = nil,
+    LeftColor = nil,
+    RightColor = nil,
 
     -- [At]
     Run = request('Run'),
@@ -26,6 +26,8 @@ return
 
     Init = request('Init'),
     SetPixel = request('SetPixel'),
+    GetPixel = request('GetPixel'),
+    CreatePixel = request('CreatePixel'),
   }
 
 --[[
@@ -36,4 +38,5 @@ return
   2025-04-06
   2025-04-15
   2025-04-16
+  2025-04-23
 ]]

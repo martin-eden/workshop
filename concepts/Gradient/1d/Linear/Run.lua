@@ -1,10 +1,6 @@
 -- Linear 1-d generator
 
--- Last mod.: 2025-04-16
-
--- Imports:
-local GetIntDistance = request('!.number.integer.get_distance')
-local MixNumbers = request('!.number.mix_numbers')
+-- Last mod.: 2025-04-23
 
 --[[
   Generate linear gradient between two points
@@ -19,31 +15,11 @@ local Run =
       return
     end
 
-    local StartColor = self.StartColor
-    local EndColor = self.EndColor
+    local Left = 1
+    local Right = self.LineLength
 
-    local FirstIndex = 1
-    local LastIndex = self.LineLength
-
-    local MaxDist = GetIntDistance(FirstIndex, LastIndex)
-
-    for PixelIndex = FirstIndex + 1, LastIndex - 1 do
-      local StartInfluence = GetIntDistance(PixelIndex, LastIndex) / MaxDist
-
-      local Color = new(self.BaseColor)
-
-      for ColorComponentIndex in ipairs(Color) do
-        local ColorComponentValue =
-          MixNumbers(
-            StartColor[ColorComponentIndex],
-            EndColor[ColorComponentIndex],
-            StartInfluence
-          )
-
-        Color[ColorComponentIndex] = ColorComponentValue
-      end
-
-      self:SetPixel(PixelIndex, Color)
+    for X = Left + 1, Right - 1 do
+      self:CreatePixel(X, Left, Right)
     end
   end
 
@@ -53,4 +29,5 @@ return Run
 --[[
   2025-04-05
   2025-04-15
+  2025-04-23
 ]]
