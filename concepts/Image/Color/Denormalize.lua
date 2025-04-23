@@ -1,10 +1,10 @@
 -- Map normalized color components to byte range
 
--- Last mod.: 2024-11-25
+-- Last mod.: 2025-04-23
 
 -- Imports:
 local MapTo = request('MapTo')
-local ToInt = math.floor
+local ToInt = request('!.number.float.to_int')
 local ApplyFunc = request('!.concepts.List.ApplyFunc')
 
 local Denormalize =
@@ -22,4 +22,5 @@ return Denormalize
 
 --[[
   2024-11-24
+  2025-04-23
 ]]
