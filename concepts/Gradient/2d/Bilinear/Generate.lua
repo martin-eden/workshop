@@ -37,8 +37,8 @@ local Generate =
     do
       LinearGenerator.LineLength = Width
 
-      LinearGenerator.StartColor = self.StartingColors.Left.Top
-      LinearGenerator.EndColor = self.StartingColors.Right.Top
+      LinearGenerator.LeftColor = self:GetPixel({ X = Left, Y = Top })
+      LinearGenerator.RightColor = self:GetPixel({ X = Right, Y = Top })
 
       LinearGenerator:Run()
 
@@ -53,8 +53,8 @@ local Generate =
     do
       LinearGenerator.LineLength = Width
 
-      LinearGenerator.StartColor = self.StartingColors.Left.Bottom
-      LinearGenerator.EndColor = self.StartingColors.Right.Bottom
+      LinearGenerator.LeftColor = self:GetPixel({ X = Left, Y = Bottom })
+      LinearGenerator.RightColor = self:GetPixel({ X = Right, Y = Bottom })
 
       LinearGenerator:Run()
 
@@ -70,8 +70,8 @@ local Generate =
       LinearGenerator.LineLength = Height
 
       for X = Left, Right do
-        LinearGenerator.StartColor = self:GetPixel({ X = X, Y = Top })
-        LinearGenerator.EndColor = self:GetPixel({ X = X, Y = Bottom})
+        LinearGenerator.LeftColor = self:GetPixel({ X = X, Y = Top })
+        LinearGenerator.RightColor = self:GetPixel({ X = X, Y = Bottom})
 
         LinearGenerator:Run()
 

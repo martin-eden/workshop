@@ -1,6 +1,6 @@
 -- Setup internal fields, set pixels in image corners
 
--- Last mod.: 2025-04-16
+-- Last mod.: 2025-04-22
 
 -- Imports:
 local SpawnColor = request('!.concepts.Image.Color.SpawnColor')
@@ -10,44 +10,37 @@ local Init =
   function(self)
     self.BaseColor = SpawnColor(self.ColorFormat)
 
-    self.StartingColors.Left.Top =
-      self.StartingColors.Left.Top or
+    self.StartingColors.LeftTop =
+      self.StartingColors.LeftTop or
       RandomizeColor(new(self.BaseColor))
 
-    self.StartingColors.Right.Top =
-      self.StartingColors.Right.Top or
+    self.StartingColors.RightTop =
+      self.StartingColors.RightTop or
       RandomizeColor(new(self.BaseColor))
 
-    self.StartingColors.Left.Bottom =
-      self.StartingColors.Left.Bottom or
+    self.StartingColors.LeftBottom =
+      self.StartingColors.LeftBottom or
       RandomizeColor(new(self.BaseColor))
 
-    self.StartingColors.Right.Bottom =
-      self.StartingColors.Right.Bottom or
+    self.StartingColors.RightBottom =
+      self.StartingColors.RightBottom or
       RandomizeColor(new(self.BaseColor))
 
     self.Image.Width = self.ImageWidth
     self.Image.Height = self.ImageHeight
 
-    self:SetPixel(
-      self.StartingColors.Left.Top,
-      { X = 1, Y = 1 }
-    )
+    local LeftTop = { X = 1, Y = 1 }
+    local RightTop = { X = self.ImageWidth, Y = 1 }
+    local LeftBottom = { X = 1, Y = self.ImageHeight }
+    local RightBottom = { X = self.ImageWidth, Y = self.ImageHeight }
 
-    self:SetPixel(
-      self.StartingColors.Right.Top,
-      { X = self.ImageWidth, Y = 1 }
-    )
-
-    self:SetPixel(
-      self.StartingColors.Left.Bottom,
-      { X = 1, Y = self.ImageHeight }
-    )
-
-    self:SetPixel(
-      self.StartingColors.Right.Bottom,
-      { X = self.ImageWidth, Y = self.ImageHeight }
-    )
+    -- Set corner pixels to starting colors
+    do
+      self:SetPixel(self.StartingColors.LeftTop, LeftTop)
+      self:SetPixel(self.StartingColors.RightTop, RightTop)
+      self:SetPixel(self.StartingColors.LeftBottom, LeftBottom)
+      self:SetPixel(self.StartingColors.RightBottom, RightBottom)
+    end
   end
 
 -- Exports:
@@ -55,4 +48,5 @@ return Init
 
 --[[
   2025-04-16
+  2025-04-22
 ]]
