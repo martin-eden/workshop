@@ -16,16 +16,10 @@ return
 
     StartingColors =
       {
-        Left =
-          {
-            Top = nil,
-            Bottom = nil,
-          },
-        Right =
-          {
-            Top = nil,
-            Bottom = nil,
-          },
+        LeftTop = nil,
+        RightTop = nil,
+        LeftBottom = nil,
+        RightBottom = nil,
       },
 
     -- [At]
