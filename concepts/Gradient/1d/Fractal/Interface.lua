@@ -1,6 +1,6 @@
 -- 1-d plasm generator interface
 
--- Last mod.: 2025-04-16
+-- Last mod.: 2025-04-23
 
 -- Imports:
 local LinearGenerator = request('^.Linear.Interface')
@@ -16,10 +16,7 @@ local InterfaceExtensions =
     Run = request('Run'),
 
     -- [Internals]
-    MaxDistance = 0.0,
     Plasm = request('Plasm'),
-    CalculateMidwayPixel = request('CalculateMidwayPixel'),
-    GetPixel = request('GetPixel'),
     MakeDistanceNoise = request('MakeDistanceNoise'),
   }
 
@@ -37,4 +34,5 @@ return Interface
   2025-04-05
   2024-04-06
   2024-04-15
+  2025-04-23
 ]]
