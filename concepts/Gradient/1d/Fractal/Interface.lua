@@ -8,16 +8,11 @@ local MergeAndPatch = request('!.table.merge_and_patch')
 
 local InterfaceExtensions =
   {
-    -- [Before]
-    Scale = 1.0,
-    GetDistanceNoiseAmplitude = request('GetDistanceNoiseAmplitude'),
-
     -- [At]
     Run = request('Run'),
 
     -- [Internals]
     Plasm = request('Plasm'),
-    MakeDistanceNoise = request('MakeDistanceNoise'),
   }
 
 local Interface =
