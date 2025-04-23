@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-04-16
+  Last mod.: 2025-04-22
 ]]
 
 -- Imports:
@@ -21,7 +21,7 @@ local InterfaceExtensions =
     -- [Internals]
     MaxDistance = 1.0,
     Plasm = request('Plasm'),
-    SpawnMiddlePoint = request('SpawnMiddlePoint'),
+    SpawnMidpoint = request('SpawnMidpoint'),
     CalcDistance = request('CalcDistance'),
     ObservePoint = request('ObservePoint'),
   }
@@ -36,4 +36,5 @@ return Interface
   2025-04-11
   2025-04-14
   2025-04-16
+  2025-04-22
 ]]

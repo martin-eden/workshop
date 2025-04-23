@@ -47,8 +47,8 @@ local Plasm =
         return
       end
 
-      self:SpawnMiddlePoint(TopLeft, TopRight)
-      self:SpawnMiddlePoint(BottomLeft, BottomRight)
+      self:SpawnMidpoint(TopLeft, TopRight)
+      self:SpawnMidpoint(BottomLeft, BottomRight)
 
       self:Plasm(Left, Top, SegLen(Left, MidX), Height)
       self:Plasm(MidX, Top, SegLen(MidX, Right), Height)
@@ -58,8 +58,8 @@ local Plasm =
         return
       end
 
-      self:SpawnMiddlePoint(TopLeft, BottomLeft)
-      self:SpawnMiddlePoint(TopRight, BottomRight)
+      self:SpawnMidpoint(TopLeft, BottomLeft)
+      self:SpawnMidpoint(TopRight, BottomRight)
 
       self:Plasm(Left, Top, Width, SegLen(Top, MidY))
       self:Plasm(Left, MidY, Width, SegLen(MidY, Bottom))
