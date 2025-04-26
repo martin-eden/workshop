@@ -8,7 +8,7 @@ local Interface =
     NumGradations = 6,
 
     -- [At]
-    CreateExportFunc = request('CreateExportFunc'),
+    Generate_SetPixel = request('Generate_SetPixel'),
 
     -- [Internals]
     GranulateColor = request('GranulateColor'),

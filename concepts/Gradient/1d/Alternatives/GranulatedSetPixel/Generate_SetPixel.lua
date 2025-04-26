@@ -2,7 +2,7 @@
 
 -- Last mod.: 2025-04-26
 
-local CreateExportFunc =
+local Generate_SetPixel =
   function(Ours, Theirs)
     local NativeSetPixel = Theirs.SetPixel
 
@@ -14,7 +14,7 @@ local CreateExportFunc =
   end
 
 -- Exports:
-return CreateExportFunc
+return Generate_SetPixel
 
 --[[
   2025-04-26
