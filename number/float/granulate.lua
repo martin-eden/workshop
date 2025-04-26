@@ -4,6 +4,8 @@
 
 -- Imports:
 local constrain_ui = request('!.number.constrain_ui')
+local is_natural = request('!.number.is_natural')
+local to_int = math.floor
 
 --[[
   Some abstractions illustration:
@@ -27,12 +29,11 @@ local Granulate =
   function(n, NumBuckets)
     n = constrain_ui(n)
 
-    assert_integer(NumBuckets)
-    assert(NumBuckets >= 1)
+    assert(is_natural(NumBuckets))
 
     local BucketWidth = 1 / NumBuckets
 
-    local BucketOffset = math.floor(n / BucketWidth)
+    local BucketOffset = to_int(n / BucketWidth)
 
     -- Only for <n> == 1.0, <BucketOffset> will be <n>
     if (BucketOffset == NumBuckets) then
