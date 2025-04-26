@@ -6,7 +6,7 @@
 local ClampUi = request('!.number.constrain_ui')
 
 local ObservePixel =
-  function(self, AnotherPoint, OurPoint, Theirs)
+  function(Ours, Theirs, AnotherPoint, OurPoint)
     local Color = new(Theirs:GetPixel(AnotherPoint))
 
     local Distance =
@@ -14,7 +14,7 @@ local ObservePixel =
 
     for ComponentIndex = 1, #Color do
       local ComponentValue =
-        Color[ComponentIndex] + self:MakeDistanceNoise(Distance)
+        Color[ComponentIndex] + Ours:MakeDistanceNoise(Distance)
 
       ComponentValue = ClampUi(ComponentValue)
 
