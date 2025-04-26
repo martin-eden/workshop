@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-04-23
+  Last mod.: 2025-04-26
 ]]
 
 -- Exports:
@@ -28,6 +28,7 @@ return
     SetPixel = request('SetPixel'),
     GetPixel = request('GetPixel'),
     CreatePixel = request('CreatePixel'),
+    CreateExecutionPlan = request('CreateExecutionPlan'),
   }
 
 --[[
@@ -39,4 +40,5 @@ return
   2025-04-15
   2025-04-16
   2025-04-23
+  2025-04-26
 ]]
