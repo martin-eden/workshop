@@ -1,6 +1,6 @@
 -- Stick float number to middle of bucket
 
--- Last mod.: 2025-04-21
+-- Last mod.: 2025-04-26
 
 -- Imports:
 local constrain_ui = request('!.number.constrain_ui')
@@ -10,16 +10,17 @@ local constrain_ui = request('!.number.constrain_ui')
 
     Unit interval is [0.0, 1.0]:
 
-      |-------------------------------|
+       |-------------------------------|
       0.0                             1.0
 
-    For two (2) buckets:
+    For two buckets:
 
-      |--------------||---------------|
-      0.0    0.25    0.5     0.75    1.0
+       |--------------||---------------|
+      0.0    0.25    0.5     0.75     1.0
 
-    So 0.25 and 0.75 appear to be middles for two buckets.
-    And numbers in [0.0, 0.5) will become 0.25, [0.5, 1.0] will be 0.75.
+    So 0.25 and 0.75 are middles of two buckets.
+    And numbers from [0.0, 0.5) will become 0.25,
+    numbers from [0.5, 1.0] will become 0.75.
 ]]
 
 local Granulate =
@@ -29,14 +30,14 @@ local Granulate =
     assert_integer(NumBuckets)
     assert(NumBuckets >= 1)
 
-    -- Rare case n = 1.0, convert to something less than 1:
-    if (n == 1.0) then
-      n = 0.999
-    end
-
     local BucketWidth = 1 / NumBuckets
 
     local BucketOffset = math.floor(n / BucketWidth)
+
+    -- Only for <n> == 1.0, <BucketOffset> will be <n>
+    if (BucketOffset == NumBuckets) then
+      BucketOffset = NumBuckets - 1
+    end
 
     local Result = BucketOffset * BucketWidth + 0.5 * BucketWidth
 
@@ -50,4 +51,5 @@ return Granulate
 
 --[[
   2025-04-18
+  2025-04-26
 ]]
