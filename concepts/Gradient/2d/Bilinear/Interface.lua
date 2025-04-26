@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-04-16
+  Last mod.: 2025-04-26
 ]]
 
 -- Exports:
@@ -30,7 +30,7 @@ return
 
     -- [Internals]
     BaseColor = request('!.concepts.Image.Color.Grayscale'),
-    LinearGenerator = request('!.concepts.Gradient.1d.Linear.Interface'),
+    LinearGenerator = request('!.concepts.Gradient.1d.Interface'),
 
     Init = request('Init'),
     Generate = request('Generate'),
