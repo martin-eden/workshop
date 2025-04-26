@@ -9,6 +9,8 @@ local CreateExportFunc =
   function(Ours)
     return
       function(Theirs, X, Left, Right)
+        -- print('CreatePixel', X, Left, Right)
+
         local LeftColor = Ours:ObservePixel(Left, X, Theirs)
         local RightColor = Ours:ObservePixel(Right, X, Theirs)
         local LeftInfluence = (Right - X) / (Right - Left)
