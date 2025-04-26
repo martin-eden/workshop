@@ -9,7 +9,7 @@ local ToInt = math.floor
 
 local Denormalize =
   function(Color)
-    local Eps = 1e-20
+    local Eps = 1e-10
 
     local DestRange = { 0, 256 - Eps }
     local SourceRange = { 0.0, 1.0 }
