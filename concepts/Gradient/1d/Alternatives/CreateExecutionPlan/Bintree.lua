@@ -5,6 +5,17 @@
 -- Imports:
 local GetIntMid = request('!.number.integer.get_middle')
 
+--[[
+
+   1   2   3   4   5
+  [L] [.] [.] [.] [R]
+
+  produces
+
+    (3 1 5)
+    (2 1 3)
+    (4 3 5)
+]]
 local Divide
 Divide =
   function(Left, Right, Result)

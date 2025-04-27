@@ -2,6 +2,17 @@
 
 -- Last mod.: 2025-04-27
 
+--[[
+
+   1   2   3   4   5
+  [L] [.] [.] [.] [R]
+
+  produces
+
+    (2 1 5)
+    (4 2 5)
+    (3 2 4)
+]]
 local RollineEgdesPlan =
   function(self)
     if (self.Line.Length <= 2) then
