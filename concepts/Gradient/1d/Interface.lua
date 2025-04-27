@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-04-26
+  Last mod.: 2025-04-27
 ]]
 
 -- Exports:
@@ -28,7 +28,7 @@ return
     SetPixel = request('SetPixel'),
     GetPixel = request('GetPixel'),
     CreatePixel = request('CreatePixel'),
-    CreateExecutionPlan = request('CreateExecutionPlan'),
+    CreateExecutionPlan = request('Alternatives.CreateExecutionPlan.Independent'),
   }
 
 --[[
