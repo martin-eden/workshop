@@ -36,10 +36,10 @@ local Init =
 
     -- Set corner pixels to starting colors
     do
-      self:SetPixel(self.StartingColors.LeftTop, LeftTop)
-      self:SetPixel(self.StartingColors.RightTop, RightTop)
-      self:SetPixel(self.StartingColors.LeftBottom, LeftBottom)
-      self:SetPixel(self.StartingColors.RightBottom, RightBottom)
+      self:SetPixel(LeftTop, self.StartingColors.LeftTop)
+      self:SetPixel(RightTop, self.StartingColors.RightTop)
+      self:SetPixel(LeftBottom, self.StartingColors.LeftBottom)
+      self:SetPixel(RightBottom, self.StartingColors.RightBottom)
     end
   end
 

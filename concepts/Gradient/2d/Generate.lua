@@ -1,6 +1,6 @@
 -- 2-d bilinear gradient generator
 
--- Last mod.: 2025-04-16
+-- Last mod.: 2025-04-27
 
 local Generate =
   function(self, Left, Top, Width, Height)
@@ -44,7 +44,8 @@ local Generate =
 
       for Index = 2, LinearGenerator.Line.Length - 1 do
         self:SetPixel(
-          LinearGenerator.Line[Index], { X = Left + Index - 1, Y = Top }
+          { X = Left + Index - 1, Y = Top },
+          LinearGenerator.Line[Index]
         )
       end
     end
@@ -60,7 +61,8 @@ local Generate =
 
       for Index = 2, LinearGenerator.Line.Length - 1 do
         self:SetPixel(
-          LinearGenerator.Line[Index], { X = Left + Index - 1, Y = Bottom }
+          { X = Left + Index - 1, Y = Bottom },
+          LinearGenerator.Line[Index]
         )
       end
     end
@@ -77,7 +79,8 @@ local Generate =
 
         for Index = 2, LinearGenerator.Line.Length - 1 do
           self:SetPixel(
-            LinearGenerator.Line[Index], { X = X, Y = Top + Index - 1 }
+            { X = X, Y = Top + Index - 1 },
+            LinearGenerator.Line[Index]
           )
         end
       end
@@ -90,4 +93,5 @@ return Generate
 --[[
   2024-04-15
   2024-04-16
+  2025-04-27
 ]]
