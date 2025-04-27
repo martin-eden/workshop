@@ -9,7 +9,7 @@ local Matrix_SetColor = request('!.concepts.Image.Matrix.SetColor')
   Set pixel's color in image
 ]]
 local SetColor =
-  function(self, Color, Point)
+  function(self, Point, Color)
     Matrix_SetColor(self.Image, { Point.Y, Point.X }, Color)
   end
 
