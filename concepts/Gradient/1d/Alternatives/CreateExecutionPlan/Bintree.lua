@@ -24,7 +24,6 @@ Divide =
     Divide(Mid, Right, Result)
   end
 
-
 local CreateExecutionPlan =
   function(self)
     local Left = 1
