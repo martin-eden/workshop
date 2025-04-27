@@ -1,11 +1,14 @@
 -- Set pixel's color in our image
 
--- Last mod.: 2025-04-23
+-- Last mod.: 2025-04-27
 
--- Export:
+-- Imports:
+local Line_SetColor = request('!.concepts.Image.Line.SetColor')
+
+-- Exports:
 return
   function(self, Index, Color)
-    self.Line[Index] = self.Line[Index] or Color
+    Line_SetColor(self.Line, Index, Color)
   end
 
 --[[
@@ -13,4 +16,5 @@ return
   2025-04-05
   2025-04-16
   2025-04-23
+  2025-04-27
 ]]
