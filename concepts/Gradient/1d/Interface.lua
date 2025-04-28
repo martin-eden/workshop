@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-04-27
+  Last mod.: 2025-04-28
 ]]
 
 -- Exports:
@@ -25,6 +25,7 @@ return
     BaseColor = nil,
 
     Init = request('Init'),
+    Generate = request('Generate'),
     SetPixel = request('SetPixel'),
     GetPixel = request('GetPixel'),
     CreatePixel = request('CreatePixel'),
@@ -41,4 +42,5 @@ return
   2025-04-16
   2025-04-23
   2025-04-26
+  2025-04-28
 ]]
