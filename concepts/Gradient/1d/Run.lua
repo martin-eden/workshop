@@ -1,6 +1,8 @@
 -- Linear 1-d generator
 
--- Last mod.: 2025-04-25
+-- Last mod.: 2025-04-28
+
+local t2s = request('!.table.as_string')
 
 --[[
   Generate linear gradient between two points
@@ -10,13 +12,7 @@
 local Run =
   function(self)
     self:Init()
-
-    local Plan = self:CreateExecutionPlan()
-
-    for Index, Args in ipairs(Plan) do
-      self:CreatePixel(Args[1], Args[2], Args[3])
-      -- ^ or just "(table.unpack(Args))"
-    end
+    self:Generate()
   end
 
 -- Exports:
@@ -27,4 +23,5 @@ return Run
   2025-04-15
   2025-04-23
   2025-04-25
+  2025-04-28
 ]]
