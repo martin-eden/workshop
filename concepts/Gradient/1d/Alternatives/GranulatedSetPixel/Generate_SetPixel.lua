@@ -1,6 +1,6 @@
 -- Generate .SetPixel() replacement
 
--- Last mod.: 2025-04-26
+-- Last mod.: 2025-04-28
 
 local Generate_SetPixel =
   function(Ours, Theirs)
@@ -8,7 +8,10 @@ local Generate_SetPixel =
 
     return
       function(self, Point, Color)
-        Ours:GranulateColor(Color)
+        if Color then
+          Ours:GranulateColor(Color)
+        end
+
         NativeSetPixel(self, Point, Color)
       end
   end
@@ -18,4 +21,5 @@ return Generate_SetPixel
 
 --[[
   2025-04-26
+  2025-04-28
 ]]
