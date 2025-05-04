@@ -1,89 +1,49 @@
 -- 2-d bilinear gradient generator
 
--- Last mod.: 2025-04-27
+-- Last mod.: 2025-04-29
+
+local t2s = request('!.table.as_string')
+local OutputFile = request('!.concepts.StreamIo.Output.File')
+local PpmCodec = request('!.concepts.Netpbm.Interface')
 
 local Generate =
-  function(self, Left, Top, Width, Height)
+  function(self)
     --[[
       Task is to calculate gradient filling of image rectangle
       specified by corner colors.
-
-      We can use sexy recursive filling:
-        * find longest sides (width or height)
-        * set middle pixels of longest sides
-        * call itself for two rectangles (with common side
-          at middles of longest sides)
-
-      Currently this algorithm is used in fractal noise generation.
-      We want decreasing rectangle sides there to generate local noise.
-
-      But more dumber algorithm is just
-        * build linear gradients at top and bottom (or at left and right,
-          does not matter)
-        * build linear gradients between top and bottom
-
-      We use last one because thus way we can better reuse linear
-      gradient generator.
     ]]
 
-    local LinearGenerator = self.LinearGenerator
+    local Plan = self:CreateExecutionPlan()
 
-    LinearGenerator.ColorFormat = self.ColorFormat
+    for PlanEntryIndex, PlanEntry in ipairs(Plan) do
+      local Mode = PlanEntry[1]
 
-    local Right = Left + Width - 1
-    local Bottom = Top + Height - 1
-
-    -- Top rail
-    do
-      LinearGenerator.LineLength = Width
-
-      LinearGenerator.LeftColor = self:GetPixel({ X = Left, Y = Top })
-      LinearGenerator.RightColor = self:GetPixel({ X = Right, Y = Top })
-
-      LinearGenerator:Run()
-
-      for Index = 2, LinearGenerator.Line.Length - 1 do
-        self:SetPixel(
-          { X = Left + Index - 1, Y = Top },
-          LinearGenerator.Line[Index]
-        )
+      if (Mode == 'H') then
+        self:HStroke(PlanEntry[2], PlanEntry[3], PlanEntry[4])
+      elseif (Mode == 'V') then
+        self:VStroke(PlanEntry[2], PlanEntry[3], PlanEntry[4])
       end
-    end
 
-    -- Bottom rail
-    do
-      LinearGenerator.LineLength = Width
+      --[[
+      do
+        local Mode = PlanEntry[1]
+        local What = PlanEntry[2]
+        local From = PlanEntry[3]
+        local To = PlanEntry[4]
 
-      LinearGenerator.LeftColor = self:GetPixel({ X = Left, Y = Bottom })
-      LinearGenerator.RightColor = self:GetPixel({ X = Right, Y = Bottom })
+        local FileName =
+          ('%d_%s_%d__%d_%d.ppm'):
+          format(PlanEntryIndex, Mode, What, From, To)
 
-      LinearGenerator:Run()
+        OutputFile:Open(FileName)
 
-      for Index = 2, LinearGenerator.Line.Length - 1 do
-        self:SetPixel(
-          { X = Left + Index - 1, Y = Bottom },
-          LinearGenerator.Line[Index]
-        )
+        PpmCodec.Output = OutputFile
+        PpmCodec.Settings.ColorFormat = self.ColorFormat
+        PpmCodec:Save(self.Image)
+
+        OutputFile:Close()
       end
-    end
-
-    -- Lines between rails
-    do
-      LinearGenerator.LineLength = Height
-
-      for X = Left, Right do
-        LinearGenerator.LeftColor = self:GetPixel({ X = X, Y = Top })
-        LinearGenerator.RightColor = self:GetPixel({ X = X, Y = Bottom})
-
-        LinearGenerator:Run()
-
-        for Index = 2, LinearGenerator.Line.Length - 1 do
-          self:SetPixel(
-            { X = X, Y = Top + Index - 1 },
-            LinearGenerator.Line[Index]
-          )
-        end
-      end
+      --]]
     end
   end
 
@@ -94,4 +54,6 @@ return Generate
   2024-04-15
   2024-04-16
   2025-04-27
+  2025-04-28
+  2025-04-29
 ]]

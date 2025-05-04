@@ -1,6 +1,6 @@
 -- Setup internal fields, set pixels in image corners
 
--- Last mod.: 2025-04-22
+-- Last mod.: 2025-04-29
 
 -- Imports:
 local SpawnColor = request('!.concepts.Image.Color.SpawnColor')
@@ -29,10 +29,18 @@ local Init =
     self.Image.Width = self.ImageWidth
     self.Image.Height = self.ImageHeight
 
-    local LeftTop = { X = 1, Y = 1 }
-    local RightTop = { X = self.ImageWidth, Y = 1 }
-    local LeftBottom = { X = 1, Y = self.ImageHeight }
-    local RightBottom = { X = self.ImageWidth, Y = self.ImageHeight }
+    self.LinearGenerator.ColorFormat = self.ColorFormat
+    self.LinearGenerator.LineLength = self.ImageWidth
+
+    local Left = 1
+    local Top = 1
+    local Right = self.ImageWidth
+    local Bottom = self.ImageHeight
+
+    local LeftTop = { X = Left, Y = Top }
+    local RightTop = { X = Right, Y = Top }
+    local LeftBottom = { X = Left, Y = Bottom }
+    local RightBottom = { X = Right, Y = Bottom }
 
     -- Set corner pixels to starting colors
     do
@@ -40,6 +48,15 @@ local Init =
       self:SetPixel(RightTop, self.StartingColors.RightTop)
       self:SetPixel(LeftBottom, self.StartingColors.LeftBottom)
       self:SetPixel(RightBottom, self.StartingColors.RightBottom)
+    end
+
+    -- Draw box on that corner pixels
+    do
+      self:HStroke(Top, Left, Right)
+      self:HStroke(Bottom, Left, Right)
+
+      self:VStroke(Left, Top, Bottom)
+      self:VStroke(Right, Top, Bottom)
     end
   end
 
@@ -49,4 +66,5 @@ return Init
 --[[
   2025-04-16
   2025-04-22
+  2025-04-29
 ]]
