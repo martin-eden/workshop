@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-04-26
+  Last mod.: 2025-05-04
 ]]
 
 -- Exports:
@@ -29,7 +29,7 @@ return
     Image = {},
 
     -- [Internals]
-    BaseColor = request('!.concepts.Image.Color.Grayscale'),
+    BaseColor = nil,
     LinearGenerator = request('!.concepts.Gradient.1d.Interface'),
 
     Init = request('Init'),
@@ -37,9 +37,14 @@ return
 
     SetPixel = request('SetPixel'),
     GetPixel = request('GetPixel'),
+
+    CreateExecutionPlan = request('CreateExecutionPlan'),
+
+    HStroke = request('HStroke'),
+    VStroke = request('VStroke'),
   }
 
 --[[
-  2025-04-15
-  2025-04-16
+  2025-04 # # # #
+  2025-05-04
 ]]
