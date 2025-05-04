@@ -1,18 +1,14 @@
 -- Generate .SetPixel() replacement
 
--- Last mod.: 2025-04-28
+-- Last mod.: 2025-05-06
 
 local Generate_SetPixel =
   function(Ours, Theirs)
-    local NativeSetPixel = Theirs.SetPixel
+    Ours.NativeSetPixel = Theirs.SetPixel
 
     return
-      function(self, Point, Color)
-        if Color then
-          Ours:GranulateColor(Color)
-        end
-
-        NativeSetPixel(self, Point, Color)
+      function(...)
+        Ours:SetPixel(...)
       end
   end
 
@@ -20,6 +16,6 @@ local Generate_SetPixel =
 return Generate_SetPixel
 
 --[[
-  2025-04-26
-  2025-04-28
+  2025-04 # #
+  2025-05-06
 ]]
