@@ -30,7 +30,7 @@ return
 
     -- [Internals]
     BaseColor = nil,
-    LinearGenerator = request('!.concepts.Gradient.1d.Interface'),
+    LinearGenerator = nil,
 
     Init = request('Init'),
     Generate = request('Generate'),

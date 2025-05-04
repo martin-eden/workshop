@@ -1,11 +1,20 @@
 -- Setup internal fields, set pixels in image corners
 
--- Last mod.: 2025-04-29
+-- Last mod.: 2025-05-06
 
 -- Imports:
 local SpawnColor = request('!.concepts.Image.Color.SpawnColor')
 local RandomizeColor = request('!.concepts.Image.Color.Randomize')
+local LinearGenerator = request('!.concepts.Gradient.1d.Interface')
 
+--[[
+  Setup object.
+
+  Uses <ColorFormat>, maybe <StartingColors>.
+
+  Sets <BaseColor>, maybe <LinearGenerator>, <StartingColors>.
+  Draws border lines on image rectangle.
+]]
 local Init =
   function(self)
     self.BaseColor = SpawnColor(self.ColorFormat)
@@ -28,6 +37,8 @@ local Init =
 
     self.Image.Width = self.ImageWidth
     self.Image.Height = self.ImageHeight
+
+    self.LinearGenerator = self.LinearGenerator or LinearGenerator
 
     self.LinearGenerator.ColorFormat = self.ColorFormat
     self.LinearGenerator.LineLength = self.ImageWidth
@@ -64,7 +75,6 @@ local Init =
 return Init
 
 --[[
-  2025-04-16
-  2025-04-22
-  2025-04-29
+  2025-04 # # #
+  2025-05-06
 ]]
