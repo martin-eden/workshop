@@ -10,7 +10,7 @@ local ObservePixel =
     local Color = new(Theirs:GetPixel(AnotherPoint))
 
     local Distance =
-      math.abs(OurPoint - AnotherPoint) / (Theirs.Line.Length - 1)
+      math.abs(OurPoint - AnotherPoint) / Ours.PixelsPerDistance
 
     for ComponentIndex = 1, #Color do
       local ComponentValue =

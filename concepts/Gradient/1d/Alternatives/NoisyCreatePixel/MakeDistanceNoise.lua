@@ -1,6 +1,6 @@
 -- Distance noise calculation
 
--- Last mod.: 2025-04-16
+-- Last mod.: 2025-04-28
 
 -- Imports:
 local ClampUi = request('!.number.constrain_ui')
@@ -10,7 +10,7 @@ local ClampSui = request('!.number.constrain_sui')
 -- Noise function [0.0, 1.0] -> [-1.0, 1.0]
 local MakeDistanceNoise =
   function(self, Distance)
-    Distance = ClampUi(Distance * self.Scale)
+    Distance = ClampUi(Distance)
 
     local Noise =
       self:GetDistanceNoiseAmplitude(Distance) * SymmetricRandom()
@@ -28,4 +28,5 @@ return MakeDistanceNoise
   2024-11-06
   2024-11-24
   2025-04-16
+  2025-04-28
 ]]

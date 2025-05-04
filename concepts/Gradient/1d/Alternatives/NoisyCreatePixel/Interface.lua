@@ -1,12 +1,12 @@
 -- Export CreatePixel() function that introduces distance noise
 
--- Last mod.: 2025-04-26
+-- Last mod.: 2025-04-28
 
 -- Exports:
 return
   {
     -- [Before]
-    Scale = 1.0,
+    PixelsPerDistance = 400,
     GetDistanceNoiseAmplitude = request('GetDistanceNoiseAmplitude'),
 
     -- [At]
@@ -21,4 +21,5 @@ return
 --[[
   2025-04-23
   2025-04-26
+  2025-04-28
 ]]
