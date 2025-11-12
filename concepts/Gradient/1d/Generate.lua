@@ -1,8 +1,8 @@
 -- Generate linear gradient between two points
 
--- Last mod.: 2025-04-28
+-- Last mod.: 2025-11-12
 
-local t2s = request('!.table.as_string')
+-- local t2s = request('!.table.as_string')
 
 local Generate =
   function(self)
