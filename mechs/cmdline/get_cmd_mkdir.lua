@@ -4,14 +4,24 @@
   GNU/bash assumed.
 ]]
 
--- Last mod.: 2024-10-21
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-12
+]]
+
+local CommandFmt = 'mkdir -p %s'
+
+local QuoteFilename = request('quote_filename')
 
 return
-  function(dir_name)
-    return ('mkdir -p %q'):format(dir_name)
+  function(DirName)
+    DirName = QuoteFilename(DirName)
+    local Command = string.format(CommandFmt, DirName)
+    return Command
   end
 
 --[[
   2018-02-05
   2024-10-21
+  2026-01-12
 ]]
