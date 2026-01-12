@@ -23,11 +23,38 @@
 local EscapeQuote = request('escape_quote')
 local EscapeDollar = request('escape_dollar')
 
+-- Return true if file name contains symbols that require quoting
+local NeedsQuoting =
+  function(FileName)
+    --[[
+      Implementation uses plan-text scan
+
+      We can use regexps to check for ["], [$] and [ ] in one run
+      but today I value code clarity more than performance.
+    ]]
+    if string.find(FileName, '"', 1, true) then
+      return true
+    end
+
+    if string.find(FileName, '$', 1, true) then
+      return true
+    end
+
+    if string.find(FileName, ' ', 1, true) then
+      return true
+    end
+
+    return false
+  end
+
 local QuoteFilename =
-  function(s)
-    s = EscapeQuote(s)
-    s = EscapeDollar(s)
-    return '"' .. s .. '"'
+  function(FileName)
+    if not NeedsQuoting(FileName) then
+      return FileName
+    end
+    FileName = EscapeQuote(FileName)
+    FileName = EscapeDollar(FileName)
+    return '"' .. FileName .. '"'
   end
 
 return QuoteFilename
