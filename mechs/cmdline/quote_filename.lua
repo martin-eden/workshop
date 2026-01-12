@@ -17,34 +17,47 @@
   "%q" is for Lua. "$" is okay in Lua string. But not in Bash
   commands. There it's used as variable name prefix
 
-  So this function is written to handle ["] and [$] without hacks.
+  So this function is written to handle ["] and [$] (and others!)
+  without hacks.
 ]]
 
-local EscapeQuote = request('escape_quote')
-local EscapeDollar = request('escape_dollar')
+local CharactersToQuote =
+  {
+    ' ',
+    '"',
+    '$',
+    '`',
+  }
+
+local EscapeCharacter = [[\]]
+
+local CharsToQuoteStr = table.concat(CharactersToQuote)
+
+local QuoteRegexp = request('!.lua.regexp.quote')
+local CharsToQuoteRegexpSet = '[' .. QuoteRegexp(CharsToQuoteStr) .. ']'
+local CharToQuoteCapture = '(' .. CharsToQuoteRegexpSet .. ')'
+
+local HasCharsFromRegexpSet =
+  function(s, RegexpSetStr)
+    return (string.find(s, RegexpSetStr) ~= nil)
+  end
 
 -- Return true if file name contains symbols that require quoting
 local NeedsQuoting =
   function(FileName)
+    return HasCharsFromRegexpSet(FileName, CharsToQuoteRegexpSet)
+  end
+
+-- "Defuse" all special characters
+local Defuse =
+  function(FileName)
     --[[
-      Implementation uses plan-text scan
+      Example data:
 
-      We can use regexps to check for ["], [$] and [ ] in one run
-      but today I value code clarity more than performance.
+        string.gsub('a`b', '([ "$`])', '\%1') -> 'a\`b'
+
     ]]
-    if string.find(FileName, '"', 1, true) then
-      return true
-    end
-
-    if string.find(FileName, '$', 1, true) then
-      return true
-    end
-
-    if string.find(FileName, ' ', 1, true) then
-      return true
-    end
-
-    return false
+    return string.gsub(FileName, CharToQuoteCapture, EscapeCharacter .. '%1')
   end
 
 local QuoteFilename =
@@ -52,9 +65,7 @@ local QuoteFilename =
     if not NeedsQuoting(FileName) then
       return FileName
     end
-    FileName = EscapeQuote(FileName)
-    FileName = EscapeDollar(FileName)
-    return '"' .. FileName .. '"'
+    return '"' .. Defuse(FileName) .. '"'
   end
 
 return QuoteFilename
