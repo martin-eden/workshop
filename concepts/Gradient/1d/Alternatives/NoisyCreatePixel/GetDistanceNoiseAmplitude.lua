@@ -1,6 +1,6 @@
 -- Get noise amplitude
 
--- Last mod.: 2025-04-16
+-- Last mod.: 2026-01-13
 
 --[[
   Distance-dependent noise amplitude function
@@ -18,7 +18,9 @@ local GetNoiseAmplitude =
       For human-pleasant results we _don't_ want linearity:
 
         For half-distance result ought to be larger or smaller
-        than half-result for distance.
+        than half-result for distance:
+
+          Noise(Distance / 2) != Noise(Distance) / 2
 
       Try wilder functions!
     ]]
