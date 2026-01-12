@@ -4,14 +4,25 @@
   GNU/bash assumed.
 ]]
 
--- Last mod.: 2024-10-21
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-12
+]]
+
+local CommandFmt = 'cp %s %s'
+
+local QuoteFilename = request('quote_filename')
 
 return
-  function(src_name, dest_name)
-    return ('cp %q %q'):format(src_name, dest_name)
+  function(SourceName, DestName)
+    SourceName = QuoteFilename(SourceName)
+    DestName = QuoteFilename(DestName)
+    local Command = string.format(CommandFmt, SourceName, DestName)
+    return Command
   end
 
 --[[
   2018-02-05
   2024-10-21
+  2026-01-12
 ]]

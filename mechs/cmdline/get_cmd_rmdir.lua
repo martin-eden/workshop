@@ -1,14 +1,24 @@
 -- Return shell command to delete directory. GNU/bash assumed.
 
--- Last mod.: 2024-10-21
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-12
+]]
+
+local CommandFmt = 'rm -r %s'
+
+local QuoteFilename = request('quote_filename')
 
 return
-  function(dir_name)
-    return ('rm -r %q'):format(dir_name)
+  function(DirName)
+    DirName = QuoteFilename(DirName)
+    local Command = string.format(CommandFmt, DirName)
+    return Command
   end
 
 --[[
   2018-12-08
   2024-02-17
   2024-10-21
+  2026-01-12
 ]]

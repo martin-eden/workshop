@@ -4,14 +4,24 @@
   GNU/Bash assumed.
 ]]
 
--- Last mod.: 2024-10-21
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-12
+]]
+
+local CommandFmt = 'find %s -maxdepth 1 -type d'
+
+local QuoteFilename = request('quote_filename')
 
 return
-  function(dir_name)
-    return ('find %q -maxdepth 1 -type d'):format(dir_name)
+  function(DirName)
+    DirName = QuoteFilename(DirName)
+    local Command = string.format(CommandFmt, DirName)
+    return Command
   end
 
 --[[
   2019-12-01
   2024-10-21
+  2026-01-12
 ]]
