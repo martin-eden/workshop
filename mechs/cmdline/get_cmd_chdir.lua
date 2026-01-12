@@ -7,7 +7,7 @@
 
 local CommandFmt = 'cd %s'
 
-local QuoteFilename = request('quote_filename')
+local QuoteFilename = request('!.concepts.BashString.Quote')
 
 return
   function(Path)

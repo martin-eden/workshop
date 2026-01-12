@@ -11,7 +11,7 @@
 
 local CommandFmt = 'mv %s %s'
 
-local QuoteFilename = request('quote_filename')
+local QuoteFilename = request('!.concepts.BashString.Quote')
 
 return
   function(SourceName, DestName)
