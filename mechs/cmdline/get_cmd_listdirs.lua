@@ -11,7 +11,7 @@
 
 local CommandFmt = 'find %s -maxdepth 1 -type d'
 
-local QuoteFilename = request('quote_filename')
+local QuoteFilename = request('!.concepts.BashString.Quote')
 
 return
   function(DirName)
