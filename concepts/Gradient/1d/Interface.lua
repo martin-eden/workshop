@@ -2,45 +2,38 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-04-28
+  Last mod.: 2026-01-13
 ]]
 
 -- Exports:
 return
   {
-    -- [Before]
+    -- [In]
     ColorFormat = 'Gs',
     LineLength = 30,
 
     LeftColor = nil,
     RightColor = nil,
 
-    -- [At]
+    -- [Run]
     Run = request('Run'),
 
-    -- [After]
+    -- [Out]
     Line = {},
 
     -- [Internals]
     BaseColor = nil,
 
     Init = request('Init'),
-    Generate = request('Generate'),
     SetPixel = request('SetPixel'),
     GetPixel = request('GetPixel'),
     CreatePixel = request('CreatePixel'),
     CreateExecutionPlan = request('Alternatives.CreateExecutionPlan.Independent'),
+    ExecutePlan = request('ExecutePlan'),
   }
 
 --[[
-  2024-09 #
-  2024-11 # #
-  2025-03 #
-  2025-04-05
-  2025-04-06
-  2025-04-15
-  2025-04-16
-  2025-04-23
-  2025-04-26
-  2025-04-28
+  2024 # # #
+  2025 # # # # # # # #
+  2026 #
 ]]
