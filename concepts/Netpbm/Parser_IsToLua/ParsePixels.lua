@@ -1,6 +1,12 @@
 -- Parse raw pixels data
 
--- Last mod.: 2024-11-25
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-15
+]]
+
+-- Imports:
+local ImageBase = request('!.concepts.Image.Interface')
 
 --[=[
   Parse raw pixels data.
@@ -11,23 +17,22 @@
 ]=]
 local ParsePixels =
   function(self, DataIs)
-    local Matrix = {}
+    local Image = new(ImageBase)
 
-    for RowIndex, Row in ipairs(DataIs) do
-      Matrix[RowIndex] = {}
-
-      for ColumnIndex, PixelIs in ipairs(Row) do
-        local Pixel = self:ParsePixel(PixelIs)
+    for Y = 1, #DataIs do
+      local Row = DataIs[Y]
+      for X = 1, #Row do
+        local Pixel = self:ParsePixel(Row[X])
 
         if not Pixel then
           return
         end
 
-        Matrix[RowIndex][ColumnIndex] = Pixel
+        Image:SetPixel({Y, X}, Pixel)
       end
     end
 
-    return Matrix
+    return Image
   end
 
 -- Exports:
@@ -36,4 +41,5 @@ return ParsePixels
 --[[
   2024-11-03
   2024-11-25
+  2026-01-15
 ]]
