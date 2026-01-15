@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-01-14
+  Last mod.: 2026-01-15
 ]]
 
 --[[
@@ -37,6 +37,10 @@ return
     GetPixel = GetPixel_Dummy,
     SetPixel = SetPixel_Dummy,
     Data = {},
+    Settings = request('Settings.Interface'),
   }
 
--- 2026-01-14
+--[[
+  2026-01-14
+  2026-01-15
+]]
