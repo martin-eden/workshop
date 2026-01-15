@@ -1,6 +1,23 @@
 -- Bintree execution plan for 2-d
 
--- Last mod.: 2025-04-28
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-14
+]]
+
+--[[
+  Contract
+
+  Function receives corners of screen rectangle.
+
+  Screen rectangle is defined by Left, Top, Width and Height.
+
+  Function asks to create some pixels inside that rectangle
+  and then implementation calls same function for smaller rectangle.
+
+  Function result is sequence of pixels to create.
+  That chain of actions is based of initial corner pixels.
+]]
 
 -- Imports:
 local IntMid = request('!.number.integer.get_middle')
@@ -8,60 +25,83 @@ local SegLen = request('!.number.integer.get_segment_length')
 
 local Divide
 Divide =
-  function(Left, Top, Width, Height, Result)
-    -- print('Divide', Left, Top, Width, Height)
+  function(Left, Top, Width, Height, AlsoFillLeft, AlsoFillTop, Result)
+    --[[
+      There is beauty in this quasi-symmetry
 
-    if (Width <= 2) then
-      return
-    end
+      Maybe one day I can express it better.
+    ]]
 
-    if (Height <= 2) then
-      return
-    end
+    -- print(Width, Height, Left, Top, AlsoFillLeft, AlsoFillTop)
 
     local Right = Left + Width - 1
     local Bottom = Top + Height - 1
 
     if (Width >= Height) then
+      if (Width <= 2) then
+        return
+      end
+
       local MidX = IntMid(Left, Right)
 
-      if (MidX == Left) then
+      -- Create middle pixels at roof and floor
+      do
+        if AlsoFillTop then
+          table.insert(
+            Result,
+            { { Top, MidX }, { Top, Left }, { Top, Right } }
+          )
+        end
+
+        table.insert(
+          Result,
+          { { Bottom, MidX }, { Bottom, Left }, { Bottom, Right } }
+        )
+      end
+
+      Divide(Left, Top, SegLen(Left, MidX), Height, AlsoFillLeft, AlsoFillTop, Result)
+      Divide(MidX, Top, SegLen(MidX, Right), Height, false, AlsoFillTop, Result)
+    else
+      if (Height <= 2) then
         return
       end
 
-      table.insert(Result, { 'V', MidX, Top, Bottom })
-
-      Divide(Left, Top, SegLen(Left, MidX), Height, Result)
-      Divide(MidX, Top, SegLen(MidX, Right), Height, Result)
-
-    else
       local MidY = IntMid(Top, Bottom)
 
-      if (MidY == Top) then
-        return
+      -- Create middle pixels at left and right walls
+      do
+        if AlsoFillLeft then
+          table.insert(
+            Result,
+            { { MidY, Left }, { Top, Left }, { Bottom, Left } }
+          )
+        end
+
+        table.insert(
+          Result,
+          { { MidY, Right }, { Top, Right }, { Bottom, Right } }
+        )
       end
 
-      table.insert(Result, { 'H', MidY, Left, Right })
-
-      Divide(Left, Top, Width, SegLen(Top, MidY), Result)
-      Divide(Left, MidY, Width, SegLen(MidY, Bottom), Result)
+      Divide(Left, Top, Width, SegLen(Top, MidY), AlsoFillLeft, AlsoFillTop, Result)
+      Divide(Left, MidY, Width, SegLen(MidY, Bottom), AlsoFillLeft, false, Result)
     end
   end
 
 local CreateBintreePlan2d =
   function(self)
     local Left = 1
-    local Right = self.Image.Width
+    local Right = self.ImageWidth
 
     local Top = 1
-    local Bottom = self.Image.Height
+    local Bottom = self.ImageHeight
 
     local Width = Right - Left + 1
     local Height = Bottom - Top + 1
 
     local Result = {}
 
-    Divide(Left, Top, Width, Height, Result)
+    Divide(Left, Top, Width, Height, true, true, Result)
 
     return Result
   end
@@ -71,4 +111,5 @@ return CreateBintreePlan2d
 
 --[[
   2025-04-28
+  2026-01-13
 ]]
