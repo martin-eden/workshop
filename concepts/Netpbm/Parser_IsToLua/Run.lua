@@ -1,6 +1,9 @@
 -- Gets structure as grouped strings. Returns table with nice names
 
--- Last mod.: 2025-03-31
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-15
+]]
 
 --[[
   Custom Lua format
@@ -47,13 +50,13 @@ return
       return
     end
 
-    Image.Height = #Image
-    Image.Width = #Image[1]
+    Image.Settings.Height = #Image.Data
+    Image.Settings.Width = #Image.Data[1]
 
     do
       local FormatLabel = DataIs[1]
       self.Settings:SetFormatLabel(FormatLabel)
-      Image.Format = self.Settings.ColorFormat
+      Image.Settings.Format = self.Settings.ColorFormat
     end
 
     return Image
@@ -62,4 +65,5 @@ return
 --[[
   2024-11 # # #
   2025-03-31
+  2026-01-15
 ]]
