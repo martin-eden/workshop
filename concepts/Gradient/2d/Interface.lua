@@ -2,13 +2,16 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-05-04
+  Last mod.: 2026-01-14
 ]]
 
--- Exports:
-return
+-- Imports:
+local BaseInterface = request('^.Interface')
+local Merge = request('!.table.merge')
+
+local Interface =
   {
-    -- [Before]
+    -- [In]
     ColorFormat = 'Gs',
 
     ImageWidth = 5,
@@ -22,29 +25,24 @@ return
         RightBottom = nil,
       },
 
-    -- [At]
+    -- [Run]
     Run = request('Run'),
-
-    -- [After]
-    Image = {},
 
     -- [Internals]
     BaseColor = nil,
-    LinearGenerator = nil,
 
     Init = request('Init'),
-    Generate = request('Generate'),
-
-    SetPixel = request('SetPixel'),
-    GetPixel = request('GetPixel'),
 
     CreateExecutionPlan = request('CreateExecutionPlan'),
-
-    HStroke = request('HStroke'),
-    VStroke = request('VStroke'),
   }
 
+Merge(Interface, BaseInterface)
+
+-- Exports:
+return Interface
+
 --[[
-  2025-04 # # # #
-  2025-05-04
+  2025 # # # # #
+  2026 #
+  2026-01-14
 ]]
