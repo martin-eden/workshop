@@ -1,0 +1,12 @@
+No space-filling strategies here
+
+There are dimensions of possibilities. I can think several types of them
+just now. It means there is practical infinity.
+
+I'm not going to make this place code tumor: adding fancy implementations
+with their inevitable idiosyncratic interfaces.
+
+You're on your own. We supply some predictable creation function,
+with what and where call it is up to you.
+
+-- Martin, 2026-01-19
