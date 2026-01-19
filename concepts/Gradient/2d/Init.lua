@@ -53,8 +53,9 @@ local Init =
 
     -- Initialize Image's Width and Height fields
     do
-      self.Image.Data.Width = self.ImageWidth
-      self.Image.Data.Height = self.ImageHeight
+      self.Image.Settings.Width = self.ImageWidth
+      self.Image.Settings.Height = self.ImageHeight
+      self.Image.Settings.ColorFormat = self.ColorFormat
     end
   end
 
