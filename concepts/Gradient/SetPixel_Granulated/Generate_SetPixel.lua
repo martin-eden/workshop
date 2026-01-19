@@ -1,6 +1,9 @@
 -- Generate .SetPixel() replacement
 
--- Last mod.: 2025-05-06
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-19
+]]
 
 local Generate_SetPixel =
   function(Ours, Theirs)
@@ -8,7 +11,7 @@ local Generate_SetPixel =
 
     return
       function(...)
-        Ours:SetPixel(...)
+        Ours.Image:SetPixel(...)
       end
   end
 
