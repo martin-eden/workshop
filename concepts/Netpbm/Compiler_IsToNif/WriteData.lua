@@ -1,6 +1,9 @@
 -- Write pixels to output
 
--- Last mod.: 2025-04-09
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-13
+]]
 
 -- Imports:
 local ListToString = request('!.concepts.List.ToString')
@@ -16,9 +19,11 @@ return
 
     local NumColorsPerDataLine
 
-    if (ColorFormat == 'Rgb') then
+    if (ColorFormat == 'rgb') then
       NumColorsPerDataLine = 4
-    elseif (ColorFormat == 'Gs') then
+    elseif (ColorFormat == 'gs') then
+      NumColorsPerDataLine = 12
+    elseif (ColorFormat == 'bw') then
       NumColorsPerDataLine = 12
     end
 
@@ -58,6 +63,7 @@ return
   end
 
 --[[
-  2024-11 # #
-  2025-04-09
+  2024 # #
+  2025 #
+  2026-01-13
 ]]

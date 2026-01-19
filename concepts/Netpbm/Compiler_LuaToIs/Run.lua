@@ -1,6 +1,9 @@
 -- Anonymize parsed .ppm
 
--- Last mod.: 2025-04-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-13
+]]
 
 --[[
   Compile Lua table with pixels to anonymous structure
@@ -8,14 +11,14 @@
 return
   function(self, Image)
     local MatrixIs = {}
+    local Width = Image.Settings.Width
+    local Height = Image.Settings.Height
 
-    for RowIndex = 1, Image.Height do
-      local Row = Image[RowIndex] or {}
-
+    for RowIndex = 1, Height do
       MatrixIs[RowIndex] = {}
 
-      for ColumnIndex = 1, Image.Width do
-        local Color = Row[ColumnIndex] or {}
+      for ColumnIndex = 1, Width do
+        local Color = Image:GetPixel({RowIndex, ColumnIndex})
 
         local ValueIs = self:CompileColor(Color)
 
@@ -35,4 +38,5 @@ return
   2024-12-12
   2025-03-29
   2025-04-11
+  2026-01-13
 ]]

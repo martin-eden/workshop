@@ -28,7 +28,7 @@
       { { 128, 255, 0 } },
       Height = 2,
       Width = 1,
-      Format = 'Rgb',
+      Format = 'rgb',
     }
 
   On fail it returns nil.
