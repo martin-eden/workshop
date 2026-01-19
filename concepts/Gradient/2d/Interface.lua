@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-01-14
+  Last mod.: 2026-01-15
 ]]
 
 -- Imports:
@@ -12,7 +12,7 @@ local Merge = request('!.table.merge')
 local Interface =
   {
     -- [In]
-    ColorFormat = 'Gs',
+    ColorFormat = 'gs',
 
     ImageWidth = 5,
     ImageHeight = 5,
