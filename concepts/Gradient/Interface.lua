@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-01-14
+  Last mod.: 2026-01-19
 ]]
 
 -- GetPixel() exposure
@@ -24,8 +24,6 @@ return
     -- [Config]
     Image = request('!.concepts.Image.Interface'),
     CreatePixel = request('CreatePixel'),
-    CreateExecutionPlan = request('CreateExecutionPlan'),
-    ExecutePlan = request('ExecutePlan'),
     -- [Run]
     Run = request('Run'),
     -- [Internal]
@@ -33,4 +31,7 @@ return
     SetPixel = SetPixel_Export,
   }
 
--- 2026-01-14
+--[[
+  2026-01-14
+  2026-01-19
+]]
