@@ -1,6 +1,9 @@
 -- Format constants and settings
 
--- Last mod.: 2025-03-30
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-15
+]]
 
 --[[
   That's programmatic description "netpbm" family of formats.
@@ -36,15 +39,15 @@ local FormatLabels =
   {
     Text =
       {
-        Bw = 'P1',
-        Gs = 'P2',
-        Rgb = 'P3',
+        bw = 'P1',
+        gs = 'P2',
+        rgb = 'P3',
       },
     Binary =
       {
-        Bw = 'P4',
-        Gs = 'P5',
-        Rgb = 'P6',
+        bw = 'P4',
+        gs = 'P5',
+        rgb = 'P6',
       },
   }
 
@@ -56,7 +59,7 @@ return
     -- )
 
     -- ( Actual location on that map
-    ColorFormat = 'Rgb',
+    ColorFormat = 'rgb',
     DataEncoding = 'Text',
     GetFormatLabel = request('GetFormatLabel'),
     SetFormatLabel = request('SetFormatLabel'),
@@ -78,4 +81,5 @@ return
   2024-11-02
   2025-03-29
   2025-03-30
+  2026-01-15
 ]]

@@ -1,6 +1,9 @@
 -- Read in .ppm format. Return structure in itness format (grouped strings)
 
--- Last mod.: 2025-03-31
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-15
+]]
 
 --[[
   Normally it returns Lua list with strings and lists.
@@ -67,11 +70,11 @@ local Parse =
     do
       local ColorFormat = self.Settings.ColorFormat
       if
-        (ColorFormat == 'Bw') or
-        (ColorFormat == 'Gs')
+        (ColorFormat == 'bw') or
+        (ColorFormat == 'gs')
       then
         NumColorComponents = 1
-      elseif (ColorFormat == 'Rgb') then
+      elseif (ColorFormat == 'rgb') then
         NumColorComponents = 3
       end
       assert(NumColorComponents)
