@@ -34,7 +34,7 @@ local SumWith =
 -- Imports:
 local t2s = request('!.table.as_string')
 local DistanceTo = request('!.concepts.Geometry.TwoPoints.GetDistance')
-local SpawnPixel = request('!.concepts.Image.Color.SpawnColor')
+local SpawnColor = request('!.concepts.Image.Color.SpawnColor')
 local RandomizeColor = request('!.concepts.Image.Color.Randomize')
 
 --[[
@@ -125,7 +125,7 @@ local CreatePixel =
       print(t2s(Color))
 
       for i = 1, NumParents do
-        local ParentColor = self:GetPixel(Parents[i])
+        local ParentColor = self.Image:GetPixel(Parents[i])
         local ScaledParentColor = new(ParentColor)
         ScaleBy(ParentColor, Influences[i])
 
@@ -138,7 +138,7 @@ local CreatePixel =
     print('Final Color'))
     print(t2s(Color))
 
-    self:SetPixel(NewCoords, Color)
+    self.Image:SetPixel(NewCoords, Color)
   end
 
 -- Exports:
