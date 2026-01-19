@@ -5,18 +5,20 @@
   Last mod.: 2026-01-19
 ]]
 
--- GetPixel() exposure
-local GetPixel_Export =
-  function(self, Path)
-    local Image = self.Image
-    return Image:GetPixel(Path)
-  end
+--[[
+  Fill image
+]]
+local Run_Dummy =
+  function(self)
+    --[[
+      Code for this depends of space-filling strategy
 
--- SetPixel() exposure
-local SetPixel_Export =
-  function(self, Path, Color)
-    local Image = self.Image
-    return Image:SetPixel(Path, Color)
+      Generally you have to set some "parent" pixels in image and
+      then calculate all other pixels somehow based on parent pixels.
+
+      You have CreatePixel() function which calculates and sets
+      pixel given list of parents.
+    ]]
   end
 
 return
@@ -25,10 +27,7 @@ return
     Image = request('!.concepts.Image.Interface'),
     CreatePixel = request('CreatePixel'),
     -- [Run]
-    Run = request('Run'),
-    -- [Internal]
-    GetPixel = GetPixel_Export,
-    SetPixel = SetPixel_Export,
+    Run = Run_Dummy,
   }
 
 --[[
