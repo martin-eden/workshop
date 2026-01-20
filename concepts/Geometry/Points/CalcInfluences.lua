@@ -27,8 +27,19 @@ local CalcInfluences =
     --[[
       Calculate influences for each parent
 
-      Simple case to think is 1-d point C for "ACB". DistancesTo are 1
-      and two parents. So each parent influence is 1 / 2.
+      Simple case to think is 1-d point C for "ACB". Distances are 1
+      to two parents. So each parent influence is 1 / 2.
+
+      2-d example
+
+         C
+         .
+        ADB
+
+      Here we're creating point D. Distances to three parents A B C
+      are 1 1 2.
+
+      Sum of influences should be 1/3 + 1/3 + 1/6
     ]]
     local Influences = {}
     for i = 1, NumParents do
