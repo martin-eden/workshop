@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-01-12
+  Last mod.: 2026-01-21
 ]]
 
 local CommandFmt = 'rm -r %s'
 
-local QuoteFilename = request('quote_filename')
+local QuoteFilename = request('!.concepts.BashString.Quote')
 
 return
   function(DirName)
