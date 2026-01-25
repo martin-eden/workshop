@@ -1,6 +1,9 @@
 -- Write string as line to output
 
--- Last mod.: 2025-04-09
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-26
+]]
 
 -- Exports:
 return
@@ -14,7 +17,8 @@ return
         self.Output:Write('  ')
       end
 
-      self.Output:Write('# ')
+      self.Output:Write(self.Settings.LineCommentChar)
+      self.Output:Write(' ')
       self.Output:Write(Comment)
     end
 
