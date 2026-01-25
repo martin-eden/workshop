@@ -41,7 +41,7 @@
 return
   {
     -- [Internal] Mapping for available format signatures
-    FormatLabels = request('Internal.FormatLabels'),
+    Formats = request('Internal.Formats'),
     -- ( Actual location on that map
     ColorFormat = 'rgb',
     DataEncoding = 'text',
