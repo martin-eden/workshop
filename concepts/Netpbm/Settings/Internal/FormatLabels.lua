@@ -13,13 +13,13 @@
 ]]
 local FormatLabels =
   {
-    Text =
+    text =
       {
         bw = 'P1',
         gs = 'P2',
         rgb = 'P3',
       },
-    Binary =
+    binary =
       {
         bw = 'P4',
         gs = 'P5',
