@@ -31,7 +31,7 @@ local FormatLabels =
             Comment = 'Grayscale, text format',
             NumChannels = 1,
           },
-        rgb = 'P3',
+        rgb =
           {
             Signature = 'P3',
             Comment = 'Color, text format',
