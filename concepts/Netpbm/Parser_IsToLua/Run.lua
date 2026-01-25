@@ -2,34 +2,41 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-01-15
+  Last mod.: 2026-01-25
 ]]
 
 --[[
   Custom Lua format
 
-  Input
+  Example:
 
     1x2 bitmap
 
-    {
-      'P3',
-      { '1', '2', '255' },
       {
-        { { '0', '128', '255' } },
-        { { '128', '255', '0' } },
+        'P3',
+        { '1', '2', '255' },
+        {
+          { { '0', '128', '255' } },
+          { { '128', '255', '0' } },
+        }
       }
-    }
 
-  is converted to
+    is converted to
 
-    {
-      { { 0, 128, 255 } },
-      { { 128, 255, 0 } },
-      Height = 2,
-      Width = 1,
-      Format = 'rgb',
-    }
+      {
+        Settings =
+          {
+            ColorFormat = 'rgb',
+            Width = 1,
+            Height = 2,
+          },
+        -- Actually we don't manage where and how pixels are stored
+        Data =
+          {
+            { { 0, 128, 255 } },
+            { { 128, 255, 0 } },
+          },
+      }
 
   On fail it returns nil.
 
@@ -56,7 +63,7 @@ return
     do
       local FormatLabel = DataIs[1]
       self.Settings:SetFormatLabel(FormatLabel)
-      Image.Settings.Format = self.Settings.ColorFormat
+      Image.Settings.ColorFormat = self.Settings.ColorFormat
     end
 
     return Image

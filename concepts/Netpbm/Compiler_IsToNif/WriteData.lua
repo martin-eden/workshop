@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-01-13
+  Last mod.: 2026-01-25
 ]]
 
 -- Imports:
@@ -13,7 +13,7 @@ return
   function(self, DataIs)
     local Settings = self.Settings
 
-    assert(Settings.DataEncoding == 'Text')
+    assert(Settings.DataEncoding == 'text')
 
     local ColorFormat = Settings.ColorFormat
 

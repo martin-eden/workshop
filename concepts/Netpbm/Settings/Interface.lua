@@ -44,7 +44,7 @@ return
     FormatLabels = request('Internal.FormatLabels'),
     -- ( Actual location on that map
     ColorFormat = 'rgb',
-    DataEncoding = 'Text',
+    DataEncoding = 'text',
     -- )
     -- Get format signature from Color Format and Data Encoding
     GetFormatLabel = request('GetFormatLabel'),

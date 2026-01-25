@@ -2,19 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-01-15
+  Last mod.: 2026-01-25
 ]]
 
 -- Exports:
 return
   {
-    Text =
+    text =
       {
         bw = 'Bitmap, text format',
         gs = 'Grayscale, text format',
         rgb = 'Color, text format',
       },
-    Binary =
+    binary =
       {
         bw = 'Bitmap, binary format',
         gs = 'Grayscale, binary format',
