@@ -1,9 +1,9 @@
 -- Write header to output
 
--- Last mod.: 2025-04-09
-
--- Imports:
-local FormatDescriptions = request('Internals.FormatDescriptions')
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-25
+]]
 
 -- Exports:
 return
@@ -15,7 +15,7 @@ return
     do
       Data = Settings:GetFormatLabel()
       Comment =
-        FormatDescriptions[Settings.DataEncoding][Settings.ColorFormat]
+        Settings.Formats[Settings.DataEncoding][Settings.ColorFormat]['Comment']
 
       self:WriteLine(Data, Comment)
     end
@@ -30,7 +30,7 @@ return
         tostring(Height) .. ' ' ..
         tostring(MaxColorValue)
 
-      Comment = 'Width, Height, 255'
+      Comment = 'Width, Height, MaxValue'
 
       self:WriteLine(Data, Comment)
     end

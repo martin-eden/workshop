@@ -1,11 +1,14 @@
 -- Return format label string for current settings
 
--- Last mod.: 2025-03-29
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-25
+]]
 
 -- Exports:
 return
   function(self)
-    return self.FormatLabels[self.DataEncoding][self.ColorFormat]
+    return self.Formats[self.DataEncoding][self.ColorFormat]['Signature']
   end
 
 --[[

@@ -1,6 +1,9 @@
 -- Set format label in settings
 
--- Last mod.: 2025-03-30
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-01-25
+]]
 
 -- Imports:
 local GetPathsToValues = request('!.table.get_paths')
@@ -11,7 +14,7 @@ local GetPathsToValues = request('!.table.get_paths')
 ]]
 local SetFormatLabel =
   function(self, Label)
-    local Paths = GetPathsToValues(self.FormatLabels)
+    local Paths = GetPathsToValues(self.Formats)
 
     local LabelPath = Paths[Label]
 
@@ -20,8 +23,8 @@ local SetFormatLabel =
       return
     end
 
-    self.ColorFormat = LabelPath[1][2]
     self.DataEncoding = LabelPath[1][1]
+    self.ColorFormat = LabelPath[1][2]
 
     return true
   end
