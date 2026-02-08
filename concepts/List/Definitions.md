@@ -17,9 +17,8 @@ There is another very similar concept -- "sequence".
 _Sequence_ is a list of values of the list:
 
   ```
-  return { 'a', 'b', 'c' } -- return list
-
-  return 'a', 'b', 'c' -- return sequence
+  return 'a', 'b', 'c' -- returns sequence
+  return { 'a', 'b', 'c' } -- returns list
   ```
 
 Lists can be memory-long and usually used as arrays.
