@@ -20,6 +20,8 @@
   are "new" and families of "is_<type>" and "assert_<type>".
 ]]
 
+global require, error, table, _G
+
 local split_name =
   function(qualified_name)
     local prefix_name_pattern = '^(.+%.)([^%.]+)$'  -- a.b.c --> (a.b.) (c)
