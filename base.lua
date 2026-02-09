@@ -1,6 +1,11 @@
---[[
-  Lua base libraries extension. Used almost in any piece of my code.
+-- Personal framework bootloader
 
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-02-09
+]]
+
+--[[
   This module installs global function "request" which is based on
   "require" and makes possible relative module names.
 
@@ -15,9 +20,6 @@
   are "new" and families of "is_<type>" and "assert_<type>".
 ]]
 
--- Last mod.: 2024-03-02
-
--- Export request function:
 local split_name =
   function(qualified_name)
     local prefix_name_pattern = '^(.+%.)([^%.]+)$'  -- a.b.c --> (a.b.) (c)
@@ -132,6 +134,14 @@ if IsFirstRun then
     At this point we installed "request()", so it's usable from
     outer code.
 
+    Also we made global "dependencies{}" and "get_require_name()".
+    "dependenices" is optional and not mission-critical. But stores
+    inter-module call edges which are tricky to obtain other ways.
+    "get_require_name()" is part of "request()" internal machinery.
+    Both has niche uses in my code tree tools. And they can't be
+    moved to module because it's request() that provides modules.
+  ]]
+  --[[
     Below we call optional modules which install additional
     global functions.
 
