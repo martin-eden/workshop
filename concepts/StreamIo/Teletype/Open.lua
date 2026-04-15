@@ -1,6 +1,9 @@
 -- Open UART device by name
 
--- Last mod.: 2024-12-24
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-15
+]]
 
 local Config =
   {
@@ -10,18 +13,9 @@ local Config =
 
 -- Imports:
 local FileExists = request('!.file_system.file.exists')
-local GetPortParams = request('!.mechs.tty.get_port_params')
-local SetNonBlockingRead = request('!.mechs.tty.set_non_blocking_read')
+local GetRawParams = request('!.mechs.tty.get_raw_params')
+local SetParams = request('!.mechs.tty.set_params')
 local SleepSec = request('!.system.sleep')
-
---[[
-  Additional steps to open device as file:
-
-    * Set waited read
-    * Set connection speed
-    * Disable write buffering
-    * Wait some time after opening
-]]
 
 --[[
   Open port both for reading and writing.
@@ -30,8 +24,16 @@ local SleepSec = request('!.system.sleep')
 ]]
 local Open =
   function(self, PortName, Speed_Bps)
+    --[[
+      Additional steps to open device as file:
+
+        * Set waited read
+        * Set connection speed
+        * Disable write buffering
+        * Wait some time after opening
+    ]]
+
     assert_string(PortName)
-    assert_integer(Speed_Bps)
 
     if not FileExists(PortName) then
       error(string.format("Can't see device '%s'.", PortName))
@@ -43,9 +45,15 @@ local Open =
       self:Close()
     end
 
-    self.OriginalPortParams = GetPortParams(PortName)
+    self.OriginalPortParams = GetRawParams(PortName)
 
-    SetNonBlockingRead(PortName, Config.ReadTimeout_Sec, Speed_Bps)
+    SetParams(
+      PortName,
+      {
+        Speed_Bps = Speed_Bps,
+        ReadTimeout_S = Config.ReadTimeout_Sec,
+      }
+    )
 
     self.FileHandle = io.open(PortName, 'r+')
 
@@ -63,7 +71,6 @@ local Open =
 return Open
 
 --[[
-  2024-09-18
-  2024-10-24 setvbuf('no')
-  2024-12-24 no default speed
+  2024 # # #
+  2026-04-15
 ]]
