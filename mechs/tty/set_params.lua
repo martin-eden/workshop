@@ -17,15 +17,14 @@ local RunCommand = request('!.mechs.run_command')
 
   Input:
 
+    DeviceName -- File name for device. Like "/dev/ttyUSB0"
     {
-      .DeviceName -- File name for device. Like "/dev/ttyUSB0"
-      .ReadTimeout_S -- [0.1] - Read timeout in seconds
-      .Speed_Bps -- [115200] - Connection speed
+      ReadTimeout_S -- [0.1] - Read timeout in seconds
+      Speed_Bps -- [115200] - Connection speed
     }
 ]]
 local SetParams =
-  function(Params)
-    local DeviceName = Params.DeviceName
+  function(DeviceName, Params)
     local ReadTimeout_S = Params.ReadTimeout_S
     local Speed_Bps = Params.Speed_Bps
 
