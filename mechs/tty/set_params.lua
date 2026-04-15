@@ -1,4 +1,4 @@
--- Set baud rate and read timeout for TTY device given by name
+-- Set baud rate and read timeout for TTY device
 
 --[[
   Author: Martin Eden
@@ -9,26 +9,26 @@ local ToString = request('!.concepts.Words.ToString')
 local RunCommand = request('!.mechs.run_command')
 
 --[[
-  Non-blocking read means that if we reading ten bytes and
-  receive buffer has only seven bytes, we will try to get remained
-  three bytes until timeout. And then return bytes we got.
+  Set baud rate and read timeout for TTY device given by name
 
-  In multithreading sense it's still blocking operation.
-  But at worst case here we're wasting given amount of time
-  versus infinite wait.
+  Non-blocking read means that if we reading ten bytes and
+  read only seven bytes, we will try to get remained
+  three bytes until timeout. And then return bytes we got.
 
   Input:
 
-    DeviceName - File name for device. Like "/dev/ttyUSB0"
-    ReadTimeout_S - [0.1] - Read timeout in seconds
-    Speed_Bps - [115200] - Connection speed
+    {
+      .DeviceName -- File name for device. Like "/dev/ttyUSB0"
+      .ReadTimeout_S -- [0.1] - Read timeout in seconds
+      .Speed_Bps -- [115200] - Connection speed
+    }
 ]]
-local SetNonBlockingRead =
-  function(
-    DeviceName,
-    ReadTimeout_S,
-    Speed_Bps
-  )
+local SetParams =
+  function(Params)
+    local DeviceName = Params.DeviceName
+    local ReadTimeout_S = Params.ReadTimeout_S
+    local Speed_Bps = Params.Speed_Bps
+
     assert_string(DeviceName)
     ReadTimeout_S = ReadTimeout_S or 0.1
     Speed_Bps = Speed_Bps or 115200
@@ -71,7 +71,7 @@ local SetNonBlockingRead =
   end
 
 -- Export:
-return SetNonBlockingRead
+return SetParams
 
 --[[
   2020 #
