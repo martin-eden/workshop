@@ -1,8 +1,11 @@
 -- Close UART device opened for reading and writing
 
--- Last mod.: 2024-11-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-15
+]]
 
-local SetPortParams = request('!.mechs.tty.set_port_params')
+local SetRawParams = request('!.mechs.tty.set_raw_params')
 
 --[[
   Close our device and zero internal state.
@@ -32,7 +35,7 @@ local Close =
     self.Input.FileHandle = nil
     self.Output.FileHandle = nil
 
-    SetPortParams(self.PortName, self.OriginalPortParams)
+    SetRawParams(self.PortName, self.OriginalPortParams)
     self.OriginalPortParams = nil
 
     self.PortName = nil
