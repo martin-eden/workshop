@@ -50,7 +50,7 @@ local SetParams =
         'raw',
         'time',
         tostring(ReadTimeout_dS),
-        'min'
+        'min',
         '0',
         'cs8',
         '-echo',
@@ -63,7 +63,7 @@ local SetParams =
         '-iexten',
         '-isig',
         '-ixon',
-        '-opost'
+        '-opost',
       }
 
     RunCommand(ToString(Sentence))
