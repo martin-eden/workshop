@@ -10,7 +10,7 @@
 ]]
 local ExecuteCommand =
   function(Command)
-    assert_string(Command);
+    assert_string(Command)
 
     assert(os.execute(Command))
   end
