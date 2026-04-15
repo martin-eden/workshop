@@ -1,4 +1,4 @@
--- Load words from string
+-- Return list of words from string
 
 --[[
   Author: Martin Eden
@@ -6,16 +6,18 @@
 ]]
 
 --[[
-  Set internal data to list of words from given string
+  Return list of words from given string
 ]]
 local FromString =
-  function(self, str)
-    local words = self.Words
+  function(str)
+    local words = {}
 
     -- "%S+" - capture non-space sequences
     for word in str:gmatch('%S+') do
       table.insert(words, word)
     end
+
+    return words
   end
 
 -- Export:

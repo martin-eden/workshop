@@ -1,1 +1,1 @@
-Class to work with words (strings without spaces)
+Functions to work with words (strings without spaces)

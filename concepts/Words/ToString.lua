@@ -6,12 +6,10 @@
 ]]
 
 --[[
-  Return string from internal list of words
+  Return string from given list of words
 ]]
 local ToString =
-  function(self)
-    local words = self.Words
-
+  function(words)
     return table.concat(words, ' ')
   end
 
