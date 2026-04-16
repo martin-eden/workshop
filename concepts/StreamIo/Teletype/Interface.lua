@@ -1,6 +1,9 @@
 -- File interface for UART devices
 
--- Last mod.: 2024-11-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-15
+]]
 
 --[[
   Opens device as file for reading and writing.
@@ -18,28 +21,12 @@ local OutputInterface = new(request('!.concepts.StreamIo.Output.File'))
 -- Exports:
 return
   {
-    -- [New]
-
-    -- Open device by name
+    -- [Carnage]
     Open = request('Open'),
-
-    -- Close device
     Close = request('Close'),
 
-    -- [Main]
-
-    -- Read method complied to [StreamIo.Input]
-    Read = request('Read'),
-
-    -- Write method complied to [StreamIo.Output]
-    Write = request('Write'),
-
     -- [Exports]
-
-    -- Input interface
     Input = InputInterface,
-
-    -- Output interface
     Output = OutputInterface,
 
     -- [Internals]
@@ -50,6 +37,6 @@ return
   }
 
 --[[
-  2024-09-18
-  2024-11-11
+  2024 # #
+  2026-04-15
 ]]
