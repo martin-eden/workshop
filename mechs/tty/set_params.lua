@@ -2,11 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-15
+  Last mod.: 2026-04-17
 ]]
 
-local ToString = request('!.concepts.Words.ToString')
-local RunCommand = request('!.mechs.run_command')
+-- Imports:
+local glue_words = request('!.concepts.words.to_string')
+local run_command = request('!.concepts.Shell.Execute')
 
 --[[
   Set baud rate and read timeout for TTY device given by name
@@ -17,23 +18,18 @@ local RunCommand = request('!.mechs.run_command')
 
   Input:
 
-    DeviceName -- File name for device. Like "/dev/ttyUSB0"
-    {
-      ReadTimeout_S -- [0.1] - Read timeout in seconds
-      Speed_Bps -- [115200] - Connection speed
-    }
+    [s] tty_name -- File name for device. Like "/dev/ttyUSB0"
+    [t] Params:
+      [f] ReadTimeout_S -- [0.1] - Read timeout in seconds
+      [i] Speed_Bps -- [115200] - Connection speed
 ]]
-local SetParams =
-  function(DeviceName, Params)
-    local ReadTimeout_S = Params.ReadTimeout_S
-    local Speed_Bps = Params.Speed_Bps
-
-    assert_string(DeviceName)
-    ReadTimeout_S = ReadTimeout_S or 0.1
-    Speed_Bps = Speed_Bps or 115200
+local set_params =
+  function(tty_name, Params)
+    local <const> read_timeout_s = Params.ReadTimeout_S or 0.1
+    local <const> speed_bps = Params.Speed_Bps or 115200
 
     -- "stty" accepts waiting time in deciseconds
-    ReadTimeout_dS = math.floor(ReadTimeout_S * 10)
+    local <const> read_timeout_ds = math.floor(read_timeout_s * 10)
 
     --[[
       Kinda long I know. I tried simpler
@@ -42,14 +38,14 @@ local SetParams =
 
       but that didn't work.
     ]]
-    local Sentence =
+    local <const> Command =
       {
         'stty',
-        '--file=' .. DeviceName,
-        tostring(Speed_Bps),
+        '--file=' .. tty_name,
+        tostring(speed_bps),
         'raw',
         'time',
-        tostring(ReadTimeout_dS),
+        tostring(read_timeout_ds),
         'min',
         '0',
         'cs8',
@@ -66,11 +62,11 @@ local SetParams =
         '-opost',
       }
 
-    RunCommand(ToString(Sentence))
+    run_command(glue_words(Command))
   end
 
 -- Export:
-return SetParams
+return set_params
 
 --[[
   2020 #

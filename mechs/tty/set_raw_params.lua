@@ -1,29 +1,43 @@
+-- Set TTY device params from opaque string
+
 --[[
-  Set TTY device parameters from stty-readable string.
+  Author: Martin Eden
+  Last mod.: 2026-04-17
+]]
+
+-- Imports:
+local glue_words = request('!.concepts.words.to_string')
+local run_command = request('!.concepts.Shell.Execute')
+
+--[[
+  Set TTY device params from "raw" string
 
   Stty-readable string usually produced by "$ stty --save".
 
   Input:
 
-    string - Port name
-    string - Encoded port configuration
+    [s] tty_name -- Device file name
+    [s] params -- Encoded configuration
 ]]
-
-return
+local <const> set_raw_params =
   function(tty_name, params)
-    assert_string(tty_name)
-    assert_string(params)
-    local cmd = ('stty --file=%s %s'):format(tty_name, params)
-    -- print(('%q'):format(cmd))
+    local <const> Command =
+      {
+        'stty',
+        '--file=' .. tty_name,
+        params,
+      }
 
-    local isOk, errorMsg, errorCode = os.execute(cmd)
-
-    return errorMsg
+    run_command(glue_words(Command))
   end
 
+-- Export:
+return set_raw_params
+
 --[[
-  2020-01
-  2021-11
-  2023-04
-  2024-09
+  2020 #
+  2021 #
+  2023 #
+  2024 #
+  2026-04-17
 ]]
