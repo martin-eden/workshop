@@ -8,7 +8,7 @@
 --[[
   Return list of words from given string
 ]]
-local FromString =
+local from_string =
   function(str)
     local words = {}
 
@@ -21,7 +21,7 @@ local FromString =
   end
 
 -- Export:
-return FromString
+return from_string
 
 --[[
   2026-04-15
