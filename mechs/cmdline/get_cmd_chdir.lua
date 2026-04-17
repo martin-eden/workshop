@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-01-12
+  Last mod.: 2026-04-17
 ]]
 
 local CommandFmt = 'cd %s'
 
-local QuoteFilename = request('!.concepts.BashString.Quote')
+local QuoteFilename = request('!.concepts.Shell.Quote')
 
 return
   function(Path)
