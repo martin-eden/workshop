@@ -2,10 +2,10 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-01-12
+  Last mod.: 2026-04-17
 ]]
 
--- Represent data in Bash
+-- Pack data for Bash
 local QuoteBashString =
   function(s)
     --[[
@@ -19,9 +19,9 @@ local QuoteBashString =
 
         a'b -> 'a'\''b'
 
-      After some thought we decided always use quoting even if it
-      is may be omitted. It's hard to detect exact cases where
-      it cab be omitted:
+      After some thought we decided to always use quoting even if it
+      can be omitted. Because it's hard to detect exact cases where
+      it can be omitted:
 
         a -> 'a'
     ]]
