@@ -1,16 +1,20 @@
 -- Implode list of lines to string
 
--- Last mod.: 2024-10-31
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-17
+]]
 
--- Imports:
+-- Import:
 local LinesToString = request('!.string.from_lines')
 
--- Exports:
+-- Export:
 return
-  function(self)
-    return LinesToString(self.Lines)
+  function(self, StartIdx, EndIdx)
+    return LinesToString(self.Lines, StartIdx, EndIdx)
   end
 
 --[[
   2024-10-31
+  2026-04-17
 ]]
