@@ -1,29 +1,44 @@
+-- Return TTY device parameters as encoded string
+
 --[[
-  Get TTY device parameters as special-format string for later
-  restoration.
+  Author: Martin Eden
+  Last mod.: 2026-04-17
+]]
+
+-- Imports:
+local glue_words = request('!.concepts.words.to_string')
+local run_command = request('!.concepts.Shell.Execute')
+
+--[[
+  Get TTY device parameters as opaque string for later restoration
 
   Input:
 
-    string - Port name
+    [s] tty_name -- Device file name
 
   Output:
 
-    string - Encoded port configuration
+    [s] -- Encoded port configuration
 ]]
-
-return
+local get_tty_params =
   function(tty_name)
-    assert_string(tty_name)
-    local cmd = ('stty --file=%s --save'):format(tty_name)
-    local f_output = assert(io.popen(cmd))
-    local result = f_output:read('l')
-    f_output:close()
-    return result
+    local <const> Command =
+      {
+        'stty',
+        '--file=' .. tty_name,
+        '--save',
+      }
+
+    return run_command(glue_words(Command)).Output
   end
 
+-- Export:
+return get_tty_params
+
 --[[
-  2020-01
-  2021-11
-  2023-04
-  2024-09
+  2020 #
+  2021 #
+  2023 #
+  2024 #
+  2026-04-17
 ]]
