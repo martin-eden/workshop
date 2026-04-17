@@ -5,25 +5,18 @@
   Last mod.: 2026-04-17
 ]]
 
--- Import:
-local <const> IsNatural = request('!.number.is_natural')
-
 --[[
   Concatenate strings with newline separator. Tailing newline.
 ]]
 local <const> LinesToString =
-  function(Lines, StartIdx, EndIdx)
+  function(Lines)
     assert_table(Lines)
-    assert(IsNatural(StartIdx))
-    assert(IsNatural(EndIdx))
-    assert(StartIdx <= EndIdx)
-    assert(EndIdx <= #Lines)
 
     local Result
     local <const> Separator = '\n'
 
-    Result = table.concat(Lines, Separator, StartIdx, EndIdx)
-    Result = Result .. '\n'
+    Result = table.concat(Lines, Separator)
+    Result = Result .. Separator
 
     return Result
   end
