@@ -2,19 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-15
+  Last mod.: 2026-04-17
 ]]
 
 --[[
   Return string from given list of words
 ]]
-local ToString =
+local to_string =
   function(words)
     return table.concat(words, ' ')
   end
 
 -- Export:
-return ToString
+return to_string
 
 --[[
   2026-04-15
