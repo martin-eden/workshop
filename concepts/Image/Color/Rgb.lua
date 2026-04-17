@@ -1,6 +1,6 @@
 -- RGB color structure for images
 
--- Last mod.: 2025-04-05
+-- Last mod.: 2026-04-17
 
 --[[
   For our processing "color" is just a fixed-length list of
@@ -16,7 +16,7 @@
 ]]
 
 -- Imports:
-local NameList = request('!.concepts.List.AddNames')
+local NameList = request('!.concepts.list.add_names')
 
 local Color = { 0.0, 0.0, 0.0 }
 
