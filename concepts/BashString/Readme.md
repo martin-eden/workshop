@@ -36,11 +36,13 @@ According to `man bash`, Bash shell has three quoting modes:
 
 From our perspective most suitable way for our task is apostrophe-quotes.
 
-One-character `\` quote looks has advantage that quoted text is cuttable.
+One-character `\` quote has advantage that quoted text is cuttable:
+almost any substring of quoted text is quoted text.
+
 But in typical case of quoting file names with spaces, `\ ` everywhere
 is annoying.
 
-If data does not contain `'`, we just surround it with `'`.
+If data does not contain `'`, we'll just surround it with `'`.
 
 However if it does contain `'`, we need to split it before and after
 `'` and concatenate with quoted `'`:
