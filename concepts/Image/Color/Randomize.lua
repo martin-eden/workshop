@@ -1,9 +1,9 @@
 -- Randomize components of given color
 
--- Last mod.: 2025-04-04
+-- Last mod.: 2026-04-17
 
 -- Imports:
-local ApplyFunc = request('!.concepts.List.ApplyFunc')
+local ApplyFunc = request('!.concepts.list.apply_func')
 
 -- Return number from unit interval [0.0, 1.0]
 local GetRandom_Ui =
