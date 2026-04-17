@@ -7,7 +7,7 @@
 
 -- Imports:
 local glue_words = request('!.concepts.words.to_string')
-local run_command = request('!.concepts.Shell.Execute')
+local run_command = request('!.concepts.shell.execute')
 
 --[[
   Set baud rate and read timeout for TTY device given by name
