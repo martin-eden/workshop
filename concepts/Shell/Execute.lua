@@ -38,6 +38,8 @@ local <const> ExecuteShellCommand =
     local <const> IsDone, ResultCodeType, ResultCode =
       os.execute(ShellCommand)
 
+    local <const> Result = {}
+
     if (ResultCodeType == 'exit') then
       Result.ResultCode = ResultCode
     end
@@ -45,11 +47,8 @@ local <const> ExecuteShellCommand =
       Result.TerminationCode = ResultCode
     end
 
-    local <const> Result =
-      {
-        Output = FileAsString(OutputFileName),
-        Errors = FileAsString(ErrorsFileName),
-      }
+    Result.Output = FileAsString(OutputFileName)
+    Result.Errors = FileAsString(ErrorsFileName)
 
     os.remove(OutputFileName)
     os.remove(ErrorsFileName)
