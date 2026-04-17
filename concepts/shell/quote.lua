@@ -1,13 +1,20 @@
--- Represent string in bash
+-- Encode string to shell
 
 --[[
   Author: Martin Eden
   Last mod.: 2026-04-17
 ]]
 
--- Pack data for Bash
-local QuoteBashString =
-  function(s)
+--[[
+  Pack data for Bash
+
+  Input
+    [s] -- Data to encode
+  Output
+    [s] -- Encoded data
+]]
+local quote =
+  function(data)
     --[[
       We're using single-quotes
 
@@ -26,34 +33,43 @@ local QuoteBashString =
         a -> 'a'
     ]]
 
-    local StartIdx = 1
+    --[[
+      ' is treated as delimiter and terminator
+
+      Implementation adds ' to source string and then processes it
+      by chunks separated by '.
+    ]]
+
+    data = data .. "'"
+
+    local <const> data_end_idx = string.len(data)
+
     -- Capture characters before '
-    local CleanPartCaptureStr = "(.-)'"
-    local Result = ''
+    local <const> clean_part_capture = "(.-)'"
 
-    s = s .. "'"
+    local capture_start_idx, capture_end_idx, capture
+    local result
 
-    local LastIdx = string.len(s)
-    local EndIdx, Capture
-
+    capture_start_idx = 1
+    result = ''
     while true do
-      StartIdx, EndIdx, Capture =
-        string.find(s, CleanPartCaptureStr, StartIdx)
+      capture_start_idx, capture_end_idx, capture =
+        string.find(data, clean_part_capture, capture_start_idx)
 
-      Result = Result .. "'" .. Capture .. "'"
+      result = result .. "'" .. capture .. "'"
 
-      if (EndIdx == LastIdx) then
+      if (capture_end_idx == data_end_idx) then
         break
       end
 
-      Result = Result .. [[\']]
+      result = result .. [[\']]
 
-      StartIdx = EndIdx + 1
+      capture_start_idx = capture_end_idx + 1
     end
 
-    return Result
+    return result
   end
 
-return QuoteBashString
+return quote
 
 -- 2026-01-12
