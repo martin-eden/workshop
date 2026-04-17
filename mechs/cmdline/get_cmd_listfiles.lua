@@ -7,12 +7,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-01-12
+  Last mod.: 2026-04-17
 ]]
 
 local CommandFmt = 'find %s -maxdepth 1 -type f'
 
-local QuoteFilename = request('!.concepts.BashString.Quote')
+local QuoteFilename = request('!.concepts.Shell.Quote')
 
 return
   function(DirName)
