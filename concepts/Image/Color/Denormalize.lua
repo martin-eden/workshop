@@ -1,10 +1,10 @@
 -- Map normalized color components to byte range
 
--- Last mod.: 2025-04-26
+-- Last mod.: 2026-04-17
 
 -- Imports:
 local MapTo = request('MapTo')
-local ApplyFunc = request('!.concepts.List.ApplyFunc')
+local ApplyFunc = request('!.concepts.list.apply_func')
 local ToInt = math.floor
 
 local Denormalize =

@@ -1,10 +1,10 @@
 -- Map color components to given range
 
--- Last mod.: 2025-04-27
+-- Last mod.: 2026-04-17
 
 -- Imports:
 local MapToRange = request('!.number.map_to_range')
-local ApplyFunc = request('!.concepts.List.ApplyFunc')
+local ApplyFunc = request('!.concepts.list.apply_func')
 
 local Generate_Component_MapToRange =
   function(DestRange, SrcRange)

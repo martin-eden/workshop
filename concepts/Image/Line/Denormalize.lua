@@ -1,10 +1,10 @@
 -- Map normalized image colors to byte range
 
--- Last mod.: 2024-11-25
+-- Last mod.: 2026-04-17
 
 -- Imports:
 local DenormalizeColor = request('^.Color.Denormalize')
-local ApplyFunc = request('!.concepts.List.ApplyFunc')
+local ApplyFunc = request('!.concepts.list.apply_func')
 
 local Denormalize =
   function(Line)
