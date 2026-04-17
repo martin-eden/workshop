@@ -5,7 +5,7 @@
   Last mod.: 2026-04-17
 ]]
 
-local <const> Shell_QuoteString = request('!.concepts.Shell.Quote')
+local <const> Shell_QuoteString = request('!.concepts.shell.quote')
 
 --[[
   Return command to execute command with stdout and stderr redirected

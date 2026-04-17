@@ -7,7 +7,7 @@
 
 local CommandFmt = 'rm -r %s'
 
-local QuoteFilename = request('!.concepts.Shell.Quote')
+local QuoteFilename = request('!.concepts.shell.quote')
 
 return
   function(DirName)

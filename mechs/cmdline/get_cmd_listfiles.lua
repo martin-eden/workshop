@@ -12,7 +12,7 @@
 
 local CommandFmt = 'find %s -maxdepth 1 -type f'
 
-local QuoteFilename = request('!.concepts.Shell.Quote')
+local QuoteFilename = request('!.concepts.shell.quote')
 
 return
   function(DirName)
