@@ -1,9 +1,9 @@
 -- Compile pixel to string
 
--- Last mod.: 2025-04-09
+-- Last mod.: 2026-04-17
 
 -- Imports:
-local ListToString = request('!.concepts.List.ToString')
+local ListToString = request('!.concepts.list.to_string')
 
 -- Exports:
 return

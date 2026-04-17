@@ -1,6 +1,6 @@
 Here I'll put various design notes from parts of this code heap.
 
---[[ [!.concepts.List.ToString]
+--[[ [!.concepts.list.to_string]
 
   Implementer may or may not check input arguments.
 
