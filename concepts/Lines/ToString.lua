@@ -10,11 +10,10 @@ local LinesToString = request('!.string.from_lines')
 
 -- Export:
 return
-  function(self, StartIdx, EndIdx)
-    return LinesToString(self.Lines, StartIdx, EndIdx)
+  function(self)
+    return LinesToString(self.Lines)
   end
 
 --[[
   2024-10-31
-  2026-04-17
 ]]
