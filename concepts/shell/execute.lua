@@ -5,8 +5,8 @@
   Last mod.: 2026-04-17
 ]]
 
-local <const> FileAsString = request('!.file_system.file.as_string')
-local <const> GetCmd_ExecuteWithRedirects =
+local <const> file_as_string = request('!.file_system.file.as_string')
+local <const> get_execute_command =
   request('!.mechs.cmdline.get_cmd_execute_with_redirects')
 
 --[[
@@ -15,49 +15,53 @@ local <const> GetCmd_ExecuteWithRedirects =
   Executes given string as shell (OS-dependent) command.
   Captures termination code / return code, output and errors.
 
+  Input
+
+    [s] command -- Shell command to execute
+
   Output
 
-    {
-      ResultCode -- [int] Return code in case of normal ending
-      TerminationCode -- [int] Termination code (signal number) in
+    [t]
+      [i] ResultCode -- Return code in case of normal ending
+      [i] TerminationCode -- Termination code (signal number) in
         case of aborted ending
-      Output -- [str] Program output
-      Errors -- [str] Program errors
+      [s] Output -- Program output
+      [s] Errors -- Program errors
     }
 ]]
-local <const> ExecuteShellCommand =
-  function(Command)
-    local <const> OutputFileName = os.tmpname()
-    local <const> ErrorsFileName = os.tmpname()
+local <const> execute_shell_command =
+  function(command)
+    local <const> out_file_name = os.tmpname()
+    local <const> errors_file_name = os.tmpname()
 
-    local <const> ShellCommand =
-      GetCmd_ExecuteWithRedirects(
-        Command, OutputFileName, ErrorsFileName
+    local <const> shell_command =
+      get_execute_command(
+        command, out_file_name, errors_file_name
       )
 
-    local <const> IsDone, ResultCodeType, ResultCode =
-      os.execute(ShellCommand)
+    local <const> _, result_type_code, result_code =
+      os.execute(shell_command)
 
     local <const> Result = {}
 
-    if (ResultCodeType == 'exit') then
-      Result.ResultCode = ResultCode
+    if (result_type_code == 'exit') then
+      Result.ResultCode = result_code
     end
-    if (ResultCodeType == 'signal') then
-      Result.TerminationCode = ResultCode
+    if (result_type_code == 'signal') then
+      Result.TerminationCode = result_code
     end
 
-    Result.Output = FileAsString(OutputFileName)
-    Result.Errors = FileAsString(ErrorsFileName)
+    Result.Output = file_as_string(out_file_name)
+    Result.Errors = file_as_string(errors_file_name)
 
-    os.remove(OutputFileName)
-    os.remove(ErrorsFileName)
+    os.remove(out_file_name)
+    os.remove(errors_file_name)
 
     return Result
   end
 
 -- Export:
-return ExecuteShellCommand
+return execute_shell_command
 
 --[[
   2026-04-17
