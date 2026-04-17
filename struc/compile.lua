@@ -18,10 +18,10 @@
     ) -> 'A -= X =- B'
 ]]
 
--- Last mod.: 2024-10-21
+-- Last mod.: 2026-04-17
 
 local compile_core = request('compile_core')
-local ListToString = request('!.concepts.List.ToString')
+local ListToString = request('!.concepts.list.to_string')
 
 return
   function(Node, NodeHandlers)

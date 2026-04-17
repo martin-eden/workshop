@@ -23,14 +23,14 @@
       Encode string value
 ]]
 
--- Last mod.: 2024-10-21
+-- Last mod.: 2026-04-17
 
 -- Imports:
 local Output = request('!.concepts.StreamIo.Output')
 local SyntaxChars = request('^.^.Syntax')
 local ToList = request('!.table.to_list')
 local MapValues = request('!.table.map_values')
-local ListToString = request('!.concepts.List.ToString')
+local ListToString = request('!.concepts.list.to_string')
 local QuoteRegexp = request('!.lua.regexp.quote')
 
 local Exports =
