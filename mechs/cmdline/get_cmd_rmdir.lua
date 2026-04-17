@@ -1,24 +1,31 @@
--- Return shell command to delete directory. GNU/bash assumed.
+-- Return shell command to delete directory
 
 --[[
   Author: Martin Eden
   Last mod.: 2026-04-17
 ]]
 
-local CommandFmt = 'rm -r %s'
+-- Imports:
+local <const> quote = request('!.concepts.shell.quote')
+local <const> glue_words = request('!.concepts.words.to_string')
 
-local QuoteFilename = request('!.concepts.shell.quote')
-
+-- Export:
 return
-  function(DirName)
-    DirName = QuoteFilename(DirName)
-    local Command = string.format(CommandFmt, DirName)
-    return Command
+  function(dir_name)
+    local <const> Command =
+      {
+        'rm',
+        '-r',
+        quote(dir_name),
+      }
+
+    return glue_words(Command)
   end
 
+
 --[[
-  2018-12-08
-  2024-02-17
-  2024-10-21
+  2018 #
+  2024 # #
   2026-01-12
+  2026-04-17
 ]]

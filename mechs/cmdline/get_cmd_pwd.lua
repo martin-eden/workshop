@@ -1,11 +1,11 @@
---[[
-  Return shell command to print current directory.
+-- Return shell command to print current directory
 
-  GNU/Bash.
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-17
 ]]
 
--- Last mod.: 2024-02-11
-
+-- Export:
 return
   function()
     return 'pwd'

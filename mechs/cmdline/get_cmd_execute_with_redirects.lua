@@ -5,28 +5,24 @@
   Last mod.: 2026-04-17
 ]]
 
-local <const> Shell_QuoteString = request('!.concepts.shell.quote')
-
---[[
-  Return command to execute command with stdout and stderr redirected
-]]
-local <const> Shell_GetCmd_ExecuteWithOutputRedirects =
-  function(Command, OutputFileName, ErrorsFileName)
-    local <const> QuotedCommand = Shell_QuoteString(Command)
-    local <const> CommandAndArgs =
-      {
-        'sh',
-        '-c', QuotedCommand,
-        '1>' .. OutputFileName,
-        '2>' .. ErrorsFileName,
-      }
-    local <const> WrappedCommand = table.concat(CommandAndArgs, ' ')
-
-    return WrappedCommand
-  end
+-- Imports:
+local <const> quote = request('!.concepts.shell.quote')
+local <const> glue_words = request('!.concepts.words.to_string')
 
 -- Export:
-return Shell_GetCmd_ExecuteWithOutputRedirects
+return
+  function(orig_command, output_file_name, errors_file_name)
+    local <const> Command =
+      {
+        'sh',
+        '-c',
+        quote(orig_command),
+        '1>' .. output_file_name,
+        '2>' .. errors_file_name,
+      }
+
+    return glue_words(Command)
+  end
 
 --[[
   2026-04-17

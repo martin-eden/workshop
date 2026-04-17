@@ -1,23 +1,28 @@
--- Return shell command to change current directory. GNU/Bash.
+-- Return shell command to change current directory
 
 --[[
   Author: Martin Eden
   Last mod.: 2026-04-17
 ]]
 
-local CommandFmt = 'cd %s'
+-- Imports:
+local <const> quote = request('!.concepts.shell.quote')
+local <const> glue_words = request('!.concepts.words.to_string')
 
-local QuoteFilename = request('!.concepts.shell.quote')
-
+-- Export:
 return
-  function(Path)
-    Path = QuoteFilename(Path)
-    local Command = string.format(CommandFmt, Path)
-    return Command
+  function(path)
+    local <const> Command =
+      {
+        'cd',
+        quote(path),
+      }
+
+    return glue_words(Command)
   end
 
 --[[
-  2024-02-19
-  2024-10-21
+  2024 # #
   2026-01-12
+  2026-04-17
 ]]
