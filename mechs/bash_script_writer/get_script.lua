@@ -1,78 +1,108 @@
+-- Return bash script that copies files with directories creation
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-17
+]]
+
+-- Imports:
+local <const> Lines = request('!.concepts.Lines.Interface')
+local <const> ParsePathname = request('!.concepts.path_name.parse')
+local <const> GetCmd_RmDir = request('!.mechs.cmdline.get_cmd_rmdir')
+local <const> GetCmd_MkDir = request('!.mechs.cmdline.get_cmd_mkdir')
+local <const> GetCmd_CopyFile = request('!.mechs.cmdline.get_cmd_copy')
+
+--[[
+  Compare file pathnames preferring files in deeper directories
+]]
+local <const> ComparePathnames =
+  function(Rec_A, Rec_B)
+    local <const> A_Name, B_Name = Rec_A.src_name, Rec_B.src_name
+    local <const> A_Depth = #ParsePathname(A_Name).path
+    local <const> B_Depth = #ParsePathname(B_Name).path
+
+    if (A_Depth < B_Depth) then return false end
+    if (A_Depth > B_Depth) then return true end
+
+    if (A_Name < B_Name) then return true end
+    if (A_Name > B_Name) then return false end
+
+    return false
+  end
+
+--[[
+  For "a/b/c/" mark as created "a/", "a/b/" and "a/b/c".
+]]
+local <const> MarkDirectoriesCreated =
+  function(DirPathName, DirectoriesCreated)
+    local ParentDirPath = ''
+    for DirName in DirPathName:gmatch('(.-)/') do
+      ParentDirPath = ParentDirPath .. DirName
+      ParentDirPath = ParentDirPath .. '/'
+      DirectoriesCreated[ParentDirPath] = true
+    end
+    DirectoriesCreated[DirPathName] = true
+  end
+
 --[[
   Generate Bash script that copies all planned files with directories
   creation.
 
-  - tbl -- -> str
-   (self)
+  Serializes object state to string.
 
-  * Deepest directories created first. This is to reduce number of
+  * Deepest directories are created first. This is to reduce number of
     "mkdir" commands: "mkdir -p a/b/" is better than "mkdir -p a/;
     mkdir -p a/b/". To reach this goal we sort files list.
 ]]
+local <const> GetScript =
+  function(Self)
+    local <const> Lines = new(Lines)
 
-local get_cmd_mkdir = request('!.mechs.cmdline.get_cmd_mkdir')
-local get_cmd_copy = request('!.mechs.cmdline.get_cmd_copy')
-local get_cmd_rmdir = request('!.mechs.cmdline.get_cmd_rmdir')
-local parse_pathname = request('!.concepts.path_name.parse')
+    local <const> AddLine =
+      function(Line)
+        Lines:AddLastLine(Line)
+      end
 
-local compare =
-  function(rec_a, rec_b)
-    local a, b = rec_a.src_name, rec_b.src_name
-    local deep_a = #parse_pathname(a).path
-    local deep_b = #parse_pathname(b).path
-    if (deep_a > deep_b) then
-      return true
-    elseif (deep_a == deep_b) then
-      return (a < b)
-    else
-      return false
+    AddLine('#! /bin/bash')
+
+    if (#Self.dirs_to_delete > 0) then
+      AddLine('')
     end
+
+    table.sort(Self.dirs_to_delete)
+    for i, DirPathName in ipairs(Self.dirs_to_delete) do
+      AddLine(GetCmd_RmDir(DirPathName))
+    end
+
+    local <const> DirectoriesCreated = {}
+
+    table.sort(Self.files_to_copy, ComparePathnames)
+
+    local PrevDestDir = ''
+    for _, CopyRec in ipairs(Self.files_to_copy) do
+      local <const> SrcFullName = CopyRec.src_name
+      local <const> DestFullName = CopyRec.dest_name
+      local <const> DestDir = ParsePathname(DestFullName).directory
+      if (DestDir ~= PrevDestDir) then
+        AddLine('')
+        PrevDestDir = DestDir
+      end
+      if not DirectoriesCreated[DestDir] then
+        AddLine(GetCmd_MkDir(DestDir))
+
+        MarkDirectoriesCreated(DestDir, DirectoriesCreated)
+      end
+      AddLine(GetCmd_CopyFile(SrcFullName, DestFullName))
+    end
+
+    return Lines:ToString()
   end
 
-return
-  function(self)
-    local result
+-- Export:
+return GetScript
 
-    local directories_created = {}
-
-    local mark_directory_created =
-      function(dir_name)
-        local parent_path = ''
-        for parent_dir in dir_name:gmatch('(.-)/') do
-          parent_path = parent_path .. parent_dir
-          parent_path = parent_path .. '/'
-          directories_created[parent_path] = true
-        end
-        directories_created[dir_name] = true
-      end
-
-    result =
-      {
-        '#! /bin/bash',
-        '',
-      }
-
-    if next(self.dirs_to_delete) then
-      table.sort(self.dirs_to_delete)
-      for i, dir_name in ipairs(self.dirs_to_delete) do
-        table.insert(result, get_cmd_rmdir(dir_name))
-      end
-    end
-
-    table.sort(self.files_to_copy, compare)
-    for i, rec in ipairs(self.files_to_copy) do
-      local from = rec.src_name
-      local to = rec.dest_name
-      local directory = parse_pathname(to).directory
-      if not directories_created[directory] then
-        table.insert(result, '')
-        table.insert(result, get_cmd_mkdir(directory))
-        mark_directory_created(directory)
-      end
-      table.insert(result, get_cmd_copy(from, to))
-    end
-
-    result = table.concat(result, '\n') .. '\n'
-
-    return result
-  end
+--[[
+  2018-06-06
+  2019-05-13
+  2026-04-17
+]]
