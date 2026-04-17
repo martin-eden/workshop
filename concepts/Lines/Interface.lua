@@ -1,6 +1,9 @@
 -- List of lines interface
 
--- Last mod.: 2024-10-31
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-17
+]]
 
 -- "Line" is a string with newline. "String" is a line without newline.
 
@@ -60,6 +63,12 @@ return
     -- Insert string after line at given index
     InsertLineAfter = request('InsertLineAfter'),
 
+    -- Remove first line
+    RemoveFirstLine = request('RemoveFirstLine'),
+
+    -- Remove last line
+    RemoveLastLine = request('RemoveLastLine'),
+
     -- Remove line
     RemoveLineAt = request('RemoveLineAt'),
 
@@ -88,4 +97,5 @@ return
 
 --[[
   2024-10-31
+  2026-04-17
 ]]
