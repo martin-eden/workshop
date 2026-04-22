@@ -1,17 +1,32 @@
+-- Return list of file names in given directory
+
 --[[
-  Return list of file names in given directory.
-
-  Syntax:
-
-    [<start_dir>] -> <list of strings>
-       string            sequence
+  Author: Martin Eden
+  Last mod.: 2026-04-22
 ]]
 
-local file_lister = request('!.mechs.file_lister.interface')
+-- Imports:
+local get_cmd_listfiles = request('!.mechs.cmdline.get_cmd_listfiles')
+local get_program_output_lines = request('!.system.get_program_output_lines')
 
-return
-  function(start_dir)
-    file_lister.start_dir = start_dir
-    file_lister:init()
-    return file_lister:get_files_list()
+--[[
+  Return file names in base directory as list of strings
+
+  Each entry will contain base directory prefix.
+]]
+local get_files_list =
+  function(base_dir)
+    local cmd_get_files = get_cmd_listfiles(base_dir)
+
+    local Result = get_program_output_lines(cmd_get_files)
+
+    return Result
   end
+
+-- Export:
+return get_files_list
+
+--[[
+  2018-02-05
+  2026-04-22
+]]
