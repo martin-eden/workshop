@@ -1,30 +1,7 @@
-This is not a "library"!
+Personal Lua modules.
 
-This is just a pile of code chunks. It is not like Steve Donovan's
-PenLight.
+Essential parts is 'base.lua' which provides request() -- require() relative to module's directory. And 'system.create_deploy_script.lua' which creates shell script to copy modules with dependencies.
 
-It provides no guarantees for backward compatibility.
+This repository started in 2016 as "code heap". And it's still code heap but for 2026 my vision is evolved.
 
-But has general idea: do not repeat code.
-
-So there are many code chunks. They are relatively small and usually
-has links to another, absolutely necessary, code chunks.
-
-I'm using it as a resource base for my projects. I can automatically
-extract chunks that are used by code and pack them in distribution.
-So in distribution there are no dead code.
-
-You are free legally use them under GPLv3.
-
-2017-05-05
-
-
-One more, there is constant "in progress" state.
-
-I'm starting yet another experiment with directory structure
-and digging into implementing some interesting things. So structure
-is not final. It will never be final.
-
-This is like quantum world: observation makes changes.
-
-2017-08-15
+-- Martin, 2026-04-22
