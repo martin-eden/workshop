@@ -1,6 +1,14 @@
 -- Parse string with list of records
 
 --[[
+  Author: Martin Eden
+  Last mod.: 2026-04-22
+]]
+
+-- Imports:
+local SplitString = request('!.string.split')
+
+--[[
   Input
 
     string - data
@@ -24,12 +32,7 @@
 
       Sequence of deserializers results.
 ]]
-
--- Last mod.: 2024-03-04
-
-local SplitString = request('!.string.split')
-
-return
+local process_list =
   function(DataStr, Deserializer, Separator)
     assert_string(DataStr)
     assert_function(Deserializer)
@@ -38,6 +41,7 @@ return
     local Results
     do
       Results = {}
+      DataStr = DataStr .. Separator
       local Chunks = SplitString(DataStr, Separator)
       for _, Chunk in ipairs(Chunks) do
         table.insert(Results, Deserializer(Chunk))
@@ -47,6 +51,9 @@ return
 
     return Results
   end
+
+-- Export:
+return process_list
 
 --[[
   2024-03-04
