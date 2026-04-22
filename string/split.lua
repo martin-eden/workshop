@@ -1,31 +1,71 @@
+-- Split string into pieces
+
 --[[
-  Split string in pieces.
-
-  Gets source string with delimiter and delimiter string.
-  Returns table with sequence of pieces, without delimiter string.
-  Delimiter may not be present at end of string. So result for
-  ('a;b', ';') is same as for ('a;b;', ';').
-
-  Input:
-    s: string - source string
-    opt delim: string - delimiter string
-      default: "\n"
-
-  Output:
-    table - list of strings
+  Author: Martin Eden
+  Last mod.: 2026-04-22
 ]]
 
-return
-  function(s, delim)
-    assert_string(s)
-    local delim = delim or '\n'
-    assert_string(delim)
-    local result = {}
-    local last_pos = 1
-    for line, _last_pos in string.gmatch(s, '(.-)' .. delim .. '()') do
-      result[#result + 1] = line
-      last_pos = _last_pos
+-- Imports:
+local quote_regexp = request('!.lua.regexp.quote')
+
+--[[
+  Split delimited string into list
+
+  String is treated as pairs of ( item delimiter).
+  So if string not ends on delimiter (called "terminator")
+  then that chunk is lost.
+
+  Cases/examples:
+
+    ('', '') ->  ( '' )
+    ('a', '') ->  ( 'a' )
+    ('/', '/') ->  ( '' )
+    ('//', '/') -> ( '' '' )
+    ('a//', '/') -> ( 'a' '' )
+    ('/a/', '/') -> ( '' 'a' )
+    ('a', '/') -> ( '' )
+    ('a/', '/') -> ( 'a' )
+    ('a/b', '/') -> ( 'a' )
+]]
+local split_string =
+  function(str, terminator)
+    assert_string(str)
+    assert_string(terminator)
+
+    -- Special case: empty terminator
+    if (terminator == '') then
+      -- Return list with source string
+      return { str }
     end
-    result[#result + 1] = s:sub(last_pos)
-    return result
+
+    local Result = {}
+
+    local item_capture = '(.-)' .. quote_regexp(terminator) .. '()'
+
+    local start_pos
+    local end_pos
+    local item_str
+
+    start_pos = 1
+
+    while true do
+      start_pos, end_pos, item_str =
+        string.find(str, item_capture, start_pos)
+
+      if not start_pos then break end
+
+      table.insert(Result, item_str)
+
+      start_pos = end_pos + 1
+    end
+
+    return Result
   end
+
+-- Export:
+return split_string
+
+--[[
+  2016 # #
+  2026-04-22
+]]
