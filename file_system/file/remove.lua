@@ -1,37 +1,38 @@
 -- Delete file given by pathname
 
 --[[
-  Returns true if file does not exist at end of execution. False otherwise.
-
-  So post-condition is that given file does not exist. That is why
-  we return true if it wasn't there at the start. Post-condition is
-  satisfied.
-]]
-
---[[
-  Status: passed maiden flight
+  Author: Martin Eden
   Last mod.: 2024-02-13
 ]]
 
-local Get_RemoveFile_Command = request('!.mechs.cmdline.get_cmd_rmfile')
+-- Imports:
+local file_exists = request('exists')
+local get_rmfile_command = request('!.mechs.cmdline.get_cmd_rmfile')
+local shell_execute = request('!.concepts.shell.execute')
 
-local FileExists = request('exists')
+--[[
+  Delete file by pathname
 
-return
-  function(PathName)
-    assert_string(PathName)
+  Returns true if file does not exist before or after execution.
+]]
+local remove_file =
+  function(pathname)
+    assert_string(pathname)
 
-    -- File does not exist, job done:
-    if not FileExists(PathName) then
-      return true
-    end
+    if not file_exists(pathname) then return true end
 
-    local RemoveFile_Command = Get_RemoveFile_Command(PathName)
-    local IsOk, ExitReason, ExitCode = os.execute(RemoveFile_Command)
-    -- Something went wrong:
-    if not IsOk then
-      return false
-    end
+    local remove_file_cmd = get_rmfile_command(pathname)
+    shell_execute(remove_file_cmd)
 
-    return not FileExists(PathName)
+    if not file_exists(pathname) then return true end
+
+    return false
   end
+
+-- Export:
+return remove_file
+
+--[[
+  2024-02-13
+  2026-04-22
+]]
