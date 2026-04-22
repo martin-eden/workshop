@@ -1,26 +1,33 @@
+-- Execute shell command and return output as list of lines
+
 --[[
-  Execute shell command in given string.
-  Return command output as list of lines.
+  Author: Martin Eden
+  Last mod.: 2026-04-22
 ]]
 
--- Last mod.: 2024-11-20
+local shell_execute = request('!.concepts.shell.execute')
+local string_to_lines = request('!.string.to_lines')
 
-local StringToLines = request('!.string.to_lines')
+local get_program_output_lines =
+  --[[
+    Execute shell command in given string.
+    Return command output as list of lines.
+  ]]
+  function(shell_cmd)
+    assert_string(shell_cmd)
 
-return
-  function(Command)
-    assert_string(Command)
-    local OutputPipe = io.popen(Command, 'r')
-    local OutputText = OutputPipe:read('a')
-    OutputPipe:close()
+    local ExecResult = shell_execute(shell_cmd)
 
-    local Result = StringToLines(OutputText)
+    local Lines = string_to_lines(ExecResult.Output)
 
-    return Result
+    return Lines
   end
 
+-- Export:
+return get_program_output_lines
+
 --[[
-  2017-08-11
-  2024-02-11 Documentation change
-  2024-11-20
+  2017 #
+  2024 # #
+  2026-04-22
 ]]
