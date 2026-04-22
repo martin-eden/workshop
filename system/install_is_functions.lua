@@ -1,30 +1,18 @@
--- Function to spawn "is_<type>" family of global functions.
+-- Function to create "is_<type>" family of global functions
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-22
+]]
 
 --[[
   It spawns "is_nil", "is_boolean", ... for all Lua data types.
   Also it spawns "is_integer" and "is_float" for number type.
 ]]
 
---[[
-  Design
-
-    f(:any) -> bool
-
-    Original design was
-
-      f(:any) -> bool, (string or nil)
-
-      Use case was "assert(is_number(x))" which will automatically
-      provide error message when "x" is not a number.
-
-      Today I prefer less fancy designs. Caller has enough information
-      to build error message itself.
-]]
-
--- Last mod.: 2024-03-02
-
-local data_types = request('!.lua.data_types')
-local data_mathtypes = request('!.lua.data_mathtypes')
+-- Imports:
+local DataTypes = request('!.lua.data_types')
+local MathTypes = request('!.lua.data_mathtypes')
 
 local type_is =
   function(type_name)
@@ -49,19 +37,23 @@ local number_is =
       end
   end
 
-return
+local install_is_functions =
   function()
-    for _, type_name in ipairs(data_types) do
+    for _, type_name in ipairs(DataTypes) do
       _G['is_' .. type_name] = type_is(type_name)
     end
-    for _, math_type_name in ipairs(data_mathtypes) do
+    for _, math_type_name in ipairs(MathTypes) do
       _G['is_' .. math_type_name] = number_is(math_type_name)
     end
   end
+
+-- Export:
+return install_is_functions
 
 --[[
   2018-02
   2020-01
   2022-01
-  2024-03 Changed design
+  2024-03
+  2026-04-22
 ]]
