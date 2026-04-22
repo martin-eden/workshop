@@ -1,31 +1,38 @@
--- Remove directory by name. GNU/Bash.
+-- Remove directory by name
 
 --[[
-  Returns true if the directory does not exist after execution and
-  false in another case.
+  Author: Martin Eden
+  Last mod.: 2026-04-22
 ]]
 
--- Last mod.: 2024-02-17
+-- Imports:
+local directory_exists = request('exists')
+local get_rmdir_command = request('!.mechs.cmdline.get_cmd_rmdir')
+local shell_execute = request('!.concepts.shell.execute')
 
-local DirectoryExists = request('exists')
+--[[
+  Delete directory by pathname
 
-local Get_RmDir_OsCommand = request('!.mechs.cmdline.get_cmd_rmdir')
-
-return
+  Returns true if directory does not exist before or after execution.
+]]
+local delete_dir =
   function(DirName)
     assert_string(DirName)
 
-    if not DirectoryExists(DirName) then
-      return true
-    end
+    if not directory_exists(DirName) then return true end
 
-    local RmDir_OsCommand = Get_RmDir_OsCommand(DirName)
-    os.execute(RmDir_OsCommand)
+    local rmdir_cmd = get_rmdir_command(DirName)
+    shell_execute(rmdir_cmd)
 
-    if not DirectoryExists(DirName) then
-      return true
-    end
+    if not directory_exists(DirName) then return true end
 
     return false
   end
 
+-- Export:
+return delete_dir
+
+--[[
+  2024-02-17
+  2026-04-22
+]]
