@@ -1,3 +1,10 @@
+-- Files/directories lister
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-22
+]]
+
 return
   {
     -- Config
@@ -8,7 +15,7 @@ return
     GetDirectories = request('GetDirectories'),
 
     -- Internals
-    BaseDir = '.',
+    BaseDir = './',
     RemoveBaseDirPrefix = request('RemoveBaseDirPrefix'),
   }
 
