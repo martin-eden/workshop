@@ -9,6 +9,7 @@ return
   {
     -- Config
     SetBaseDirectory = request('SetBaseDirectory'),
+    GetBaseDirectory = request('GetBaseDirectory'),
 
     -- Run
     GetFiles = request('GetFiles'),
