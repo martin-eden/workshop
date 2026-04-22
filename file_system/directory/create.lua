@@ -1,33 +1,38 @@
--- Create directory by name. GNU/Bash.
+-- Create directory by name
 
 --[[
-  Returns true if directory is present at the end of execution
-  and false in another case.
+  Author: Martin Eden
+  Last mod.: 2026-04-22
 ]]
+
+-- Imports:
+local directory_exists = request('exists')
+local get_mkdir_command = request('!.mechs.cmdline.get_cmd_mkdir')
+local shell_execute = request('!.concepts.shell.execute')
 
 --[[
-  Version: 2
-  Last mod.: 2024-02-17
+  Create directory by pathname
+
+  Returns true if directory is present before or after execution.
 ]]
+local creare_dir =
+  function(dir_name)
+    assert_string(dir_name)
 
-local DirectoryExists = request('exists')
+    if directory_exists(dir_name) then return true end
 
-local Get_CreateDir_OsCommand = request('!.mechs.cmdline.get_cmd_mkdir')
+    local mkdir_cmd = get_mkdir_command(dir_name)
+    shell_execute(mkdir_cmd)
 
-return
-  function(DirectoryName)
-    assert_string(DirectoryName)
-
-    if DirectoryExists(DirectoryName) then
-      return true
-    end
-
-    local CreateDir_OsCommand = Get_CreateDir_OsCommand(DirectoryName)
-    os.execute(CreateDir_OsCommand)
-
-    if DirectoryExists(DirectoryName) then
-      return true
-    end
+    if directory_exists(dir_name) then return true end
 
     return false
   end
+
+-- Export:
+return creare_dir
+
+--[[
+  2024-02-17
+  2026-04-22
+]]
