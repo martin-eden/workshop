@@ -198,6 +198,24 @@ return parse_pathname
       We are using just provided string and can't check whether "a"
       is directory or file. But for "a/" we know it's directory.
 
+    * String processing
+
+      I don't like string preprocessing with gsub()
+
+      I would like to return here one day and implement proper
+      parsing based on list of chunks separated by "/".
+
+    * Alternative contract
+
+      * Directory name always ends with "/"
+
+        Makes sense when .Name is a directory.
+
+        So you can always catenate it without adding slash.
+
+        But so there will be no "." and ".." which are proper
+        POSIX names too. There will be "./" and "../". A bit ugly.
+
   Examples
 
     ""
