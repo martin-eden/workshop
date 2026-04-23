@@ -2,11 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-17
+  Last mod.: 2026-04-23
 ]]
 
-local <const> file_as_string = request('!.file_system.file.as_string')
-local <const> get_execute_command =
+local file_as_string = request('!.file_system.file.as_string')
+local get_execute_command =
   request('!.mechs.cmdline.get_cmd_execute_with_redirects')
 
 --[[
@@ -29,20 +29,20 @@ local <const> get_execute_command =
       [s] Errors -- Program errors
     }
 ]]
-local <const> execute_shell_command =
+local execute_shell_command =
   function(command)
-    local <const> out_file_name = os.tmpname()
-    local <const> errors_file_name = os.tmpname()
+    local out_file_name = os.tmpname()
+    local errors_file_name = os.tmpname()
 
-    local <const> shell_command =
+    local shell_command =
       get_execute_command(
         command, out_file_name, errors_file_name
       )
 
-    local <const> _, result_type_code, result_code =
+    local _, result_type_code, result_code =
       os.execute(shell_command)
 
-    local <const> Result = {}
+    local Result = {}
 
     if (result_type_code == 'exit') then
       Result.ResultCode = result_code

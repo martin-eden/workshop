@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-17
+  Last mod.: 2026-04-23
 ]]
 
 --[[
@@ -42,10 +42,10 @@ local quote =
 
     data = data .. "'"
 
-    local <const> data_end_idx = string.len(data)
+    local data_end_idx = string.len(data)
 
     -- Capture characters before '
-    local <const> clean_part_capture = "(.-)'"
+    local clean_part_capture = "(.-)'"
 
     local capture_start_idx, capture_end_idx, capture
     local result

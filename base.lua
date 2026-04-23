@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-02-09
+  Last mod.: 2026-04-23
 ]]
 
 --[[
@@ -19,8 +19,6 @@
   Lastly, global functions are added for convenience. Such functions
   are "new" and families of "is_<type>" and "assert_<type>".
 ]]
-
-global require, error, table, _G
 
 local split_name =
   function(qualified_name)

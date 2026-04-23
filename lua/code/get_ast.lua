@@ -2,21 +2,21 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-17
+  Last mod.: 2026-04-23
 ]]
 
 -- Imports:
-local <const> Lines = request('!.concepts.Lines')
-local <const> LuaSyntax = request('!.concepts.lua.syntax')
-local <const> Parse = request('!.mechs.generic_loader')
+local Lines = request('!.concepts.Lines')
+local LuaSyntax = request('!.concepts.lua.syntax')
+local Parse = request('!.mechs.generic_loader')
 
-local <const> IsShebang =
+local IsShebang =
   function(Str)
     return (string.sub(Str, 1, 2) == '#!')
   end
 
 -- Extract program name from #! shebang string
-local <const> GetProgramName =
+local GetProgramName =
   function(Str)
     return string.match(Str, '#!%s*(.*)')
   end
@@ -34,15 +34,15 @@ local <const> GetProgramName =
     .unparsed_tail -- [] Optional unparsed data at the end
     }
 ]]
-local <const> GetAst =
+local GetAst =
   function(CodeStr)
     assert_string(CodeStr)
 
-    local <const> CodeLines = new(Lines)
+    local CodeLines = new(Lines)
 
     CodeLines:FromString(CodeStr)
 
-    local <const> FirstLine = CodeLines:GetFirstLine()
+    local FirstLine = CodeLines:GetFirstLine()
 
     local ShebangStr
     if IsShebang(FirstLine) then

@@ -2,18 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-17
+  Last mod.: 2026-04-23
 ]]
 
 --[[
   Concatenate strings with newline separator. Tailing newline.
 ]]
-local <const> LinesToString =
+local LinesToString =
   function(Lines)
     assert_table(Lines)
 
     local Result
-    local <const> Separator = '\n'
+    local Separator = '\n'
 
     Result = table.concat(Lines, Separator)
     Result = Result .. Separator

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-17
+  Last mod.: 2026-04-23
 ]]
 
 -- Imports:
@@ -19,9 +19,9 @@ local run_command = request('!.concepts.shell.execute')
     [s] tty_name -- Device file name
     [s] params -- Encoded configuration
 ]]
-local <const> set_raw_params =
+local set_raw_params =
   function(tty_name, params)
-    local <const> Command =
+    local Command =
       {
         'stty',
         '--file=' .. tty_name,
