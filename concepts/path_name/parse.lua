@@ -107,6 +107,10 @@ local parse_pathname =
 
     local is_absolute = starts_with(path_name, '/')
 
+    local is_directory =
+      ends_with(path_name, '/') or
+      ends_with(path_name, '..')
+
     if not ends_with(path_name, '/') then
       -- Adjust for split_string()
       path_name = path_name .. '/'
@@ -126,10 +130,6 @@ local parse_pathname =
     if (parent_dir_name ~= '') or is_absolute then
       parent_dir_name = parent_dir_name .. '/'
     end
-
-    local is_directory =
-      ends_with(path_name, '/') or
-      ends_with(path_name, '..')
 
     local Result =
       {
