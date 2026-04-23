@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-17
+  Last mod.: 2026-04-23
 ]]
 
 -- Imports:
@@ -18,8 +18,8 @@ local <const> GetCmd_CopyFile = request('!.mechs.cmdline.get_cmd_copy')
 local <const> ComparePathnames =
   function(Rec_A, Rec_B)
     local <const> A_Name, B_Name = Rec_A.src_name, Rec_B.src_name
-    local <const> A_Depth = #ParsePathname(A_Name).path
-    local <const> B_Depth = #ParsePathname(B_Name).path
+    local <const> A_Depth = #ParsePathname(A_Name).Path
+    local <const> B_Depth = #ParsePathname(B_Name).Path
 
     if (A_Depth < B_Depth) then return false end
     if (A_Depth > B_Depth) then return true end
@@ -82,7 +82,7 @@ local <const> GetScript =
     for _, CopyRec in ipairs(Self.files_to_copy) do
       local <const> SrcFullName = CopyRec.src_name
       local <const> DestFullName = CopyRec.dest_name
-      local <const> DestDir = ParsePathname(DestFullName).directory
+      local <const> DestDir = ParsePathname(DestFullName).Directory
       if (DestDir ~= PrevDestDir) then
         AddLine('')
         PrevDestDir = DestDir
