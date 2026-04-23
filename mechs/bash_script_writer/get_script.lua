@@ -6,20 +6,20 @@
 ]]
 
 -- Imports:
-local <const> Lines = request('!.concepts.Lines.Interface')
-local <const> ParsePathname = request('!.concepts.path_name.parse')
-local <const> GetCmd_RmDir = request('!.mechs.cmdline.get_cmd_rmdir')
-local <const> GetCmd_MkDir = request('!.mechs.cmdline.get_cmd_mkdir')
-local <const> GetCmd_CopyFile = request('!.mechs.cmdline.get_cmd_copy')
+local Lines = request('!.concepts.Lines.Interface')
+local ParsePathname = request('!.concepts.path_name.parse')
+local GetCmd_RmDir = request('!.mechs.cmdline.get_cmd_rmdir')
+local GetCmd_MkDir = request('!.mechs.cmdline.get_cmd_mkdir')
+local GetCmd_CopyFile = request('!.mechs.cmdline.get_cmd_copy')
 
 --[[
   Compare file pathnames first by name then by depth
 ]]
-local <const> ComparePathnames =
+local ComparePathnames =
   function(Rec_A, Rec_B)
-    local <const> A_Name, B_Name = Rec_A.src_name, Rec_B.src_name
-    local <const> A_Depth = #ParsePathname(A_Name).Path
-    local <const> B_Depth = #ParsePathname(B_Name).Path
+    local A_Name, B_Name = Rec_A.src_name, Rec_B.src_name
+    local A_Depth = #ParsePathname(A_Name).Path
+    local B_Depth = #ParsePathname(B_Name).Path
 
     if (A_Name < B_Name) then return true end
     if (A_Name > B_Name) then return false end
@@ -33,7 +33,7 @@ local <const> ComparePathnames =
 --[[
   For "a/b/c/" mark as created "a/", "a/b/" and "a/b/c".
 ]]
-local <const> MarkDirectoriesCreated =
+local MarkDirectoriesCreated =
   function(DirPathName, DirectoriesCreated)
     local ParentDirPath = ''
     for DirName in DirPathName:gmatch('(.-)/') do
@@ -54,11 +54,11 @@ local <const> MarkDirectoriesCreated =
     "mkdir" commands: "mkdir -p a/b/" is better than "mkdir -p a/;
     mkdir -p a/b/". To reach this goal we sort files list.
 ]]
-local <const> GetScript =
+local GetScript =
   function(Self)
-    local <const> Lines = new(Lines)
+    local Lines = new(Lines)
 
-    local <const> AddLine =
+    local AddLine =
       function(Line)
         Lines:AddLastLine(Line)
       end
@@ -74,15 +74,15 @@ local <const> GetScript =
       AddLine(GetCmd_RmDir(DirPathName))
     end
 
-    local <const> DirectoriesCreated = {}
+    local DirectoriesCreated = {}
 
     table.sort(Self.files_to_copy, ComparePathnames)
 
     local PrevDestDir = ''
     for _, CopyRec in ipairs(Self.files_to_copy) do
-      local <const> SrcFullName = CopyRec.src_name
-      local <const> DestFullName = CopyRec.dest_name
-      local <const> DestDir = ParsePathname(DestFullName).Directory
+      local SrcFullName = CopyRec.src_name
+      local DestFullName = CopyRec.dest_name
+      local DestDir = ParsePathname(DestFullName).Directory
       if (DestDir ~= PrevDestDir) then
         AddLine('')
         PrevDestDir = DestDir

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-17
+  Last mod.: 2026-04-23
 ]]
 
 -- Imports:
@@ -22,7 +22,7 @@ local run_command = request('!.concepts.shell.execute')
 ]]
 local get_tty_params =
   function(tty_name)
-    local <const> Command =
+    local Command =
       {
         'stty',
         '--file=' .. tty_name,

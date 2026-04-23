@@ -2,17 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-17
+  Last mod.: 2026-04-23
 ]]
 
 -- Imports:
-local <const> glue_words = request('!.concepts.words.to_string')
+local glue_words = request('!.concepts.words.to_string')
 
 -- Export:
 return
   function(seconds)
     -- Seconds may be fractional number
-    local <const> Command =
+    local Command =
       {
         'sleep',
         string.format('%.2f', seconds),

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-17
+  Last mod.: 2026-04-23
 ]]
 
 -- Imports:
@@ -25,11 +25,11 @@ local run_command = request('!.concepts.shell.execute')
 ]]
 local set_params =
   function(tty_name, Params)
-    local <const> read_timeout_s = Params.ReadTimeout_S or 0.1
-    local <const> speed_bps = Params.Speed_Bps or 115200
+    local read_timeout_s = Params.ReadTimeout_S or 0.1
+    local speed_bps = Params.Speed_Bps or 115200
 
     -- "stty" accepts waiting time in deciseconds
-    local <const> read_timeout_ds = math.floor(read_timeout_s * 10)
+    local read_timeout_ds = math.floor(read_timeout_s * 10)
 
     --[[
       Kinda long I know. I tried simpler
@@ -38,7 +38,7 @@ local set_params =
 
       but that didn't work.
     ]]
-    local <const> Command =
+    local Command =
       {
         'stty',
         '--file=' .. tty_name,
