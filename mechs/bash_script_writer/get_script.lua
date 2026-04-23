@@ -13,7 +13,7 @@ local <const> GetCmd_MkDir = request('!.mechs.cmdline.get_cmd_mkdir')
 local <const> GetCmd_CopyFile = request('!.mechs.cmdline.get_cmd_copy')
 
 --[[
-  Compare file pathnames preferring files in deeper directories
+  Compare file pathnames first by name then by depth
 ]]
 local <const> ComparePathnames =
   function(Rec_A, Rec_B)
@@ -21,11 +21,11 @@ local <const> ComparePathnames =
     local <const> A_Depth = #ParsePathname(A_Name).Path
     local <const> B_Depth = #ParsePathname(B_Name).Path
 
-    if (A_Depth < B_Depth) then return false end
-    if (A_Depth > B_Depth) then return true end
-
     if (A_Name < B_Name) then return true end
     if (A_Name > B_Name) then return false end
+
+    if (A_Depth < B_Depth) then return false end
+    if (A_Depth > B_Depth) then return true end
 
     return false
   end
