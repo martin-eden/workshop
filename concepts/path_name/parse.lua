@@ -24,6 +24,7 @@
       IsDirectory -- [b] True if leaf is directory
       IsAbsolute -- [b] True if Directory is absolute path
       Path -- [t] List of directory names ending with leaf name
+      FullName -- [s] Directory + Name. Ends with '/' if leaf is directory
     }
 ]]
 
@@ -158,6 +159,12 @@ local parse_pathname =
       ends_with(path_name, '/.') or
       ends_with(path_name, '/..')
 
+    local full_name
+    full_name = parent_dir_name .. leaf_name
+    if is_directory then
+      full_name = full_name .. '/'
+    end
+
     local Result =
       {
         Directory = parent_dir_name,
@@ -165,6 +172,7 @@ local parse_pathname =
         Path = path,
         IsAbsolute = is_absolute,
         IsDirectory = is_directory,
+        FullName = full_name,
       }
 
     return Result
