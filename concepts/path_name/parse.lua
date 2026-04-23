@@ -88,6 +88,14 @@ local normalize_pathname =
       path_name = path_name .. '.'
     end
 
+    --[[
+      Custom case for ".." which is intact till here.
+      We need at least one slash in returned string.
+    ]]
+    if (path_name == '..') then
+      path_name = '../.'
+    end
+
     assert(path_name ~= '')
 
     return path_name
