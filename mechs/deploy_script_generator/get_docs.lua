@@ -1,6 +1,11 @@
 -- Return table list of documentation files for given list of ".lua" files
 
 --[[
+  Author: Martin Eden
+  Last mod.: 2026-04-23
+]]
+
+--[[
   Input
 
     table - self
@@ -16,21 +21,11 @@
       String list. Each entry is pathname to documentation file.
       We guarantee there will be no duplicate entries.
       Only files that really exists are included.
-
-  Details
-
-    We are working directory-wise and considering that file is
-    documentation just by it's extension.
-
-    Previous implementation picked documentation by module-dependent
-    name and extension. Plus hardcoded names. Hardcoded list was never
-    enough. Module-dependent name was not used widely enough.
 ]]
 
--- Last mod.: 2024-10-03
-
+-- Imports:
 local ParsePathname = request('!.concepts.path_name.parse')
-local FileLister = request('!.mechs.file_lister.interface')
+local FilesLister = request('!.concepts.FilesLister.Interface')
 
 -- Regexps for documentation file names
 local DocNameRegexps =
@@ -43,7 +38,7 @@ local DocNameRegexps =
     ]]
     '.+%.txt$',
     '.+%.md$',
-    '.+%.[mM]ark[dD]own',
+    '.+%.[mM]ark[dD]own$',
   }
 
 local IsDocumentationName =
@@ -65,17 +60,16 @@ return
     for Index, Pathname in ipairs(FileList) do
       local ParsedPathname = ParsePathname(Pathname)
 
-      assert(not ParsedPathname.is_directory)
+      assert(not ParsedPathname.IsDirectory)
 
-      local Dirname = ParsePathname(Pathname).directory
+      local Dirname = ParsedPathname.Directory
 
       if ProcessedDirectories[Dirname] then
         goto Continue
       end
 
-      FileLister.start_dir = Dirname
-      FileLister:init()
-      local Files = FileLister:get_files_list()
+      FilesLister:SetBaseDirectory(Dirname)
+      local Files = FilesLister:GetFiles()
 
       for Index, FileName in ipairs(Files) do
         if IsDocumentationName(FileName) then
