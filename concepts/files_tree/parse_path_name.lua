@@ -1,3 +1,10 @@
+-- Parse pathname and add it to our tree
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-23
+]]
+
 local parse_name = request('^.path_name.parse')
 
 local level_up_str = '..'
@@ -6,7 +13,7 @@ return
   function(self, path_name, is_file)
     local components = parse_name(path_name)
     local current_node = self.tree
-    for i = 1, #components.path do
+    for i = 1, #components.Path do
       local part_name = components[i]
       if (part_name == level_up_str) then
           if not current_node.parent then
@@ -36,3 +43,7 @@ return
       current_node.is_file = true
     end
   end
+
+--[[
+  2017-09
+]]
