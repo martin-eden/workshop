@@ -1,22 +1,31 @@
 -- Insert string after line at given index
 
--- Last mod.: 2024-10-31
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-24
+]]
+
+-- Imports:
+local trim_tail_newlines = request('!.string.trim_linefeed')
 
 -- Exports:
 return
-  function(self, String, Index)
+  function(Me, str, index)
     --[[
       We can't hire InsertLineBefore() to do this job for us
       because <Index> needs to be (<Index> + 1) and it won't
       be valid.
     ]]
 
-    self:AssertValidValue(String)
-    self:AssertValidIndex(Index)
+    Me:AssertValidValue(str)
+    Me:AssertValidIndex(index)
 
-    table.insert(self.Lines, Index + 1, String)
+    str = trim_tail_newlines(str)
+
+    table.insert(Me.Lines, index + 1, str)
   end
 
 --[[
   2024-10-31
+  2026-04-24
 ]]
