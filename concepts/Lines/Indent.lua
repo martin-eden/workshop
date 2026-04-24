@@ -1,6 +1,9 @@
 -- Indent lines
 
--- Last mod.: 2024-10-31
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-24
+]]
 
 --[[
   In our class we're not separating indentation from lines text.
@@ -13,10 +16,13 @@ return
     local IndentChunk = self.IndentChunk
 
     for Index, Line in ipairs(self.Lines) do
-      self.Lines[Index] = IndentChunk .. Line
+      if (Line ~= '') then
+        self.Lines[Index] = IndentChunk .. Line
+      end
     end
   end
 
 --[[
   2024-10-31
+  2026-04-24
 ]]
