@@ -1,6 +1,9 @@
 -- Insert string before line at given index
 
--- Last mod.: 2024-10-31
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-24
+]]
 
 --[[
   Method is named "Insert Line Before", but requires string?
@@ -13,15 +16,21 @@
   it accepts.
 ]]
 
+-- Imports:
+local trim_tail_newlines = request('!.string.trim_linefeed')
+
 -- Exports:
 return
-  function(self, String, Index)
-    self:AssertValidValue(String)
-    self:AssertValidIndex(Index)
+  function(Me, str, index)
+    Me:AssertValidValue(str)
+    Me:AssertValidIndex(index)
 
-    table.insert(self.Lines, Index, String)
+    str = trim_tail_newlines(str)
+
+    table.insert(Me.Lines, index, str)
   end
 
 --[[
   2024-10-31
+  2026-04-24
 ]]
