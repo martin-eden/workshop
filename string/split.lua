@@ -2,45 +2,47 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-22
+  Last mod.: 2026-04-24
 ]]
 
 -- Imports:
 local quote_regexp = request('!.lua.regexp.quote')
+local ends_with = request('!.string.ends_with')
 
 --[[
   Split delimited string into list
 
-  String is treated as pairs of ( item delimiter).
-  So if string not ends on delimiter (called "terminator")
-  then that chunk is lost.
+  ( 'a/b' '/' ) -> ( 'a' 'b' )
+  ( 'a/' '/' ) -> ( 'a' )
+
+  String is always treated as it ends on delimiter.
 
   Cases/examples:
 
     ('', '') ->  ( '' )
     ('a', '') ->  ( 'a' )
+    ('a', '/') -> ( 'a' )
     ('/', '/') ->  ( '' )
     ('//', '/') -> ( '' '' )
-    ('a//', '/') -> ( 'a' '' )
-    ('/a/', '/') -> ( '' 'a' )
-    ('a', '/') -> ( '' )
-    ('a/', '/') -> ( 'a' )
-    ('a/b', '/') -> ( 'a' )
 ]]
 local split_string =
-  function(str, terminator)
+  function(str, delimiter)
     assert_string(str)
-    assert_string(terminator)
+    assert_string(delimiter)
 
-    -- Special case: empty terminator
-    if (terminator == '') then
+    -- Special case: empty delimiter
+    if (delimiter == '') then
       -- Return list with source string
       return { str }
     end
 
+    if not ends_with(str, delimiter) then
+      str = str .. delimiter
+    end
+
     local Result = {}
 
-    local item_capture = '(.-)' .. quote_regexp(terminator) .. '()'
+    local item_capture = '(.-)' .. quote_regexp(delimiter) .. '()'
 
     local start_pos
     local end_pos
@@ -68,4 +70,5 @@ return split_string
 --[[
   2016 # #
   2026-04-22
+  2026-04-24
 ]]
