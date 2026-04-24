@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-22
+  Last mod.: 2026-04-24
 ]]
 
 local one_char_seq_subst =
@@ -73,24 +73,26 @@ local unescape =
     return s
   end
 
+local backslash = [[\]]
+local double_backslash = backslash .. backslash
+
 -- Unquote Lua string quoted in linear encoding (backslashes)
 local unqote_string =
   function(s)
-    local quoted_slash = [[\\]]
-    if s:find(quoted_slash) then
+    if s:find(double_backslash) then
       --[[
         I believe there was tricky case with unquoting quoted slash
 
         When it's present we will split string into list of
-        chunks terminated by quoted slash. Then unquote chunks.
+        chunks separated by quoted slash. Then unquote chunks.
         Then catenate list to string inserting slash between chunks.
       ]]
-      s = s .. quoted_slash
-      local parts = split(s, quoted_slash)
+      s = s .. double_backslash
+      local parts = split(s, double_backslash)
       for i = 1, #parts do
         parts[i] = unescape(parts[i])
       end
-      s = table.concat(parts, quoted_slash)
+      s = table.concat(parts, backslash)
     else
       s = unescape(s)
     end
@@ -103,4 +105,5 @@ return unqote_string
 --[[
   2017 # #
   2026-04-22
+  2026-04-24
 ]]
