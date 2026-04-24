@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-04-24
 ]]
 
 --[[
@@ -10,116 +10,26 @@
 
   Here is function to parse them.
 
-  Also it provides list of node names in path.
-
-  And flags that
-    * path is absolute
-    * ends on directory
-
   Result structure
 
     {
-      Directory -- [s] Parent directory path ending with '/'
-      Name -- [s] Name of leaf file or directory
-      IsDirectory -- [b] True if leaf is directory
-      IsAbsolute -- [b] True if Directory is absolute path
-      Path -- [t] List of directory names ending with leaf name
-      FullName -- [s] Directory + Name. Ends with '/' if leaf is directory
+      HostDir -- [s] Directory containing leaf file. Always ends with "/"
+      Name -- [s] Leaf file of directory. Never has "/"
+      FullName -- [s] Directory + Name. Ends with "/" if leaf is directory
     }
 ]]
 
 --[[
   Contract
 
-  * .Directory always ends with "/"
+  * .HostDir always ends with "/"
   * .Name never contains "/"
-]]
-
---[[
-  Using structure
-
-  * Canonical path == .Directory + .Name
-
-  * Using .Path
-
-    if .IsAbsolute
-      ChDir "/"
-
-    if not .IsDirectory
-      RemoveLastEntry .Path
-
-    for each NodeName in .Path
-      ChDir NodeName
+  * .HostDir for absolute paths starts with "/"
+  * .HostDir for relative paths starts with "."
 ]]
 
 -- Imports:
-local starts_with = request('!.string.starts_with')
-local ends_with = request('!.string.ends_with')
 local split_string = request('!.string.split')
-
-local normalize_pathname =
-  function(path_name)
-    -- Replace "//" with "/"
-    path_name = string.gsub(path_name, '//+', '/')
-
-    -- Strip "./" from start
-    repeat
-      local num_repl
-      path_name, num_repl = string.gsub(path_name, '^%./', '')
-    until (num_repl == 0)
-
-    -- Strip "./" from middle. Actually we are replacing "/./" to "/"
-    repeat
-      local num_repl
-      path_name, num_repl = string.gsub(path_name, '/%./', '/')
-    until (num_repl == 0)
-
-    -- If it's relative path and not starts with ".." ..
-    if
-      not starts_with(path_name, '/') and
-      not starts_with(path_name, '..')
-    then
-      -- .. add relative prefix
-      path_name = './' .. path_name
-    end
-
-    -- If it ends as directory ..
-    if ends_with(path_name, '/') then
-      -- .. add self name postfix
-      path_name = path_name .. '.'
-    end
-
-    --[[
-      Custom case for ".." which is intact till here.
-      We need at least one slash in returned string.
-    ]]
-    if (path_name == '..') then
-      path_name = '../.'
-    end
-
-    assert(path_name ~= '')
-
-    return path_name
-  end
-
-local get_path =
-  function(path_name)
-    if not ends_with(path_name, '/') then
-      -- Adjust for split_string()
-      path_name = path_name .. '/'
-    end
-
-    local path = split_string(path_name, '/')
-
-    assert(#path >= 2)
-
-    return path
-  end
-
-local get_parent_dir_name =
-  function(path)
-    return table.concat(path, '/', 1, #path - 1) .. '/'
-  end
 
 --[[
   Parses string with Unix pathname. Returns table
@@ -127,51 +37,109 @@ local get_parent_dir_name =
 local parse_pathname =
   function(path_name)
     assert_string(path_name)
+    assert(path_name ~= '', 'Please pass not empty path_name')
 
-    path_name = normalize_pathname(path_name)
+    local sep = '/'
+    local self_dir = '.'
+    local upper_dir = '..'
+    local empty = ''
 
-    local path = get_path(path_name)
+    path_name = path_name .. sep
+    local path = split_string(path_name, sep)
 
-    local leaf_name = path[#path]
+    do
+      local index = 2
+      local current_item
+      while (index <= #path - 1) do
+        current_item = path[index]
+        if
+          (current_item == empty) or
+          (current_item == self_dir)
+        then
+          table.remove(path, index)
+        else
+          index = index + 1
+        end
+      end
 
-    local parent_dir_name = get_parent_dir_name(path)
-
-    --[[
-      For absolute paths like "/a" first entry in <path> is "".
-      Relative paths may be prefixed with "./" or with "../".
-      So first entry is "." or "..".
-
-      We don't want first entry as "" or "." in export.
-    ]]
-    local first_item = path[1]
-    if
-      (first_item == '') or
-      (first_item == '.')
-    then
-      table.remove(path, 1)
     end
 
-    local is_absolute =
-      starts_with(path_name, '/')
+    local first_node = path[1]
+    local last_node = path[#path]
 
     local is_directory =
-      ends_with(path_name, '/') or
-      ends_with(path_name, '/.') or
-      ends_with(path_name, '/..')
+      (last_node == self_dir) or
+      (last_node == upper_dir) or
+      (last_node == empty)
 
-    local full_name
-    full_name = parent_dir_name .. leaf_name
+    if
+      (last_node == empty) and
+      (#path >= 2)
+    then
+      table.remove(path, #path)
+      last_node = path[#path]
+    end
+
+    while
+      (last_node == self_dir) and
+      (#path >= 2)
+    do
+      table.remove(path, #path)
+      last_node = path[#path]
+    end
+
+    local host_dir_name
+    do
+      if
+        (first_node ~= empty) and
+        (first_node ~= self_dir) and
+        (first_node ~= upper_dir)
+      then
+        table.insert(path, 1, self_dir)
+        first_node = path[1]
+      end
+      if
+        (#path == 1) and
+        (first_node ~= empty) and
+        (first_node ~= upper_dir)
+      then
+        table.insert(path, 1, self_dir)
+        first_node = path[1]
+      end
+      host_dir_name = table.concat(path, sep, 1, #path - 1)
+      if
+        (host_dir_name == empty) and
+        (first_node ~= empty)
+      then
+        -- Zen question: what is the "upper dir" for ".." ?
+        host_dir_name = self_dir
+      end
+      host_dir_name = host_dir_name .. sep
+    end
+
+    if
+      (#path == 2) and
+      (first_node == self_dir) and
+      (last_node == self_dir)
+    then
+      table.remove(path, #path)
+      last_node = path[#path]
+    end
+
+    local full_name = table.concat(path, sep)
     if is_directory then
-      full_name = full_name .. '/'
+      full_name = full_name .. sep
+    end
+
+    local leaf_name = last_node
+    if (leaf_name == empty) then
+      leaf_name = self_dir
     end
 
     local Result =
       {
-        Directory = parent_dir_name,
+        HostDir = host_dir_name,
         Name = leaf_name,
-        Path = path,
-        IsAbsolute = is_absolute,
-        IsDirectory = is_directory,
         FullName = full_name,
       }
 
@@ -184,85 +152,65 @@ return parse_pathname
 --[[
   Notes
 
+    * POSIX pathnames are elegant
+
+      Don't treat them as strings. Treat them as slash-separated
+      strings list.
+
+      * Iff first character is "/" -- it's absolute path
+      * If last character is "/" -- it's directory
+      * If last item is "." or ".." -- it's directory
+
     * Empty string as pathname is illegal in POSIX
 
-      We treat it as ".".
-
-    * "./" prefix
-
-      We are adding "./" prefix to directory name for relative paths.
-      (Absolute paths have "/" as is.)
-
-      This is handy for outer code. It can rely that .Directory always
-      ends with "/".
+      This code will process it as "/". But empty string is stupid,
+      so empty string is under assert().
 
     * ".." element
 
       It does not interpret "a/b/.." as "a/" because "b" may be
       symlink to another directory.
 
-    * "IsDirectory" field may be false negative
-
-      We are using just provided string and can't check whether "a"
-      is directory or file. But for "a/" we know it's directory.
-
-    * String processing
-
-      I don't like string preprocessing with gsub()
-
-      I would like to return here one day and implement proper
-      parsing based on list of chunks separated by "/".
-
-    * Alternative contract
-
-      * Directory name always ends with "/"
-
-        Makes sense when .Name is a directory.
-
-        So you can always catenate it without adding slash.
-
-        But so there will be no "." and ".." which are proper
-        POSIX names too. There will be "./" and "../". A bit ugly.
-
   Examples
 
-    ""
-      Directory = './'
-      Name = '.'
-      Path = {'.'}
-      IsAbsolute = false
-      IsDirectory = true
-
     /
-      Directory = '/'
+      FullName = '/'
+      HostDir = '/'
       Name = '.'
-      Path = {'.'}
-      IsAbsolute = true
-      IsDirectory = true
 
-    a/b/c
-      Directory = './a/b/'
-      Name = 'c'
-      Path = {'a', 'b', 'c'}
-      IsAbsolute = false
-      IsDirectory = false
+    /.
+      Same as for "/"
 
-    a/
-      Directory = './a/'
+    ./
+      FullName = './'
+      HostDir = './'
       Name = '.'
-      Path = {'a', '.'}
-      IsAbsolute = false
-      IsDirectory = true
 
-    ././//a/./
-      Same as for "a/"
+    .
+      Same as for "./"
+
+    ../
+      FullName = '../'
+      HostDir = './'
+      Name = '..'
+
+    ..
+      Same as for "../"
+
+    /..
+      FullName = '/../'
+      HostDir = '/'
+      Name = '..'
+
+    ././//a/./.
+      FullName = './a/'
+      HostDir = './'
+      Name = 'a'
 
     a/../b
-      Directory = './a/../'
+      FullName = './a/../b'
+      HostDir = './a/../'
       Name = 'b'
-      Path = {'a', '..', 'b'}
-      IsDirectory = false
-      IsAbsolute = false
 ]]
 
 --[[
@@ -270,4 +218,5 @@ return parse_pathname
   2018-06
   2026-04-22
   2026-04-23
+  2026-04-24
 ]]
