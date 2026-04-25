@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-04-25
 ]]
 
 --[[
@@ -25,6 +25,7 @@
 
 -- Imports:
 local ParsePathname = request('!.concepts.path_name.parse')
+local PathIsDir = request('!.concepts.path_name.is_directory')
 local FilesLister = request('!.concepts.FilesLister.Interface')
 
 -- Regexps for documentation file names
@@ -60,9 +61,9 @@ return
     for Index, Pathname in ipairs(FileList) do
       local ParsedPathname = ParsePathname(Pathname)
 
-      assert(not ParsedPathname.IsDirectory)
+      assert(not PathIsDir(Pathname))
 
-      local Dirname = ParsedPathname.Directory
+      local Dirname = ParsedPathname.HostDir
 
       if ProcessedDirectories[Dirname] then
         goto Continue
