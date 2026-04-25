@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-04-25
 ]]
 
 -- Imports:
@@ -16,6 +16,7 @@ return
       {
         'rm',
         '-r',
+        '-f',
         quote(dir_name),
       }
 
