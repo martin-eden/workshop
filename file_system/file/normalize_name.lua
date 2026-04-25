@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-04-25
 ]]
 
 -- Imports:
@@ -11,13 +11,11 @@ local parse_pathname = request('!.concepts.path_name.parse')
 --[[
   Normalize string with Unix path-name.
 
-  "/.////a" -> "a"
+  "/.////a" -> "/a"
 ]]
 local normalize_name =
   function(path_name)
-    local result = parse_pathname(path_name)
-    result = result.Directory .. result.Name
-    return result
+    return parse_pathname(path_name).FullName
   end
 
 -- Export:
