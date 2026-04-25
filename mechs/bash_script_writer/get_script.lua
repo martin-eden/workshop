@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-04-25
 ]]
 
 -- Imports:
@@ -13,21 +13,14 @@ local GetCmd_MkDir = request('!.mechs.cmdline.get_cmd_mkdir')
 local GetCmd_CopyFile = request('!.mechs.cmdline.get_cmd_copy')
 
 --[[
-  Compare file pathnames first by name then by depth
+  Compare file pathnames by name
 ]]
 local ComparePathnames =
   function(Rec_A, Rec_B)
-    local A_Name, B_Name = Rec_A.src_name, Rec_B.src_name
-    local A_Depth = #ParsePathname(A_Name).Path
-    local B_Depth = #ParsePathname(B_Name).Path
+    local A_Name = ParsePathname(Rec_A.src_name).FullName
+    local B_Name = ParsePathname(Rec_B.src_name).FullName
 
-    if (A_Name < B_Name) then return true end
-    if (A_Name > B_Name) then return false end
-
-    if (A_Depth < B_Depth) then return false end
-    if (A_Depth > B_Depth) then return true end
-
-    return false
+    return (A_Name < B_Name)
   end
 
 --[[
@@ -82,7 +75,7 @@ local GetScript =
     for _, CopyRec in ipairs(Self.files_to_copy) do
       local SrcFullName = CopyRec.src_name
       local DestFullName = CopyRec.dest_name
-      local DestDir = ParsePathname(DestFullName).Directory
+      local DestDir = ParsePathname(DestFullName).HostDir
       if (DestDir ~= PrevDestDir) then
         AddLine('')
         PrevDestDir = DestDir
