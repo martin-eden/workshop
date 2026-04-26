@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-04-26
 ]]
 
 -- Imports:
@@ -16,10 +16,12 @@ return
       {
         'find',
         quote(dir_name),
-        '-maxdepth',
-        '1',
         '-type',
         'd',
+        '-maxdepth',
+        '1',
+        '-mindepth',
+        '1',
       }
 
     return glue_words(Command)
@@ -30,4 +32,5 @@ return
   2024 #
   2026-01-12
   2026-04-17
+  2026-04-26
 ]]
