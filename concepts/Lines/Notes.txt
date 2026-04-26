@@ -1,48 +1,37 @@
-I wrote such similar functions many times. I want to have it in one place.
+(
+  This module is a designs probing stone.
 
-If there gonna be like sixty functions, let it be so.
+) 2026-04-26
 
-But in one place. Under one directory.
+(
+  I wrote such similar functions many times. I want to have it in one place.
 
+  If there gonna be like sixty functions, let it be so.
 
-Converting string to lines is simple in Lua.
+  But in one place. Under one directory.
 
-You have io.lines(). You have string.gmatch(). It's tempting to just
-write "return table.concat(Lines, '\n')" instead of calling
-some method of some class.
+) 2024-10
 
-Problem is that when code duplicated, it can diverge independently.
-Problem is '\n'. What if we want '\n\r' (if we are forced to use
-Windows)?
+(
+  Dozens of shortcut functions.
 
-Grep all sources? Perl? Dude, you're at wrong place.
+  Yes. I believe that
 
-Here we're providing class with serialization method. If you want
-another newline of want some right-hand margin "...|" till column
-80, you're overriding that method. That's how we think it should
-be done.
+    Lines:GetLastLineString()
 
+  is more clear than
 
-Dozens of shortcut functions.
+    Lines:GetStringAt(Lines:GetNumLines())
 
-Yes. I believe that
+  Of course as designer I would prefer to implement only basis
+  functions: getting index range and getting/setting item at index.
 
-  Lines:GetLastLineString()
+  As a developer I would prefer
 
-is more clear than
+    Lines:GetLast()
 
-  Lines:GetStringAt(Lines:GetNumLines())
+  But as a debugger/hacker I would prefer
 
-Of course as designer I would prefer to implement only basis
-functions: getting index range and getting/setting item at index.
+    Lines:GetLastLineString()
 
-As a developer I would prefer
-
-  Lines:GetLast()
-
-But as a debugger/hacker I would prefer
-
-  Lines:GetLastLineString()
-
-
--- Martin, 2024-10-31
+) 2024-10-31

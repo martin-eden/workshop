@@ -1,0 +1,42 @@
+-- Import/export functions for items
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-26
+]]
+
+-- Imports:
+local trim_tail_nl = request('!.string.trim_linefeed')
+local string_to_lines = request('!.string.to_lines')
+local lines_to_string = request('!.string.from_lines')
+
+-- Convert string to line value
+local ToItem =
+  function(Me, str)
+    return trim_tail_nl(str)
+  end
+
+-- Explode string to list of lines
+local FromString =
+  function(Me, lines_str)
+    Me.Items = string_to_lines(lines_str)
+  end
+
+-- Implode list of lines to string
+local ToString =
+  function(Me)
+    return lines_to_string(Me.Items)
+  end
+
+-- Export:
+return
+  {
+    ToItem = ToItem,
+
+    FromString = FromString,
+    ToString = ToString,
+  }
+
+--[[
+  2026-04-26
+]]
