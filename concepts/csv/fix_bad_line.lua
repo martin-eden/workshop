@@ -1,3 +1,10 @@
+-- Fix malformed csv lines from Library Genesis .csv
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-26
+]]
+
 --[[
   Library Genesis contents is presented also in .csv format.
   But string fields there written bad. They do not have double
@@ -26,6 +33,9 @@
   But we may handle [""a", "b", "c""] if we reverse source
   string before parsing (and reverse result string after).
 ]]
+
+-- Imports:
+local trim_tail_nls = request('!.string.trim_tail_nls')
 
 local fix_bad_line =
   function(s)
@@ -101,11 +111,9 @@ local try_reversed =
     return is_succeeded, fixed_s
   end
 
-local trim_newline = request('^.^.string.trim_linefeed')
-
-return
+local try_to_fix_bad_csv_line =
   function(s)
-    s = trim_newline(s)
+    s = trim_tail_nls(s)
     local is_succeeded, fixed_s
     is_succeeded, fixed_s = fix_bad_line(s)
     if not is_succeeded then
@@ -121,3 +129,11 @@ return
     end
     return is_succeeded, fixed_s
   end
+
+-- Export:
+return try_to_fix_bad_csv_line
+
+--[[
+  2016-09
+  2017-09
+]]
