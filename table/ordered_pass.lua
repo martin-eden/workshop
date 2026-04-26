@@ -1,8 +1,16 @@
+-- Function to use for ordered table traversal instead of pairs()
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-26
+]]
+
+-- Imports:
 local default_comparator = request('ordered_pass.default_comparator')
 local get_key_vals = request('get_key_vals')
 
 -- Sort <t> and return iterator function to pass that sorted <t>
-return
+local ordered_pass =
   function(t, comparator)
     assert_table(t)
     comparator = comparator or default_comparator
@@ -22,3 +30,10 @@ return
 
     return sorted_next, t
   end
+
+-- Export:
+return ordered_pass
+
+--[[
+  2016-09 # # #
+]]
