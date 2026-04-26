@@ -1,3 +1,10 @@
+-- Indentation chunk interface
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-26
+]]
+
 return
   {
     -- Interface
@@ -41,7 +48,7 @@ return
         return string.rep(self.Chunk, self:GetDepth())
       end,
 
-    -- Intensities
+    -- Internals
 
     -- Indent counter
     Counter = request('!.concepts.Counter.Interface'),
