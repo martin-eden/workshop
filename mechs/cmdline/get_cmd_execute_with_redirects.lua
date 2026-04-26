@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-04-26
 ]]
 
 -- Imports:
@@ -17,8 +17,8 @@ return
         'sh',
         '-c',
         quote(orig_command),
-        '1>' .. output_file_name,
-        '2>' .. errors_file_name,
+        '1>' .. quote(output_file_name),
+        '2>' .. quote(errors_file_name),
       }
 
     return glue_words(Command)
