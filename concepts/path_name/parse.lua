@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-24
+  Last mod.: 2026-04-26
 ]]
 
 --[[
@@ -47,6 +47,20 @@ local parse_pathname =
     path_name = path_name .. sep
     local path = split_string(path_name, sep)
 
+    setmetatable(
+      path,
+      {
+        __index =
+          function(table, key)
+            if (key == 'first_node') then
+              return table[1]
+            elseif (key == 'last_node') then
+              return table[#table]
+            end
+          end,
+      }
+    )
+
     do
       local index = 2
       local current_item
@@ -61,55 +75,54 @@ local parse_pathname =
           index = index + 1
         end
       end
-
     end
 
-    local first_node = path[1]
-    local last_node = path[#path]
-
     local is_directory =
-      (last_node == self_dir) or
-      (last_node == upper_dir) or
-      (last_node == empty)
+      (path.last_node == self_dir) or
+      (path.last_node == upper_dir) or
+      (path.last_node == empty)
 
     if
-      (last_node == empty) and
+      (path.first_node == '.') and
+      (path[2] == '..')
+    then
+      table.remove(path, 1)
+    end
+
+    if
+      (path.last_node == empty) and
       (#path >= 2)
     then
       table.remove(path, #path)
-      last_node = path[#path]
     end
 
     while
-      (last_node == self_dir) and
+      (path.last_node == self_dir) and
       (#path >= 2)
     do
       table.remove(path, #path)
-      last_node = path[#path]
     end
 
     local host_dir_name
     do
       if
-        (first_node ~= empty) and
-        (first_node ~= self_dir) and
-        (first_node ~= upper_dir)
+        (path.first_node ~= empty) and
+        (path.first_node ~= self_dir) and
+        (path.first_node ~= upper_dir)
       then
         table.insert(path, 1, self_dir)
-        first_node = path[1]
       end
       if
         (#path == 1) and
-        (first_node ~= empty) and
-        (first_node ~= upper_dir)
+        (path.first_node ~= empty) and
+        (path.first_node ~= upper_dir)
       then
         table.insert(path, 1, self_dir)
-        first_node = path[1]
       end
       host_dir_name = table.concat(path, sep, 1, #path - 1)
       if
         (host_dir_name == empty) and
-        (first_node ~= empty)
+        (path.first_node ~= empty)
       then
         -- Zen question: what is the "upper dir" for ".." ?
         host_dir_name = self_dir
@@ -119,11 +132,10 @@ local parse_pathname =
 
     if
       (#path == 2) and
-      (first_node == self_dir) and
-      (last_node == self_dir)
+      (path.first_node == self_dir) and
+      (path.last_node == self_dir)
     then
       table.remove(path, #path)
-      last_node = path[#path]
     end
 
     local full_name = table.concat(path, sep)
@@ -131,7 +143,7 @@ local parse_pathname =
       full_name = full_name .. sep
     end
 
-    local leaf_name = last_node
+    local leaf_name = path.last_node
     if (leaf_name == empty) then
       leaf_name = self_dir
     end
@@ -156,10 +168,6 @@ return parse_pathname
 
       Don't treat them as strings. Treat them as slash-separated
       strings list.
-
-      * Iff first character is "/" -- it's absolute path
-      * If last character is "/" -- it's directory
-      * If last item is "." or ".." -- it's directory
 
     * Empty string as pathname is illegal in POSIX
 
@@ -195,6 +203,7 @@ return parse_pathname
       Name = '..'
 
     ..
+    ./..
       Same as for "../"
 
     /..
@@ -202,15 +211,20 @@ return parse_pathname
       HostDir = '/'
       Name = '..'
 
-    ././//a/./.
-      FullName = './a/'
-      HostDir = './'
-      Name = 'a'
-
-    a/../b
-      FullName = './a/../b'
-      HostDir = './a/../'
+    a/b
+      FullName = './a/b'
+      HostDir = './a/'
       Name = 'b'
+
+    a/b/
+      FullName = './a/b/'
+      HostDir = './a/'
+      Name = 'b'
+
+    ././..//a/./.
+      FullName = '../a/'
+      HostDir = '../'
+      Name = 'a'
 ]]
 
 --[[
@@ -219,4 +233,5 @@ return parse_pathname
   2026-04-22
   2026-04-23
   2026-04-24
+  2026-04-26
 ]]
