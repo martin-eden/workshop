@@ -6,14 +6,14 @@
 ]]
 
 -- Imports:
-local trim_tail_nl = request('!.string.trim_linefeed')
+local trim_tail_nls = request('!.string.trim_tail_nls')
 local string_to_lines = request('!.string.to_lines')
 local lines_to_string = request('!.string.from_lines')
 
 -- Convert string to line value
 local ToItem =
   function(Me, str)
-    return trim_tail_nl(str)
+    return trim_tail_nls(str)
   end
 
 -- Explode string to list of lines
