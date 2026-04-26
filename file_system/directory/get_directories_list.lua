@@ -20,9 +20,9 @@ local get_program_output_lines = request('!.system.get_program_output_lines')
 ]]
 local get_dirs_list =
   function(base_dir)
-    local cmd_get_files = get_cmd_listdirs(base_dir)
+    local cmd_get_dirs = get_cmd_listdirs(base_dir)
 
-    local Dirs = get_program_output_lines(cmd_get_files)
+    local Dirs = get_program_output_lines(cmd_get_dirs)
 
     return Dirs
   end
