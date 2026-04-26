@@ -1,13 +1,27 @@
-local trim_linefeed = request('!.string.trim_linefeed')
+-- Comment printer
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-26
+]]
+
+local trim_tail_nls = request('!.string.trim_tail_nls')
 
 return
   function(self, node)
     --[[
-      Line comments includes tail newline. Newline is automatically
-      added after any statement. Comment considered statement.
+      Line comments include tail newline
 
-      So quick fix is trim tail newline from comment.
+      Newline is automatically added after any statement.
+      Comment is considered a statement.
+
+      So quick fix is to trim tail newline from comment.
     ]]
-    self.printer:add_curline(trim_linefeed(node.value))
+    self.printer:add_curline(trim_tail_nls(node.value))
+
     return true
   end
+
+--[[
+  2018-02
+]]
