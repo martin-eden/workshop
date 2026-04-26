@@ -2,13 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-04-26
 ]]
 
 -- Imports:
 local quote_regexp = request('!.lua.regexp.quote')
 
--- Return true if string ends with given string. No magic characters!
+--[[
+  Returns true if string ends with given string
+
+  Magic characters are quoted.
+]]
 local ends_with =
   function(base_str, postfix_str)
     local postfix_pattern = quote_regexp(postfix_str) .. '$'

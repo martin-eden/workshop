@@ -2,13 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-04-26
 ]]
 
 -- Imports:
 local quote_regexp = request('!.lua.regexp.quote')
 
--- Return true if string starts with given string. No magic characters!
+--[[
+  Returns true if string starts with given string
+
+  Magic characters are quoted.
+]]
 local starts_with =
   function(base_str, prefix_str)
     local prefix_pattern = '^' .. quote_regexp(prefix_str)
