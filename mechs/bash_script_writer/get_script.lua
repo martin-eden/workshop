@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-25
+  Last mod.: 2026-04-27
 ]]
 
 -- Imports:
@@ -56,7 +56,7 @@ local GetScript =
         Lines:AddLastLine(Line)
       end
 
-    AddLine('#! /bin/bash')
+    AddLine('#!/bin/bash')
 
     if (#Self.dirs_to_delete > 0) then
       AddLine('')
@@ -95,7 +95,7 @@ local GetScript =
 return GetScript
 
 --[[
-  2018-06-06
-  2019-05-13
+  2018
+  2019
   2026-04-17
 ]]
