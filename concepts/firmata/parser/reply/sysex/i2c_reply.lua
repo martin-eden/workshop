@@ -1,22 +1,26 @@
+-- Parse chunk with I2C Reply from Firmata
+
 --[[
-  <= 0x7F (device_id & 0x7F)
-  <= 1 (device_id >> 7)
-  <= 0x7F (offset & 0x7F)
-  <= 1 (offset >> 7)
-  <= 0x7F (data[1] & 0x7F)
-  <= 1 (data[1] >> 7)
-  ...
+  Author: Martin Eden
+  Last mod.: 2026-04-27
 ]]
 
-return
+--[[
+  Parse I2C reply chunk
+
+  Result structure
+
+    {
+      device_id [i]
+      offset [i]
+      data [t] -- list of bytes
+    }
+]]
+local parse_i2c_reply_chunk =
   function(self, chunk)
     local device_id = self:to_word(chunk:byte(1, 2))
     local offset = self:to_word(chunk:byte(3, 4))
     local data = self:to_bytes(chunk:sub(5))
-
-    local aligned_data = {}
-    table.move(data, 1, #data, offset, aligned_data)
-    data = aligned_data
 
     return
       {
@@ -25,3 +29,10 @@ return
         data = data,
       }
   end
+
+-- Export:
+return parse_i2c_reply_chunk
+
+--[[
+  2019-05
+]]
