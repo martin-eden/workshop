@@ -1,4 +1,4 @@
--- Return window object
+-- Create window object
 
 --[[
   Author: Martin Eden
@@ -9,8 +9,8 @@
 local TekUi = require('tek.ui')
 local force_merge = request('!.table.merge_and_patch')
 
--- Return TekUI's window with our content
-local new_window =
+-- Create TekUI's window with our content
+local create_window =
   function(title_str, Overrides, Children)
     local Params =
       force_merge(
@@ -31,7 +31,7 @@ local new_window =
   end
 
 -- Export:
-return new_window
+return create_window
 
 --[[
   2020 # #
