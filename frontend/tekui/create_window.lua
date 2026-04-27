@@ -11,11 +11,11 @@ local force_merge = request('!.table.merge_and_patch')
 
 -- Create TekUI's window with our content
 local create_window =
-  function(title_str, Overrides, Children)
+  function(title, Overrides, Children)
     local Params =
       force_merge(
         {
-          Title = title_str,
+          Title = title,
           Children = { Children },
           Id = 'main-window',
           Status = 'hide',
