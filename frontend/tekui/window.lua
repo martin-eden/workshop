@@ -1,31 +1,39 @@
 -- Return window object
 
--- Last mod.: 2024-11-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-27
+]]
 
-local tui = require('tek.ui')
+-- Imports:
+local TekUi = require('tek.ui')
 local force_merge = request('!.table.merge_and_patch')
 
-return
-  function(title, overrides, content)
-    local params =
+-- Return TekUI's window with our content
+local new_window =
+  function(title_str, Overrides, Children)
+    local Params =
       force_merge(
         {
+          Title = title_str,
+          Children = { Children },
           Id = 'main-window',
-          Title = title,
           Status = 'hide',
           HideOnEscape = true,
           Orientation = 'vertical',
-          Children = {content},
           Width = 'free',
           Height = 'free',
         },
-        overrides
+        Overrides
       )
 
-    return tui.Window:new(params)
+    return TekUi.Window:new(Params)
   end
 
+-- Export:
+return new_window
+
 --[[
-  2020-02
-  2020-08
+  2020 # #
+  2026-04-27
 ]]
