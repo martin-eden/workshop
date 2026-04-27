@@ -1,4 +1,4 @@
--- Create file with given contents. Deprecated, removal imminent!
+-- Save string to file
 
 --[[
   Author: Martin Eden
