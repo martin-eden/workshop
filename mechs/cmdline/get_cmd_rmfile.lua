@@ -6,6 +6,7 @@
 ]]
 
 -- Imports:
+local normalize = request('!.file_system.file.normalize_name')
 local quote = request('!.concepts.shell.quote')
 local glue_words = request('!.concepts.words.to_string')
 
@@ -15,7 +16,7 @@ return
     local Command =
       {
         'rm',
-        quote(file_name),
+        quote(normalize(file_name)),
       }
 
     return glue_words(Command)
@@ -25,4 +26,5 @@ return
   2024 # #
   2026-01-12
   2026-04-17
+  2026-04-28
 ]]

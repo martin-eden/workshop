@@ -2,10 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-04-28
 ]]
 
 -- Imports:
+local normalize = request('!.file_system.file.normalize_name')
 local quote = request('!.concepts.shell.quote')
 local glue_words = request('!.concepts.words.to_string')
 
@@ -15,8 +16,8 @@ return
     local Command =
       {
         'mv',
-        quote(src_name),
-        quote(dest_name),
+        quote(normalize(src_name)),
+        quote(normalize(dest_name)),
       }
 
     return glue_words(Command)
@@ -27,4 +28,5 @@ return
   2024 #
   2026-01-12
   2026-04-17
+  2026-04-28
 ]]
