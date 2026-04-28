@@ -2,10 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-26
+  Last mod.: 2026-04-28
 ]]
 
 -- Imports:
+local normalize = request('!.file_system.file.normalize_name')
 local quote = request('!.concepts.shell.quote')
 local glue_words = request('!.concepts.words.to_string')
 
@@ -15,7 +16,7 @@ return
     local Command =
       {
         'find',
-        quote(dir_name),
+        quote(normalize(dir_name)),
         '-type',
         'd',
         '-maxdepth',
@@ -33,4 +34,5 @@ return
   2026-01-12
   2026-04-17
   2026-04-26
+  2026-04-28
 ]]
