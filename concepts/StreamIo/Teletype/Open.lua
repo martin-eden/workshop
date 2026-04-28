@@ -2,13 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-15
+  Last mod.: 2026-04-28
 ]]
 
 local Config =
   {
     ReadTimeout_Sec = 0.1,
-    WarmupDelay_Sec = 3.5,
+    WarmupDelay_Sec = 4.2,
   }
 
 -- Imports:
