@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-15
+  Last mod.: 2026-04-28
 ]]
 
 --[[
@@ -18,7 +18,7 @@
 local InputInterface = new(request('!.concepts.StreamIo.Input.File'))
 local OutputInterface = new(request('!.concepts.StreamIo.Output.File'))
 
--- Exports:
+-- Export:
 return
   {
     -- [Carnage]

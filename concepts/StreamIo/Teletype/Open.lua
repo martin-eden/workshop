@@ -12,10 +12,10 @@ local Config =
   }
 
 -- Imports:
-local FileExists = request('!.file_system.file.exists')
-local GetRawParams = request('!.mechs.tty.get_raw_params')
-local SetParams = request('!.mechs.tty.set_params')
-local SleepSec = request('!.system.sleep')
+local file_exists = request('!.file_system.file.exists')
+local tty_get_raw_params = request('!.mechs.tty.get_raw_params')
+local tty_set_params = request('!.mechs.tty.set_params')
+local sleep_sec = request('!.system.sleep')
 
 --[[
   Open port both for reading and writing.
@@ -23,7 +23,7 @@ local SleepSec = request('!.system.sleep')
   In case of errors explodes.
 ]]
 local Open =
-  function(self, PortName, Speed_Bps)
+  function(Me, device_file_name, speed_bps)
     --[[
       Additional steps to open device as file:
 
@@ -33,38 +33,38 @@ local Open =
         * Wait some time after opening
     ]]
 
-    assert_string(PortName)
+    assert_string(device_file_name)
 
-    if not FileExists(PortName) then
-      error(string.format("Can't see device '%s'.", PortName))
+    if not file_exists(device_file_name) then
+      error(string.format("Can't see device '%s'.", device_file_name))
     end
 
-    self.PortName = PortName
+    Me.PortName = device_file_name
 
-    if self.IsConnected then
-      self:Close()
+    if Me.IsConnected then
+      Me:Close()
     end
 
-    self.OriginalPortParams = GetRawParams(PortName)
+    Me.OriginalPortParams = tty_get_raw_params(device_file_name)
 
-    SetParams(
-      PortName,
+    tty_set_params(
+      device_file_name,
       {
-        Speed_Bps = Speed_Bps,
+        Speed_Bps = speed_bps,
         ReadTimeout_S = Config.ReadTimeout_Sec,
       }
     )
 
-    self.FileHandle = io.open(PortName, 'r+')
+    Me.FileHandle = io.open(device_file_name, 'r+')
 
-    self.FileHandle:setvbuf('no')
+    Me.FileHandle:setvbuf('no')
 
-    self.Input.FileHandle = self.FileHandle
-    self.Output.FileHandle = self.FileHandle
+    Me.Input.FileHandle = Me.FileHandle
+    Me.Output.FileHandle = Me.FileHandle
 
-    self.IsConnected = true
+    Me.IsConnected = true
 
-    SleepSec(Config.WarmupDelay_Sec)
+    sleep_sec(Config.WarmupDelay_Sec)
   end
 
 -- Exports:
