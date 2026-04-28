@@ -36,7 +36,7 @@ local Open =
     assert_string(device_file_name)
 
     if not file_exists(device_file_name) then
-      error(string.format("Can't see device '%s'.", device_file_name))
+      return false
     end
 
     Me.PortName = device_file_name
@@ -65,6 +65,8 @@ local Open =
     Me.IsConnected = true
 
     sleep_sec(Config.WarmupDelay_Sec)
+
+    return true
   end
 
 -- Exports:
