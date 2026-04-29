@@ -1,8 +1,8 @@
--- Return table list of documentation files for given list of ".lua" files
+-- Return list of documentation files for given list of ".lua" files
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-25
+  Last mod.: 2026-05-11
 ]]
 
 --[[
@@ -40,6 +40,7 @@ local DocNameRegexps =
     '.+%.txt$',
     '.+%.md$',
     '.+%.[mM]ark[dD]own$',
+    '.+%.[iI]s'
   }
 
 local IsDocumentationName =
@@ -88,7 +89,7 @@ return
   end
 
 --[[
-  2018-06-05
-  2024-03-05
-  2024-10-03
+  2018 #
+  2024 # #
+  2026-05-11
 ]]
