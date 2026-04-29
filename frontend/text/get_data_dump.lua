@@ -100,8 +100,6 @@ local get_dump =
 
     Lines:AddLastLine(delimiter_str)
 
-    Lines:AddLastLine('')
-
     local result_str = Lines:ToString()
 
     return result_str
