@@ -2,10 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-27
+  Last mod.: 2026-05-11
 ]]
 
 -- Imports:
+local split_string = request('!.string.split')
 local Lines = request('!.concepts.Lines.Interface')
 local ParsePathname = request('!.concepts.path_name.parse')
 local GetCmd_RmDir = request('!.mechs.cmdline.get_cmd_rmdir')
@@ -20,7 +21,17 @@ local ComparePathnames =
     local A_Name = ParsePathname(Rec_A.src_name).FullName
     local B_Name = ParsePathname(Rec_B.src_name).FullName
 
-    return (A_Name < B_Name)
+    local A_Path = split_string(A_Name, '/')
+    local B_Path = split_string(B_Name, '/')
+
+    local A_Depth = #A_Path
+    local B_Depth = #B_Path
+
+    if (A_Depth == B_Depth) then
+      return (A_Name < B_Name)
+    end
+
+    return (A_Depth < B_Depth)
   end
 
 --[[
@@ -98,4 +109,5 @@ return GetScript
   2018
   2019
   2026-04-17
+  2026-05-11
 ]]
