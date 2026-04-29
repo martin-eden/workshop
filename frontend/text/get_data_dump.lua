@@ -21,7 +21,7 @@
 local assert_byte = request('!.number.assert_byte')
 local from_bcd = request('!.number.from_bcd')
 local glue_words = request('!.concepts.words.to_string')
-local Lines = new(request('!.concepts.Lines.Interface'))
+local Lines = request('!.concepts.Lines.Interface')
 
 local to_hex_str =
   function(byte)
@@ -67,6 +67,8 @@ local to_dec_str =
 local get_dump =
   function(Data)
     assert_table(Data)
+
+    local Lines = new(Lines)
 
     local format_str = '%4s | %3s | %3s | %3s | %-15s'
 
