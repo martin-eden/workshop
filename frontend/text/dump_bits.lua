@@ -1,73 +1,117 @@
+-- Receives table with list of bytes. Returns string with text dump
+
 --[[
-  Get table with list of bytes. Print them as bits.
+  Author: Martin Eden
+  Last mod.: 2026-04-29
 ]]
 
+--[=[
+  Example
+
+  { 66, 9, 22 } ->
+     Pos | Dec | BCD | Hex | Bin
+    -----------------------------------------
+      01 | 066 |  42 |  42 | . X . . . . X .
+      02 | 009 |  09 |  09 | . . . . X . . X
+      03 | 022 |  16 |  16 | . . . X . X X .
+    -----------------------------------------
+]=]
+
+-- Imports:
+local assert_byte = request('!.number.assert_byte')
+local from_bcd = request('!.number.from_bcd')
+local glue_words = request('!.concepts.words.to_string')
+local Lines = new(request('!.concepts.Lines.Interface'))
+
 local to_hex_str =
-  function(n)
-    assert_integer(n)
-    local result = ('%02X'):format(n)
-    return result
+  function(byte)
+    return string.format('%02X', byte)
   end
 
-local from_bcd = request('!.number.from_bcd')
-
 local to_bcd_str =
-  function(n)
-    local is_ok, result = pcall(from_bcd, n)
+  function(byte_bcd)
+    local result_str
+
+    local is_ok, byte = pcall(from_bcd, byte_bcd)
+
     if is_ok then
-      result = ('%02d'):format(result)
+      result_str = string.format('%02d', byte)
     else
-      result = '??'
+      result_str = '??'
     end
-    return result
+
+    return result_str
   end
 
 local to_bit_str =
-  function(n)
-    local bit_map = {[0] = '.', [1] = 'X'}
-    assert_integer(n)
+  function(byte)
+    local BitChar_Map = { [0] = '.', [1] = 'X' }
     local num_bits = 8
-    local bits = {}
+    local Bits = {}
+
     for i = 1, num_bits do
-      bits[num_bits - i + 1] = bit_map[(n >> (i - 1)) & 1]
+      Bits[num_bits - i + 1] = BitChar_Map[(byte >> (i - 1)) & 1]
     end
-    local result = table.concat(bits, ' ')
-    -- result = result:reverse()
-    return result
+
+    local result_str = glue_words(Bits)
+    -- result_str = result_str:reverse()
+
+    return result_str
   end
 
 local to_dec_str =
-  function(n)
-    assert_integer(n)
-    return ('%03d'):format(n)
+  function(byte)
+    return string.format('%03d', byte)
   end
 
-return
-  function(t, start_idx)
-    local format_str = '%4s | %3s | %3s | %3s | %15s'
-    assert_table(t)
-    start_idx = start_idx or 1
-    local result = {}
-    table.insert(
-      result,
-      format_str:format('Offs', 'Hex', 'BCD', 'Dec', 'Bin')
-    )
-    table.insert(result, ('-'):rep(#result[#result]))
-    for i = start_idx, #t do
-      local n = t[i]
-      table.insert(
-        result,
-        format_str:
-          format(
-            to_hex_str(i),
-            to_hex_str(n),
-            to_bcd_str(n),
-            to_dec_str(n),
-            to_bit_str(n)
-          )
-      )
+local get_dump =
+  function(Data)
+    assert_table(Data)
+
+    local format_str = '%4s | %3s | %3s | %3s | %-15s'
+
+    local header_str =
+      string.format(format_str, 'Pos', 'Dec', 'BCD', 'Hex', 'Bin')
+
+    Lines:AddLastLine(header_str)
+
+    local last_line_len = #Lines:GetLastLine()
+    local delimiter_str = string.rep('-', last_line_len + 1)
+
+    Lines:AddLastLine(delimiter_str)
+
+    for pos = 1, #Data do
+      local byte = Data[pos]
+
+      assert_byte(byte)
+
+      local data_str =
+        string.format(
+          format_str,
+          string.format('%02d', pos),
+          to_dec_str(byte),
+          to_bcd_str(byte),
+          to_hex_str(byte),
+          to_bit_str(byte)
+        )
+
+      Lines:AddLastLine(data_str)
     end
-    table.insert(result, '')
-    result = table.concat(result, '\n')
-    return result
+
+    Lines:AddLastLine(delimiter_str)
+
+    Lines:AddLastLine('')
+
+    local result_str = Lines:ToString()
+
+    return result_str
   end
+
+-- Export:
+return get_dump
+
+--[[
+  2019
+  2022
+  2026-04-29
+]]
