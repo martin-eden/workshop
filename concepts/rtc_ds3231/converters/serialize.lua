@@ -42,7 +42,7 @@ return
     result[10] = set_bit(result[10], 7, rec.alarm_1.ignore_hour)
 
     result[11] = set_bit(result[11], 6, rec.alarm_1.is_date_not_dow)
-    result[12] = set_bit(result[12], 7, rec.alarm_1.ignore_date_dow)
+    result[11] = set_bit(result[11], 7, rec.alarm_1.ignore_date_dow)
 
     result[12] = set_bit(result[12], 7, rec.alarm_2.ignore_minute)
     result[13] = set_bit(result[13], 7, rec.alarm_2.ignore_hour)
