@@ -7,12 +7,13 @@
 
 -- Imports:
 local merge = request('merge')
-local hard_patch = request('hard_patch')
+local patch = request('patch')
 
 local merge_and_patch =
   function(Dest, Source)
     merge(Dest, Source)
-    hard_patch(Dest, Source)
+    patch(Dest, Source)
+
     return Dest
   end
 
