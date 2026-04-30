@@ -1,21 +1,25 @@
 -- Merge destination table. Override existing fields in source table
 
--- Last mod.: 2024-11-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-30
+]]
 
 -- Imports:
-local Merge = request('merge')
-local HardPatch = request('hard_patch')
+local merge = request('merge')
+local hard_patch = request('hard_patch')
 
-local MergeAndPatch =
+local merge_and_patch =
   function(Dest, Source)
-    Merge(Dest, Source)
-    HardPatch(Dest, Source)
+    merge(Dest, Source)
+    hard_patch(Dest, Source)
     return Dest
   end
 
 -- Exports:
-return MergeAndPatch
+return merge_and_patch
 
 --[[
-  2024-11-11
+  2024 #
+  2026-04-30
 ]]
