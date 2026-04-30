@@ -1,43 +1,49 @@
--- Merge one table onto another
-
--- Last mod.: 2025-04-21
+-- Add values from another table
 
 --[[
-  Union:
-    ({ a = 'A'}, { b = 'B' }) -> { a = 'A', b = 'B' }
-
-  Source values preserved:
-    ({ a = 'A'}, { a = 'a' }) -> { a = 'A' }
+  Author: Martin Eden
+  Last mod.: 2025-04-21
 ]]
 
-local MergeTable
-MergeTable =
+--[[
+  Existing values are preserved:
+    { a = 'A'}, { a = 'X' } -> { a = 'A' }
+
+  New values are added:
+    { a = 'A'}, { b = 'B' } -> { a = 'A', b = 'B' }
+]]
+
+-- Imports:
+local apply_table = request('apply_table')
+
+local merge
+merge =
   function(Result, Additions)
     assert_table(Result)
-    if (Additions == nil) then
+
+    if is_nil(Additions) then
       return Result
     end
 
-    assert_table(Additions)
-    for Addition_Key, Addition_Value in pairs(Additions) do
-      if is_nil(Result[Addition_Key]) then
-        Result[Addition_Key] = Addition_Value
-      elseif is_table(Result[Addition_Key]) then
-        MergeTable(Result[Addition_Key], Addition_Value)
-      end
-    end
+    local Rules =
+      {
+        { HasA = true, HasB = true, Action = 'use_a' },
+        { HasA = false, HasB = true, Action = 'use_b' },
+      }
+
+    apply_table(Result, Additions, Rules)
 
     return Result
   end
 
 -- Exports:
-return MergeTable
+return merge
 
 --[[
-  2016-06
-  2016-09
-  2017-09
-  2019-12
-  2024-08
-  2025-04-21
+  2016 # #
+  2017 #
+  2019 #
+  2024 #
+  2025 #
+  2026-04-30
 ]]
