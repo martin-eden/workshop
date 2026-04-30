@@ -20,7 +20,6 @@ return
       )
     end
 
-
     local mask
     -- start_offs: 2, end_offs: 5
     mask = (1 << (end_offs + 1)) - 1
