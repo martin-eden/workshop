@@ -1,21 +1,26 @@
 -- Check that given table has required fields and value types
 
--- Last mod.: 2024-11-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-30
+]]
 
 -- Imports:
-local VerifyStructure = request('!.table.verify_structure')
+local values_are_same_type = request('!.table.values_are_same_type')
 local Reference = request('^.data.reference_structure')
 
--- Exports:
-return
+local check_final_structure =
   function(Sample)
-    local TypesMatching = true
-    if not VerifyStructure(Sample, Reference, TypesMatching) then
+    if not values_are_same_type(Sample, Reference) then
       coroutine.yield()
     end
   end
 
+-- Export:
+return check_final_structure
+
 --[[
-  2020-09
-  2024-11
+  2020 #
+  2024 #
+  2026-04-30
 ]]
