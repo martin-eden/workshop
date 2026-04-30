@@ -1,26 +1,32 @@
---[[
-  Make given table formally comply to reference template.
+-- Make given table formally comply to reference template
 
-  Missing keys added. Mismatched value types are set to match
-  corresponding types in reference table.
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-04-30
 ]]
 
--- Last mod.: 2024-11-11
+--[[
+  Well, there is no much sense in trying to keep Sample structure
+  consistent if it does not have values with same types as
+  in Reference.
+]]
 
 -- Imports:
-local Merge = request('!.table.merge')
-local SoftPatch = request('!.table.soft_patch')
-
+local merge = request('!.table.merge')
+local patch = request('!.table.patch')
 local Reference = request('^.data.reference_structure')
 
--- Exports:
-return
+local fix_structure =
   function(Sample)
-    Merge(Sample, Reference)
-    SoftPatch(Sample, Reference)
+    merge(Sample, Reference)
+    patch(Sample, Reference)
   end
 
+-- Export:
+return fix_structure
+
 --[[
-  2020-09-13
-  2024-11-11
+  2020 #
+  2024 #
+  2026-04-30
 ]]
