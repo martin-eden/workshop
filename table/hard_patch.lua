@@ -1,17 +1,20 @@
 -- Shortcut to overwrite values in destination table according to patch
 
--- Last mod.: 2024-11-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2024-11-11
+]]
 
 -- Imports:
-local Patch = request('patch')
+local patch = request('patch')
 
-local HardPatch =
-  function(Dest, PatchTable)
-    return Patch(Dest, PatchTable, false)
+local hard_patch =
+  function(Result, Additions)
+    return patch(Result, Additions)
   end
 
--- Exports:
-return HardPatch
+-- Export:
+return hard_patch
 
 --[[
   2024-11-11
