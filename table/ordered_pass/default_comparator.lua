@@ -2,13 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-26
+  Last mod.: 2026-05-02
 ]]
 
 local type_rank_map =
   {
-    ['string'] = 1,
-    ['number'] = 2,
+    ['number'] = 1,
+    ['string'] = 2,
     other = 3,
   }
 
