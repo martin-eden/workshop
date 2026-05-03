@@ -123,9 +123,9 @@ local request =
     return table.unpack(results)
   end
 
-local IsFirstRun = (_G.request == nil)
+local is_first_run = (_G.request == nil)
 
-if IsFirstRun then
+if is_first_run then
   _G.request = request
   _G.dependencies = dependencies
   _G.get_require_name = get_require_name
