@@ -1,16 +1,30 @@
+-- Get 0-based index of most-significant-bit
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-04
+]]
+
+-- Imports:
 local get_bit = request('!.number.get_bit')
 
-return
-  function(value)
-    assert_integer(value)
+local get_msb =
+  function(int)
+    assert_integer(int)
 
-    local result = 0
     for i = 63, 0, -1 do
-      if get_bit(value, i) then
-        result = i
-        break
+      if get_bit(int, i) then
+        return i
       end
     end
 
-    return result
+    return 0
   end
+
+-- Export:
+return get_msb
+
+--[[
+  2019
+  2026-05-03
+]]
