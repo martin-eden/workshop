@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-05-03
 ]]
 
 --[[
@@ -42,7 +42,7 @@ local unite_prefixes =
     while rel_prefix:find('^%^%.') do
       if (base_prefix == '') then
         error(
-          ([[Link "%s" is outside caller's prefix "%s".]]):format(
+          ([[Link "%s" is outside of caller's prefix "%s".]]):format(
             init_rel_prefix,
             init_base_prefix
           )
