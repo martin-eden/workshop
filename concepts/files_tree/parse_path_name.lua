@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-25
+  Last mod.: 2026-05-03
 ]]
 
 local parse_name = request('^.path_name.parse')
@@ -11,7 +11,8 @@ local level_up_str = '..'
 
 return
   function(self, path_name, is_file)
-    error('Not synced with [path.parse] interface')
+    error('Not synced with [path_name.parse] interface')
+
     local components = parse_name(path_name)
     local current_node = self.tree
     for i = 1, #components.Path do
