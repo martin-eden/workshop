@@ -13,6 +13,7 @@
 
 -- Imports:
 local get_bit = request('!.number.get_bit')
+local add_to_list = request('!.concepts.list.add_item')
 local list_to_string = request('!.concepts.list.to_string')
 
 local BitChars_Map =
@@ -38,7 +39,7 @@ local bits_from_str =
         local bit_char = BitChars_Map[bit]
         byte_bits = byte_bits .. bit_char
       end
-      table.insert(BytesBits, byte_bits)
+      add_to_list(BytesBits, byte_bits)
     end
 
     return list_to_string(BytesBits)
