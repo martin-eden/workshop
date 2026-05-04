@@ -7,13 +7,17 @@
 
 -- Imports:
 local trim_tail_nls = request('!.string.trim_tail_nls')
+local trim_tail_spaces = request('!.string.trim_tail')
 local lines_from_str = request('!.convert.lines_from_str')
 local lines_to_str = request('!.convert.lines_to_str')
 
 -- Convert string to line value
 local ToItem =
   function(Me, str)
-    return trim_tail_nls(str)
+    str = trim_tail_nls(str)
+    str = trim_tail_spaces(str)
+
+    return str
   end
 
 -- Explode string to list of lines
