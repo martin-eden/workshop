@@ -1,14 +1,26 @@
-return
-  function(s)
-    local result
-    if (s:sub(1, 1) == ' ') then
-      local start_pos = 2
-      while (s:sub(start_pos, start_pos) == ' ') do
-        start_pos = start_pos + 1
-      end
-      result = s:sub(start_pos)
-    else
-      result = s
+-- Remove spaces at start of string
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-04
+]]
+
+local trim_head =
+  function(str)
+    assert_string(str)
+
+    local read_pos = 1
+
+    while (string.sub(str, read_pos, read_pos) == ' ') do
+      read_pos = read_pos + 1
     end
-    return result
+
+    return string.sub(str, read_pos, string.len(str))
   end
+
+-- Export:
+return trim_head
+
+--[[
+  2017-01-17
+]]
