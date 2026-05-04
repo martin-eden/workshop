@@ -16,15 +16,15 @@ local shell_execute = request('!.concepts.shell.execute')
   Returns true if directory does not exist before or after execution.
 ]]
 local delete_dir =
-  function(DirName)
-    assert_string(DirName)
+  function(dir_name)
+    assert_string(dir_name)
 
-    if not directory_exists(DirName) then return true end
+    if not directory_exists(dir_name) then return true end
 
-    local rmdir_cmd = get_rmdir_command(DirName)
+    local rmdir_cmd = get_rmdir_command(dir_name)
     shell_execute(rmdir_cmd)
 
-    if not directory_exists(DirName) then return true end
+    if not directory_exists(dir_name) then return true end
 
     return false
   end
