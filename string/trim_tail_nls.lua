@@ -2,10 +2,10 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-26
+  Last mod.: 2026-05-04
 ]]
 
-local newline_chars_map =
+local NewlineChars_Map =
   {
     ['\x0d'] = true,
     ['\x0a'] = true,
@@ -16,7 +16,7 @@ local trim_tail_nls =
     assert_string(str)
 
     local finish_pos = #str
-    while newline_chars_map[string.sub(str, finish_pos, finish_pos)] do
+    while NewlineChars_Map[string.sub(str, finish_pos, finish_pos)] do
       finish_pos = finish_pos - 1
     end
 
