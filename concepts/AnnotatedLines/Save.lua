@@ -33,7 +33,7 @@
 local get_keys = request('!.table.get_keys')
 local serialize_key_val = request('Compiler.SerializeKeyVal')
 local add_to_list = request('!.concepts.list.add_item')
-local lines_to_str = request('!.string.from_lines')
+local lines_to_str = request('!.convert.lines_to_str')
 
 local save =
   function(Data, KeysOrder)
