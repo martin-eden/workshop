@@ -1,39 +1,41 @@
 -- Convert string to list of lines
 
--- Last mod.: 2024-11-20
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-04
+]]
 
 -- Imports:
-local LinesIterator = request('!.string.lines')
+local lines_iterator = request('!.string.lines')
 
 --[[
   Explode string to list of lines.
 
-  For empty string '', we're returning empty table {}.
-  Not table with empty string {''}.
+  For empty string '', we're returning empty table { }.
+  Not table with empty string { '' }.
 ]]
-local StringToLines =
-  function(s)
-    assert_string(s)
+local string_to_lines =
+  function(str)
+    assert_string(str)
 
-    -- Special case: return "{}" for empty string
-    if (s == '') then
-      return {}
+    -- Special case: return "{ }" for empty string
+    if (str == '') then
+      return { }
     end
 
-    local Result = {}
+    local Result = { }
 
-    for NextReadIdx, Line in LinesIterator(s) do
-      table.insert(Result, Line)
+    for idx, line in lines_iterator(str) do
+      table.insert(Result, line)
     end
 
     return Result
   end
 
 -- Exports:
-return StringToLines
+return string_to_lines
 
 --[[
-  2024-02
-  2024-03
-  2024-11
+  2024 # # #
+  2026-05-04
 ]]
