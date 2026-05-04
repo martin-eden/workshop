@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-05-04
 ]]
 
 --[[
@@ -14,7 +14,7 @@
     [s] -- Encoded data
 ]]
 local quote =
-  function(data)
+  function(str)
     --[[
       We're using single-quotes
 
@@ -40,9 +40,11 @@ local quote =
       by chunks separated by '.
     ]]
 
-    data = data .. "'"
+    assert_string(str)
 
-    local data_end_idx = string.len(data)
+    str = str .. "'"
+
+    local data_end_idx = string.len(str)
 
     -- Capture characters before '
     local clean_part_capture = "(.-)'"
@@ -54,7 +56,7 @@ local quote =
     result = ''
     while true do
       capture_start_idx, capture_end_idx, capture =
-        string.find(data, clean_part_capture, capture_start_idx)
+        string.find(str, clean_part_capture, capture_start_idx)
 
       result = result .. "'" .. capture .. "'"
 
