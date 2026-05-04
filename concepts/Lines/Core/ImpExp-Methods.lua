@@ -8,7 +8,7 @@
 -- Imports:
 local trim_tail_nls = request('!.string.trim_tail_nls')
 local lines_from_str = request('!.convert.lines_from_str')
-local lines_to_string = request('!.string.from_lines')
+local lines_to_str = request('!.convert.lines_to_str')
 
 -- Convert string to line value
 local ToItem =
@@ -25,7 +25,7 @@ local FromString =
 -- Implode list of lines to string
 local ToString =
   function(Me)
-    return lines_to_string(Me.Items)
+    return lines_to_str(Me.Items)
   end
 
 -- Export:
