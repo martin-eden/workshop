@@ -6,30 +6,13 @@
 ]]
 
 -- Imports:
-local lines_iterator = request('!.string.lines')
+local split_string = request('!.string.split')
 
---[[
-  Explode string to list of lines.
+local lines_delimiter = '\n'
 
-  For empty string '', we're returning empty table { }.
-  Not table with empty string { '' }.
-]]
 local string_to_lines =
   function(str)
-    assert_string(str)
-
-    -- Special case: return "{ }" for empty string
-    if (str == '') then
-      return { }
-    end
-
-    local Result = { }
-
-    for idx, line in lines_iterator(str) do
-      table.insert(Result, line)
-    end
-
-    return Result
+    return split_string(str, lines_delimiter)
   end
 
 -- Exports:
