@@ -1,4 +1,4 @@
--- Merge lines to string
+-- Convert lines to string
 
 --[[
   Author: Martin Eden
@@ -18,13 +18,6 @@ local lines_to_str =
 
 -- Export:
 return lines_to_str
-
---[[
-  Good design is not about implementing complex things.
-  Good design is providing uniform interface to many things.
-
-  2024-02-28, 2024-03-02
-]]
 
 --[[
   2024 #
