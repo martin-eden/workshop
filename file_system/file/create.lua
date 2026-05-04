@@ -6,22 +6,14 @@
 ]]
 
 -- Imports:
-local normalize_name = request('normalize_name')
-
-local file_mode = 'wb'
+local safe_open = request('safe_open')
 
 local create_file =
   function(pathname, contents)
     assert_string(pathname)
     assert_string(contents)
 
-    pathname = normalize_name(pathname)
-
-    local file, error_str = io.open(pathname, file_mode)
-
-    if not file then
-      error(error_str)
-    end
+    local file = safe_open(pathname, 'wb')
 
     file:write(contents)
 
