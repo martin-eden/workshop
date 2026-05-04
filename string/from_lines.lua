@@ -1,28 +1,23 @@
--- Concatenate sequence of strings
+-- Merge lines to string
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-05-04
 ]]
 
---[[
-  Concatenate strings with newline separator. Tailing newline.
-]]
-local LinesToString =
+-- Imports:
+local list_to_string = request('!.concepts.list.to_string')
+
+local delimiter = '\n'
+
+-- Concatenate strings list using newline separator. Tailing newline.
+local lines_to_str =
   function(Lines)
-    assert_table(Lines)
-
-    local Result
-    local Separator = '\n'
-
-    Result = table.concat(Lines, Separator)
-    Result = Result .. Separator
-
-    return Result
+    return (list_to_string(Lines, delimiter) .. delimiter)
   end
 
 -- Export:
-return LinesToString
+return lines_to_str
 
 --[[
   Good design is not about implementing complex things.
@@ -32,6 +27,7 @@ return LinesToString
 ]]
 
 --[[
-  2024-02-28
-  2026-04-17
+  2024 #
+  2026-04 #
+  2026-05-04
 ]]
