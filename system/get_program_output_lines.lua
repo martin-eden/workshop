@@ -2,11 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-22
+  Last mod.: 2026-05-04
 ]]
 
+-- Imports:
 local shell_execute = request('!.concepts.shell.execute')
-local string_to_lines = request('!.string.to_lines')
+local lines_from_str = request('!.convert.lines_from_str')
 
 local get_program_output_lines =
   --[[
@@ -18,9 +19,7 @@ local get_program_output_lines =
 
     local ExecResult = shell_execute(shell_cmd)
 
-    local Lines = string_to_lines(ExecResult.Output)
-
-    return Lines
+    return lines_from_str(ExecResult.Output)
   end
 
 -- Export:
