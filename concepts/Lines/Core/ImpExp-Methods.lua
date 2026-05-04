@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-26
+  Last mod.: 2026-05-04
 ]]
 
 -- Imports:
 local trim_tail_nls = request('!.string.trim_tail_nls')
-local string_to_lines = request('!.string.to_lines')
+local lines_from_str = request('!.convert.lines_from_str')
 local lines_to_string = request('!.string.from_lines')
 
 -- Convert string to line value
@@ -19,7 +19,7 @@ local ToItem =
 -- Explode string to list of lines
 local FromString =
   function(Me, lines_str)
-    Me.Items = string_to_lines(lines_str)
+    Me.Items = lines_from_str(lines_str)
   end
 
 -- Implode list of lines to string
