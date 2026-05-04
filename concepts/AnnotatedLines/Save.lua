@@ -1,6 +1,11 @@
 -- Serialize table to "annotated strings" format
 
 --[[
+  Author: Martin Eden
+  Last mod.: 2026-05-04
+]]
+
+--[[
   Input
 
     table - <Data>
@@ -24,58 +29,39 @@
   It's outer code responsibility to provide us with valid input.
 ]]
 
--- Last mod.: 2024-03-03
+-- Imports:
+local get_keys = request('!.table.get_keys')
+local serialize_key_val = request('Compiler.SerializeKeyVal')
+local add_to_list = request('!.concepts.list.add_item')
+local lines_to_str = request('!.string.from_lines')
 
-local GetKeys = request('!.table.get_keys')
-local CompareKeys = request('!.table.ordered_pass.default_comparator')
-local SerializeKeyVal = request('Compiler.SerializeKeyVal')
-local LinesToString = request('!.string.from_lines')
-
-return
+local save =
   function(Data, KeysOrder)
     assert_table(Data)
+    assert(is_nil(KeysOrder) or is_table(KeysOrder))
 
     -- When no key order is given, get all keys and sort them:
     if is_nil(KeysOrder) then
-      KeysOrder = GetKeys(Data)
-      table.sort(KeysOrder, CompareKeys)
+      KeysOrder = get_keys(Data)
+      table.sort(KeysOrder)
     end
-    assert_table(KeysOrder)
 
-    local Lines
-    do
-      Lines = {}
-      for _, Key in ipairs(KeysOrder) do
-        local Value = Data[Key]
-
-        --[[
-          No value for given key. This can happen if we got <KeysOrder>
-          from outside. Just silently skip this key.
-        ]]
-        if is_nil(Value) then
-          goto Continue
-        end
-
-        local Line = SerializeKeyVal(Key, Value)
-        table.insert(Lines, Line)
-
-        ::Continue::
+    local Lines = { }
+    for _, key in ipairs(KeysOrder) do
+      local value = Data[key]
+      -- If we got <KeysOrder> from outside, there may be no value
+      if value then
+        add_to_list(Lines, serialize_key_val(key, value))
       end
     end
-    assert_table(Lines)
 
-    local Result
-    do
-      Result = LinesToString(Lines)
-    end
-    assert_string(Result)
-
-    return Result
+    return lines_to_str(Lines)
   end
 
+-- Export:
+return save
+
 --[[
-  2024-02-13
-  2024-02-25
-  2024-02-28
-  2024-03-03
+  2024 # # # #
+  2026-05-04
 ]]
