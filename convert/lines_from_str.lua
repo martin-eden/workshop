@@ -1,4 +1,4 @@
--- Convert string to list of lines
+-- Convert string to lines
 
 --[[
   Author: Martin Eden
@@ -8,11 +8,11 @@
 -- Imports:
 local split_string = request('!.string.split')
 
-local lines_delimiter = '\n'
+local delimiter = '\n'
 
 local string_to_lines =
   function(str)
-    return split_string(str, lines_delimiter)
+    return split_string(str, delimiter)
   end
 
 -- Exports:
