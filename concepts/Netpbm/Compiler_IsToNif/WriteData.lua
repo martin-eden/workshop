@@ -2,10 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-17
+  Last mod.: 2026-05-04
 ]]
 
 -- Imports:
+local AddToList = request('!.concepts.list.add_item')
 local ListToString = request('!.concepts.list.to_string')
 
 -- Exports:
@@ -35,7 +36,7 @@ return
     self:WriteLine(LinesDelim)
 
     for Row = 1, Height do
-      local Chunk = {}
+      local Chunks = { }
 
       self:WriteLine('')
       self:WriteLine(nil, ('Line %d'):format(Row))
@@ -44,20 +45,17 @@ return
         local ColorIs = DataIs[Row][Column]
         local ColorStr = self:CompileColor(ColorIs)
 
-        table.insert(Chunk, ColorStr)
+        AddToList(Chunks, ColorStr)
 
         if (Column % NumColorsPerDataLine == 0) then
-          local ChunksStr = ListToString(Chunk, ColumnsDelim)
-          Chunk = {}
-
-          self:WriteLine(ChunksStr)
+          self:WriteLine(ListToString(Chunks, ColumnsDelim))
+          Chunks = { }
         end
       end
 
       -- Write remained chunk
       if (Width % NumColorsPerDataLine ~= 0) then
-        local ChunksStr = ListToString(Chunk, ColumnsDelim)
-        self:WriteLine(ChunksStr)
+        self:WriteLine(ListToString(Chunks, ColumnsDelim))
       end
     end
   end
