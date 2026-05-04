@@ -1,25 +1,47 @@
--- Returns true if directory exists. Else returns false.
+-- Check for directory presence
 
 --[[
-  Status: works
-  Version: 1
-  Last mod.: 2024-02-11
+  Author: Martin Eden
+  Last mod.: 2026-05-04
 ]]
 
-return
-  function(DirectoryName)
-    assert_string(DirectoryName)
+-- Imports:
+local normalize_name = request('^.file.normalize_name')
 
-    local File = io.open(DirectoryName, 'r');
+local is_directory =
+  function(dir_name)
+    --[[
+      Directory is opened as file
 
-    if is_nil(File) then
+      But when we reading from it io.read() returns error.
+    ]]
+
+    assert_string(dir_name)
+
+    dir_name = normalize_name(dir_name)
+
+    local file = io.open(dir_name, 'rb')
+
+    -- No such thing with this name
+    if is_nil(file) then
       return false
     end
 
-    local ReadResult, ErrMsg, ErrNo = File:read(1)
-    File:close()
+    -- Trying to read
+    local _, err_str, err_num = file:read(1)
 
-    return
-      (ErrMsg == 'Is a directory') and
-      (ErrNo == 21)
+    local is_dir =
+      (err_num == 21) and (err_str == 'Is a directory')
+
+    file:close()
+
+    return is_dir
   end
+
+-- Export:
+return is_directory
+
+--[[
+  2024
+  2026-05-04
+]]
