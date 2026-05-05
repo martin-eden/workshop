@@ -29,7 +29,7 @@ return
     parse = request('!.concepts.lua_table_code.load'),
     transform = request('!.function.identity'),
     compile = request('!.table.as_string'),
-    save = request('!.string.save_to_file'),
+    save = request('!.convert.file_from_str'),
     -- runmes
     run = request('run'),
     -- implementation
