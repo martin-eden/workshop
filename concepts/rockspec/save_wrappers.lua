@@ -7,7 +7,7 @@
 
 -- Imports:
 local get_wrappers = request('get_wrappers')
-local save_to_file = request('!.string.save_to_file')
+local save_to_file = request('!.convert.file_from_str')
 
 local save_wrappers =
   function(Config)
