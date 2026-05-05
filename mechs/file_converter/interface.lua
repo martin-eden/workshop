@@ -28,7 +28,7 @@ return
     load = request('!.file_system.file.text_file_as_string'),
     parse = request('!.concepts.lua_table_code.load'),
     transform = request('!.function.identity'),
-    compile = request('!.table.as_string'),
+    compile = request('!.convert.table_to_str'),
     save = request('!.convert.file_from_str'),
     -- runmes
     run = request('run'),
