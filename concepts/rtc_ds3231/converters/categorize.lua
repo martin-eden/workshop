@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-03
+  Last mod.: 2026-05-05
 ]]
 
 --[[
@@ -15,7 +15,7 @@
 -- Imports:
 local slice_bits = request('!.number.slice_bits')
 local get_bit = request('!.number.get_bit')
-local uint8_to_int8 = request('!.number.uint8_to_int8')
+local sint8_from_byte = request('!.convert.sint8_from_byte')
 local merge = request('!.table.merge')
 
 local parse_hour = request('hour_parse')
@@ -72,7 +72,7 @@ local categorize =
           },
         is_busy = get_bit(Bytes[16], 2),
         enable_wave_32k = get_bit(Bytes[16], 3),
-        clock_speed = uint8_to_int8(Bytes[17]),
+        clock_speed = sint8_from_byte(Bytes[17]),
         temperature =
           parse_temperature(
             (Bytes[18] << 2) | slice_bits(Bytes[19], 6, 7)
