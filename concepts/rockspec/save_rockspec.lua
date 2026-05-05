@@ -7,7 +7,7 @@
 
 -- Imports:
 local get_rockspec = request('get_rockspec')
-local save_to_file = request('!.string.save_to_file')
+local save_to_file = request('!.convert.file_from_str')
 
 local save_rockspec =
   function(Config)
