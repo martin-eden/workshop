@@ -1,6 +1,11 @@
---[[
-  Generic file converter interface.
+-- Generic file converter interface
 
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-05
+]]
+
+--[[
   Usage core: call <run>.
 
   For useful usage you'll need to override some of the following
@@ -13,6 +18,7 @@
     method:        load   parse  transform compile  save
 ]]
 
+-- Export:
 return
   {
     -- parameters
@@ -30,3 +36,9 @@ return
     say = request('say'),
     init = request('init'),
   }
+
+--[[
+  2017 # # # # #
+  2018 # # # #
+  2026-05-05
+]]
