@@ -28,7 +28,6 @@
     func_args
 ]]
 
--- local t2s = request('!.table.as_string')
 local replace = request('!.table.replace')
 
 return
