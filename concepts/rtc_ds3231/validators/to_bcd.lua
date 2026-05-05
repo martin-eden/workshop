@@ -7,7 +7,7 @@
 
 local path_get_value = request('!.table.path_get_value')
 local path_set_value = request('!.table.path_set_value')
-local to_bcd = request('!.number.to_bcd')
+local bcd_from_byte = request('!.convert.bcd_from_byte')
 
 return
   function(data, path)
@@ -17,6 +17,6 @@ return
     local low_digit = bad_value & 0x0F
     low_digit = (low_digit > 9) and 9 or low_digit
     local valid_value = high_digit * 10 + low_digit
-    local valid_bcd = to_bcd(valid_value)
+    local valid_bcd = bcd_from_byte(valid_value)
     path_set_value(data, path, valid_bcd)
   end
