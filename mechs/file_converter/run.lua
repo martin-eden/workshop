@@ -1,8 +1,15 @@
-local file_size = request('!.file_system.file.get_size')
-local represent_size = request('!.number.represent_size')
-local table_to_str = request('!.table.as_string')
+-- Execute file conversion
 
-return
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-05
+]]
+
+-- Imports:
+local get_file_size = request('!.file_system.file.get_size')
+local represent_size = request('!.number.represent_size')
+
+local execute_conversion =
   function(self)
     self:init()
 
@@ -11,7 +18,7 @@ return
     self:say(
       ('Loading "%s" [%s].'):format(
         self.f_in_name,
-        represent_size(file_size(self.f_in_name))
+        represent_size(get_file_size(self.f_in_name))
       )
     )
     local data = self.load(self.f_in_name)
@@ -42,3 +49,12 @@ return
 
     self:say('')
   end
+
+-- Export:
+return execute_conversion
+
+--[[
+  2017 # #
+  2018 # # # #
+  2026-05-05
+]]
