@@ -1,15 +1,15 @@
 Here is some handy convert functions
 
-We already have handy convert functions inside /number/ and
-/string/.
+Their main purpose is to help with typical problem:
 
-They are not solving typical problem "where is function to load
-file as string?".
+  Where is function to load file as string?
 
-Is it "/file_system/file/as_string.lua" or "/string/from_file.lua"?
+  Is it in "/file_system/file/as_string.lua" or
+  in "/string/from_file.lua"?
 
-So expect here to see pairs of "(a)_to_(b)".
+File names format is
 
-Or "(a)_from_(b)"?
+  <something_specific>_to_<something_common>
+  <something_specific>_from_<something_common>
 
--- Martin, 2026-04-27
+-- Martin, started 2026-04-27
