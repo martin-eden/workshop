@@ -5,6 +5,8 @@
   Last mod.: 2026-05-04
 ]]
 
+-- Unlike other functions in "convert/", this function returns nothing.
+
 -- Imports:
 local create_file_with_contents = request('!.file_system.file.create')
 
