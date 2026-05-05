@@ -1,20 +1,28 @@
+-- Check that BCD byte is valid
+
 --[[
-  Return true if given data represent BCD byte.
-  Else return false and string with error in second result.
+  Author: Martin Eden
+  Last mod.: 2026-05-05
 ]]
 
-local is_byte = request('is_byte')
+-- Imports:
+local is_byte = request('!.number.is_byte')
 
-return
-  function(n)
-    local result, err_msg = is_byte(n)
-    if result then
-      local low_digit = n & 0x0F
-      local high_digit = (n >> 4) & 0x0F
-      if (high_digit > 9) or (low_digit > 9) then
-        result = false
-        err_msg = ("Number 0x%02X can't be interpreted as BCD."):format(n)
-      end
-    end
-    return result, err_msg
+local is_valid_bcd =
+  function(byte_bcd)
+    assert_integer(byte_bcd)
+
+    if not is_byte(byte_bcd) then return false end
+    if (byte_bcd % 16 > 9) then return false end
+    if (byte_bcd // 16 > 9) then return false end
+
+    return true
   end
+
+-- Export:
+return is_valid_bcd
+
+--[[
+  2020
+  2026-05-05
+]]
