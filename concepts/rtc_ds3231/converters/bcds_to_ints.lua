@@ -9,7 +9,7 @@ local bcd_fields_to_rename = request('^.data.bcd_fields_to_rename')
 local rename_field = request('!.table.rename_field')
 local path_get_value = request('!.table.path_get_value')
 local path_set_value = request('!.table.path_set_value')
-local from_bcd = request('!.number.from_bcd')
+local bcd_to_byte = request('!.convert.bcd_to_byte')
 
 return
   function(data)
@@ -18,7 +18,7 @@ return
     for _, rename_rec in ipairs(bcd_fields_to_rename) do
       rename_field(data, data, rename_rec.bcd, rename_rec.int)
       local new_node_val = path_get_value(data, rename_rec.int)
-      new_node_val = from_bcd(new_node_val)
+      new_node_val = bcd_to_byte(new_node_val)
       path_set_value(data, rename_rec.int, new_node_val)
     end
 
