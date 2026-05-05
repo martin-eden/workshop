@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-05-05
 ]]
 
 --[[
@@ -10,19 +10,17 @@
 
   string.char(66, 233, 22)
     ->
-    Offs | Dec | BCD | Hex | Bin
-    -----------------------------------------
-     000 | 066 |  42 |  42 | . X . . . . X .
-     001 | 233 |  ?? |  E9 | X X X . X . . X
-     002 | 022 |  16 |  16 | . . . X . X X .
-    -----------------------------------------
+    Offs | Dec | Hex | Bin
+    -----------------------------------
+     000 | 066 |  42 | . X . . . . X .
+     001 | 233 |  E9 | X X X . X . . X
+     002 | 022 |  16 | . . . X . X X .
+    -----------------------------------
 ]]
 
 -- Imports:
 local assert_byte = request('!.number.assert_byte')
-local from_bcd = request('!.number.from_bcd')
 local bits_from_str = request('!.convert.bits_from_str')
-local glue_words = request('!.concepts.words.to_string')
 local Lines = request('!.concepts.Lines.Interface')
 
 local to_dec_str =
@@ -33,21 +31,6 @@ local to_dec_str =
 local to_hex_str =
   function(byte)
     return string.format('%02X', byte)
-  end
-
-local to_bcd_str =
-  function(byte_bcd)
-    local result_str
-
-    local is_ok, byte = pcall(from_bcd, byte_bcd)
-
-    if is_ok then
-      result_str = string.format('%02d', byte)
-    else
-      result_str = '??'
-    end
-
-    return result_str
   end
 
 local to_bit_str =
@@ -65,14 +48,14 @@ local get_dump =
   function(str)
     assert_string(str)
 
-    local table_width = 41
+    local table_width = 35
 
     local Lines = new(Lines)
 
-    local format_str = '%4s | %3s | %3s | %3s | %-15s'
+    local format_str = '%4s | %3s | %3s | %-15s'
 
     local header_str =
-      string.format(format_str, 'Offs', 'Dec', 'BCD', 'Hex', 'Bin')
+      string.format(format_str, 'Offs', 'Dec', 'Hex', 'Bin')
 
     Lines:AddLastLine(header_str)
 
@@ -90,7 +73,6 @@ local get_dump =
           format_str,
           to_dec_str(pos - 1),
           to_dec_str(byte),
-          to_bcd_str(byte),
           to_hex_str(byte),
           to_bit_str(byte)
         )
@@ -113,4 +95,5 @@ return get_dump
   2022
   2026-04-29
   2026-05-04
+  2026-05-05
 ]]
