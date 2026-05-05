@@ -13,7 +13,7 @@
 ]]
 
 -- Imports:
-local str_as_lua_table = request('^.^.lua_table.load')
+local str_as_lua_table = request('!.convert.table_from_str')
 
 local parse_json =
   function(json_str)
