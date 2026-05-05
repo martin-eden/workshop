@@ -6,7 +6,7 @@
 local set_bit = request('!.number.set_bit')
 local splice_bits = request('!.number.splice_bits')
 local slice_bits = request('!.number.slice_bits')
-local int8_to_uint8 = request('!.number.int8_to_uint8')
+local sint8_to_byte = request('!.convert.sint8_to_byte')
 
 local compile_hour = request('hour_compile')
 local compile_temperature = request('temperature_compile')
@@ -33,7 +33,7 @@ return
         [14] = splice_bits(rec.alarm_2.date_dow_bcd, 0, 5),
         [15] = 0,
         [16] = 0,
-        [17] = int8_to_uint8(rec.clock_speed),
+        [17] = sint8_to_byte(rec.clock_speed),
       }
 
     result[6] = set_bit(result[6], 7, rec.moment.is_next_century)
