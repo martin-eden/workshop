@@ -2,21 +2,27 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-03
+  Last mod.: 2026-05-06
 ]]
 
 --[[
   Data structure
 
-    Tree map of Range objects by name part
+    Ranges [t] - list of Range objects
+    Children [t] - map of nodes by name
 ]]
 
 -- Imports:
+local attach_methods = request('!.table.attach_methods')
 local split_string = request('!.string.split')
 local create_range = request('^.Range.create')
+local add_to_list = request('!.concepts.list.add_item')
 local get_real_ranges = request('Freetown.get_real_ranges')
 
 local names_delimiter = '.'
+
+-- Forward declaration
+local create
 
 --[[
   Result structure
@@ -33,15 +39,15 @@ local parse_name =
     local Node = Me
 
     for idx, part_name in ipairs(NamePath) do
-      Node = Node[part_name] or Node
-      table.insert(NodesPath, Node)
+      Node = Node.Children[part_name] or Node
+      add_to_list(NodesPath, Node)
     end
 
     return NamePath, NodesPath
   end
 
--- Export:
-return
+local Methods
+Methods =
   {
     AddName =
       function(Me, name)
@@ -50,9 +56,9 @@ return
         local LeafNode = Nodes[#Nodes]
         local leaf_name = Names[#Names]
 
-        assert_nil(LeafNode[leaf_name])
+        assert_nil(LeafNode.Children[leaf_name])
 
-        LeafNode[leaf_name] = { }
+        LeafNode.Children[leaf_name] = Methods.create()
       end,
     AddRange =
       function(Me, name, Range)
@@ -60,7 +66,7 @@ return
 
         local LeafNode = Nodes[#Nodes]
 
-        table.insert(LeafNode, Range)
+        add_to_list(LeafNode.Ranges, Range)
       end,
     GetRanges =
       function(Me, name)
@@ -74,7 +80,7 @@ return
         --]]
         local RangesToRead
         local total_length = 0
-        for idx, Rec in ipairs(LeafNode) do
+        for idx, Rec in ipairs(LeafNode.Ranges) do
           total_length = total_length + Rec:GetLength()
         end
         RangesToRead = { create_range(1, total_length) }
@@ -100,9 +106,23 @@ return
       end,
   }
 
+-- Create Ranges Tree container
+Methods.create =
+  function()
+    local Result = { Ranges = { }, Children = { } }
+
+    attach_methods(Result, Methods)
+
+    return Result
+  end
+
+-- Export:
+return Methods
+
 --[[
   2026-04-30
   2026-05-01
   2026-05-02
   2026-05-03
+  2026-05-06
 ]]
