@@ -15,41 +15,34 @@
 ]]
 
 -- Imports:
-local create_string_value = request('!.concepts.RangesTree.StringValue.create')
-local apply_ranges = request('!.concepts.RangesTree.apply_ranges')
 local table_is_empty = request('!.table.is_empty')
+local apply_ranges = request('apply_ranges')
 
-local apply_ranges_tree
-apply_ranges_tree =
-  function(InputStr, Node)
-    local Result = { }
-
-    for key in pairs(Node.Children) do
-      -- Retrieve data only if node has no children
-      if table_is_empty(Node.Children[key].Children) then
-        local OutputStr = create_string_value()
-        apply_ranges(InputStr, Node:GetRanges(key), OutputStr)
-        Result[key] = OutputStr:GetValue()
-      else
-        Result[key] =
-          apply_ranges_tree(
-            InputStr,
-            Node.Children[key],
-            Result[key]
-          )
-      end
-    end
-
-    return Result
-  end
-
+-- Produce data tree for given data, ranges tree and data creator
 local apply_ranges_tree_root =
-  function(data_str, RangesTree)
-    local InputStr = create_string_value(data_str)
+  function(data, RangesTree, create_data)
+    InputData = create_data(data)
 
-    Result = apply_ranges_tree(InputStr, RangesTree)
+    local apply_ranges_tree
+    apply_ranges_tree =
+      function(Node)
+        local Result = { }
 
-    return Result
+        for key in pairs(Node.Children) do
+          -- Retrieve data only if node has no children
+          if table_is_empty(Node.Children[key].Children) then
+            local OutputData = create_data()
+            apply_ranges(InputData, Node:GetRanges(key), OutputData)
+            Result[key] = OutputData:GetValue()
+          else
+            Result[key] = apply_ranges_tree(Node.Children[key])
+          end
+        end
+
+        return Result
+      end
+
+    return apply_ranges_tree(RangesTree)
   end
 
 -- Export:
