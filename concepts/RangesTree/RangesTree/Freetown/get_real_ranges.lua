@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-03
+  Last mod.: 2026-05-06
 ]]
 
 --[[
@@ -12,6 +12,7 @@
 ]]
 
 -- Imports:
+local add_to_list = request('!.concepts.list.add_item')
 local add_list = request('!.concepts.list.add_list')
 local select_list_range = request('!.concepts.list.select_range')
 local create_range = request('^.^.Range.create')
@@ -47,7 +48,7 @@ local skip_n_read =
       num_to_process = num_to_process - seg_len
 
       if is_reading then
-        table.insert(Result, create_range(seg_start, seg_len))
+        add_to_list(Result, create_range(seg_start, seg_len))
       end
 
       if (num_to_process == 0) then
@@ -81,7 +82,7 @@ get_real_ranges =
       local num_to_skip = Range:GetStart() - 1
       local num_to_read = Range:GetLength()
       local AdjustedRanges =
-        skip_n_read(Node, num_to_skip, num_to_read)
+        skip_n_read(Node.Ranges, num_to_skip, num_to_read)
 
       add_list(OurRanges, AdjustedRanges)
     end
@@ -107,4 +108,5 @@ return get_real_ranges
 --[[
   2026-05-02
   2026-05-03
+  2026-05-06
 ]]
