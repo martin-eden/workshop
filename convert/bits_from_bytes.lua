@@ -1,4 +1,4 @@
--- Convert string data to string with bits
+-- Convert bytes list to string with bits
 
 --[[
   Author: Martin Eden
@@ -16,15 +16,13 @@ local byte_to_bits = request('!.convert.byte_to_bits')
 local add_to_list = request('!.concepts.list.add_item')
 local list_to_string = request('!.concepts.list.to_string')
 
-local bits_from_str =
-  function(data_str)
-    assert_string(data_str)
+local bits_from_bytes =
+  function(Bytes)
+    assert_table(Bytes)
 
     local BytesBits = { }
 
-    for char_idx = 1, string.len(data_str) do
-      local char = string.sub(data_str, char_idx, char_idx)
-      local byte = string.byte(char)
+    for idx, byte in ipairs(Bytes) do
       add_to_list(BytesBits, byte_to_bits(byte))
     end
 
@@ -32,8 +30,9 @@ local bits_from_str =
   end
 
 -- Export:
-return bits_from_str
+return bits_from_bytes
 
 --[[
   2026-05-03
+  2026-05-07
 ]]
