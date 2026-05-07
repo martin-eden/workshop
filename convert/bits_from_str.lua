@@ -12,32 +12,20 @@
 ]]
 
 -- Imports:
-local get_bit = request('!.number.get_bit')
+local byte_to_bits = request('!.convert.byte_to_bits')
 local add_to_list = request('!.concepts.list.add_item')
 local list_to_string = request('!.concepts.list.to_string')
 
-local BitToBitchar =
-  {
-    [true]  = 'X',
-    [false] = '.',
-  }
-
 local bits_from_str =
   function(data_str)
-    -- This implementation is not designed to be fast or smart
-
-    -- Bits order is least-significant-bit first
+    assert_string(data_str)
 
     local BytesBits = { }
 
-    for char_idx = 1, #data_str do
+    for char_idx = 1, string.len(data_str) do
       local char = string.sub(data_str, char_idx, char_idx)
       local byte = string.byte(char)
-      local byte_bits = ''
-      for bit_idx = 0, 7 do
-        byte_bits = byte_bits .. BitToBitchar[get_bit(byte, bit_idx)]
-      end
-      add_to_list(BytesBits, byte_bits)
+      add_to_list(BytesBits, byte_to_bits(byte))
     end
 
     return list_to_string(BytesBits)
