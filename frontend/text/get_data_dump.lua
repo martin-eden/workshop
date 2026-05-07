@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-07
+  Last mod.: 2026-05-08
 ]]
 
 --[[
@@ -20,7 +20,7 @@
 
 -- Imports:
 local bytes_from_str = request('!.convert.bytes_from_str')
-local bits_from_bytes = request('!.convert.bits_from_bytes')
+local byte_to_bits = request('!.convert.byte_to_bits')
 local Lines = request('!.concepts.Lines.Interface')
 
 local to_dec_str =
@@ -37,7 +37,7 @@ local to_bit_str =
   function(byte)
     local result
 
-    result = bits_from_bytes(byte)
+    result = byte_to_bits(byte)
     result = string.reverse(result)
     result = string.gsub(result, '.', function(c) return c .. ' ' end)
 
