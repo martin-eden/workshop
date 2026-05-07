@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-05-07
 ]]
 
 --[[
@@ -16,10 +16,10 @@ local get_bit = request('!.number.get_bit')
 local add_to_list = request('!.concepts.list.add_item')
 local list_to_string = request('!.concepts.list.to_string')
 
-local BitChars_Map =
+local BitToBitchar =
   {
+    [true]  = 'X',
     [false] = '.',
-    [true] = 'X',
   }
 
 local bits_from_str =
@@ -35,9 +35,7 @@ local bits_from_str =
       local byte = string.byte(char)
       local byte_bits = ''
       for bit_idx = 0, 7 do
-        local bit = get_bit(byte, bit_idx)
-        local bit_char = BitChars_Map[bit]
-        byte_bits = byte_bits .. bit_char
+        byte_bits = byte_bits .. BitToBitchar[get_bit(byte, bit_idx)]
       end
       add_to_list(BytesBits, byte_bits)
     end
