@@ -19,7 +19,7 @@
 ]]
 
 -- Imports:
-local assert_byte = request('!.number.assert_byte')
+local bytes_from_str = request('!.convert.bytes_from_str')
 local bits_from_bytes = request('!.convert.bits_from_bytes')
 local Lines = request('!.concepts.Lines.Interface')
 
@@ -46,7 +46,7 @@ local to_bit_str =
 
 local get_dump =
   function(str)
-    assert_string(str)
+    local Bytes = bytes_from_str(str)
 
     local table_width = 35
 
@@ -63,11 +63,7 @@ local get_dump =
 
     Lines:AddLastLine(table_separator)
 
-    for pos = 1, string.len(str) do
-      local byte = string.byte(string.sub(str, pos, pos))
-
-      assert_byte(byte)
-
+    for pos, byte in ipairs(Bytes) do
       local data_str =
         string.format(
           format_str,
@@ -96,4 +92,5 @@ return get_dump
   2026-04-29
   2026-05-04
   2026-05-05
+  2026-05-07
 ]]
