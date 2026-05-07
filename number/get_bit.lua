@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-05-07
 ]]
 
 --[[
@@ -17,7 +17,6 @@ local assert_bit_offs = request('assert_bit_offs')
 local get_bit =
   function(n, bit_offs)
     assert_integer(n)
-    assert_integer(bit_offs)
     assert_bit_offs(bit_offs)
 
     return (n & (1 << bit_offs) ~= 0)
