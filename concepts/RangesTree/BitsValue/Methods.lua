@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-02
+  Last mod.: 2026-05-07
 ]]
 
 --[[
@@ -27,9 +27,9 @@ return
           slice_bits(Me.Value, Range:GetStart() - 1, Range:GetStop() - 1)
       end,
     Add =
-      function(Me, Data, Range)
+      function(Me, Data, DataRange)
         Me.Value =
-          (Me.Value << Range:GetLength()) | Data:GetRangeValue(Range)
+          (Me.Value << DataRange:GetLength()) | Data:GetRangeValue(DataRange)
       end
   }
 

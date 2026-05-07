@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-03
+  Last mod.: 2026-05-07
 ]]
 
 --[[
@@ -24,8 +24,8 @@ return
           string.sub(Me.Value, Range:GetStart(), Range:GetStop())
       end,
     Add =
-      function(Me, Data, Range)
-        Me.Value = Me.Value .. Data:GetRangeValue(Range)
+      function(Me, Data, DataRange)
+        Me.Value = Me.Value .. Data:GetRangeValue(DataRange)
       end,
   }
 
