@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-06
+  Last mod.: 2026-05-07
 ]]
 
 --[[
@@ -25,24 +25,30 @@ local apply_ranges_tree_root =
 
     local apply_ranges_tree
     apply_ranges_tree =
-      function(Node)
+      function(Node, name_prefix)
         local Result = { }
 
         for key in pairs(Node.Children) do
+          local subnode_name = name_prefix .. key
           -- Retrieve data only if node has no children
           if table_is_empty(Node.Children[key].Children) then
             local OutputData = create_data()
-            apply_ranges(InputData, Node:GetRanges(key), OutputData)
+            apply_ranges(
+              InputData,
+              RangesTree:GetRanges(subnode_name),
+              OutputData
+            )
             Result[key] = OutputData:GetValue()
           else
-            Result[key] = apply_ranges_tree(Node.Children[key])
+            Result[key] =
+              apply_ranges_tree(Node.Children[key], subnode_name .. '.')
           end
         end
 
         return Result
       end
 
-    return apply_ranges_tree(RangesTree)
+    return apply_ranges_tree(RangesTree, '')
   end
 
 -- Export:
@@ -51,4 +57,5 @@ return apply_ranges_tree_root
 --[[
   2026-05-05
   2026-05-06
+  2026-05-07
 ]]
