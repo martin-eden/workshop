@@ -1,48 +1,35 @@
-DS3231 real-time clock data parser and compiler.
+DS3231 real-time clock data parser and compiler
 
-Well, I'm proud of this implementation. (For that stage of my
-professional development when it was written.) DS3231 is integrated
-circuit (microscheme) that stores and updates current time (just
-clock). It stores data in somewhat obscure format but for this
-overview we can look on it as on array of bytes.
+DS3231 is integrated circuit with battery. It provides current time,
+temperature and "alarms". Alarms can set output pin to HIGH when
+current time matched alarm time. Useful for waking up attached
+microcontroller.
 
-"parse.lua" parses this array to structured Lua table.
+It provides data in somewhat obscure format.
 
-"compile.lua" compiles that table to array of bytes.
+Our interface accepts that data as list of bytes.
 
-Challenge was to make it robust to raw data and Lua table data
-non-conforming to datasheet. And to keep code in simple modules,
-typically fitting half of screen.
+"parse.lua" parses this list of byte to structured Lua table.
+"compile.lua" compiles that table to list of bytes.
 
-This achieved via multi- logical levels approach and verify-validate-
-process concept.
+Code base is written in 2020-08/2020-09.
 
-Multi- logical levels approach means that we work at successive
-logical layers, each having limited scope. Checking from byte-level
-(that data in array are integers in 0..255 range) to bit-mask level
-(that specific bits are ones or zeros) to numbers level (that
-specific bit stripes represent numbers in certain range) up to
-common-sense level (that those numbers represent possible time or
-date). Compiling passes same levels in reverse order.
+Main user is GUI application that wants named fields with booleans
+and integers.
 
-Verify-validate-process concept means how we handle input data.
-"Verify" means that we check data on logical level we working and
-produce list of errors (if there are any). "Validate" means that we
-correct that errors by changing input data. And "process" means that
-we produce result for next level without distracting on checks of
-input data.
+Core of implementation is in "categorize.lua" and in "serialize.lua".
 
-We do not check output data. So if "process" returns string when
-next-level "verify" assumes list of integers, it will blow. We can
-add some "verify-result" stage to keep concept flawless, but there
-was no practical need in that.
+Implementation uses multi-levels data processing to get from
+list of bytes to table with raw data, to table with final data
+and back.
 
-Other are implementation details. Levels passed as Lua table with
-array of verify-validate-process records. "generic_convert.lua"
-handles it. "parse.lua" and "compile.lua" prepare that table for their
-tasks. And other modules are verify-validate-process functions and
-their utility subfunctions.
+Levels of data processing is trying to be robust. If input data
+does not match their interface they can "validate" it (make it valid).
 
-Code base written in 2020-08/2020-09.
+As any first implementation it introduces novel methods.
+Not all of them proved to be practical in my view in 2026.
+So currently I'm rewriting this module.
 
-2021-04-02
+But code is tested and works.
+
+-- Martin, 2026-05-07
