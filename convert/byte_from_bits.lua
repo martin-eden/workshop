@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-07
+  Last mod.: 2026-05-08
 ]]
 
 -- Imports:
@@ -13,6 +13,8 @@ local BitcharToBit =
     ['X'] = true,
     ['.'] = false,
   }
+
+local default_bit = false
 
 local byte_from_bits =
   function(bits_str)
@@ -26,7 +28,9 @@ local byte_from_bits =
 
     for pos = 1, limit do
       local bit_char = string.sub(bits_str, pos, pos)
-      result = set_bit(result, pos - 1, BitcharToBit[bit_char])
+      local bit = BitcharToBit[bit_char]
+      if is_nil(bit) then bit = default_bit end
+      result = set_bit(result, pos - 1, bit)
     end
 
     return result
@@ -37,4 +41,5 @@ return byte_from_bits
 
 --[[
   2026-05-07
+  2026-05-08
 ]]
