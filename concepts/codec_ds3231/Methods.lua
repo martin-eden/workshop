@@ -5,6 +5,14 @@
   Last mod.: 2026-05-08
 ]]
 
+--[[
+  Interface
+
+    create [f]
+    Parse [f]
+    Compile [f]
+]]
+
 -- Imports:
 local require_file = request('!.system.require_file')
 local itness_from_str = request('!.convert.itness_from_str')
