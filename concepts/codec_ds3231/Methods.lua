@@ -6,7 +6,7 @@
 ]]
 
 -- Imports:
-local file_to_str = request('!.convert.file_to_str')
+local require_file = request('!.system.require_file')
 local itness_from_str = request('!.convert.itness_from_str')
 local ranges_tree_from_itness = request('!.convert.ranges_tree_from_itness')
 local attach_methods = request('!.table.attach_methods')
@@ -21,9 +21,9 @@ local Methods =
 local get_bitfields =
   function()
     local bitfields_filename =
-      'codec_ds3231/Internals/ds3231_ranges_tree.is'
+      '!/concepts/codec_ds3231/Internals/ds3231_ranges_tree.is'
 
-    local bitfields_is_str = file_to_str(bitfields_filename)
+    local bitfields_is_str = require_file(bitfields_filename)
     local Bitfields_Is = itness_from_str(bitfields_is_str)
 
     return ranges_tree_from_itness(Bitfields_Is)
