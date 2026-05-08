@@ -1,6 +1,6 @@
                               Moment
   (
-                                                    ( 01 56 )
+                                                    ( 001 56 )
     second_bcd         ( 01 7 )
     minute_bcd         ( 09 7 )
                 Hour
@@ -18,7 +18,7 @@
   )
                               Alarm_1
   (
-                                                    ( 57 32 )
+                                                    ( 057 32 )
                Second
     (
                                         ( 01 8 )
