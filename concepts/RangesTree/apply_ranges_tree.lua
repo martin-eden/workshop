@@ -1,8 +1,8 @@
--- Combine data and ranges tree to create table with structured data
+-- Combine data and ranges tree to create data tree
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-07
+  Last mod.: 2026-05-08
 ]]
 
 --[[
