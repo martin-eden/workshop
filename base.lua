@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-03
+  Last mod.: 2026-05-08
 ]]
 
 --[[
@@ -129,6 +129,7 @@ if is_first_run then
   _G.request = request
   _G.dependencies = dependencies
   _G.get_require_name = get_require_name
+  _G.get_base_prefix = function() return base_prefix end
 
   --[[
     At this point we installed "request()", so it's usable from
@@ -173,4 +174,5 @@ end
   2018-02
   2018-05
   2024-03
+  2026-05-08
 ]]
