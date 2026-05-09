@@ -1,4 +1,4 @@
--- Insert given integer into specified bit range.
+-- Insert given integer into specified bit range
 
 --[[
   Author: Martin Eden
@@ -8,7 +8,7 @@
 -- Imports:
 local assert_bit_offs = request('assert_bit_offs')
 
-local splice_bits =
+local set_bits =
   function(v, start_offs, end_offs, n)
     n = is_nil(n) and 0 or n
 
@@ -43,7 +43,7 @@ local splice_bits =
   end
 
 -- Export:
-return splice_bits
+return set_bits
 
 --[[
   2019
