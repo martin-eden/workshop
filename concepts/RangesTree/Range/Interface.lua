@@ -12,6 +12,16 @@
     Length [i]
 ]]
 
+--[[
+  Interface
+
+    GetStart
+    GetStop
+    GetLength
+
+    create ( start length )
+]]
+
 -- Imports:
 local is_natural_num = request('!.number.is_natural')
 local attach_methods = request('!.table.attach_methods')
