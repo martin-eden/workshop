@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-06
+  Last mod.: 2026-05-09
 ]]
 
 --[[
@@ -46,8 +46,8 @@ local parse_name =
     return NamePath, NodesPath
   end
 
-local Methods
-Methods =
+local Interface
+Interface =
   {
     AddName =
       function(Me, name)
@@ -58,7 +58,7 @@ Methods =
 
         assert_nil(LeafNode.Children[leaf_name])
 
-        LeafNode.Children[leaf_name] = Methods.create()
+        LeafNode.Children[leaf_name] = Interface.create()
       end,
     AddRange =
       function(Me, name, Range)
@@ -104,20 +104,19 @@ Methods =
         Me:AddName(name)
         Me:AddRanges(name, Ranges)
       end,
+
+    create =
+      function()
+        local Result = { Ranges = { }, Children = { } }
+
+        attach_methods(Result, Interface)
+
+        return Result
+      end,
   }
 
--- Create Ranges Tree container
-Methods.create =
-  function()
-    local Result = { Ranges = { }, Children = { } }
-
-    attach_methods(Result, Methods)
-
-    return Result
-  end
-
 -- Export:
-return Methods
+return Interface
 
 --[[
   2026-04-30
