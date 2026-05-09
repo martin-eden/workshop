@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-08
+  Last mod.: 2026-05-09
 ]]
 
 local fold_tree_root =
-  function(DataTree, RangesTree, create_data)
-    local Result = create_data()
+  function(DataTree, RangesTree, ValueClass)
+    local Result = new(ValueClass)
 
     local fold_tree
     fold_tree =
@@ -18,7 +18,8 @@ local fold_tree_root =
           if not is_table(val) then
             local NodeRanges = RangesTree:GetRanges(subnode_name)
 
-            local NodeData = create_data(val)
+            local NodeData = ValueClass.create()
+            NodeData:SetValue(val)
 
             for idx, NodeRange in ipairs(NodeRanges) do
               Result:Set(NodeData, NodeRange)
@@ -43,4 +44,5 @@ return fold_tree_root
 
 --[[
   2026-05-07
+  2026-05-09
 ]]
