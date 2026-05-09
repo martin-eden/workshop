@@ -12,6 +12,20 @@
     Children [t] - map of nodes by name
 ]]
 
+--[[
+  Interface
+
+    AddName ( name )
+    AddRange ( name range )
+    GetRanges ( name )
+
+    AddNameAndRange ( name range )
+    AddRanges ( name ranges )
+    AddNameAndRanges ( name ranges )
+
+    create ( )
+]]
+
 -- Imports:
 local attach_methods = request('!.table.attach_methods')
 local split_string = request('!.string.split')
@@ -19,9 +33,6 @@ local add_to_list = request('!.concepts.list.add_item')
 local get_real_ranges = request('Freetown.get_real_ranges')
 
 local names_delimiter = '.'
-
--- Forward declaration
-local create
 
 --[[
   Result structure
@@ -78,10 +89,9 @@ Interface =
         end
 
         --[[
-          Requested ranges to read are same as node.
-          Squeeze them to one read request.
+          Get total length of leaf node's ranges.
+          Represent it as range for call of get_real_ranges().
         --]]
-        local RangesToRead
         local total_length = 0
         for idx, Rec in ipairs(LeafNode.Ranges) do
           total_length = total_length + Rec:GetLength()
@@ -89,9 +99,7 @@ Interface =
 
         local LengthRange = LeafNode.Ranges[1].create(1, total_length)
 
-        RangesToRead = { LengthRange }
-
-        return get_real_ranges(RangesToRead, Nodes)
+        return get_real_ranges({ LengthRange }, Nodes)
       end,
     --
     AddNameAndRange =
