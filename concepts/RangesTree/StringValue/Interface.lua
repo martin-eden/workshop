@@ -13,19 +13,19 @@
 ]]
 
 --[[
-  Interface
+  Interface (alias "me")
 
-    SetValue
-    GetValue
+    SetValue ( me value )
+    GetValue ( me )
 
-    GetRangeValue
-    Add
+    GetRangeValue ( me range )
+    Add ( me me range )
 
-    SetDefaultItemValue
-    GetDefaultItemValue
-    Set
+    SetDefaultItemValue ( me empty_char )
+    GetDefaultItemValue ( me )
+    Set ( me me range )
 
-    create
+    create ( )
 ]]
 
 -- Imports:
