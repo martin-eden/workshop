@@ -88,18 +88,12 @@ Interface =
           error('Node have no ranges')
         end
 
-        --[[
-          Get total length of leaf node's ranges.
-          Represent it as range for call of get_real_ranges().
-        --]]
         local total_length = 0
         for idx, Rec in ipairs(LeafNode.Ranges) do
           total_length = total_length + Rec:GetLength()
         end
 
-        local LengthRange = LeafNode.Ranges[1].create(1, total_length)
-
-        return get_real_ranges({ LengthRange }, Nodes)
+        return get_real_ranges(total_length, Nodes)
       end,
     --
     AddNameAndRange =
