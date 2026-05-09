@@ -8,7 +8,7 @@
 -- Imports:
 local assert_bit_offs = request('assert_bit_offs')
 
-local slice_bits =
+local get_bits =
   function(n, start_offs, end_offs)
     assert_integer(n)
     assert_bit_offs(start_offs)
@@ -24,7 +24,7 @@ local slice_bits =
   end
 
 -- Export:
-return slice_bits
+return get_bits
 
 --[[
   2019
