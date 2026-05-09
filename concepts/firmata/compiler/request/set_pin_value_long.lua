@@ -1,7 +1,7 @@
 local signatures = request('!.concepts.firmata.protocol.signatures')
 local assert_valid_pin_number =
   request('!.concepts.arduino_uno.assert_valid_pin_number')
-local slice_bits = request('!.number.slice_bits')
+local get_bits = request('!.number.get_bits')
 local get_msb = request('!.number.get_msb')
 
 return
@@ -16,7 +16,7 @@ return
     )
     local highest_bit = 0
     repeat
-      self:emit(slice_bits(value, highest_bit, highest_bit + 6))
+      self:emit(get_bits(value, highest_bit, highest_bit + 6))
       highest_bit = highest_bit + 7
     until (highest_bit >= msb)
     self:emit(signatures.sysex_end)
