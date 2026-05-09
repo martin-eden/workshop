@@ -8,8 +8,8 @@
 -- Imports:
 local bytes_from_str = request('!.convert.bytes_from_str')
 local bits_from_bytes = request('!.convert.bits_from_bytes')
+local StringValue = request('!.concepts.RangesTree.StringValue.Interface')
 local apply_ranges_tree = request('!.concepts.RangesTree.apply_ranges_tree')
-local create_string_val = request('!.concepts.RangesTree.StringValue.create')
 local ds3231_values_from_bits = request('Internals.ds3231_values_from_bits')
 
 local Parse =
@@ -20,8 +20,13 @@ local Parse =
 
     local data_bits = bits_from_bytes(DataBytes)
 
+    local InputStr = StringValue.create()
+    InputStr:SetValue(data_bits)
+
+    local OutputStr = StringValue.create()
+
     local BitsDataTree =
-      apply_ranges_tree(data_bits, Me.Bitfields, create_string_val)
+      apply_ranges_tree(InputStr, Me.Bitfields, OutputStr)
 
     return ds3231_values_from_bits(BitsDataTree)
   end
