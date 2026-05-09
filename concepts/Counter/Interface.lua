@@ -69,7 +69,7 @@ return
         return true
       end,
 
-    -- Intensities
+    -- Internals
 
     -- Current value
     Value = nil,
