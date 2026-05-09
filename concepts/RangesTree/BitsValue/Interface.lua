@@ -16,7 +16,7 @@
 
     GetValue ( me )
     GetRangeValue ( me range )
-    Add ( me me range )
+    Add ( me value data_len )
 
     create ( value )
 ]]
@@ -38,9 +38,8 @@ Interface =
           get_bits(Me.Value, Range:GetStart() - 1, Range:GetStop() - 1)
       end,
     Add =
-      function(Me, Data, DataRange)
-        Me.Value =
-          (Me.Value << DataRange:GetLength()) | Data:GetRangeValue(DataRange)
+      function(Me, value, data_len)
+        Me.Value = (Me.Value << data_len) | value
       end,
 
     create =
@@ -63,4 +62,5 @@ return Interface
 --[[
   2026-05-02
   2026-05-09
+  2026-05-10
 ]]
