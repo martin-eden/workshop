@@ -11,6 +11,16 @@
     Value [i]
 ]]
 
+--[[
+  Interface (alias "me")
+
+    GetValue ( me )
+    GetRangeValue ( me range )
+    Add ( me me range )
+
+    create ( value )
+]]
+
 -- Imports:
 local slice_bits = request('!.number.slice_bits')
 local attach_methods = request('!.table.attach_methods')
