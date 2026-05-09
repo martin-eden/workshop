@@ -1,8 +1,8 @@
--- Bits Value methods
+-- Bits Value interface
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-07
+  Last mod.: 2026-05-09
 ]]
 
 --[[
@@ -14,8 +14,7 @@
 -- Imports:
 local slice_bits = request('!.number.slice_bits')
 
--- Export:
-return
+local Interface =
   {
     GetValue =
       function(Me)
@@ -33,6 +32,10 @@ return
       end
   }
 
+-- Export:
+return Interface
+
 --[[
   2026-05-02
+  2026-05-09
 ]]
