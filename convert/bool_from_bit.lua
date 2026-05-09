@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-07
+  Last mod.: 2026-05-09
 ]]
 
 local bit_1_char = 'X'
@@ -12,7 +12,7 @@ local bool_from_bit =
   function(str)
     if (str == bit_1_char) then return true end
     if (str == bit_0_char) then return false end
-    error('Wrong bit character')
+    error(string.format('Wrong bit character %q.', str))
   end
 
 -- Export:
