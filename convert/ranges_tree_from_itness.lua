@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-06
+  Last mod.: 2026-05-09
 ]]
 
 -- Imports:
 local create_range = request('!.concepts.RangesTree.Range.create')
-local RangesTreeMethods = request('!.concepts.RangesTree.RangesTree.Methods')
+local RangesTreeClass = request('!.concepts.RangesTree.RangesTree.Interface')
 
 local deserialize_range =
   function(NodeIs)
@@ -66,7 +66,7 @@ ranges_tree_from_itness =
 
 local ranges_tree_from_itness_root =
   function(RangesTreeIs)
-    local RangesTree = RangesTreeMethods.create()
+    local RangesTree = RangesTreeClass.create()
 
     ranges_tree_from_itness(RangesTreeIs, RangesTree, '')
 
