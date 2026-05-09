@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-06
+  Last mod.: 2026-05-09
 ]]
 
 --[[
@@ -15,7 +15,6 @@
 local add_to_list = request('!.concepts.list.add_item')
 local add_list = request('!.concepts.list.add_list')
 local select_list_range = request('!.concepts.list.select_range')
-local create_range = request('^.^.Range.create')
 
 local skip_n_read =
   function(Ranges, num_to_skip, num_to_read)
@@ -48,7 +47,7 @@ local skip_n_read =
       num_to_process = num_to_process - seg_len
 
       if is_reading then
-        add_to_list(Result, create_range(seg_start, seg_len))
+        add_to_list(Result, Range.create(seg_start, seg_len))
       end
 
       if (num_to_process == 0) then
