@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-09
+  Last mod.: 2026-05-10
 ]]
 
 --[[
@@ -19,11 +19,11 @@
     GetValue ( me )
 
     GetRangeValue ( me range )
-    Add ( me me range )
+    Add ( me value data_len )
 
     SetDefaultItemValue ( me empty_char )
     GetDefaultItemValue ( me )
-    Set ( me me range )
+    SetRangeValue ( me range value )
 
     create ( )
 ]]
@@ -52,8 +52,8 @@ Interface =
           string.sub(Me:GetValue(), Range:GetStart(), Range:GetStop())
       end,
     Add =
-      function(Me, Data, DataRange)
-        Me:SetValue(Me:GetValue() .. Data:GetRangeValue(DataRange))
+      function(Me, value, data_len)
+        Me:SetValue(Me:GetValue() .. value)
       end,
     SetDefaultItemValue =
       function(Me, empty_char)
@@ -68,8 +68,8 @@ Interface =
 
         return Me.EmptyChar
       end,
-    Set =
-      function(Me, Data, DataRange)
+    SetRangeValue =
+      function(Me, DataRange, value)
         --[[
           If range is out of our string, we will extend string with
           empty char.
@@ -88,7 +88,7 @@ Interface =
 
         Me:SetValue(
           string.sub(our_value, 1, DataRange:GetStart() - 1) ..
-          string.sub(Data:GetValue(), 1, DataRange:GetLength()) ..
+          string.sub(value, 1, DataRange:GetLength()) ..
           string.sub(our_value, DataRange:GetStop() + 1, our_value_len)
         )
       end,
@@ -110,4 +110,5 @@ return Interface
   2026-05-02
   2026-05-07
   2026-05-09
+  2026-05-10
 ]]
