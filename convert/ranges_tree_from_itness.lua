@@ -6,7 +6,7 @@
 ]]
 
 -- Imports:
-local create_range = request('!.concepts.RangesTree.Range.create')
+local Range = request('!.concepts.RangesTree.Range.Interface')
 local RangesTreeClass = request('!.concepts.RangesTree.RangesTree.Interface')
 
 local deserialize_range =
@@ -14,7 +14,7 @@ local deserialize_range =
     local range_start = tonumber(NodeIs[1])
     local range_len = tonumber(NodeIs[2])
 
-    return create_range(range_start, range_len)
+    return Range.create(range_start, range_len)
   end
 
 local looks_like_range =
