@@ -1,4 +1,4 @@
--- String Value methods
+-- String Value interface
 
 --[[
   Author: Martin Eden
