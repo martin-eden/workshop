@@ -4,7 +4,7 @@
 ]]
 
 local set_bit = request('!.number.set_bit')
-local splice_bits = request('!.number.splice_bits')
+local set_bits = request('!.number.set_bits')
 local get_bits = request('!.number.get_bits')
 local sint8_to_byte = request('!.convert.sint8_to_byte')
 
@@ -17,20 +17,20 @@ return
   function(rec)
     local result =
       {
-        [1] = splice_bits(rec.moment.second_bcd, 0, 6),
-        [2] = splice_bits(rec.moment.minute_bcd, 0, 6),
+        [1] = set_bits(rec.moment.second_bcd, 0, 6),
+        [2] = set_bits(rec.moment.minute_bcd, 0, 6),
         [3] = compile_hour(rec.moment),
-        [4] = splice_bits(rec.moment.dow_bcd, 0, 2),
-        [5] = splice_bits(rec.moment.date_bcd, 0, 5),
-        [6] = splice_bits(rec.moment.month_bcd, 0, 4),
-        [7] = splice_bits(rec.moment.year_bcd, 0, 7),
-        [8] = splice_bits(rec.alarm_1.second_bcd, 0, 6),
-        [9] = splice_bits(rec.alarm_1.minute_bcd, 0, 6),
+        [4] = set_bits(rec.moment.dow_bcd, 0, 2),
+        [5] = set_bits(rec.moment.date_bcd, 0, 5),
+        [6] = set_bits(rec.moment.month_bcd, 0, 4),
+        [7] = set_bits(rec.moment.year_bcd, 0, 7),
+        [8] = set_bits(rec.alarm_1.second_bcd, 0, 6),
+        [9] = set_bits(rec.alarm_1.minute_bcd, 0, 6),
         [10] = compile_hour(rec.alarm_1),
-        [11] = splice_bits(rec.alarm_1.date_dow_bcd, 0, 5),
-        [12] = splice_bits(rec.alarm_2.minute_bcd, 0, 6),
+        [11] = set_bits(rec.alarm_1.date_dow_bcd, 0, 5),
+        [12] = set_bits(rec.alarm_2.minute_bcd, 0, 6),
         [13] = compile_hour(rec.alarm_2),
-        [14] = splice_bits(rec.alarm_2.date_dow_bcd, 0, 5),
+        [14] = set_bits(rec.alarm_2.date_dow_bcd, 0, 5),
         [15] = 0,
         [16] = 0,
         [17] = sint8_to_byte(rec.clock_speed),
@@ -58,7 +58,7 @@ return
       ('No wave id for given freq of %s Hz'):format(rec.wave_freq)
     )
     result[15] =
-      splice_bits(wave_ids[rec.wave_freq], 3, 4, result[15])
+      set_bits(wave_ids[rec.wave_freq], 3, 4, result[15])
     result[15] = set_bit(result[15], 5, rec.get_temperature)
     result[15] = set_bit(result[15], 6, rec.at_battery.allow_wave_output)
     result[15] = set_bit(result[15], 7, rec.at_battery.stop_clock)
@@ -71,7 +71,7 @@ return
 
     local temp_raw = compile_temperature(rec.temperature)
     result[18] = get_bits(temp_raw, 2, 9)
-    result[19] = splice_bits(get_bits(temp_raw, 0, 1), 6, 7)
+    result[19] = set_bits(get_bits(temp_raw, 0, 1), 6, 7)
 
     return result
   end
