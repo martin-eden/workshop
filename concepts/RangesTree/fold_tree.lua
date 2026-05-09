@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-09
+  Last mod.: 2026-05-10
 ]]
 
 local fold_tree_root =
@@ -18,11 +18,8 @@ local fold_tree_root =
           if not is_table(val) then
             local NodeRanges = RangesTree:GetRanges(subnode_name)
 
-            local NodeData = ValueClass.create()
-            NodeData:SetValue(val)
-
             for idx, NodeRange in ipairs(NodeRanges) do
-              Result:Set(NodeData, NodeRange)
+              Result:SetRangeValue(NodeRange, val)
             end
           else
             fold_tree(

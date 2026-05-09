@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-03
+  Last mod.: 2026-05-10
 ]]
 
 --[[
@@ -19,7 +19,7 @@
 local apply_ranges =
   function(InputData, Ranges, OutputData)
     for idx, Range in ipairs(Ranges) do
-      OutputData:Add(InputData, Range)
+      OutputData:Add(InputData:GetRangeValue(Range), Range:GetLength())
     end
   end
 
