@@ -15,7 +15,6 @@
 -- Imports:
 local attach_methods = request('!.table.attach_methods')
 local split_string = request('!.string.split')
-local create_range = request('^.Range.create')
 local add_to_list = request('!.concepts.list.add_item')
 local get_real_ranges = request('Freetown.get_real_ranges')
 
@@ -74,6 +73,10 @@ Interface =
 
         local LeafNode = Nodes[#Nodes]
 
+        if (#LeafNode.Ranges == 0) then
+          error('Node have no ranges')
+        end
+
         --[[
           Requested ranges to read are same as node.
           Squeeze them to one read request.
@@ -83,7 +86,10 @@ Interface =
         for idx, Rec in ipairs(LeafNode.Ranges) do
           total_length = total_length + Rec:GetLength()
         end
-        RangesToRead = { create_range(1, total_length) }
+
+        local LengthRange = LeafNode.Ranges[1].create(1, total_length)
+
+        RangesToRead = { LengthRange }
 
         return get_real_ranges(RangesToRead, Nodes)
       end,
@@ -124,4 +130,5 @@ return Interface
   2026-05-02
   2026-05-03
   2026-05-06
+  2026-05-09
 ]]
