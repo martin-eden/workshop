@@ -5,8 +5,6 @@
   for negative values. Granularity is 0.25.
 ]]
 
-local slice_bits = request('!.number.slice_bits')
-
 return
   function(raw_value)
     local result

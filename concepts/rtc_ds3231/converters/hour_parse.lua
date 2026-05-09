@@ -22,7 +22,7 @@
 ]]
 
 local get_bit = request('!.number.get_bit')
-local slice_bits = request('!.number.slice_bits')
+local get_bits = request('!.number.get_bits')
 
 return
   function(hour_byte)
@@ -31,10 +31,10 @@ return
     is_12h_format = get_bit(hour_byte, 6)
 
     if is_12h_format then
-      hour_bcd = slice_bits(hour_byte, 0, 4)
+      hour_bcd = get_bits(hour_byte, 0, 4)
       is_pm = get_bit(hour_byte, 5)
     else
-      hour_bcd = slice_bits(hour_byte, 0, 5)
+      hour_bcd = get_bits(hour_byte, 0, 5)
     end
 
     return

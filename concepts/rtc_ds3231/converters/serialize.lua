@@ -5,7 +5,7 @@
 
 local set_bit = request('!.number.set_bit')
 local splice_bits = request('!.number.splice_bits')
-local slice_bits = request('!.number.slice_bits')
+local get_bits = request('!.number.get_bits')
 local sint8_to_byte = request('!.convert.sint8_to_byte')
 
 local compile_hour = request('hour_compile')
@@ -70,8 +70,8 @@ return
     result[16] = set_bit(result[16], 3, rec.enable_wave_32k)
 
     local temp_raw = compile_temperature(rec.temperature)
-    result[18] = slice_bits(temp_raw, 2, 9)
-    result[19] = splice_bits(slice_bits(temp_raw, 0, 1), 6, 7)
+    result[18] = get_bits(temp_raw, 2, 9)
+    result[19] = splice_bits(get_bits(temp_raw, 0, 1), 6, 7)
 
     return result
   end
