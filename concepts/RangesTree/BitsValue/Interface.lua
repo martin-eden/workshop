@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-09
+  Last mod.: 2026-05-10
 ]]
 
 --[[
@@ -22,7 +22,7 @@
 ]]
 
 -- Imports:
-local slice_bits = request('!.number.slice_bits')
+local get_bits = request('!.number.get_bits')
 local attach_methods = request('!.table.attach_methods')
 
 local Interface
@@ -35,7 +35,7 @@ Interface =
     GetRangeValue =
       function(Me, Range)
         return
-          slice_bits(Me.Value, Range:GetStart() - 1, Range:GetStop() - 1)
+          get_bits(Me.Value, Range:GetStart() - 1, Range:GetStop() - 1)
       end,
     Add =
       function(Me, Data, DataRange)
