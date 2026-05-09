@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-08
+  Last mod.: 2026-05-09
 ]]
 
 --[[
@@ -20,9 +20,7 @@ local apply_ranges = request('apply_ranges')
 
 -- Produce data tree for given data, ranges tree and data creator
 local apply_ranges_tree_root =
-  function(data, RangesTree, create_data)
-    InputData = create_data(data)
-
+  function(InputValue, RangesTree, OutputValueClass)
     local apply_ranges_tree
     apply_ranges_tree =
       function(Node, name_prefix)
@@ -32,13 +30,13 @@ local apply_ranges_tree_root =
           local subnode_name = name_prefix .. key
           -- Retrieve data only if node has no children
           if table_is_empty(Node.Children[key].Children) then
-            local OutputData = create_data()
+            local OutputValue = OutputValueClass.create()
             apply_ranges(
-              InputData,
+              InputValue,
               RangesTree:GetRanges(subnode_name),
-              OutputData
+              OutputValue
             )
-            Result[key] = OutputData:GetValue()
+            Result[key] = OutputValue:GetValue()
           else
             Result[key] =
               apply_ranges_tree(Node.Children[key], subnode_name .. '.')
@@ -47,6 +45,10 @@ local apply_ranges_tree_root =
 
         return Result
       end
+
+    assert_table(InputValue)
+    assert_table(RangesTree)
+    assert_table(OutputValueClass)
 
     return apply_ranges_tree(RangesTree, '')
   end
@@ -58,4 +60,5 @@ return apply_ranges_tree_root
   2026-05-05
   2026-05-06
   2026-05-07
+  2026-05-09
 ]]
