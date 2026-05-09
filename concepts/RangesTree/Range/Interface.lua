@@ -13,11 +13,11 @@
 ]]
 
 --[[
-  Interface
+  Interface (alias "me")
 
-    GetStart
-    GetStop
-    GetLength
+    GetStart ( me )
+    GetStop ( me )
+    GetLength ( me )
 
     create ( start length )
 ]]
@@ -30,16 +30,16 @@ local Interface
 Interface =
   {
     GetStart =
-      function(Range)
-        return Range.Start
+      function(Me)
+        return Me.Start
       end,
     GetStop =
-      function(Range)
-        return Range.Start + Range.Length - 1
+      function(Me)
+        return Me.Start + Me.Length - 1
       end,
     GetLength =
-      function(Range)
-        return Range.Length
+      function(Me)
+        return Me.Length
       end,
 
     create =
@@ -47,11 +47,11 @@ Interface =
         assert(is_natural_num(start))
         assert(is_natural_num(length))
 
-        local Range = { Start = start, Length = length }
+        local Result = { Start = start, Length = length }
 
-        attach_methods(Range, Interface)
+        attach_methods(Result, Interface)
 
-        return Range
+        return Result
       end
   }
 
