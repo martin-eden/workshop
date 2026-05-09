@@ -12,6 +12,7 @@
 ]]
 
 -- Imports:
+local is_natural_num = request('!.number.is_natural')
 local add_to_list = request('!.concepts.list.add_item')
 local add_list = request('!.concepts.list.add_list')
 local select_list_range = request('!.concepts.list.select_range')
@@ -96,8 +97,20 @@ get_real_ranges =
     return OurRanges
   end
 
+local get_real_ranges_root =
+  function(num_to_read, NodesPath)
+    assert(is_natural_num(num_to_read))
+
+    assert_table(NodesPath)
+    assert(#NodesPath >= 1)
+
+    local Range = NodesPath[1].Ranges[1].create(1, num_to_read)
+
+    return get_real_ranges({ Range }, NodesPath)
+  end
+
 -- Export:
-return get_real_ranges
+return get_real_ranges_root
 
 --[[
   I think I should finally come to LISP. But even doing this in Lua is
