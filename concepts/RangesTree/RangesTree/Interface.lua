@@ -13,15 +13,15 @@
 ]]
 
 --[[
-  Interface
+  Interface (alias "me")
 
-    AddName ( name )
-    AddRange ( name range )
-    GetRanges ( name )
+    AddName ( me name )
+    AddRange ( me name range )
+    GetRanges ( me name )
 
-    AddNameAndRange ( name range )
-    AddRanges ( name ranges )
-    AddNameAndRanges ( name ranges )
+    AddNameAndRange ( me name range )
+    AddRanges ( me name ranges )
+    AddNameAndRanges ( me name ranges )
 
     create ( )
 ]]
