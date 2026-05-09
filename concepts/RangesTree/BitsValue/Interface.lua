@@ -13,8 +13,10 @@
 
 -- Imports:
 local slice_bits = request('!.number.slice_bits')
+local attach_methods = request('!.table.attach_methods')
 
-local Interface =
+local Interface
+Interface =
   {
     GetValue =
       function(Me)
@@ -29,7 +31,20 @@ local Interface =
       function(Me, Data, DataRange)
         Me.Value =
           (Me.Value << DataRange:GetLength()) | Data:GetRangeValue(DataRange)
-      end
+      end,
+
+    create =
+      function(value)
+        value = value or 0
+
+        assert_integer(value)
+
+        local Result = { Value = value }
+
+        attach_methods(Result, Interface)
+
+        return Result
+      end,
   }
 
 -- Export:
