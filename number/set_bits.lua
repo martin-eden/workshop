@@ -2,30 +2,30 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-10
+  Last mod.: 2026-05-11
 ]]
 
 -- Imports:
 local assert_bit_offs = request('assert_bit_offs')
 
 local set_bits =
-  function(v, start_offs, end_offs, n)
-    n = is_nil(n) and 0 or n
+  function(value, start_offs, end_offs, existing_value)
+    existing_value = is_nil(existing_value) and 0 or existing_value
 
-    assert_integer(n)
+    assert_integer(existing_value)
 
-    assert_integer(v)
-    assert(v >= 0)
+    assert_integer(value)
+    assert(value >= 0)
 
     assert_bit_offs(start_offs)
     assert_bit_offs(end_offs)
     assert(start_offs <= end_offs)
 
-    if ((v << start_offs) > (1 << (end_offs + 1))) then
+    if ((value << start_offs) > (1 << (end_offs + 1))) then
       error(
         string.format(
           'Value 0x%X is too large to fit given bit range [%d, %d].',
-          v, start_offs, end_offs
+          value, start_offs, end_offs
         )
       )
     end
@@ -39,7 +39,7 @@ local set_bits =
     -- mask: 11000011
     mask = ~mask
 
-    return (n & mask) | (v << start_offs)
+    return (existing_value & mask) | (value << start_offs)
   end
 
 -- Export:
