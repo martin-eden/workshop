@@ -21,25 +21,18 @@ local set_bits =
     assert_bit_offs(end_offs)
     assert(start_offs <= end_offs)
 
-    if ((value << start_offs) > (1 << (end_offs + 1))) then
-      error(
-        string.format(
-          'Value 0x%X is too large to fit given bit range [%d, %d].',
-          value, start_offs, end_offs
-        )
-      )
-    end
-
     -- Example for ( start_offs: 2, end_offs: 5 )
-    local mask
     -- mask: 00111111
-    mask = (1 << (end_offs + 1)) - 1
+    local addition_mask = (1 << (end_offs + 1)) - 1
     -- mask: 00111100
-    mask = mask & ~((1 << start_offs) - 1)
-    -- mask: 11000011
-    mask = ~mask
+    addition_mask = addition_mask & ~((1 << start_offs) - 1)
 
-    return (existing_value & mask) | (value << start_offs)
+    -- mask: 11000011
+    local preserving_mask = ~addition_mask
+
+    value = value << start_offs
+
+    return (existing_value & preserving_mask) | (value & addition_mask)
   end
 
 -- Export:
@@ -49,4 +42,5 @@ return set_bits
   2019
   2020
   2026-05-09
+  2026-05-11
 ]]
