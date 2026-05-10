@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-09
+  Last mod.: 2026-05-10
 ]]
 
 -- Imports:
@@ -36,7 +36,7 @@ local set_bits =
     mask = (1 << (end_offs + 1)) - 1
     -- mask: 00111100
     mask = mask & ~((1 << start_offs) - 1)
-    -- mask: 00000011
+    -- mask: 11000011
     mask = ~mask
 
     return (n & mask) | (v << start_offs)
