@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-10
+  Last mod.: 2026-05-11
 ]]
 
 --[[
@@ -48,10 +48,10 @@ Interface =
       function(Me, Range, value)
         Me.Value =
           set_bits(
-            Me.Value,
+            value,
             Range:GetStart() - 1,
             Range:GetStop() - 1,
-            value
+            Me.Value
           )
       end,
 
