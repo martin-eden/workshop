@@ -12,143 +12,117 @@ local sint8_from_byte = request('!.convert.sint8_from_byte')
 
 local tree_values_from_bits =
   function(DataTree)
-    local Result = { }
+    return
+      {
+        Status =
+          {
+            ['32kihz_pin_enabled'] =
+              bool_from_bit(DataTree.Status['32kihz_pin_enabled']),
+            alarm_1_enabled =
+              bool_from_bit(DataTree.Status.alarm_1_enabled),
+            alarm_1_occurred =
+              bool_from_bit(DataTree.Status.alarm_1_occurred),
+            alarm_2_occurred =
+              bool_from_bit(DataTree.Status.alarm_2_occurred),
+            is_busy =
+              bool_from_bit(DataTree.Status.is_busy),
+            atbattery_clock_disabled =
+              bool_from_bit(DataTree.Status.atbattery_clock_disabled),
+            getting_temperature =
+              bool_from_bit(DataTree.Status.getting_temperature),
+            atbattery_enable_wave =
+              bool_from_bit(DataTree.Status.atbattery_enable_wave),
+            output_is_from_alarms =
+              bool_from_bit(DataTree.Status.output_is_from_alarms),
+            time_is_spoiled =
+              bool_from_bit(DataTree.Status.time_is_spoiled),
+            speed_trim =
+              sint8_from_byte(byte_from_bits(DataTree.Status.speed_trim)),
+            wave_freq_num =
+              byte_from_bits(DataTree.Status.wave_freq_num),
 
-    Result.Status = { }
+            Temperature =
+              {
+                is_neg =
+                  bool_from_bit(DataTree.Status.Temperature.is_neg),
+                int =
+                  byte_from_bits(DataTree.Status.Temperature.int),
+                frac =
+                  byte_from_bits(DataTree.Status.Temperature.frac),
+              },
+          },
 
-    Result.Status['32kihz_pin_enabled'] =
-      bool_from_bit(DataTree.Status['32kihz_pin_enabled'])
-    Result.Status.alarm_1_enabled =
-      bool_from_bit(DataTree.Status.alarm_1_enabled)
-    Result.Status.alarm_1_occurred =
-      bool_from_bit(DataTree.Status.alarm_1_occurred)
-    Result.Status.alarm_2_occurred =
-      bool_from_bit(DataTree.Status.alarm_2_occurred)
-    Result.Status.is_busy =
-      bool_from_bit(DataTree.Status.is_busy)
-    Result.Status.atbattery_clock_disabled =
-      bool_from_bit(DataTree.Status.atbattery_clock_disabled)
-    Result.Status.getting_temperature =
-      bool_from_bit(DataTree.Status.getting_temperature)
-    Result.Status.atbattery_enable_wave =
-      bool_from_bit(DataTree.Status.atbattery_enable_wave)
-    Result.Status.output_is_from_alarms =
-      bool_from_bit(DataTree.Status.output_is_from_alarms)
-    Result.Status.time_is_spoiled =
-      bool_from_bit(DataTree.Status.time_is_spoiled)
-    Result.Status.speed_trim =
-      sint8_from_byte(byte_from_bits(DataTree.Status.speed_trim))
-    Result.Status.wave_freq_num =
-      byte_from_bits(DataTree.Status.wave_freq_num)
+        Moment =
+          {
+            is_next_century =
+              bool_from_bit(DataTree.Moment.is_next_century),
+            year_bcd =
+              byte_from_bits(DataTree.Moment.year_bcd),
+            month_bcd =
+              byte_from_bits(DataTree.Moment.month_bcd),
+            date_bcd =
+              byte_from_bits(DataTree.Moment.date_bcd),
+            day_bcd =
+              byte_from_bits(DataTree.Moment.day_bcd),
+            hour_is_12h_format =
+              bool_from_bit(DataTree.Moment.hour_is_12h_format),
+            hour_data =
+              byte_from_bits(DataTree.Moment.hour_data),
+            minute_bcd =
+              byte_from_bits(DataTree.Moment.minute_bcd),
+            second_bcd =
+              byte_from_bits(DataTree.Moment.second_bcd),
+          },
 
-    Result.Status.Temperature = { }
+        Alarm_1 =
+          {
+            dateday_bcd =
+              byte_from_bits(DataTree.Alarm_1.dateday_bcd),
+            dateday_is_day =
+              bool_from_bit(DataTree.Alarm_1.dateday_is_day),
+            ignore_dateday =
+              bool_from_bit(DataTree.Alarm_1.ignore_dateday),
 
-    Result.Status.Temperature.is_neg =
-      bool_from_bit(DataTree.Status.Temperature.is_neg)
-    Result.Status.Temperature.int =
-      byte_from_bits(DataTree.Status.Temperature.int)
-    Result.Status.Temperature.frac =
-      byte_from_bits(DataTree.Status.Temperature.frac)
+            hour_is_12h_format =
+              bool_from_bit(DataTree.Alarm_1.hour_is_12h_format),
+            hour_data =
+              byte_from_bits(DataTree.Alarm_1.hour_data),
+            ignore_hour =
+              bool_from_bit(DataTree.Alarm_1.ignore_hour),
 
+            minute_bcd =
+              byte_from_bits(DataTree.Alarm_1.minute_bcd),
+            ignore_minute =
+              bool_from_bit(DataTree.Alarm_1.ignore_minute),
 
-    Result.Moment = { }
+            second_bcd =
+              byte_from_bits(DataTree.Alarm_1.second_bcd),
+            ignore_second =
+              bool_from_bit(DataTree.Alarm_1.ignore_second),
+          },
 
-    Result.Moment.is_next_century =
-      bool_from_bit(DataTree.Moment.is_next_century)
-    Result.Moment.year_bcd =
-      byte_from_bits(DataTree.Moment.year_bcd)
-    Result.Moment.month_bcd =
-      byte_from_bits(DataTree.Moment.month_bcd)
-    Result.Moment.date_bcd =
-      byte_from_bits(DataTree.Moment.date_bcd)
-    Result.Moment.day_bcd =
-      byte_from_bits(DataTree.Moment.day_bcd)
-    Result.Moment.minute_bcd =
-      byte_from_bits(DataTree.Moment.minute_bcd)
-    Result.Moment.second_bcd =
-      byte_from_bits(DataTree.Moment.second_bcd)
+        Alarm_2 =
+          {
+            dateday_bcd =
+              byte_from_bits(DataTree.Alarm_2.dateday_bcd),
+            dateday_is_day =
+              bool_from_bit(DataTree.Alarm_2.dateday_is_day),
+            ignore_dateday =
+              bool_from_bit(DataTree.Alarm_2.ignore_dateday),
 
-    Result.Moment.Hour = { }
+            hour_is_12h_format =
+              bool_from_bit(DataTree.Alarm_2.hour_is_12h_format),
+            hour_data =
+              byte_from_bits(DataTree.Alarm_2.hour_data),
+            ignore_hour =
+              bool_from_bit(DataTree.Alarm_2.ignore_hour),
 
-    Result.Moment.Hour.is_12h_format =
-      bool_from_bit(DataTree.Moment.Hour.is_12h_format)
-    Result.Moment.Hour['12h_format_is_pm'] =
-      bool_from_bit(DataTree.Moment.Hour['12h_format_is_pm'])
-    Result.Moment.Hour['12h_format_hour_bcd'] =
-      byte_from_bits(DataTree.Moment.Hour['12h_format_hour_bcd'])
-    Result.Moment.Hour['24h_format_hour_bcd'] =
-      byte_from_bits(DataTree.Moment.Hour['24h_format_hour_bcd'])
-
-    Result.Alarm_1 = { }
-
-    Result.Alarm_1.DateDay = { }
-
-    Result.Alarm_1.DateDay.is_day =
-      bool_from_bit(DataTree.Alarm_1.DateDay.is_day)
-    Result.Alarm_1.DateDay.dateday_bcd =
-      byte_from_bits(DataTree.Alarm_1.DateDay.dateday_bcd)
-    Result.Alarm_1.DateDay.ignore =
-      bool_from_bit(DataTree.Alarm_1.DateDay.ignore)
-
-    Result.Alarm_1.Hour = { }
-
-    Result.Alarm_1.Hour.is_12h_format =
-      bool_from_bit(DataTree.Alarm_1.Hour.is_12h_format)
-    Result.Alarm_1.Hour['12h_format_is_pm'] =
-      bool_from_bit(DataTree.Alarm_1.Hour['12h_format_is_pm'])
-    Result.Alarm_1.Hour['12h_format_hour_bcd'] =
-      byte_from_bits(DataTree.Alarm_1.Hour['12h_format_hour_bcd'])
-    Result.Alarm_1.Hour['24h_format_hour_bcd'] =
-      byte_from_bits(DataTree.Alarm_1.Hour['24h_format_hour_bcd'])
-    Result.Alarm_1.Hour.ignore =
-      bool_from_bit(DataTree.Alarm_1.Hour.ignore)
-
-    Result.Alarm_1.Minute = { }
-
-    Result.Alarm_1.Minute.minute_bcd =
-      byte_from_bits(DataTree.Alarm_1.Minute.minute_bcd)
-    Result.Alarm_1.Minute.ignore =
-      bool_from_bit(DataTree.Alarm_1.Minute.ignore)
-
-    Result.Alarm_1.Second = { }
-
-    Result.Alarm_1.Second.second_bcd =
-      byte_from_bits(DataTree.Alarm_1.Second.second_bcd)
-    Result.Alarm_1.Second.ignore =
-      bool_from_bit(DataTree.Alarm_1.Second.ignore)
-
-    Result.Alarm_2 = { }
-
-    Result.Alarm_2.DateDay = { }
-
-    Result.Alarm_2.DateDay.is_day =
-      bool_from_bit(DataTree.Alarm_2.DateDay.is_day)
-    Result.Alarm_2.DateDay.dateday_bcd =
-      byte_from_bits(DataTree.Alarm_2.DateDay.dateday_bcd)
-    Result.Alarm_2.DateDay.ignore =
-      bool_from_bit(DataTree.Alarm_2.DateDay.ignore)
-
-    Result.Alarm_2.Hour = { }
-
-    Result.Alarm_2.Hour.is_12h_format =
-      bool_from_bit(DataTree.Alarm_2.Hour.is_12h_format)
-    Result.Alarm_2.Hour['12h_format_is_pm'] =
-      bool_from_bit(DataTree.Alarm_2.Hour['12h_format_is_pm'])
-    Result.Alarm_2.Hour['12h_format_hour_bcd'] =
-      byte_from_bits(DataTree.Alarm_2.Hour['12h_format_hour_bcd'])
-    Result.Alarm_2.Hour['24h_format_hour_bcd'] =
-      byte_from_bits(DataTree.Alarm_2.Hour['24h_format_hour_bcd'])
-    Result.Alarm_2.Hour.ignore =
-      bool_from_bit(DataTree.Alarm_2.Hour.ignore)
-
-    Result.Alarm_2.Minute = { }
-
-    Result.Alarm_2.Minute.minute_bcd =
-      byte_from_bits(DataTree.Alarm_2.Minute.minute_bcd)
-    Result.Alarm_2.Minute.ignore =
-      bool_from_bit(DataTree.Alarm_2.Minute.ignore)
-
-    return Result
+            minute_bcd =
+              byte_from_bits(DataTree.Alarm_2.minute_bcd),
+            ignore_minute =
+              bool_from_bit(DataTree.Alarm_2.ignore_minute),
+          },
+      }
   end
 
 -- Export:
@@ -156,4 +130,5 @@ return tree_values_from_bits
 
 --[[
   2026-05-07
+  2026-05-10
 ]]
