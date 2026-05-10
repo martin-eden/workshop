@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-07
+  Last mod.: 2026-05-10
 ]]
 
 -- Imports:
@@ -23,14 +23,14 @@ local tree_values_to_bits =
       bool_to_bit(DataTree.Status.alarm_1_occurred)
     Result.Status.alarm_2_occurred =
       bool_to_bit(DataTree.Status.alarm_2_occurred)
-    Result.Status.busy =
-      bool_to_bit(DataTree.Status.busy)
-    Result.Status.clock_disabled =
-      bool_to_bit(DataTree.Status.clock_disabled)
+    Result.Status.is_busy =
+      bool_to_bit(DataTree.Status.is_busy)
+    Result.Status.atbattery_clock_disabled =
+      bool_to_bit(DataTree.Status.atbattery_clock_disabled)
     Result.Status.getting_temperature =
       bool_to_bit(DataTree.Status.getting_temperature)
-    Result.Status.output_atbattery_enabled =
-      bool_to_bit(DataTree.Status.output_atbattery_enabled)
+    Result.Status.atbattery_enable_wave =
+      bool_to_bit(DataTree.Status.atbattery_enable_wave)
     Result.Status.output_is_from_alarms =
       bool_to_bit(DataTree.Status.output_is_from_alarms)
     Result.Status.time_is_spoiled =
