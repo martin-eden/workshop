@@ -18,11 +18,14 @@
     GetRangeValue ( me range )
     Add ( me value data_len )
 
+    SetRangeValue ( me range value )
+
     create ( value )
 ]]
 
 -- Imports:
 local get_bits = request('!.number.get_bits')
+local set_bits = request('!.number.set_bits')
 local attach_methods = request('!.table.attach_methods')
 
 local Interface
@@ -40,6 +43,16 @@ Interface =
     Add =
       function(Me, value, data_len)
         Me.Value = (Me.Value << data_len) | value
+      end,
+    SetRangeValue =
+      function(Me, Range, value)
+        Me.Value =
+          set_bits(
+            Me.Value,
+            Range:GetStart() - 1,
+            Range:GetStop() - 1,
+            value
+          )
       end,
 
     create =
