@@ -2,7 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-08
+  Last mod.: 2026-05-10
+]]
+
+--[[
+  Data structure
+
+    Bitfields [t] -- named bit ranges tree
 ]]
 
 --[[
@@ -19,12 +25,6 @@ local itness_from_str = request('!.convert.itness_from_str')
 local ranges_tree_from_itness = request('!.convert.ranges_tree_from_itness')
 local attach_methods = request('!.table.attach_methods')
 
-local Methods =
-  {
-    Parse = request('Parse'),
-    Compile = request('Compile'),
-  }
-
 -- Load bitfields tree
 local get_bitfields =
   function()
@@ -37,19 +37,26 @@ local get_bitfields =
     return ranges_tree_from_itness(Bitfields_Is)
   end
 
--- Create codec
-Methods.create =
-  function()
-    local Result = { Bitfields = get_bitfields() }
+local Interface
+Interface =
+  {
+    Parse = request('Parse'),
+    Compile = request('Compile'),
 
-    attach_methods(Result, Methods)
+    create =
+      function()
+        local Result = { Bitfields = get_bitfields() }
 
-    return Result
-  end
+        attach_methods(Result, Interface)
+
+        return Result
+      end,
+  }
 
 -- Export:
-return Methods
+return Interface
 
 --[[
   2026-05-07
+  2026-05-10
 ]]
