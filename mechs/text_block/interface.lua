@@ -1,4 +1,14 @@
-return
+-- Virtual text printer interface
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-12
+]]
+
+-- Imports:
+local IndentClass = request('!.concepts.Indent')
+
+local Interface =
   {
     -- text:
     line_with_text = request('line.interface'),
@@ -34,5 +44,15 @@ return
     init = request('init'),
 
     -- Intestines
-    Indent = request('!.concepts.Indent.Interface'),
+    Indent = {},
+    IndentClass = IndentClass,
   }
+
+-- Export:
+return Interface
+
+--[[
+  2017 # # #
+  2024 #
+  2026-05-12
+]]

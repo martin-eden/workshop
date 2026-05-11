@@ -15,5 +15,5 @@ return
     end
     self.num_line_feeds = 0
 
-    line_with_text:init(self.Indent:GetString())
+    line_with_text:init(self.Indent:ToString())
   end

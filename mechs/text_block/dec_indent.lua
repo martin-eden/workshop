@@ -1,4 +1,4 @@
 return
   function(self)
-    self.Indent:Decrease()
+    self.Indent:Dec()
   end
