@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-10
+  Last mod.: 2026-05-12
 ]]
 
 --[[
@@ -23,7 +23,7 @@
 local require_file = request('!.system.require_file')
 local itness_from_str = request('!.convert.itness_from_str')
 local ranges_tree_from_itness = request('!.convert.ranges_tree_from_itness')
-local attach_methods = request('!.table.attach_methods')
+local create_instance = request('!.table.create_instance')
 
 -- Load bitfields tree
 local get_bitfields =
@@ -37,6 +37,11 @@ local get_bitfields =
     return ranges_tree_from_itness(Bitfields_Is)
   end
 
+local Core =
+  {
+    Bitfields = get_bitfields()
+  }
+
 local Interface
 Interface =
   {
@@ -45,11 +50,7 @@ Interface =
 
     create =
       function()
-        local Result = { Bitfields = get_bitfields() }
-
-        attach_methods(Result, Interface)
-
-        return Result
+        return create_instance(Core, Interface)
       end,
   }
 
@@ -59,4 +60,5 @@ return Interface
 --[[
   2026-05-07
   2026-05-10
+  2026-05-12
 ]]
