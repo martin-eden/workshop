@@ -87,7 +87,7 @@ local EventHandler =
 
     -- Adjust indent if we're leaving group
     if (What == 'EndList') then
-      self.Indent:Decrease()
+      self.Indent:Dec()
     end
 
     local IndentFunc = DecisionMatrix[self.PrevItem][What]
@@ -95,7 +95,7 @@ local EventHandler =
 
     -- Adjust indent if we're entering group
     if (What == 'StartList') then
-      self.Indent:Increase()
+      self.Indent:Inc()
     end
 
     -- Store this item

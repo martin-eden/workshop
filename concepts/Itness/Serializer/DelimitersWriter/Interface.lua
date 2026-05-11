@@ -1,20 +1,24 @@
 -- Data separation/indentation
 
 --[[
+  Author: Martin Eden
+  Last mod.: 2026-05-11
+]]
+
+--[[
   We don't care about items encoding. It's [DataWriter]'s job.
 
   We do care about types of adjacent items.
 ]]
 
--- Last mod.: 2024-10-21
-
 -- Imports:
 local Output = request('!.concepts.StreamIo.Output')
 local Syntax = request('^.^.Syntax')
-local Indenter = request('!.concepts.Indent.Interface')
+local IndentClass = request('!.concepts.Indent')
 
--- We're setting indent chunk on module load
-Indenter:Init(0, string.rep(Syntax.Delimiters.Space, 2))
+-- Set indent chunk
+local Indent = IndentClass.create()
+Indent.indent_chunk = string.rep(Syntax.Delimiters.Space, 2)
 
 -- Exports:
 return
@@ -29,7 +33,7 @@ return
     Syntax = Syntax,
 
     -- [Internal] Indentation tracker
-    Indent = Indenter,
+    Indent = Indent,
 
     -- [Internal] Previous item type. Used by OnEvent()
     PrevItem = 'Nothing',
@@ -57,6 +61,6 @@ return
   }
 
 --[[
-  2024-09-03
-  2024-10-21
+  2024 # #
+  2026-05-11
 ]]

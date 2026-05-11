@@ -2,7 +2,7 @@
 
 return
   function(self)
-    self:Emit(self.Indent:GetString())
+    self:Emit(self.Indent:ToString())
   end
 
 --[[
