@@ -1,25 +1,29 @@
 -- Return radio button object
 
--- Last mod.: 2024-11-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-12
+]]
 
+-- Imports:
 local tui = require('tek.ui')
 local force_merge = request('!.table.merge_and_patch')
 
 return
-  function(text, value, id, overrides)
-    local result =
+  function(text, id, Overrides)
+    local Result =
       tui.RadioButton:new(
         {
           Text = text,
-          Selected = value,
           Id = id,
         }
       )
-    force_merge(result, overrides)
+    force_merge(Result, Overrides)
 
-    return result
+    return Result
   end
 
 --[[
   2020-02
+  2026-05-12
 ]]
