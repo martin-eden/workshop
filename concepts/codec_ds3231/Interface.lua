@@ -6,15 +6,8 @@
 ]]
 
 --[[
-  Data structure
-
-    Bitfields [t] -- named bit ranges tree
-]]
-
---[[
   Interface
 
-    create [f]
     Parse [f]
     Compile [f]
 ]]
@@ -23,7 +16,6 @@
 local require_file = request('!.system.require_file')
 local itness_from_str = request('!.convert.itness_from_str')
 local ranges_tree_from_itness = request('!.convert.ranges_tree_from_itness')
-local create_instance = request('!.table.create_instance')
 
 -- Load bitfields tree
 local get_bitfields =
@@ -37,21 +29,14 @@ local get_bitfields =
     return ranges_tree_from_itness(Bitfields_Is)
   end
 
-local Core =
+local Interface =
   {
-    Bitfields = get_bitfields()
-  }
-
-local Interface
-Interface =
-  {
+    -- Main:
     Parse = request('Parse'),
     Compile = request('Compile'),
 
-    create =
-      function()
-        return create_instance(Core, Interface)
-      end,
+    -- Internals:
+    Bitfields = get_bitfields()
   }
 
 -- Export:
