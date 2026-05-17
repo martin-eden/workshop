@@ -2,17 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-09
+  Last mod.: 2026-05-17
 ]]
 
 -- Imports:
+local CharToBit_Map = request('!.concepts.BitChars').CharToBit_Map
 local set_bit = request('!.number.set_bit')
-
-local BitcharToBit =
-  {
-    ['X'] = true,
-    ['.'] = false,
-  }
 
 local byte_from_bits =
   function(bits_str)
@@ -26,7 +21,7 @@ local byte_from_bits =
 
     for pos = 1, limit do
       local bit_char = string.sub(bits_str, pos, pos)
-      local bit = BitcharToBit[bit_char]
+      local bit = CharToBit_Map[bit_char]
       if not is_boolean(bit) then
         error(string.format('Invalid bit char %q.', bit_char))
       end

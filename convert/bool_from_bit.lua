@@ -2,17 +2,20 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-09
+  Last mod.: 2026-05-17
 ]]
 
-local bit_1_char = 'X'
-local bit_0_char = '.'
+-- Imports:
+local BitChars = request('!.concepts.BitChars')
+
+local bit_0_char = BitChars.BitToChar_Map[false]
+local bit_1_char = BitChars.BitToChar_Map[true]
 
 local bool_from_bit =
-  function(str)
-    if (str == bit_1_char) then return true end
-    if (str == bit_0_char) then return false end
-    error(string.format('Wrong bit character %q.', str))
+  function(bit_str)
+    if (bit_str == bit_0_char) then return false end
+    if (bit_str == bit_1_char) then return true end
+    error(string.format('Wrong bit character %q.', bit_str))
   end
 
 -- Export:

@@ -2,16 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-07
+  Last mod.: 2026-05-17
 ]]
 
-local bit_1_char = 'X'
-local bit_0_char = '.'
+-- Imports:
+local BitChars = request('!.concepts.BitChars')
+
+local bit_0_char = BitChars.BitToChar_Map[false]
+local bit_1_char = BitChars.BitToChar_Map[true]
 
 local bool_to_bit =
-  function(bool)
-    assert_boolean(bool)
-    if bool then return bit_1_char else return bit_0_char end
+  function(bit_value)
+    assert_boolean(bit_value)
+    if bit_value then return bit_1_char else return bit_0_char end
   end
 
 -- Export:
