@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-30
+  Last mod.: 2026-05-18
 ]]
 
 --[[
@@ -16,8 +16,7 @@
 -- Imports:
 local apply_table = request('apply_table')
 
-local patch
-patch =
+local patch =
   function(Result, Additions)
     assert_table(Result)
 
