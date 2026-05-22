@@ -1,8 +1,15 @@
--- Create input box object
+-- Create input box
 
 --[[
   Author: Martin Eden
   Last mod.: 2026-05-22
+]]
+
+--[[
+  Input data
+
+    1 name [s]
+    2 Overrides [?t]
 ]]
 
 -- Imports:
@@ -10,11 +17,10 @@ local TekUi = require('tek.ui')
 local merge_and_patch = request('!.table.merge_and_patch')
 
 local create_input_box =
-  function(text, name, Overrides)
+  function(name, Overrides)
     local Settings =
       {
         Id = name,
-        Text = text,
         Width = 'free',
       }
 
