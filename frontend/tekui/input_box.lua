@@ -1,27 +1,33 @@
--- Return input box object
+-- Create input box object
 
--- Last mod.: 2024-11-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-22
+]]
 
-local tui = require('tek.ui')
-local force_merge = request('!.table.merge_and_patch')
+-- Imports:
+local TekUi = require('tek.ui')
+local merge_and_patch = request('!.table.merge_and_patch')
 
-return
-  function(text, id, overrides)
-    local result =
-      tui.Input:new(
-        {
-          Text = text,
-          Id = id,
-          Width = 'free',
-          MinWidth = 0,
-        }
-      )
-    force_merge(result, overrides)
+local create_input_box =
+  function(text, name, Overrides)
+    local Settings =
+      {
+        Id = name,
+        Text = text,
+        Width = 'free',
+      }
 
-    return result
+    merge_and_patch(Settings, Overrides)
+
+    return TekUi.Input:new(Settings)
   end
+
+-- Export:
+return create_input_box
 
 --[[
   2020-02
   2020-08
+  2026-05-22
 ]]
