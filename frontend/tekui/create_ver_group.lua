@@ -28,8 +28,6 @@ local create_ver_group =
     local Overrides =
       {
         Orientation = 'vertical',
-        Width = 'auto',
-        Height = 'fill',
        }
 
     merge_and_patch(Overrides, Group.Overrides)

@@ -33,7 +33,7 @@ local create_hor_group =
       {
         Orientation = 'horizontal',
         Width = 'fill',
-        Height = 'auto',
+        Height = 'fill',
         Legend = caption,
         Children = Contents,
       }
