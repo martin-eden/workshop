@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-09
+  Last mod.: 2026-05-22
 ]]
 
 -- Imports:
@@ -11,11 +11,10 @@ local StringValue = request('!.concepts.RangesTree.StringValue.Interface')
 local fold_tree = request('!.concepts.RangesTree.fold_tree')
 local bits_to_bytes = request('!.convert.bits_to_bytes')
 local bytes_to_str = request('!.convert.bytes_to_str')
+local default_bit_char = request('!.concepts.BitChars').BitToChar_Map[false]
 
 local Compile =
   function(Me, Ds3231_Data)
-    local default_bit_char = '.'
-
     assert_table(Ds3231_Data)
 
     local BitsDataTree = ds3231_values_to_bits(Ds3231_Data)
