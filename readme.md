@@ -1,5 +1,4 @@
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/martin-eden/workshop)
--- ask AI about this repo (I do!)
+[![DeepWiki][DeepWiki_Logo]][DeepWiki_Repo] -- ask AI about this repo (I do!)
 
 ## What
 
@@ -19,3 +18,6 @@ redesign code here to whatever I please.
 
 This repository started in 2015 as "code heap". And it's still code heap
 but for 2026 my vision is evolved.
+
+[DeepWiki_Logo]: https://deepwiki.com/badge.svg
+[DeepWiki_Repo]: https://deepwiki.com/martin-eden/workshop
