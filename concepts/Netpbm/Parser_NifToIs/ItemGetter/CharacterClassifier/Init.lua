@@ -1,17 +1,16 @@
 -- Fill module internals
 
--- Last mod.: 2025-03-28
+-- Last mod.: 2026-05-23
 
 -- Imports:
-local ToList = request('!.table.to_list')
 local MapValues = request('!.table.map_values')
 
 -- Exports:
 return
   function(self)
-    self.SpaceMap = MapValues(ToList(self.Space))
-    self.LineCommentStartMap = MapValues(ToList(self.LineCommentStart))
-    self.LineCommentEndMap = MapValues(ToList(self.LineCommentEnd))
+    self.SpaceMap = MapValues(self.Space)
+    self.LineCommentStartMap = MapValues(self.LineCommentStart)
+    self.LineCommentEndMap = MapValues(self.LineCommentEnd)
   end
 
 --[[
