@@ -1,18 +1,24 @@
--- Categorized Itness format syntax characters
+-- Itness format syntax
 
-return
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-26
+]]
+
+local Syntax =
   {
-    QuoteOpening = '[',
-    QuoteClosing = ']',
-    ListOpening = '(',
-    ListClosing = ')',
-    Delimiters =
-      {
-        Space = ' ',
-        Newline = '\n',
-      },
+    delimiters_space_char = ' ',
+    delimiters_newline_char = '\n',
+    quote_open_char = '[',
+    quote_close_char = ']',
+    group_open_char = '(',
+    group_close_char = ')',
   }
+
+-- Export:
+return Syntax
 
 --[[
   2024-10-21
+  2026-05-26
 ]]

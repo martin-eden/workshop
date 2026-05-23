@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-27
+  Last mod.: 2026-05-23
 ]]
 
 -- Imports:
 local StringInputStreamClass = request('!.concepts.StreamIo.Input.String')
-local ItnessParser = request('!.concepts.Itness.Parser.Interface')
+local ItnessParser = request('!.concepts.Itness.Interface')
 
 -- Itness from string
 local itness_from_string =
@@ -15,9 +15,7 @@ local itness_from_string =
     local StringInputStream = new(StringInputStreamClass)
     StringInputStream.String = str
 
-    ItnessParser.Input = StringInputStream
-
-    return ItnessParser:Run()
+    return ItnessParser:Parse(StringInputStream)
   end
 
 -- Export:
