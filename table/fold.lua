@@ -1,4 +1,4 @@
--- Convert table to flat list of values
+-- Convert table to flat list of sorted values
 
 --[[
   Author: Martin Eden
@@ -21,8 +21,8 @@
 ]]
 
 -- Imports:
-local ordered_pass = request('ordered_pass')
 local add_to_list = request('!.concepts.list.add_item')
+local compare_values = request('ordered_pass.compare_values')
 
 local fold_root =
   function(Node)
@@ -33,7 +33,7 @@ local fold_root =
       function(Node)
         assert_table(Node)
 
-        for _, SubNode in ordered_pass(Node) do
+        for _, SubNode in pairs(Node) do
           if is_table(SubNode) then
             fold(SubNode)
           else
@@ -43,6 +43,8 @@ local fold_root =
       end
 
     fold(Node, Result)
+
+    table.sort(Result, compare_values)
 
     return Result
   end
