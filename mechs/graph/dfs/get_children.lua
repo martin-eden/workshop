@@ -1,16 +1,21 @@
+-- Return list of children for given node
+
 --[[
-  Return list of children for given node.
-
-  Each record in list should have fields <key> and <value>.
-  <key> - key to get <value>.
-
-  This method assumed to be overriden for custom formats.
+  Author: Martin Eden
+  Last mod.: 2026-05-23
 ]]
 
-local get_key_vals = request('!.table.get_key_vals')
-local compare = request('!.table.ordered_pass.default_comparator')
+--[[
+  Each record in list should have fields ".key" and ".value".
 
-return
+  This method is assumed to be overridden for custom formats.
+]]
+
+-- Imports:
+local get_key_vals = request('!.table.get_key_vals')
+local compare_keys = request('!.table.ordered_pass.compare_keys')
+
+local get_children =
   function(self, node)
     local result = {}
     local key_vals = get_key_vals(node)
@@ -23,6 +28,12 @@ return
         result[#result + 1] = {key = rec.key, value = rec.key}
       end
     end
-    table.sort(result, compare)
+    table.sort(result, compare_keys)
     return result
   end
+
+return get_children
+
+--[[
+  2017-09-13
+]]
