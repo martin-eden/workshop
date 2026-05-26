@@ -7,7 +7,7 @@
 
 -- Imports:
 local StringInputStreamClass = request('!.concepts.StreamIo.Input.String')
-local ItnessCodec = request('!.concepts.Itness.Interface')
+local ItnessCodec = request('!.concepts.Codec_Itness.Interface')
 
 local itness_from_string =
   function(str)
