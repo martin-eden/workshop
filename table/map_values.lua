@@ -1,28 +1,34 @@
 -- Map table values to keys
 
 --[[
-  Useful when you want to check presence and have list.
-
-    { 'A', _ = 'a'} -> { A = true, a = true }
+  Author: Martin Eden
+  Last mod.: 2026-05-26
 ]]
 
--- Last mod.: 2025-03-28
+--[[
+  Useful to check presence item in a list:
 
-return
-  function(t)
-    assert_table(t)
+    { 'A', _ = 'a' } -> { A = true, a = true }
+]]
 
-    local Result = {}
+local map_values =
+  function(List)
+    assert_table(List)
 
-    for k, v in pairs(t) do
-      Result[v] = true
+    local Result = { }
+
+    for _, value in pairs(List) do
+      Result[value] = true
     end
 
     return Result
   end
 
+-- Export:
+return map_values
+
 --[[
-  2016-09-06
-  2024-10-20
-  2025-03-28
+  2016
+  2024
+  2025
 ]]
