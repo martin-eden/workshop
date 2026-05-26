@@ -1,21 +1,20 @@
--- Parse string as Itness table
+-- Parse string as Itness tree
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-23
+  Last mod.: 2026-05-26
 ]]
 
 -- Imports:
 local StringInputStreamClass = request('!.concepts.StreamIo.Input.String')
-local ItnessParser = request('!.concepts.Itness.Interface')
+local ItnessCodec = request('!.concepts.Itness.Interface')
 
--- Itness from string
 local itness_from_string =
   function(str)
     local StringInputStream = new(StringInputStreamClass)
     StringInputStream.String = str
 
-    return ItnessParser:Parse(StringInputStream)
+    return ItnessCodec:Parse(StringInputStream)
   end
 
 -- Export:

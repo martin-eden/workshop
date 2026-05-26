@@ -1,21 +1,19 @@
--- Compile Itness table to string
+-- Compile Itness tree to string
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-27
+  Last mod.: 2026-05-26
 ]]
 
 -- Imports:
 local StringOutputStreamClass = request('!.concepts.StreamIo.Output.String')
-local ItnessCompiler = request('!.concepts.Itness.Serializer.Interface')
+local ItnessCodec = request('!.concepts.Itness.Interface')
 
--- Itness to string
 local itness_to_string =
-  function(Is)
+  function(ItnessTree)
     local StringOutputStream = new(StringOutputStreamClass)
 
-    ItnessCompiler.Output = StringOutputStream
-    ItnessCompiler:Run(Is)
+    ItnessCodec:Compile(ItnessTree, StringOutputStream)
 
     return StringOutputStream:GetString()
   end
@@ -25,4 +23,5 @@ return itness_to_string
 
 --[[
   2026-04-27
+  2026-05-26
 ]]
