@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-12
+  Last mod.: 2026-05-26
 ]]
 
 --[[
@@ -36,7 +36,7 @@ local Interface =
     Compile = request('Compile'),
 
     -- Internals:
-    Bitfields = get_bitfields()
+    Bitfields = get_bitfields(),
   }
 
 -- Export:
