@@ -1,8 +1,14 @@
--- Itness format serialization
+-- Write strings tree to output stream
 
 --[[
   Author: Martin Eden
   Last mod.: 2026-05-26
+]]
+
+--[[
+  Contract
+
+  Function never fails.
 ]]
 
 -- Imports:

@@ -87,19 +87,14 @@ local WriteLeaf =
     -- Quote syntax characters in data
     encoded_str = string.gsub(str, syntax_chars_regexp, encode_char)
 
+    -- Close opened quote at end of string
     if in_quotes then
-      -- Close opened quote at end of string
       encoded_str = encoded_str .. quote_close_char
       in_quotes = false
     end
 
+    -- Special case: empty string. Serialize to "[]"
     if (str == '') then
-      --[[
-        Special case: empty string
-
-        By default it's serialized to an empty string and lost.
-        We are serializing it to [].
-      ]]
       encoded_str = quote_open_char .. quote_close_char
     end
 

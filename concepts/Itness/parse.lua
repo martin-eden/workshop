@@ -1,14 +1,19 @@
--- Parse input stream to strings tree
+-- Read strings tree from input stream
 
 --[[
   Author: Martin Eden
   Last mod.: 2026-05-26
 ]]
 
+--[[
+  Contract
+
+  Function never fails.
+]]
+
 -- Imports:
 local add_to_list = request('!.concepts.list.add_item')
 
--- Add to list non-nil item (string or table)
 local add_item =
   function(List, Item)
     if not is_nil(Item) then
