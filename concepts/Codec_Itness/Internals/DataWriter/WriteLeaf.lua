@@ -85,7 +85,7 @@ local WriteLeaf =
       end
 
     -- Quote syntax characters in data
-    encoded_str = string.gsub(str, syntax_chars_regexp, encode_char)
+    local encoded_str = string.gsub(str, syntax_chars_regexp, encode_char)
 
     -- Close opened quote at end of string
     if in_quotes then
