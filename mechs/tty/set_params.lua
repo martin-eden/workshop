@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-05-27
 ]]
 
 -- Imports:
@@ -20,13 +20,13 @@ local run_command = request('!.concepts.shell.execute')
 
     [s] tty_name -- File name for device. Like "/dev/ttyUSB0"
     [t] Params:
-      [f] ReadTimeout_S -- [0.1] - Read timeout in seconds
-      [i] Speed_Bps -- [115200] - Connection speed
+      [f] read_timeout_s -- [0.1] - Read timeout in seconds
+      [i] speed_bps -- [115200] - Connection speed
 ]]
 local set_params =
   function(tty_name, Params)
-    local read_timeout_s = Params.ReadTimeout_S or 0.1
-    local speed_bps = Params.Speed_Bps or 115200
+    local read_timeout_s = Params.read_timeout_s or 0.1
+    local speed_bps = Params.speed_bps or 115200
 
     -- "stty" accepts waiting time in deciseconds
     local read_timeout_ds = math.floor(read_timeout_s * 10)
@@ -43,9 +43,9 @@ local set_params =
         'stty',
         '--file=' .. tty_name,
         tostring(speed_bps),
-        'raw',
         'time',
         tostring(read_timeout_ds),
+        'raw',
         'min',
         '0',
         'cs8',
@@ -73,4 +73,5 @@ return set_params
   2021 #
   2024 # #
   2026-04-15
+  2026-05-27
 ]]
