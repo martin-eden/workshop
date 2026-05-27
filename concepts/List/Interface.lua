@@ -18,19 +18,19 @@
 
     (
       [f] Get -- gets the first item
-      [f] Insert -- adds item to end
+      [f] Add -- adds item to end
       [f] Remove -- removes item from start
 
       [f] GetFirst
       [f] GetLast
-      [f] InsertFirst
-      [f] InsertLast
+      [f] AddFirst
+      [f] AddLast
       [f] RemoveFirst
       [f] RemoveLast
 
       [f] GetAt
-      [f] InsertBefore
-      [f] InsertAfter
+      [f] AddBefore
+      [f] AddAfter
       [f] RemoveAt
 
       [f] AssertNotEmpty
@@ -125,12 +125,12 @@ local GetAt =
     return Items[index]
   end
 
-local InsertBefore =
+local AddBefore =
   function(Items, index, Item)
     table.insert(Items, index, Item)
   end
 
-local InsertAfter =
+local AddAfter =
   function(Items, index, Item)
     table.insert(Items, index + 1, Item)
   end
@@ -149,20 +149,20 @@ local GetAt =
     return GetAt(Items, index)
   end
 
-local InsertBefore =
+local AddBefore =
   function(Items, index, Item)
     AssertValidIndex(Items, index)
     AssertValidItem(Item)
 
-    InsertBefore(Items, index, Item)
+    AddBefore(Items, index, Item)
   end
 
-local InsertAfter =
+local AddAfter =
   function(Items, index, Item)
     AssertValidIndex(Items, index)
     AssertValidItem(Item)
 
-    InsertAfter(Items, index, Item)
+    AddAfter(Items, index, Item)
   end
 
 local RemoveAt =
@@ -173,8 +173,8 @@ local RemoveAt =
   end
 
 Interface.GetAt = GetAt
-Interface.InsertBefore = InsertBefore
-Interface.InsertAfter = InsertAfter
+Interface.AddBefore = AddBefore
+Interface.AddAfter = AddAfter
 Interface.RemoveAt = RemoveAt
 -- )
 
@@ -193,14 +193,14 @@ local GetLast =
     return GetAt(Items, GetLastIndex(Items))
   end
 
-local InsertFirst =
+local AddFirst =
   function(Items, item)
-    InsertBefore(Items, GetFirstIndex(Items), item)
+    AddBefore(Items, GetFirstIndex(Items), item)
   end
 
-local InsertLast =
+local AddLast =
   function(Items, item)
-    InsertAfter(Items, GetLastIndex(Items), item)
+    AddAfter(Items, GetLastIndex(Items), item)
   end
 
 local RemoveFirst =
@@ -219,8 +219,8 @@ local RemoveLast =
 
 Interface.GetFirst = GetFirst
 Interface.GetLast = GetLast
-Interface.InsertFirst = InsertFirst
-Interface.InsertLast = InsertLast
+Interface.AddFirst = AddFirst
+Interface.AddLast = AddLast
 Interface.RemoveFirst = RemoveFirst
 Interface.RemoveLast = RemoveLast
 -- )
@@ -231,9 +231,9 @@ local Get =
     return GetFirst(Items)
   end
 
-local Insert =
+local Add =
   function(Items, item)
-    return InsertLast(Items, item)
+    return AddLast(Items, item)
   end
 
 local Remove =
@@ -242,7 +242,7 @@ local Remove =
   end
 
 Interface.Get = Get
-Interface.Insert = Insert
+Interface.Add = Add
 Interface.Remove = Remove
 -- )
 

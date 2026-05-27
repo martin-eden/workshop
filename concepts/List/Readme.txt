@@ -10,10 +10,10 @@ Example:
 
   local List = ListClass.create({})
 
-  List:Insert('a')
+  List:Add('a')
   -- { 'a' }
 
-  List:Insert('b')
+  List:Add('b')
   -- { 'a', 'b' }
 
   List:Remove()
