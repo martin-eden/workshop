@@ -181,11 +181,15 @@ Interface.RemoveAt = RemoveAt
 -- ( Access Level 2
 local GetFirst =
   function(Items)
+    AssertNotEmpty(Items)
+
     return GetAt(Items, GetFirstIndex(Items))
   end
 
 local GetLast =
   function(Items)
+    AssertNotEmpty(Items)
+
     return GetAt(Items, GetLastIndex(Items))
   end
 
@@ -201,11 +205,15 @@ local InsertLast =
 
 local RemoveFirst =
   function(Items)
+    AssertNotEmpty(Items)
+
     RemoveAt(Items, GetFirstIndex(Items))
   end
 
 local RemoveLast =
   function(Items)
+    AssertNotEmpty(Items)
+
     RemoveAt(Items, GetLastIndex(Items))
   end
 
