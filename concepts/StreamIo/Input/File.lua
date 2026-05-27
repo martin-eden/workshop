@@ -1,80 +1,59 @@
--- Reads strings from file. Implements [Input]
+-- Input stream on file
 
--- Last mod.: 2024-11-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-27
+]]
 
-local OpenForReading = request('!.file_system.file.OpenForReading')
-local CloseFileFunc = request('!.file_system.file.Close')
-
--- Contract: Read string from file
-local Read =
-  function(self, NumBytes)
-    assert_integer(NumBytes)
-    assert(NumBytes >= 0)
-
-    local Data = ''
-    local IsComplete = false
-
-    Data = self.FileHandle:read(NumBytes)
-
-    local IsEof = is_nil(Data)
-
-    -- No End-of-File state in [Input]
-    if IsEof then
-      Data = ''
-    end
-
-    IsComplete = (#Data == NumBytes)
-
-    return Data, IsComplete
-  end
-
--- Intestines: Open file for reading
-local OpenFile =
-  function(self, FileName)
-    local FileHandle = OpenForReading(FileName)
-
-    if is_nil(FileHandle) then
-      return false
-    end
-
-    self.FileHandle = FileHandle
-
-    return true
-  end
-
--- Intestines: close file
-local CloseFile =
-  function(self)
-    return (CloseFileFunc(self.FileHandle) == true)
-  end
+-- Imports:
+local is_natural = request('!.number.is_natural')
+local open_file_for_reading = request('!.file_system.file.open_for_reading')
+local close_file = request('!.file_system.file.close')
 
 local Interface =
   {
-    -- [New]
+    -- [Main]
+    Read =
+      function(Me, num_bytes)
+        assert(is_natural(num_bytes))
 
-    -- Open file by name
-    Open = OpenFile,
+        local data_str = Me.File:read(num_bytes)
 
-    -- Close file
-    Close = CloseFile,
+        -- No end-of-file concept in input stream
+        if is_nil(data_str) then data_str = '' end
 
-    -- [Main]: Read bytes
-    Read = Read,
+        return data_str
+      end,
 
-    -- Intestines
-    FileHandle = 0,
+    -- [Required extension]
+    Open =
+      function(Me, pathname)
+        local File = open_file_for_reading(pathname)
+
+        if is_nil(File) then return false end
+
+        Me.File = File
+
+        return true
+      end,
+
+    -- [Required extension]
+    Close =
+      function(Me)
+        close_file(Me.File)
+      end,
+
+    -- [Internal]
+    File = nil,
   }
 
 -- Close file at garbage collection
-setmetatable(Interface, { __gc = function(self) self:Close() end } )
+setmetatable(Interface, { __gc = function(Me) Me:Close() end } )
 
--- Exports:
+-- Export:
 return Interface
 
 --[[
-  2024-07-19
-  2024-07-24
-  2024-08-05
-  2024-08-09
-  2024-11-11
+  2024 # # # # #
+  2026-05-27
 ]]

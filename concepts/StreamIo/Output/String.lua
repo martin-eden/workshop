@@ -1,51 +1,49 @@
--- [Output] stream interface for strings
-
--- Last mod.: 2025-04-07
+-- Output stream on string
 
 --[[
-  "Output" interface is just one method: Write(string)
-
-  But string concatenation is expensive in Lua. So Write()
-  adds string to internal table.
-
-  To get concatenated string call GetString().
+  Author: Martin Eden
+  Last mod.: 2026-05-27
 ]]
 
 --[[
-  Add string to result string
+  Output interface is just one method: Write(string)
+
+  String concatenation is expensive in Lua.
+  So Write() adds strings to internal table.
+
+  Call GetString() to get result string.
 ]]
-local Write =
-  function(self, Data)
-    assert_string(Data)
 
-    if (Data ~= '') then
-      table.insert(self.Chunks, Data)
-    end
+-- Imports:
+local list_add_item = request('!.concepts.list.add_item')
+local list_to_string = request('!.concepts.list.to_string')
 
-    return #Data, true
-  end
-
---[[
-  Return result string
-]]
-local GetString =
-  function(self)
-    return table.concat(self.Chunks)
-  end
-
--- Exports:
-return
+local Interface =
   {
-    -- [Interface]
-    Write = Write,
-    GetString = GetString,
+    -- [Main]
+    Write =
+      function(Me, data_str)
+        assert_string(data_str)
+        assert(data_str ~= '')
 
-    -- [Internals]
-    Chunks = {},
+        list_add_item(Me.Chunks, data_str)
+      end,
+
+    -- [Required extension]
+    GetString =
+      function(Me)
+        return list_to_string(Me.Chunks)
+      end,
+
+    -- [Internal]
+    Chunks = { },
   }
 
+-- Export:
+return Interface
+
 --[[
-  2024-07 # #
-  2024-08 # #
-  2025-04-07
+  2024 # # # #
+  2025 #
+  2026-05-27
 ]]

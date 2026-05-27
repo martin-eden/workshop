@@ -1,45 +1,39 @@
--- Writer interface
+-- Output stream interface
 
 --[[
-  Exports:
-
-    {
-      Write() - write function
-    }
+  Author: Martin Eden
+  Last mod.: 2026-05-27
 ]]
 
 --[[
-  Write string
+  Interface
 
-  Input:
-    Data (string)
+    (
+      Write [f]
 
-  Output:
-    NumBytesWritten (uint)
-    IsCompleted (bool)
+        Write bytes from string
 
-  Details
+        Input:
+          [s]: != ""
 
-    Writing empty string is neutral operation which can be used to
-    detect problems by examining <IsCompleted> flag.
+        Output:
+          ∅
+    )
 ]]
-local Write =
-  function(self, Data)
-    assert_string(Data)
 
-    local NumBytesWritten = 0
-    local IsCompleted = false
-
-    return NumBytesWritten, IsCompleted
-  end
-
--- Exports:
-return
+local Interface =
   {
-    Write = Write,
+    Write =
+      function(Me, data_str)
+        assert_string(data_str)
+        assert(data_str ~= '')
+      end,
   }
 
+-- Export:
+return Interface
+
 --[[
-  2024-07-19
-  2024-07-24
+  2024 # #
+  2026-05-27
 ]]

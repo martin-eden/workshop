@@ -1,50 +1,43 @@
--- Reader interface
+-- Input stream interface
 
 --[[
-  Exports
-
-    {
-      Read() - read function
-    }
+  Author: Martin Eden
+  Last mod.: 2026-05-27
 ]]
 
 --[[
-  Read given amount of bytes to string
+  Interface
 
-  Input:
-    NumBytes (uint) >= 0
+    (
+      Read [f]
 
-  Output:
-    Data (string)
-    IsComplete (bool)
+        Read given amount of bytes to string
 
-  Details
+        Input:
+          [i]: >= 1
 
-    If we can't read <NumBytes> bytes we read what we can and set
-    <IsComplete> to FALSE. Typical case is empty string for end-of-file
-    state.
-
-    Reading zero bytes is neutral operation which can be used to detect
-    problems through <IsComplete> flag.
+        Output:
+          [s]
+    )
 ]]
-local Read =
-  function(self, NumBytes)
-    assert_integer(NumBytes)
-    assert(NumBytes >= 0)
 
-    local ResultStr = ''
-    local IsComplete = false
+-- Imports:
+local is_natural = request('!.number.is_natural')
 
-    return ResultStr, IsComplete
-  end
-
--- Exports:
-return
+local Interface =
   {
-    Read = Read,
+    Read =
+      function(Me, num_bytes)
+        assert(is_natural(num_bytes))
+
+        return ''
+      end,
   }
 
+-- Export:
+return Interface
+
 --[[
-  2024-07-19
-  2024-07-24
+  2024 # #
+  2026-05-27
 ]]

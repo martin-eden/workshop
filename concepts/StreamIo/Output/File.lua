@@ -1,71 +1,54 @@
--- Writes strings to file. Implements [Output]
+-- Output stream on file
 
--- Last mod.: 2024-11-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-27
+]]
 
-local OpenForWriting = request('!.file_system.file.OpenForWriting')
-local CloseFileFunc = request('!.file_system.file.Close')
-
--- Contract: Write string to file
-local Write =
-  function(self, Data)
-    assert_string(Data)
-
-    local IsOk = self.FileHandle:write(Data)
-
-    if is_nil(IsOk) then
-      return 0, false
-    end
-
-    return #Data, true
-  end
-
--- Intestines: Open file for writing
-local OpenFile =
-  function(self, FileName)
-    local FileHandle = OpenForWriting(FileName)
-
-    if is_nil(FileHandle) then
-      return false
-    end
-
-    self.FileHandle = FileHandle
-
-    return true
-  end
-
--- Intestines: close file
-local CloseFile =
-  function(self)
-    return (CloseFileFunc(self.FileHandle) == true)
-  end
+-- Imports:
+local open_file_for_writing = request('!.file_system.file.open_for_writing')
+local close_file = request('!.file_system.file.close')
 
 local Interface =
   {
-    -- [Added]
+    -- [Main]
+    Write =
+      function(Me, data_str)
+        assert_string(data_str)
+        assert(data_str ~= '')
 
-    -- Open file by name
-    Open = OpenFile,
+        Me.File:write(data_str)
+      end,
 
-    -- Close file
-    Close = CloseFile,
+    -- [Required extension]
+    Open =
+      function(Me, pathname)
+        local File = open_file_for_writing(pathname)
 
-    -- [Main]: Write string
-    Write = Write,
+        if is_nil(File) then return false end
 
-    -- [Internals]
-    FileHandle = 0,
+        Me.File = File
+
+        return true
+      end,
+
+    -- [Required extension]
+    Close =
+      function(Me)
+        close_file(Me.File)
+      end,
+
+    -- [Internal]
+    File = 0,
   }
 
 -- Close file at garbage collection
-setmetatable(Interface, { __gc = function(self) self:Close() end } )
+setmetatable(Interface, { __gc = function(Me) Me:Close() end } )
 
--- Exports:
+-- Export:
 return Interface
 
 --[[
-  2024-07-19
-  2024-07-24
-  2024-08-05
-  2024-08-09
-  2024-11-11
+  2024 # # # # #
+  2026-05-27
 ]]

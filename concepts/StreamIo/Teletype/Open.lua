@@ -2,20 +2,20 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-28
+  Last mod.: 2026-05-27
 ]]
-
-local Config =
-  {
-    ReadTimeout_Sec = 0.1,
-    WarmupDelay_Sec = 4.2,
-  }
 
 -- Imports:
 local file_exists = request('!.file_system.file.exists')
 local tty_get_raw_params = request('!.mechs.tty.get_raw_params')
 local tty_set_params = request('!.mechs.tty.set_params')
 local sleep_sec = request('!.system.sleep')
+
+local Config =
+  {
+    read_timeout_sec = 0.1,
+    warmup_delay_sec = 4.2,
+  }
 
 --[[
   Open port both for reading and writing.
@@ -35,41 +35,37 @@ local Open =
 
     assert_string(device_file_name)
 
-    if not file_exists(device_file_name) then
-      return false
-    end
+    if not file_exists(device_file_name) then return false end
 
-    Me.PortName = device_file_name
+    Me.port_name = device_file_name
 
-    if Me.IsConnected then
-      Me:Close()
-    end
+    if Me.is_connected then Me:Close() end
 
-    Me.OriginalPortParams = tty_get_raw_params(device_file_name)
+    Me.original_port_params = tty_get_raw_params(device_file_name)
 
     tty_set_params(
       device_file_name,
       {
-        Speed_Bps = speed_bps,
-        ReadTimeout_S = Config.ReadTimeout_Sec,
+        speed_bps = speed_bps,
+        read_timeout_s = Config.read_timeout_sec,
       }
     )
 
-    Me.FileHandle = io.open(device_file_name, 'r+')
+    Me.File = io.open(device_file_name, 'r+')
 
-    Me.FileHandle:setvbuf('no')
+    Me.File:setvbuf('no')
 
-    Me.Input.FileHandle = Me.FileHandle
-    Me.Output.FileHandle = Me.FileHandle
+    Me.Input.File = Me.File
+    Me.Output.File = Me.File
 
-    Me.IsConnected = true
+    sleep_sec(Config.warmup_delay_sec)
 
-    sleep_sec(Config.WarmupDelay_Sec)
+    Me.is_connected = true
 
     return true
   end
 
--- Exports:
+-- Export:
 return Open
 
 --[[

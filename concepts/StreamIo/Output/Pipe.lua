@@ -1,27 +1,25 @@
--- Writes strings to standard output. Implements [Output]
-
--- Contract: Write string
-local Write =
-  function(self, Data)
-    assert_string(Data)
-
-    local IsOk = io.stdout:write(Data)
-
-    if is_nil(IsOk) then
-      return 0, false
-    end
-
-    return #Data, true
-  end
-
--- Exports:
-return
-  {
-    -- Interface
-    Write = Write,
-  }
+-- Output stream on standard output
 
 --[[
-  2024-07-19
-  2024-08-05
+  Author: Martin Eden
+  Last mod.: 2026-05-27
+]]
+
+local Interface =
+  {
+    Write =
+      function(Me, data_str)
+        assert_string(data_str)
+        assert(data_str ~= '')
+
+        io.stdout:write(data_str)
+      end,
+  }
+
+-- Export:
+return Interface
+
+--[[
+  2024 # #
+  2026-05-27
 ]]

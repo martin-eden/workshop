@@ -1,51 +1,50 @@
--- [Input] stream interface for string
-
--- Last mod.: 2025-04-07
+-- Input stream on string
 
 --[[
-  Read bytes from host string
-
-  Contract method.
+  Author: Martin Eden
+  Last mod.: 2026-05-27
 ]]
-local Read =
-  function(self, NumBytes)
-    assert_integer(NumBytes)
-    assert(NumBytes >= 0)
 
-    -- Shortcut
-    if (NumBytes == 0) then
-      return '', true
-    end
+-- Imports:
+local is_natural = request('!.number.is_natural')
 
-    local StartPos = self.ReadPos
-    local EndPos = StartPos + NumBytes - 1
-
-    if (EndPos > #self.String) then
-      EndPos = #self.String
-    end
-
-    local ResultStr = string.sub(self.String, StartPos, EndPos)
-
-    local IsComplete = (#ResultStr == NumBytes)
-
-    self.ReadPos = EndPos + 1
-
-    return ResultStr, IsComplete
-  end
-
--- Exported implementation
-return
+local Interface =
   {
-    -- [Interface]
-    String = '',
-    Read = Read,
+    -- [Main]
+    Read =
+      function(Me, num_bytes)
+        assert(is_natural(num_bytes))
 
-    -- [Internals]
-    ReadPos = 1,
+        local start_pos = Me.read_pos
+        local end_pos =
+          math.min(start_pos + num_bytes - 1, Me.data_len)
+
+        Me.read_pos = end_pos + 1
+
+        return string.sub(Me.data_str, start_pos, end_pos)
+      end,
+
+    -- [Required extension]
+    Init =
+      function(Me, arg_data_str)
+        assert_string(arg_data_str)
+
+        Me.data_str = arg_data_str
+        Me.data_len = string.len(Me.data_str)
+        Me.read_pos = 1
+      end,
+
+    -- [Internals]:
+    data_str = '',
+    data_len = 0,
+    read_pos = 1,
   }
 
+-- Export:
+return Interface
+
 --[[
-  2024-07-24
-  2024-08-09
-  2025-04-07
+  2024 # #
+  2025 #
+  2026-05-27
 ]]

@@ -1,17 +1,17 @@
--- File interface for UART devices
+-- File interface for serial devices
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-28
+  Last mod.: 2026-05-27
 ]]
 
 --[[
   Opens device as file for reading and writing.
 
-  Exports separate input and output channels.
+  Exports separate input and output streams.
 
   Opening device "/dev/ttyUSB0" as file requires more work
-  than just opening it as file. So this specie.
+  than just opening file. So this specie.
 ]]
 
 -- Imports:
@@ -30,13 +30,14 @@ return
     Output = OutputInterface,
 
     -- [Internals]
-    FileHandle = 0,
-    IsConnected = false,
-    PortName = '',
-    OriginalPortParams = '',
+    File = nil,
+    is_connected = false,
+    port_name = '',
+    original_port_params = '',
   }
 
 --[[
   2024 # #
   2026-04-15
+  2026-05-27
 ]]

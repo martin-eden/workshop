@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-28
+  Last mod.: 2026-05-27
 ]]
 
 -- Imports:
@@ -13,12 +13,10 @@ local tty_set_raw_params = request('!.mechs.tty.set_raw_params')
 ]]
 local Close =
   function(Me)
-    if not Me.IsConnected then
-      return
-    end
+    if not Me.is_connected then return end
 
     --[[
-      -- io.close(Me.FileHandle)
+      -- io.close(Me.File)
 
       Avoiding device reset upon program exit. Just don't close
       file!
@@ -30,18 +28,18 @@ local Close =
       file handle. Surely it is closed somehow when Lua exits, but
       some other way than via "io.close()" which resets device.
     ]]
-    -- io.close(Me.FileHandle)
-    Me.FileHandle = nil
+    -- io.close(Me.File)
+    Me.File = nil
 
-    Me.Input.FileHandle = nil
-    Me.Output.FileHandle = nil
+    Me.Input.File = Me.File
+    Me.Output.File = Me.File
 
-    tty_set_raw_params(Me.PortName, Me.OriginalPortParams)
-    Me.OriginalPortParams = nil
+    tty_set_raw_params(Me.port_name, Me.original_port_params)
+    Me.original_port_params = nil
 
-    Me.PortName = nil
+    Me.port_name = nil
 
-    Me.IsConnected = false
+    Me.is_connected = false
   end
 
 -- Exports:
