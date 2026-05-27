@@ -1,6 +1,6 @@
 -- Get next character
 
--- Last mod.: 2024-11-02
+-- Last mod.: 2026-05-27
 
 --[[
   Get next character from input stream.
@@ -17,9 +17,9 @@
 ]]
 local GetNextCharacter =
   function(self)
-    local Char, IsOkay = self.Input:Read(1)
+    local Char = self.Input:Read(1)
 
-    if not IsOkay then
+    if (Char == '') then
       self.NextCharacter = nil
 
       return false

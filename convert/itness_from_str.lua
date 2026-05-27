@@ -12,7 +12,7 @@ local ItnessCodec = request('!.concepts.Codec_Itness.Interface')
 local itness_from_string =
   function(str)
     local StringInputStream = new(StringInputStreamClass)
-    StringInputStream.String = str
+    StringInputStream:Init(str)
 
     return ItnessCodec:Parse(StringInputStream)
   end

@@ -2,12 +2,14 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-23
+  Last mod.: 2026-05-27
 ]]
 
 -- Write string. Update empty line state
 local Emit =
   function(Me, str)
+    if (str == '') then return end
+
     Me.Output:Write(str)
     Me.is_on_empty_line = false
   end

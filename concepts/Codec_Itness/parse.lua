@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-26
+  Last mod.: 2026-05-27
 ]]
 
 --[[
@@ -39,9 +39,9 @@ local parse_root =
         local in_quotes = false
 
         while true do
-          local char, is_ok = Input:Read(1)
+          local char = Input:Read(1)
 
-          if not is_ok then break end
+          if (char == '') then break end
 
           local action = 'add_char'
 
