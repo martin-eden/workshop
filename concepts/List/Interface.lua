@@ -35,7 +35,7 @@
 ]]
 
 -- Imports:
-local create_instance = request('!.table.create_instance')
+local attach_methods = request('!.table.attach_methods')
 
 local Interface = { }
 
@@ -115,7 +115,9 @@ Interface.Remove = RemoveLast
 
 local create =
   function(Items)
-    return create_instance(Items, Interface)
+    attach_methods(Items, Interface)
+
+    return Items
   end
 
 Interface.create = create
