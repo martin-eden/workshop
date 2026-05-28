@@ -1,58 +1,61 @@
---[[
-  Return list of modules required by given module.
+-- Return list of modules required by given module
 
-  If root module is not loaded - it's loaded.
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-28
+]]
+
+--[[
   List always contains root module.
 ]]
 
---[[
-  _G.dependencies structure is rep(key: string, value: true | @)
-
-  This function treats string keys as children of node.
-
-  Worth exporting as standalone but do not see name for it's place.
-]]
-local get_children
-do
-  local get_keys = request('!.table.get_keys')
-  local get_key_vals = request('!.table.get_key_vals')
-
-  get_children =
-    function(self, node)
-      node = _G.dependencies[node] or {}
-      local result
-      result = get_key_vals(get_keys(node))
-      return result
-    end
-end
-
+-- Imports:
 local dfs = request('!.mechs.graph.dfs')
+local get_keys = request('!.table.get_keys')
+local get_key_vals = request('!.table.get_key_vals')
+local add_to_list = request('!.concepts.list.add_item')
 
-return
+local Dependencies_Map = get_dependencies()
+
+--[[
+  Dependencies table is map:
+
+    ((a -> b) (b -> c) ( a -> d))
+    ->
+    {
+      ['a'] = { ['b'] = true, ['d'] = true },
+      ['b'] = { ['c'] = true },
+    }
+]]
+
+local get_children =
+  function(self, node)
+    return get_key_vals(get_keys(Dependencies_Map[node] or { }))
+  end
+
+local get_module_dependencies =
   function(module_name)
     assert_string(module_name)
-    assert_table(_G.dependencies)
 
     local require_module_name = get_require_name(module_name)
 
-    if not _G.dependencies[require_module_name] then
-      request(module_name)
-    end
-
-    local result = {}
-
-    local on_visit =
-      function(node, node_rec, deep)
-        result[#result + 1] = node
-      end
+    local Result = { }
 
     dfs(
       require_module_name,
       {
-        handle_discovery = on_visit,
+        handle_discovery = function(Node) add_to_list(Result, Node) end,
         get_children = get_children,
       }
     )
 
-    return result
+    return Result
   end
+
+-- Export:
+return get_module_dependencies
+
+--[[
+  2018
+  2026-05-28
+]]
