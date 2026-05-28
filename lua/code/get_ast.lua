@@ -9,12 +9,12 @@
 local lines_from_str = request('!.convert.lines_from_str')
 local add_to_list = request('!.concepts.list.add_item')
 local lines_to_str = request('!.convert.lines_to_str')
-local LuaSyntax = request('!.concepts.lua.syntax')
-local Parse = request('!.mechs.generic_loader')
+local Syntax = request('!.concepts.lua.syntax')
+local generic_loader = request('!.mechs.generic_loader')
 
-local IsShebang =
-  function(Str)
-    return (string.sub(Str, 1, 2) == '#!')
+local is_shebang =
+  function(str)
+    return (string.sub(str, 1, 2) == '#!')
   end
 
 --[[
@@ -26,37 +26,37 @@ local IsShebang =
 
     Table returned from parsing with added fields:
 
-    .shebang_str -- [] Optional shebang line
-    .unparsed_tail -- [] Optional unparsed data at the end
-    }
+      [?s] shebang_str -- Shebang line
+      [?s] unparsed_tail -- Unparsed data at the end
 ]]
-local GetAst =
-  function(CodeStr)
-    assert_string(CodeStr)
+local get_ast =
+  function(code_str)
+    assert_string(code_str)
 
-    local CodeLines = lines_from_str(CodeStr)
+    local CodeLines = lines_from_str(code_str)
 
-    local FirstLine = CodeLines[1]
+    local shebang_str
+    do
+      local first_line = CodeLines[1]
 
-    local ShebangStr
-    if IsShebang(FirstLine) then
-      ShebangStr = FirstLine
-      table.remove(CodeLines, 1)
+      if is_shebang(first_line) then
+        shebang_str = first_line
+        table.remove(CodeLines, 1)
+        code_str = lines_to_str(CodeLines)
+      end
     end
 
-    CodeStr = lines_to_str(CodeLines)
+    local Result, unparsed_tail = generic_loader(code_str, Syntax)
 
-    local Result, UnparsedTail = Parse(CodeStr, LuaSyntax)
-
-    Result = Result or {}
-    Result.shebang_str = ShebangStr
-    Result.unparsed_tail = UnparsedTail
+    Result = Result or { }
+    Result.shebang_str = shebang_str
+    Result.unparsed_tail = unparsed_tail
 
     return Result
   end
 
 -- Export:
-return GetAst
+return get_ast
 
 --[[
   2018-02-05
