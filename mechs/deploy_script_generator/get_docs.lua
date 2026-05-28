@@ -8,7 +8,6 @@
 --[[
   Input
 
-    [t] Me
     [t] FilesList -- Strings list. Each entry is pathname.
 
   Output
@@ -52,8 +51,8 @@ local is_documentation_name =
     return false
   end
 
-local GetDocs =
-  function(Me, FilesList)
+local get_docs =
+  function(FilesList)
     local Result = { }
 
     local ProcessedDirectories_Map = { }
@@ -88,7 +87,7 @@ local GetDocs =
   end
 
 -- Export:
-return GetDocs
+return get_docs
 
 --[[
   2018 #

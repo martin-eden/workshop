@@ -5,11 +5,13 @@
   Last mod.: 2026-05-28
 ]]
 
--- Export:
-return
+local GetScript =
   function(Me)
-    return Me.bash_script_writer:GetScript()
+    return Me.BashScriptWriter:GetScript()
   end
+
+-- Export:
+return GetScript
 
 --[[
   2018

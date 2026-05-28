@@ -15,6 +15,7 @@
 ]]
 
 -- Imports:
+local get_docs = request('get_docs')
 local add_dir_postfix = request('!.string.file_name.add_dir_postfix')
 local get_modules_dependencies = request('!.system.get_modules_dependencies')
 local get_module_location = request('!.system.get_module_location')
@@ -28,7 +29,7 @@ local Populate =
 
     deploy_dir = add_dir_postfix(deploy_dir)
 
-    Me.bash_script_writer:DeleteDir(deploy_dir)
+    Me.BashScriptWriter:DeleteDir(deploy_dir)
 
     local ModulesRequired = get_modules_dependencies(Modules)
 
@@ -39,18 +40,18 @@ local Populate =
 
       local dest_pathname = deploy_dir .. strip_updirs(module_pathname)
 
-      Me.bash_script_writer:CopyFile(module_pathname, dest_pathname)
+      Me.BashScriptWriter:CopyFile(module_pathname, dest_pathname)
 
       add_to_list(FilesRequired, module_pathname)
     end
 
     if Me.deploy_docs then
-      local Docs = Me:get_docs(FilesRequired)
+      local Docs = get_docs(FilesRequired)
 
       for _, doc_pathname in ipairs(Docs) do
         local dest_pathname = deploy_dir .. strip_updirs(doc_pathname)
 
-        Me.bash_script_writer:CopyFile(doc_pathname, dest_pathname)
+        Me.BashScriptWriter:CopyFile(doc_pathname, dest_pathname)
       end
     end
   end

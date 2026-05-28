@@ -9,12 +9,12 @@
 local file_from_str = request('!.convert.file_from_str')
 
 local SaveScript =
-  function(Me, script_name)
-    script_name = script_name or 'deploy.sh'
+  function(Me, script_filename)
+    script_filename = script_filename or 'deploy.sh'
 
-    local script = Me.bash_script_writer:GetScript()
+    local script_str = Me.BashScriptWriter:GetScript()
 
-    file_from_str(script, script_name)
+    file_from_str(script_str, script_filename)
   end
 
 -- Export:
