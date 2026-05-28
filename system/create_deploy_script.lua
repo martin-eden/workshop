@@ -1,14 +1,37 @@
---[[
-  Create bash script to deploy given modules with dependencies.
+-- Create bash script to deploy given modules with dependencies
 
-  File created in current directory.
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-28
 ]]
 
-local c_deploy_maker = request('!.mechs.deploy_script_generator.interface')
+--[[
+  Input
 
-return
-  function(modules, script_name, deploy_dir_name)
-    local deploy_maker = new(c_deploy_maker)
-    deploy_maker:populate(modules, deploy_dir_name)
-    deploy_maker:save_script(script_name)
+    [t] Modules -- list of root Lua modules names (require()-ready)
+    [?s] script_name -- file name of shell script to create
+      Default: "deploy.sh"
+    [?s] deploy_dir_name -- directory name for deployed files
+      Default: "deploy/"
+]]
+
+-- Imports:
+local DeployScriptGenerator = request('!.mechs.deploy_script_generator.interface')
+
+local create_deploy_script =
+  function(Modules, script_name, deploy_dir_name)
+    local DeployMaker = new(DeployScriptGenerator)
+
+    DeployMaker:populate(Modules, deploy_dir_name)
+
+    DeployMaker:save_script(script_name)
   end
+
+-- Export:
+return create_deploy_script
+
+--[[
+  2017
+  2018
+  2026-05-28
+]]
