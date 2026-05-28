@@ -6,16 +6,8 @@
 ]]
 
 --[[
-  List always contains root module.
+  List always contains root module
 ]]
-
--- Imports:
-local dfs = request('!.mechs.graph.dfs')
-local get_keys = request('!.table.get_keys')
-local get_key_vals = request('!.table.get_key_vals')
-local add_to_list = request('!.concepts.list.add_item')
-
-local Dependencies_Map = get_dependencies()
 
 --[[
   Dependencies table is map:
@@ -28,26 +20,36 @@ local Dependencies_Map = get_dependencies()
     }
 ]]
 
-local get_children =
-  function(self, node)
-    return get_key_vals(get_keys(Dependencies_Map[node] or { }))
-  end
+-- Imports:
+local add_to_list = request('!.concepts.list.add_item')
 
 local get_module_dependencies =
   function(module_name)
     assert_string(module_name)
 
-    local require_module_name = get_require_name(module_name)
-
     local Result = { }
 
-    dfs(
-      require_module_name,
-      {
-        handle_discovery = function(Node) add_to_list(Result, Node) end,
-        get_children = get_children,
-      }
-    )
+    local Dependencies_Map = get_dependencies()
+    local Visited_Map = { }
+
+    local visit
+    visit =
+      function(module_name)
+        if Visited_Map[module_name] then return end
+
+        local Deps = Dependencies_Map[module_name]
+        if is_table(Deps) then
+          for key in pairs(Deps) do
+            visit(key)
+          end
+        end
+
+        add_to_list(Result, module_name)
+        Visited_Map[module_name] = true
+      end
+
+    local require_module_name = get_require_name(module_name)
+    visit(require_module_name)
 
     return Result
   end
