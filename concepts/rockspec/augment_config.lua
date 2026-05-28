@@ -1,42 +1,64 @@
-local get_loaded_module_files = request('!.system.get_loaded_module_files')
+-- Prepare configuration for run
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-29
+]]
+
+-- Imports:
 local strip_lua_postfix = request('strip_lua_postfix')
 local get_modules_dependencies = request('!.system.get_modules_dependencies')
+local add_to_list = request('!.concepts.list.add_item')
 local get_module_location = request('!.system.get_module_location')
 
-return
-  function(cfg)
-    assert_string(cfg.project_name)
-    assert_string(cfg.short_desc)
-    assert_string(cfg.description)
-    assert_string(cfg.license)
-    assert_table(cfg.repository)
-    assert_string(cfg.repository.url)
-    assert_string(cfg.repository.branch)
+local augment_config =
+  function(Config)
+    assert_string(Config.project_name)
+    assert_string(Config.short_desc)
+    assert_string(Config.description)
+    assert_string(Config.license)
+    assert_table(Config.repository)
+    assert_string(Config.repository.url)
+    assert_string(Config.repository.branch)
 
-    cfg.rockspec_name = ('%s-scm-1.rockspec'):format(cfg.project_name)
+    Config.rockspec_name = ('%s-scm-1.rockspec'):format(Config.project_name)
 
-    assert_table(cfg.used_modules)
+    assert_table(Config.used_modules)
 
-    if cfg.commands then
-      assert_table(cfg.commands)
-      for _, rec in ipairs(cfg.commands) do
-        assert_string(rec.command)
-        assert_string(rec.wrapper)
-        assert_string(rec.lua_script)
-        rec.lua_script = strip_lua_postfix(rec.lua_script)
+    if Config.commands then
+      assert_table(Config.commands)
+      for _, Command in ipairs(Config.commands) do
+        assert_string(Command.command)
+        assert_string(Command.wrapper)
+        assert_string(Command.lua_script)
+        Command.lua_script = strip_lua_postfix(Command.lua_script)
       end
     end
 
-    local used_modules = get_modules_dependencies(cfg.used_modules)
-    if cfg.commands then
-      for _, rec in ipairs(cfg.commands) do
-        table.insert(used_modules, rec.lua_script)
+    local UsedModules = get_modules_dependencies(Config.used_modules)
+
+    if Config.commands then
+      for _, Command in ipairs(Config.commands) do
+        add_to_list(UsedModules, Command.lua_script)
       end
     end
-    local used_files = {}
-    for i = 1, #used_modules do
-      used_files[i] = get_module_location(used_modules[i])
+
+    local UsedFiles = { }
+
+    for _, module_name in ipairs(UsedModules) do
+      add_to_list(UsedFiles, get_module_location(module_name))
     end
-    table.sort(used_files)
-    cfg.used_files = used_files
+
+    table.sort(UsedFiles)
+
+    Config.used_files = UsedFiles
   end
+
+-- Export:
+return augment_config
+
+--[[
+  2016?
+  2018 # # # #
+  2026-05-29
+]]
