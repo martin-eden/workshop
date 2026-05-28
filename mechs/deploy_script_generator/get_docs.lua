@@ -8,25 +8,23 @@
 --[[
   Input
 
-    table - self
-
-    table - files list
-
-      String list. Each entry is pathname.
+    [t] Me
+    [t] FilesList -- Strings list. Each entry is pathname.
 
   Output
 
-    table - docs list
+    [t] -- documentation files pathnames list
 
-      String list. Each entry is pathname to documentation file.
+      Each entry is pathname to documentation file.
       We guarantee there will be no duplicate entries.
       Only files that really exists are included.
 ]]
 
 -- Imports:
-local ParsePathname = request('!.concepts.path_name.parse')
-local PathIsDir = request('!.concepts.path_name.is_directory')
+local path_is_dir = request('!.concepts.path_name.is_directory')
+local parse_pathname = request('!.concepts.path_name.parse')
 local FilesLister = request('!.concepts.FilesLister.Interface')
+local add_to_list = request('!.concepts.list.add_item')
 
 -- Regexps for documentation file names
 local DocNameRegexps =
@@ -43,10 +41,10 @@ local DocNameRegexps =
     '.+%.[iI]s'
   }
 
-local IsDocumentationName =
-  function(FileName)
-    for Index, Regexp in ipairs(DocNameRegexps) do
-      if string.find(FileName, Regexp) then
+local is_documentation_name =
+  function(filename)
+    for _, regexp_str in ipairs(DocNameRegexps) do
+      if string.find(filename, regexp_str) then
         return true
       end
     end
@@ -54,42 +52,47 @@ local IsDocumentationName =
     return false
   end
 
-return
-  function(self, FileList)
-    local Result = {}
+local GetDocs =
+  function(Me, FilesList)
+    local Result = { }
 
-    local ProcessedDirectories = {}
-    for Index, Pathname in ipairs(FileList) do
-      local ParsedPathname = ParsePathname(Pathname)
+    local ProcessedDirectories_Map = { }
 
-      assert(not PathIsDir(Pathname))
+    for _, module_pathname in ipairs(FilesList) do
+      assert(not path_is_dir(module_pathname))
 
-      local Dirname = ParsedPathname.HostDir
+      local ParsedPathname = parse_pathname(module_pathname)
 
-      if ProcessedDirectories[Dirname] then
-        goto Continue
-      end
+      local module_dirname = ParsedPathname.HostDir
 
-      FilesLister:SetBaseDirectory(Dirname)
+      if ProcessedDirectories_Map[module_dirname] then goto next end
+
+      FilesLister:SetBaseDirectory(module_dirname)
+
       local Files = FilesLister:GetFiles()
 
-      for Index, FileName in ipairs(Files) do
-        if IsDocumentationName(FileName) then
-          local FullFileName = Dirname .. FileName
-          table.insert(Result, FullFileName)
+      for _, filename in ipairs(Files) do
+        if is_documentation_name(filename) then
+          local doc_pathname = module_dirname .. filename
+
+          add_to_list(Result, doc_pathname)
         end
       end
 
-      ProcessedDirectories[Dirname] = true
+      ProcessedDirectories_Map[module_dirname] = true
 
-      ::Continue::
+      ::next::
     end
 
     return Result
   end
 
+-- Export:
+return GetDocs
+
 --[[
   2018 #
   2024 # #
   2026-05-11
+  2026-05-28
 ]]
