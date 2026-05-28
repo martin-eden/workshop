@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-08
+  Last mod.: 2026-05-28
 ]]
 
 --[[
@@ -21,7 +21,9 @@
 -- Imports:
 local bytes_from_str = request('!.convert.bytes_from_str')
 local byte_to_bits = request('!.convert.byte_to_bits')
-local Lines = request('!.concepts.Lines.Interface')
+local trim_tail = request('!.string.trim_tail')
+local add_to_list = request('!.concepts.list.add_item')
+local lines_to_str = request('!.convert.lines_to_str')
 
 local to_dec_str =
   function(byte)
@@ -50,18 +52,23 @@ local get_dump =
 
     local table_width = 35
 
-    local Lines = new(Lines)
+    local Lines = { }
+
+    local add_line =
+      function(line_str)
+        add_to_list(Lines, trim_tail(line_str))
+      end
 
     local format_str = '%4s | %3s | %3s | %-15s'
 
     local header_str =
       string.format(format_str, 'Offs', 'Dec', 'Hex', 'Bin')
 
-    Lines:AddLastLine(header_str)
+    add_line(header_str)
 
     local table_separator = string.rep('-', table_width)
 
-    Lines:AddLastLine(table_separator)
+    add_line(table_separator)
 
     for pos, byte in ipairs(Bytes) do
       local data_str =
@@ -73,14 +80,12 @@ local get_dump =
           to_bit_str(byte)
         )
 
-      Lines:AddLastLine(data_str)
+      add_line(data_str)
     end
 
-    Lines:AddLastLine(table_separator)
+    add_line(table_separator)
 
-    local result_str = Lines:ToString()
-
-    return result_str
+    return lines_to_str(Lines)
   end
 
 -- Export:
@@ -93,4 +98,5 @@ return get_dump
   2026-05-04
   2026-05-05
   2026-05-07
+  2026-05-28
 ]]
