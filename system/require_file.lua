@@ -33,7 +33,7 @@ local get_host_dir =
 
     repeat
       host_dir = parse_path(host_dir).HostDir
-    until not string.find(host_dir, package_config.CaptureChar)
+    until not string.find(host_dir, package_config.capture_char)
 
     return host_dir
   end
@@ -64,7 +64,7 @@ local require_file =
     workshops_dir = string.gsub(workshops_dir, '%.', '/')
 
     local SearchPathsList =
-      split_string(_G.package.path, package_config.ItemsSep)
+      split_string(_G.package.path, package_config.items_sep)
 
     local PathnamesToTry = { }
 
