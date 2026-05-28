@@ -1,43 +1,64 @@
+-- Prepare list of files to copy
+
 --[[
-  Prepare list of files to copy.
-
-  - tbl ----- tbl ----+------------+- -> nil
-   (self)  (modules)  +--- str ----+
-                       (deploy_dir)
-
-  modules - root module names. List of strings.
-  deploy_dir - name of directory where to copy that modules.
-    Default: "deploy".
+  Author: Martin Eden
+  Last mod.: 2026-05-28
 ]]
 
+--[[
+  Input
+
+    [t] Me
+    [t] Modules -- strings list with Lua root module names
+    [?s] deploy_dir -- directory name where to copy files
+      Default: "deploy"
+]]
+
+-- Imports:
+local add_dir_postfix = request('!.string.file_name.add_dir_postfix')
 local get_modules_dependencies = request('!.system.get_modules_dependencies')
 local get_module_location = request('!.system.get_module_location')
-
-local add_dir_postfix = request('!.string.file_name.add_dir_postfix')
 local strip_updirs = request('!.string.file_name.strip_updirs')
+local add_to_list = request('!.concepts.list.add_item')
 
-return
-  function(self, modules, deploy_dir)
+local Populate =
+  function(Me, Modules, deploy_dir)
     deploy_dir = deploy_dir or 'deploy'
     assert_string(deploy_dir)
+
     deploy_dir = add_dir_postfix(deploy_dir)
 
-    self.bash_script_writer:DeleteDir(deploy_dir)
+    Me.bash_script_writer:DeleteDir(deploy_dir)
 
-    local files = get_modules_dependencies(modules)
-    for i = 1, #files do
-      files[i] = get_module_location(files[i])
-      local src = files[i]
-      local dest = deploy_dir .. strip_updirs(src)
-      self.bash_script_writer:CopyFile(src, dest)
+    local ModulesRequired = get_modules_dependencies(Modules)
+
+    local FilesRequired = { }
+
+    for _, module in ipairs(ModulesRequired) do
+      local module_pathname = get_module_location(module)
+
+      local dest_pathname = deploy_dir .. strip_updirs(module_pathname)
+
+      Me.bash_script_writer:CopyFile(module_pathname, dest_pathname)
+
+      add_to_list(FilesRequired, module_pathname)
     end
 
-    if self.deploy_docs then
-      local docs = self:get_docs(files)
-      for i = 1, #docs do
-        local src = docs[i]
-        local dest = deploy_dir .. strip_updirs(src)
-        self.bash_script_writer:CopyFile(src, dest)
+    if Me.deploy_docs then
+      local Docs = Me:get_docs(FilesRequired)
+
+      for _, doc_pathname in ipairs(Docs) do
+        local dest_pathname = deploy_dir .. strip_updirs(doc_pathname)
+
+        Me.bash_script_writer:CopyFile(doc_pathname, dest_pathname)
       end
     end
   end
+
+-- Export:
+return Populate
+
+--[[
+  2018
+  2026-05-28
+]]
