@@ -45,7 +45,7 @@ local Populate =
       add_to_list(FilesRequired, module_pathname)
     end
 
-    if Me.deploy_docs then
+    if Me.DeployDocs then
       local Docs = get_docs(FilesRequired)
 
       for _, doc_pathname in ipairs(Docs) do
