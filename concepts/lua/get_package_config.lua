@@ -2,37 +2,35 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-08
+  Last mod.: 2026-05-28
 ]]
 
 --[[
   Result structure
 
     (
-      DirsSep [s] -- "/" directories separator
-      ItemsSep [s] -- ";" separator between search paths
-      CaptureChar [s] -- "?" to place module name instead of it
-      ExecDirAlias [s] -- "!" some custom shit for executable's dir
-      ItemTerminator [s] -- "-" terminator at which name is truncated
+      [s] DirsSep -- "/" directories separator
+      [s] ItemsSep -- ";" separator between search paths
+      [s] CaptureChar -- "?" to place module name instead of it
+      [s] ExecDirAlias -- "!" some custom shit for executable's dir
+      [s] ItemTerminator -- "-" terminator at which name is truncated
     )
 ]]
 
 -- Imports:
-local Lines = request('!.concepts.Lines.Interface')
+local lines_from_str = request('!.convert.lines_from_str')
 
 local parse_package_config =
   function(config_str)
-    local Lines = new(Lines)
-
-    Lines:FromString(config_str)
+    local Lines = lines_from_str(config_str)
 
     local Result =
       {
-        DirsSep = Lines:GetLineAt(1),
-        ItemsSep = Lines:GetLineAt(2),
-        CaptureChar = Lines:GetLineAt(3),
-        ExecDirAlias = Lines:GetLineAt(4),
-        ItemTerminator = Lines:GetLineAt(5),
+        DirsSep = Lines[1],
+        ItemsSep = Lines[2],
+        CaptureChar = Lines[3],
+        ExecDirAlias = Lines[4],
+        ItemTerminator = Lines[5],
       }
 
     return Result
