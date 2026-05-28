@@ -1,15 +1,26 @@
+-- Generate deploy script and save it to file
+
 --[[
-  Generate script and save it to file.
-
-  - tbl ----+-------------+- -> nil
-   (self)   +---- str ----+
-             (script_name)
-
-  script_name - name of Bash script. Default: "deploy.sh".
+  Author: Martin Eden
+  Last mod.: 2026-05-28
 ]]
 
-return
-  function(self, script_name)
+-- Imports:
+local file_from_str = request('!.convert.file_from_str')
+
+local SaveScript =
+  function(Me, script_name)
     script_name = script_name or 'deploy.sh'
-    self.bash_script_writer:save_script(script_name)
+
+    local script = Me.bash_script_writer:GetScript()
+
+    file_from_str(script, script_name)
   end
+
+-- Export:
+return SaveScript
+
+--[[
+  2018
+  2026-05-28
+]]

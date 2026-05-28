@@ -22,14 +22,14 @@ return
     assert_string(deploy_dir)
     deploy_dir = add_dir_postfix(deploy_dir)
 
-    self.bash_script_writer:delete_dir(deploy_dir)
+    self.bash_script_writer:DeleteDir(deploy_dir)
 
     local files = get_modules_dependencies(modules)
     for i = 1, #files do
       files[i] = get_module_location(files[i])
       local src = files[i]
       local dest = deploy_dir .. strip_updirs(src)
-      self.bash_script_writer:copy_file(src, dest)
+      self.bash_script_writer:CopyFile(src, dest)
     end
 
     if self.deploy_docs then
@@ -37,7 +37,7 @@ return
       for i = 1, #docs do
         local src = docs[i]
         local dest = deploy_dir .. strip_updirs(src)
-        self.bash_script_writer:copy_file(src, dest)
+        self.bash_script_writer:CopyFile(src, dest)
       end
     end
   end

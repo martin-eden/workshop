@@ -1,11 +1,17 @@
---[[
-  Generate string with script.
+-- Generate string with deploy script
 
-  - tbl - -> str
-   (self)
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-28
 ]]
 
+-- Export:
 return
-  function(self)
-    return self.bash_script_writer:get_script()
+  function(Me)
+    return Me.bash_script_writer:GetScript()
   end
+
+--[[
+  2018
+  2026-05-28
+]]

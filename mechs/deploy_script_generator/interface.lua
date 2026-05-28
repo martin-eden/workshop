@@ -1,18 +1,8 @@
+-- Generates Bash script to copy Lua modules and documentation
+
 --[[
-  Create Bash script to copy all needed Lua modules in separate
-  directory.
-
-  Workflow:
-
-    * Clone.
-
-    * -+----------------+- populate -+- save_script -+-
-       +- .deploy_docs -+            +- get_script --+
-
-
-  .deploy_docs -> bool
-
-    Flag to include documentation files in deploy package.
+  Author: Martin Eden
+  Last mod.: 2026-05-28
 ]]
 
 return
@@ -22,6 +12,13 @@ return
     get_script = request('get_script'),
     save_script = request('save_script'),
     --
-    bash_script_writer = request('!.mechs.bash_script_writer.interface'),
+    bash_script_writer = request('!.concepts.BashScriptWriter.Interface'),
     get_docs = request('get_docs'),
   }
+
+--[[
+  2016
+  2017 # #
+  2018 # # # #
+  2026-05-28
+]]
