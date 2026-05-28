@@ -16,15 +16,16 @@
 ]]
 
 -- Imports:
-local DeployScriptGenerator = request('!.mechs.deploy_script_generator.interface')
+local DeployScriptGenerator =
+  request('!.concepts.DeployScriptGenerator.Interface')
 
 local create_deploy_script =
   function(Modules, script_name, deploy_dir_name)
     local DeployMaker = new(DeployScriptGenerator)
 
-    DeployMaker:populate(Modules, deploy_dir_name)
+    DeployMaker:Populate(Modules, deploy_dir_name)
 
-    DeployMaker:save_script(script_name)
+    DeployMaker:SaveScript(script_name)
   end
 
 -- Export:
