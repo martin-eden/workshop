@@ -14,10 +14,10 @@
       Sequence of module names.
 
   So if module "a" requires "lib" and module "b" requires it,
-  result of call ({'a', 'b'}) will be ({'lib'}).
+  result of call ({'a', 'b'}) will be ({'a', 'b', 'lib'}).
 ]]
 
--- Last mod.: 2024-03-02
+-- Last mod.: 2026-05-28
 
 local GetModuleDependencies = request('get_module_dependencies')
 
