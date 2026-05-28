@@ -6,7 +6,9 @@
 ]]
 
 -- Imports:
-local Lines = request('!.concepts.Lines.Interface')
+local lines_from_str = request('!.convert.lines_from_str')
+local add_to_list = request('!.concepts.list.add_item')
+local lines_to_str = request('!.convert.lines_to_str')
 local LuaSyntax = request('!.concepts.lua.syntax')
 local Parse = request('!.mechs.generic_loader')
 
@@ -32,19 +34,17 @@ local GetAst =
   function(CodeStr)
     assert_string(CodeStr)
 
-    local CodeLines = new(Lines)
+    local CodeLines = lines_from_str(CodeStr)
 
-    CodeLines:FromString(CodeStr)
-
-    local FirstLine = CodeLines:GetFirstLine()
+    local FirstLine = CodeLines[1]
 
     local ShebangStr
     if IsShebang(FirstLine) then
       ShebangStr = FirstLine
-      CodeLines:RemoveFirstLine()
+      table.remove(CodeLines, 1)
     end
 
-    CodeStr = CodeLines:ToString()
+    CodeStr = lines_to_str(CodeLines)
 
     local Result, UnparsedTail = Parse(CodeStr, LuaSyntax)
 
