@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-28
+  Last mod.: 2026-05-29
 ]]
 
 --[[
@@ -21,10 +21,14 @@ local DeployScriptGenerator =
 
 local create_deploy_script =
   function(Modules, script_name, deploy_dir_name)
+    -- Load all modules. This will populate global dependencies table
+    for _, module_name in ipairs(Modules) do
+      request(module_name)
+    end
+
+    -- Deploy maker uses global dependencies table
     local DeployMaker = new(DeployScriptGenerator)
-
     DeployMaker:Populate(Modules, deploy_dir_name)
-
     DeployMaker:SaveScript(script_name)
   end
 
@@ -35,4 +39,5 @@ return create_deploy_script
   2017
   2018
   2026-05-28
+  2026-05-29
 ]]
