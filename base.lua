@@ -178,9 +178,19 @@ if is_first_run then
   _G.get_dependencies = function() return Dependencies_Map end
   _G.get_base_prefix = function() return base_prefix end
   _G.get_require_name = get_require_name
+
+  -- We can now use request() but need to add our name to call stack
+
+  -- First element is invocation module name
+  local our_require_name = (...)
+
+  push('', our_require_name)
+
   request('!.system.install_is_functions')()
   request('!.system.install_assert_functions')()
   _G.new = request('!.table.new')
+
+  pop()
 end
 
 --[[
