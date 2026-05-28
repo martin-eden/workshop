@@ -7,7 +7,8 @@
 
 -- Imports:
 local split_string = request('!.string.split')
-local Lines = request('!.concepts.Lines.Interface')
+local add_to_list = request('!.concepts.list.add_item')
+local lines_to_str = request('!.convert.lines_to_str')
 local ParsePathname = request('!.concepts.path_name.parse')
 local GetCmd_RmDir = request('!.mechs.cmdline.get_cmd_rmdir')
 local GetCmd_MkDir = request('!.mechs.cmdline.get_cmd_mkdir')
@@ -60,11 +61,11 @@ local MarkDirectoriesCreated =
 ]]
 local GetScript =
   function(Self)
-    local Lines = new(Lines)
+    local Lines = { }
 
     local AddLine =
       function(Line)
-        Lines:AddLastLine(Line)
+        add_to_list(Lines, Line)
       end
 
     AddLine('#!/bin/bash')
@@ -99,7 +100,7 @@ local GetScript =
       AddLine(GetCmd_CopyFile(SrcFullName, DestFullName))
     end
 
-    return Lines:ToString()
+    return lines_to_str(Lines)
   end
 
 -- Export:
@@ -110,4 +111,5 @@ return GetScript
   2019
   2026-04-17
   2026-05-11
+  2026-05-28
 ]]
