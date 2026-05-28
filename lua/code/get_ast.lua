@@ -6,19 +6,13 @@
 ]]
 
 -- Imports:
-local Lines = request('!.concepts.Lines')
+local Lines = request('!.concepts.Lines.Interface')
 local LuaSyntax = request('!.concepts.lua.syntax')
 local Parse = request('!.mechs.generic_loader')
 
 local IsShebang =
   function(Str)
     return (string.sub(Str, 1, 2) == '#!')
-  end
-
--- Extract program name from #! shebang string
-local GetProgramName =
-  function(Str)
-    return string.match(Str, '#!%s*(.*)')
   end
 
 --[[
@@ -46,7 +40,7 @@ local GetAst =
 
     local ShebangStr
     if IsShebang(FirstLine) then
-      ShebangStr = '#! ' .. GetProgramName(FirstLine)
+      ShebangStr = FirstLine
       CodeLines:RemoveFirstLine()
     end
 
@@ -67,4 +61,5 @@ return GetAst
 --[[
   2018-02-05
   2026-04-17
+  2026-05-28
 ]]
