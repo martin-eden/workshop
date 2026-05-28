@@ -51,30 +51,55 @@ local create_instance = request('!.table.create_instance')
 local Interface = { }
 
 -- ( Meta Level 1
-local GetFirstIndex =
-  function(Items)
-    return 1
-  end
-
-local GetLastIndex =
-  function(Items)
-    return #Items
-  end
-
 local IsValidItem =
   function(Item)
     return not is_nil(Item)
   end
 
-Interface.GetFirstIndex = GetFirstIndex
-Interface.GetLastIndex = GetLastIndex
+local GetNumItems =
+  function(Items)
+    return #Items
+  end
+
 Interface.IsValidItem = IsValidItem
+Interface.GetNumItems = GetNumItems
 -- )
 
 -- ( Meta Level 2
-local GetNumItems =
+local IsEmpty =
   function(Items)
-    return 1 + (GetLastIndex(Items) - GetFirstIndex(Items))
+    return (GetNumItems(Items) == 0)
+  end
+
+local GetFirstIndex =
+  function(Items)
+    if IsEmpty(Items) then return 0 end
+
+    return 1
+  end
+
+local GetLastIndex =
+  function(Items)
+    if IsEmpty(Items) then return 0 end
+
+    return GetNumItems(Items)
+  end
+
+local AssertValidItem =
+  function(Item)
+    assert(IsValidItem(Item), 'Invalid item')
+  end
+
+Interface.IsEmpty = IsEmpty
+Interface.GetFirstIndex = GetFirstIndex
+Interface.GetLastIndex = GetLastIndex
+Interface.AssertValidItem = AssertValidItem
+-- )
+
+-- ( Meta Level 3
+local AssertNotEmpty =
+  function(Items)
+    assert(not IsEmpty(Items), 'List is empty')
   end
 
 local IsValidIndex =
@@ -85,38 +110,17 @@ local IsValidIndex =
       (index <= GetLastIndex(Items))
   end
 
-local AssertValidItem =
-  function(Item)
-    assert(IsValidItem(Item), 'Invalid item')
-  end
-
-Interface.GetNumItems = GetNumItems
+Interface.AssertNotEmpty = AssertNotEmpty
 Interface.IsValidIndex = IsValidIndex
-Interface.AssertValidItem = AssertValidItem
 -- )
 
--- ( Meta Level 3
-local IsEmpty =
-  function(Items)
-    return (GetNumItems(Items) == 0)
-  end
-
+-- ( Meta_Level_4
 local AssertValidIndex =
   function(Items, index)
     assert(IsValidIndex(Items, index), 'Invalid index')
   end
 
-Interface.IsEmpty = IsEmpty
 Interface.AssertValidIndex = AssertValidIndex
--- )
-
--- ( Meta_Level_4
-local AssertNotEmpty =
-  function(Items)
-    assert(not IsEmpty(Items), 'List is empty')
-  end
-
-Interface.AssertNotEmpty = AssertNotEmpty
 -- )
 
 -- ( Access Core
