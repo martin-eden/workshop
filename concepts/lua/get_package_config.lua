@@ -9,11 +9,11 @@
   Result structure
 
     (
-      [s] DirsSep -- "/" directories separator
-      [s] ItemsSep -- ";" separator between search paths
-      [s] CaptureChar -- "?" to place module name instead of it
-      [s] ExecDirAlias -- "!" some custom shit for executable's dir
-      [s] ItemTerminator -- "-" terminator at which name is truncated
+      [s] dirs_sep -- "/" directories separator
+      [s] items_sep -- ";" separator between search paths
+      [s] capture_char -- "?" to place module name instead of it
+      [s] exec_dir_alias -- "!" some custom shit for executable's dir
+      [s] name_terminator -- "-" terminator at which name is truncated
     )
 ]]
 
@@ -24,16 +24,14 @@ local parse_package_config =
   function(config_str)
     local Lines = lines_from_str(config_str)
 
-    local Result =
+    return
       {
-        DirsSep = Lines[1],
-        ItemsSep = Lines[2],
-        CaptureChar = Lines[3],
-        ExecDirAlias = Lines[4],
-        ItemTerminator = Lines[5],
+        dirs_sep = Lines[1],
+        items_sep = Lines[2],
+        capture_char = Lines[3],
+        exec_dir_alias = Lines[4],
+        name_terminator = Lines[5],
       }
-
-    return Result
   end
 
 local get_package_config =
@@ -46,4 +44,5 @@ return get_package_config
 
 --[[
   2026-05-08
+  2026-05-28
 ]]
