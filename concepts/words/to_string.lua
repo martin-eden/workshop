@@ -2,15 +2,15 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-17
+  Last mod.: 2026-05-29
 ]]
 
---[[
-  Return string from given list of words
-]]
+-- Imports:
+local list_to_string = request('!.concepts.list.to_string')
+
 local to_string =
-  function(words)
-    return table.concat(words, ' ')
+  function(Words)
+    return list_to_string(Words, ' ')
   end
 
 -- Export:

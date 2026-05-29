@@ -2,22 +2,22 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-15
+  Last mod.: 2026-05-29
 ]]
 
---[[
-  Return list of words from given string
-]]
+-- Imports:
+local add_to_list = request('!.concepts.list.add_item')
+
 local from_string =
   function(str)
-    local words = {}
+    local Words = { }
 
     -- "%S+" - capture non-space sequences
     for word in str:gmatch('%S+') do
-      table.insert(words, word)
+      add_to_list(Words, word)
     end
 
-    return words
+    return Words
   end
 
 -- Export:
@@ -25,4 +25,5 @@ return from_string
 
 --[[
   2026-04-15
+  2026-05-29
 ]]
