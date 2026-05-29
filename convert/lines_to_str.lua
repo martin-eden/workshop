@@ -2,18 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-05-29
 ]]
 
 -- Imports:
 local list_to_string = request('!.concepts.list.to_string')
 
-local delimiter = '\n'
-
 -- Concatenate strings list using newline separator. Tailing newline.
 local lines_to_str =
   function(Lines)
-    return (list_to_string(Lines, delimiter) .. delimiter)
+    local newline = '\n'
+
+    return list_to_string(Lines, newline) .. newline
   end
 
 -- Export:
