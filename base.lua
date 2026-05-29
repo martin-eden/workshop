@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-28
+  Last mod.: 2026-05-29
 ]]
 
 --[[
@@ -43,11 +43,11 @@
 
     * is_..() family
 
-      is_bool(), is_number, is_integer(), is_float(), is_table() ...
+      is_boolean(), is_number, is_integer(), is_float(), is_table() ...
 
     * assert_..() family
 
-      assert_bool(), assert_number(), assert_integer(), ...
+      assert_boolean(), assert_number(), assert_integer(), ...
 
     * new() -- clones table and applies optional field overrides
 ]]
