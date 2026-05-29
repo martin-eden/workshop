@@ -2,17 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-05-29
 ]]
 
 -- Imports:
 local split_string = request('!.string.split')
 
-local delimiter = '\n'
-
 local string_to_lines =
   function(str)
-    return split_string(str, delimiter)
+    local newline = '\n'
+
+    return split_string(str, newline)
   end
 
 -- Exports:
