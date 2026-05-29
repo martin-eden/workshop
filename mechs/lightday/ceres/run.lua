@@ -39,7 +39,7 @@ return
       7.639 *
       acos(
         max(
-          -1,
+          -0.87,
           (-0.1047 -
             sin(latitude) * sin(sun_declination)
           ) /
