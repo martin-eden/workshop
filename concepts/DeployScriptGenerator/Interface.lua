@@ -7,16 +7,15 @@
 
 return
   {
-    -- [Config]: Include documentation files
-    DeployDocs = true,
+    -- [Config]
+    deploy_dir = 'deploy/',
+    include_docs = true,
 
     -- [Main]
-    Populate = request('Populate'),
-    SaveScript = request('SaveScript'),
+    GetScript = request('GetScript'),
 
     -- [Internal]
-    BashScriptWriter = request('!.concepts.BashScriptWriter.Interface'),
-    GetScript = request('GetScript'),
+    FilesRequired = { },
   }
 
 --[[

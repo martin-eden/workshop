@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-11
+  Last mod.: 2026-05-29
 ]]
 
 --[[
@@ -51,7 +51,7 @@ local is_documentation_name =
     return false
   end
 
-local get_docs =
+local get_docs_filelist =
   function(FilesList)
     local Result = { }
 
@@ -87,7 +87,7 @@ local get_docs =
   end
 
 -- Export:
-return get_docs
+return get_docs_filelist
 
 --[[
   2018 #
