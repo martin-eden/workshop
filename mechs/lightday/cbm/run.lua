@@ -1,30 +1,26 @@
+-- Lightday calculation: CBM model
+
 --[[
-  Lightday length function.
+  Author: Martin Eden
+  Last mod.: 2026-05-29
+]]
 
-  This algorithm is called "CBM model".
+--[[
+  Cost:
 
-  Advantages:
+    10 ( sin * 3 cos * 3 asin * 1 acos * 1 tan * 1 atan * 1)
 
-    * Earth orbit considered elliptical.
-    * <sun_pos_addon_deg> adjustable.
+  Properties:
 
-  Complexity:
-
-    sin  3 cos  3 tan  1
-    asin 1 acos 1 atan 1
-
-  Reference:
-
-    journal "Ecological Modelling"
-      issue 80, year 1995
-      paper "A model comparision for daylength as function of latitude
-        and day of the year"
+    ☑ <sun_pos_addon_deg> adjustable
+    ☑ Earth orbit considered elliptical
 ]]
 
 local sin, asin, cos, acos, tan, atan =
   math.sin, math.asin, math.cos, math.acos, math.tan, math.atan
 local rad, pi = math.rad, math.pi
 
+-- Export:
 return
   function(self)
     local sun_pos_addon_angle = rad(self.sun_pos_addon_deg)
@@ -43,3 +39,8 @@ return
       )
     return day_length
   end
+
+--[[
+  2019
+  2026-05-29
+]]

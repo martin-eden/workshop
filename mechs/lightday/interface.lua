@@ -1,7 +1,11 @@
+-- Base class for lightday length calculator
+
 --[[
-  Base for implementers of light day length function.
+  Author: Martin Eden
+  Last mod.: 2026-05-29
 ]]
 
+-- Export:
 return
   {
     name = '* algorithm model name *',
@@ -10,3 +14,8 @@ return
     day_number = 1,
     run = '* function *',
   }
+
+--[[
+  2019
+  2026-05-29
+]]

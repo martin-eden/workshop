@@ -1,26 +1,25 @@
+-- Lightday calculation: Brock model
+
 --[[
-  Lightday length function.
-
-  This algorithm is called "Brock model".
-
-  Limitations:
-
-    * <sun_pos_addon_deg> fixed to 0.
-      (Sunrise/sunset is when center of sun is even with horizon.)
-    * Earth orbit considered circular.
-
-  Complexity:
-
-    sin  1 cos  - tan  2
-    asin - acos 1 atan -
-
-  Reference:
-
-    journal "Ecological Modelling"
-      issue 80, year 1995
-      paper "A model comparision for daylength as function of latitude
-        and day of the year"
+  Author: Martin Eden
+  Last mod.: 2026-05-29
 ]]
+
+--[[
+  Cost:
+
+    4 ( tan * 2 sin * 1 acos * 1 )
+
+  Properties:
+
+    ☐ <sun_pos_addon_deg> adjustable
+
+      Fixed to 0. Sunrise/sunset is when center of sun is even with horizon
+
+    ☐ Earth orbit considered elliptical
+
+      Considered circular
+--]]
 
 local sin, acos, tan = math.sin, math.acos, math.tan
 local rad, deg = math.rad, math.deg
@@ -40,6 +39,7 @@ local tan_deg =
     return tan(rad(angle_deg))
   end
 
+-- Export:
 return
   function(self)
     self.sun_pos_addon_deg = 0.0
@@ -56,3 +56,8 @@ return
 
     return day_length
   end
+
+--[[
+  2019
+  2026-05-29
+]]

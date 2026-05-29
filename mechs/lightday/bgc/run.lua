@@ -1,31 +1,32 @@
+-- Lightday calculation: Forest-BGC model
+
 --[[
-  Lightday length function.
-
-  This algorithm is called "Forest-BGC model".
-
-  Limitations:
-
-    * <sun_pos_addon_deg> fixed to 0.
-      (Sunrise/sunset is when center of sun is even with horizon.)
-    * Earth orbit considered circular (not sure).
-    * Works only for non-negative latitudes.
-
-  Complexity:
-
-    sin  1 cos  - tan  -
-    asin - acos - atan -
-
-  Reference:
-
-    journal "Ecological Modelling"
-      issue 80, year 1995
-      paper "A model comparision for daylength as function of latitude
-        and day of the year"
+  Author: Martin Eden
+  Last mod.: 2026-05-29
 ]]
+
+--[[
+  Cost:
+
+    2 ( sin exp )
+
+  Properties:
+
+    ☐ <sun_pos_addon_deg> adjustable
+
+      Fixed to 0. Sunrise/sunset is when center of sun is even with horizon
+
+    ☐ Earth orbit considered elliptical
+
+      Considered circular
+
+    * Works only for non-negative latitudes
+--]]
 
 local sin = math.sin
 local exp = math.exp
 
+-- Export:
 return
   function(self)
     self.sun_pos_addon_deg = 0.0
@@ -39,3 +40,8 @@ return
 
     return day_length
   end
+
+--[[
+  2019
+  2026-05-29
+]]

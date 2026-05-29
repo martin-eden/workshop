@@ -1,31 +1,31 @@
---[[
-  Lightday length function.
+-- Lightday calculation: CERES-Wheat model
 
-  This algorithm is called "CERES-Wheat model".
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-29
+]]
+
+--[[
+  Cost:
+
+    6 ( sin * 3 cos * 2 acos * 1 )
 
   Limitations:
 
-    * <sun_pos_addon_deg> fixed to 6.
-      (Daylength include civil twilight.)
-    * Earth orbit considered circular.
+    ☐ <sun_pos_addon_deg> adjustable
 
-  Complexity:
+      Fixed to 6. Daylength includes civil twilight.
 
-    sin  3 cos  2 tan  -
-    asin - acos 1 atan -
+    ☐ Earth orbit considered elliptical
 
-  Reference:
-
-    journal "Ecological Modelling"
-      issue 80, year 1995
-      paper "A model comparision for daylength as function of latitude
-        and day of the year"
+      Considered circular
 ]]
 
 local sin, cos, acos = math.sin, math.cos, math.acos
 local rad = math.rad
 local max = math.max
 
+-- Export:
 return
   function(self)
     self.sun_pos_addon_deg = 6.0
@@ -49,3 +49,8 @@ return
 
     return day_length
   end
+
+--[[
+  2019
+  2026-05-29
+]]
