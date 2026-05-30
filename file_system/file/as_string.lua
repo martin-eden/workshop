@@ -2,22 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-05-30
 ]]
 
 -- Imports:
 local safe_open = request('safe_open')
-local normalize_name = request('normalize_name')
 
 local load_file_contents =
   function(pathname)
     assert_string(pathname)
 
-    pathname = normalize_name(pathname)
-
-    local f = safe_open(pathname, 'rb')
-    local result = f:read('a')
-    f:close()
+    local File = safe_open(pathname, 'rb')
+    local result = File:read('a')
+    File:close()
 
     return result
   end
@@ -29,4 +26,5 @@ return load_file_contents
   2016 # #
   2019 #
   2026-05-04
+  2026-05-30
 ]]
