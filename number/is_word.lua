@@ -1,27 +1,23 @@
 -- Check that given argument is integer in 16-bit word range
 
 --[[
-  Input
-
-    Value: any - any value
-
-  Output
-
-    Yes: bool - value is integer in 16-bit word range ([0, 0xFFFF]).
+  Author: Martin Eden
+  Last mod.: 2026-05-30
 ]]
 
-return
-  function(Value)
-    if not is_integer(Value) then
-      return false
-    end
+-- Imports:
+local get_bits = request('get_bits')
 
-    -- Masking integer with word changes nothing for word range
-    local Result = (Value == (Value & 0xFFFF))
+local is_word =
+  function(value)
+    if not is_integer(value) then return false end
 
-    return Result
+    return (value == get_bits(value, 0, 15))
   end
 
+return is_word
+
 --[[
-  2024-09-30
+  2024
+  2026-05-30
 ]]
