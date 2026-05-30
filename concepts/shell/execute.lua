@@ -5,6 +5,22 @@
   Last mod.: 2026-05-30
 ]]
 
+--[[
+  Input
+
+    [s] command -- Shell command to execute
+
+  Output
+
+    [t]
+      [b] is_aborted -- true in case of aborted execution
+      [i] result_code -- Return code in case of normal ending.
+        Termination code (signal number) in case of aborted ending.
+      [s] output -- Program output
+      [s] errors -- Program errors
+    }
+]]
+
 -- Imports:
 local file_to_str = request('!.convert.file_to_str')
 local get_execute_command =
@@ -15,48 +31,32 @@ local get_execute_command =
 
   Executes given string as shell (OS-dependent) command.
   Captures termination code / return code, output and errors.
-
-  Input
-
-    [s] command -- Shell command to execute
-
-  Output
-
-    [t]
-      [i] ResultCode -- Return code in case of normal ending
-      [i] TerminationCode -- Termination code (signal number) in
-        case of aborted ending
-      [s] Output -- Program output
-      [s] Errors -- Program errors
-    }
 ]]
 local execute_shell_command =
   function(command)
-    local out_file_name = os.tmpname()
-    local errors_file_name = os.tmpname()
+    local output_filename = os.tmpname()
+    local error_filename = os.tmpname()
 
     local shell_command =
       get_execute_command(
-        command, out_file_name, errors_file_name
+        command, output_filename, error_filename
       )
 
-    local _, result_type_code, result_code =
-      os.execute(shell_command)
+    local _, result_type_code, result_code = os.execute(shell_command)
 
     local Result = { }
 
     if (result_type_code == 'exit') then
-      Result.ResultCode = result_code
+      Result.is_aborted = false
+    elseif (result_type_code == 'signal') then
+      Result.is_aborted = true
     end
-    if (result_type_code == 'signal') then
-      Result.TerminationCode = result_code
-    end
+    Result.result_code = result_code
+    Result.output = file_to_str(output_filename)
+    Result.error = file_to_str(error_filename)
 
-    Result.Output = file_to_str(out_file_name)
-    Result.Errors = file_to_str(errors_file_name)
-
-    os.remove(out_file_name)
-    os.remove(errors_file_name)
+    os.remove(output_filename)
+    os.remove(error_filename)
 
     return Result
   end
