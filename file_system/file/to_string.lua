@@ -6,13 +6,11 @@
 ]]
 
 -- Imports:
-local safe_open = request('safe_open')
+local open_file = request('open')
 
 local load_file_contents =
   function(pathname)
-    assert_string(pathname)
-
-    local File = safe_open(pathname, 'rb')
+    local File = open_file(pathname, 'rb')
     local result = File:read('a')
     File:close()
 

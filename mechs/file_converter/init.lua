@@ -3,8 +3,8 @@
   Raises error if fails.
 ]]
 
-local exists = request('!.file_system.file.exists')
-local safe_open = request('!.file_system.file.safe_open')
+local file_exists = request('!.file_system.file.exists')
+local open_file = request('!.file_system.file.open')
 
 return
   function(self)
@@ -12,7 +12,7 @@ return
     local f_out_name = self.f_out_name
 
     assert_string(f_in_name)
-    if not exists(f_in_name) then
+    if not file_exists(f_in_name) then
       error(('File "%s" not found.'):format(f_in_name))
     end
 
@@ -22,7 +22,7 @@ return
     end
 
     -- Test that <f_out_name> is writable:
-    local is_ok, f_out = pcall(safe_open, f_out_name, 'w')
+    local is_ok, f_out = pcall(open_file, f_out_name, 'w')
     if not is_ok then
       local msg =
         ([[Can't open output file "%s" for writing: "%s".]]):

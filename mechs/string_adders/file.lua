@@ -16,8 +16,8 @@
     Maximum file size depends of file system.
 ]]
 
-local get_unique_file_name = request('^.^.file.get_unique_name')
-local safe_open = request('^.^.file.safe_open')
+local get_unique_file_name = request('!.file_system.file.get_unique_name')
+local open_file = request('!.file_system.file.open')
 
 local result =
   {
@@ -26,7 +26,7 @@ local result =
     init =
       function(self)
         self.file_name = get_unique_file_name()
-        self.file = safe_open(self.file_name, 'a+b')
+        self.file = open_file(self.file_name, 'a+b')
       end,
     free =
       function(self)

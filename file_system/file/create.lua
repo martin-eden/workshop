@@ -2,18 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-05-30
 ]]
 
 -- Imports:
-local safe_open = request('safe_open')
+local open_file = request('open')
 
 local create_file =
   function(pathname, contents)
     assert_string(pathname)
     assert_string(contents)
 
-    local file = safe_open(pathname, 'wb')
+    local file = open_file(pathname, 'wb')
 
     file:write(contents)
 
