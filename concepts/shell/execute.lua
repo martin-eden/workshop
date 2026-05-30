@@ -2,10 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-05-30
 ]]
 
-local file_as_string = request('!.file_system.file.as_string')
+-- Imports:
+local file_to_str = request('!.convert.file_to_str')
 local get_execute_command =
   request('!.mechs.cmdline.get_cmd_execute_with_redirects')
 
@@ -42,7 +43,7 @@ local execute_shell_command =
     local _, result_type_code, result_code =
       os.execute(shell_command)
 
-    local Result = {}
+    local Result = { }
 
     if (result_type_code == 'exit') then
       Result.ResultCode = result_code
@@ -51,8 +52,8 @@ local execute_shell_command =
       Result.TerminationCode = result_code
     end
 
-    Result.Output = file_as_string(out_file_name)
-    Result.Errors = file_as_string(errors_file_name)
+    Result.Output = file_to_str(out_file_name)
+    Result.Errors = file_to_str(errors_file_name)
 
     os.remove(out_file_name)
     os.remove(errors_file_name)
