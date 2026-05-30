@@ -1,17 +1,38 @@
+-- Convert date in MS-DOS format (16 bits) to string with ISO 8601 date
+
 --[[
-  Decode date in MS-DOS FAT format (16 bits).
-  Return string with ISO 8601 date.
+  Author: Martin Eden
+  Last mod.: 2026-05-30
 ]]
 
-return
+--[[
+  Input:
+    [s] raw_date -- data bytes as string
+  Output:
+    [s] -- ISO date
+]]
+
+-- Imports:
+local get_bits = request('!.number.get_bits')
+
+local decode_date =
   function(raw_date)
     assert_string(raw_date)
     assert(#raw_date == 2)
-    local data = ('< I2'):unpack(raw_date)
-    local year = (data >> 9) & ((1 << 7) - 1)
-    year = year + 1980
-    local month = (data >> 5) & ((1 << 4) - 1)
-    local day = data & ((1 << 5) - 1)
-    local result = ('%04d-%02d-%02d'):format(year, month, day)
-    return result
+
+    local data = string.unpack('< I2', raw_date)
+
+    local year = get_bits(data, 9, 15) + 1980
+    local month = get_bits(data, 5, 8)
+    local day = get_bits(data, 0, 4)
+
+    return string.format('%04d-%02d-%02d', year, month, day)
   end
+
+-- Export:
+return decode_date
+
+--[[
+  2018
+  2026-05-30
+]]
