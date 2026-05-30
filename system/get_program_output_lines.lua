@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-05-30
 ]]
 
 -- Imports:
@@ -19,7 +19,7 @@ local get_program_output_lines =
 
     local ExecResult = shell_execute(shell_cmd)
 
-    return lines_from_str(ExecResult.Output)
+    return lines_from_str(ExecResult.output)
   end
 
 -- Export:
