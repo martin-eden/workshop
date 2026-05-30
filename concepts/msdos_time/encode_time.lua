@@ -1,33 +1,43 @@
+-- Encode string with ISO time to string with bytes in MS-DOS format
+
 --[[
-  Encode time from string in ISO 8601 format to string with two
-  bytes with time in MS-DOS format.
+  Author: Martin Eden
+  Last mod.: 2026-05-30
 ]]
 
-local iso8601_fmt = '(%d%d):(%d%d):(%d%d)'
+-- Imports:
+local set_bits = request('!.number.set_bits')
 
-return
-  function(dt_str)
-    assert_string(dt_str)
+local iso8601_time_fmt = '(%d%d):(%d%d):(%d%d)'
 
-    local hour, minute, second = (dt_str):match(iso8601_fmt)
+local encode_time =
+  function(iso_time)
+    assert_string(iso_time)
+
+    local hour, minute, second = string.match(iso_time, iso8601_time_fmt)
     assert(hour)
 
     hour = tonumber(hour)
     assert(hour < (1 << 5))
-    hour = hour & ((1 << 5) - 1)
 
     minute = tonumber(minute)
     assert(minute < (1 << 6))
-    minute = minute & ((1 << 6) - 1)
 
     second = tonumber(second)
     second = second // 2
     assert(second < (1 << 5))
-    second = second & ((1 << 5) - 1)
 
-    local data = (hour << 11) | (minute << 5) | second
+    local data = set_bits(hour, 11, 15)
+    data = set_bits(minute, 5, 10, data)
+    data = set_bits(second, 0, 4, data)
 
-    local result = ('< I2'):pack(data)
-
-    return result
+    return string.pack('< I2', data)
   end
+
+-- Export:
+return encode_time
+
+--[[
+  2018
+  2026-05-30
+]]
