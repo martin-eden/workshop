@@ -1,18 +1,27 @@
+-- Return file size in bytes
+
 --[[
-  Return file size in bytes.
-
-  Syntax:
-
-    <file_name> -> <file_size>
-       string        integer
+  Author: Martin Eden
+  Last mod.: 2026-05-30
 ]]
 
-local safe_open = request('safe_open')
+-- Imports:
+local open_file = request('open')
 
-return
+local get_file_size =
   function(file_name)
-    local f = safe_open(file_name, 'rb')
-    local result = f:seek('end')
-    f:close()
+    local File = open_file(file_name, 'rb')
+    local result = File:seek('end')
+    File:close()
+
     return result
   end
+
+-- Export:
+return get_file_size
+
+--[[
+  2016
+  2017
+  2026-05-30
+]]
