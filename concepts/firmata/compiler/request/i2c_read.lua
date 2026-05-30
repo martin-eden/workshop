@@ -1,14 +1,29 @@
-local signatures = request('!.concepts.firmata.protocol.signatures')
-local assert_offset = request('!.concepts.i2c.assert_offset')
-local assert_num_bytes = request('!.concepts.i2c.assert_num_bytes')
+-- Compile I2C read request
 
-return
-  function(self, device_id, offset, num_bytes)
-    assert_offset(offset)
-    assert_num_bytes(num_bytes)
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-05-30
+]]
 
-    self:emit(signatures.sysex_start)
-    self:i2c_emit_request('read', device_id)
-    self:emit_bytes(offset, num_bytes)
-    self:emit(signatures.sysex_end)
+-- Imports:
+local assert_byte = request('!.number.assert_byte')
+local Signatures = request('!.concepts.firmata.protocol.signatures')
+
+local compile_i2c_read =
+  function(Me, device_id, offset, num_bytes)
+    assert_byte(offset)
+    assert_byte(num_bytes)
+
+    Me:emit(Signatures.sysex_start)
+    Me:i2c_emit_request('read', device_id)
+    Me:emit_bytes(offset, num_bytes)
+    Me:emit(Signatures.sysex_end)
   end
+
+-- Export:
+return compile_i2c_read
+
+--[[
+  2019 # #
+  2026-05-30
+]]
