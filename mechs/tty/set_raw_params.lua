@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-23
+  Last mod.: 2026-05-30
 ]]
 
 -- Imports:
 local glue_words = request('!.concepts.words.to_string')
-local run_command = request('!.concepts.shell.execute')
+local shell_execute = request('!.concepts.shell.execute')
 
 --[[
   Set TTY device params from "raw" string
@@ -28,7 +28,7 @@ local set_raw_params =
         params,
       }
 
-    run_command(glue_words(Command))
+    shell_execute(glue_words(Command))
   end
 
 -- Export:

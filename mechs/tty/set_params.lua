@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-27
+  Last mod.: 2026-05-30
 ]]
 
 -- Imports:
 local glue_words = request('!.concepts.words.to_string')
-local run_command = request('!.concepts.shell.execute')
+local shell_execute = request('!.concepts.shell.execute')
 
 --[[
   Set baud rate and read timeout for TTY device given by name
@@ -62,7 +62,7 @@ local set_params =
         '-opost',
       }
 
-    run_command(glue_words(Command))
+    shell_execute(glue_words(Command))
   end
 
 -- Export:
