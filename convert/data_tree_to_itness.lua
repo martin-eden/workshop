@@ -12,6 +12,12 @@
       <key> [s] = [s] -- terminal string node
       or
       <key> [s] = <node> [t] -- child node
+
+  Example:
+
+    { ['a'] = 'A', ['b'] = { ['bb'] = 'B' } }
+                     ->
+    { { 'a', 'A' }, { 'b', { 'bb', 'B' } } }
 ]]
 
 -- Imports:
