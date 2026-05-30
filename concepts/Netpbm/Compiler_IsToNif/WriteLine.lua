@@ -1,33 +1,50 @@
--- Write string as line to output
+-- Write optinal data and comment strings as line to output
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-01-26
+  Last mod.: 2026-05-30
 ]]
 
--- Exports:
-return
-  function(self, Data, Comment)
-    if Data then
-      self.Output:Write(Data)
-    end
+--[[
+  Input
 
-    if Comment then
-      if Data then
-        self.Output:Write('  ')
+    [?s] data -- data string
+    [?s] comment -- comment string
+]]
+
+local WriteLine =
+  function(Me, data, comment)
+    data = data or ''
+    comment = comment or ''
+
+    assert_string(data)
+    assert_string(comment)
+
+    local has_data = (data ~= '')
+    local has_comment = (comment ~= '')
+
+    local line = ''
+
+    line = line .. data
+
+    if has_comment then
+      if has_data then
+        line = line .. '  '
       end
 
-      self.Output:Write(self.Settings.LineCommentChar)
-      self.Output:Write(' ')
-      self.Output:Write(Comment)
+      line = line .. Me.Settings.LineCommentChar .. ' ' .. comment
     end
 
-    if Data or Comment then
-      self.Output:Write('\n')
-    end
+    line = line .. '\n'
+
+    Me.Output:Write(line)
   end
 
+-- Exports:
+return WriteLine
+
 --[[
-  2024-11-02
-  2025-04-09
+  2024
+  2025
+  2026-05-30
 ]]

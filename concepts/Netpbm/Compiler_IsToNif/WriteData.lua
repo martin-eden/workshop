@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-05-30
 ]]
 
 -- Imports:
@@ -38,7 +38,8 @@ return
     for Row = 1, Height do
       local Chunks = { }
 
-      self:WriteLine('')
+      if (Row > 1) then self:WriteLine('') end
+
       self:WriteLine(nil, ('Line %d'):format(Row))
 
       for Column = 1, Width do
