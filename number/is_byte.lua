@@ -1,28 +1,25 @@
 -- Check that given argument is integer in byte range
 
 --[[
-  Input
-
-    Value: any - any value
-
-  Output
-
-    Yes: bool - value is integer in byte range
+  Author: Martin Eden
+  Last mod.: 2026-05-30
 ]]
 
-return
-  function(Value)
-    if not is_integer(Value) then
-      return false
-    end
+-- Imports:
+local get_bits = request('get_bits')
 
-    -- Masking integer with low byte changes nothing for byte range
-    local Result = (Value == (Value & 0xFF))
+local is_byte =
+  function(value)
+    if not is_integer(value) then return false end
 
-    return Result
+    return (value == get_bits(value, 0, 7))
   end
 
+-- Export:
+return is_byte
+
 --[[
-  2020-08-09
-  2024-09-30
+  2020
+  2024
+  2026-05-30
 ]]
