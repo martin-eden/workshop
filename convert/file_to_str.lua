@@ -2,21 +2,14 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-05
+  Last mod.: 2026-05-30
 ]]
 
--- Imports:
-local file_as_str = request('!.file_system.file.as_string')
-
-local file_from_str =
-  function(file_name)
-    return file_as_str(file_name)
-  end
-
 -- Export:
-return file_from_str
+return request('!.file_system.file.to_string')
 
 --[[
   // similar code was at 201x's
   2026-04-27
+  2026-05-30
 ]]
