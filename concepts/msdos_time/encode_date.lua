@@ -1,35 +1,44 @@
+-- Encode string with ISO date to string with bytes in MS-DOS format
+
 --[[
-  Encode date from string in ISO 8601 format to string with two
-  bytes with date in MS-DOS format.
+  Author: Martin Eden
+  Last mod.: 2026-05-30
 ]]
 
-local iso8601_fmt = '(%d%d%d%d)-(%d%d)-(%d%d)'
+-- Imports:
+local set_bits = request('!.number.set_bits')
 
-return
-  function(ts_str)
-    assert_string(ts_str)
+local iso8601_date_fmt = '(%d%d%d%d)-(%d%d)-(%d%d)'
 
-    local year, month, day = ts_str:match(iso8601_fmt)
+local encode_date =
+  function(iso_date)
+    assert_string(iso_date)
+
+    local year, month, day = string.match(iso_date, iso8601_date_fmt)
     assert(year)
 
     year = tonumber(year)
     year = year - 1980
     assert(year >= 0)
     assert(year < (1 << 7))
-    year = year & ((1 << 7) - 1)
 
     month = tonumber(month)
     assert(month < (1 << 4))
-    month = month & ((1 << 4) - 1)
 
     day = tonumber(day)
     assert(day < (1 << 5))
-    day = day & ((1 << 5) - 1)
 
-    local data = (year << 9) | (month << 5) | day
+    local data = set_bits(year, 9, 15)
+    data = set_bits(month, 5, 8, data)
+    data = set_bits(day, 0, 4, data)
 
-    local result = ('< I2'):pack(data)
-
-    return result
+    return string.pack('< I2', data)
   end
 
+-- Export:
+return encode_date
+
+--[[
+  2018
+  2026-05-30
+]]
