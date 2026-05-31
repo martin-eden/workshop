@@ -2,19 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-01-14
+  Last mod.: 2026-05-31
 ]]
 
-return
-  -- Traverse and set. If current node has no index, create table with that index
-  function(t, Path, Value)
-    local Node = t
+-- Traverse and set. If current node has no index, create table with that index
+local go_and_set =
+  function(Node, Path, Value)
     local Index
 
     for i = 1, #Path - 1 do
       local Index = Path[i]
       if is_nil(Node[Index]) then
-        Node[Index] = {}
+        Node[Index] = { }
       end
       Node = Node[Index]
     end
@@ -23,4 +22,10 @@ return
     Node[Index] = Value
   end
 
--- 2026-01-14
+-- Export:
+return go_and_set
+
+--[[
+  2026-01-14
+  2026-05-31
+]]
