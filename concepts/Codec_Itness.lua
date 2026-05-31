@@ -2,13 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-26
+  Last mod.: 2026-05-31
 ]]
 
 -- Imports:
-local Syntax = request('Syntax')
-local parse = request('parse')
-local compile = request('compile')
+local Syntax = request('Codec_Itness.Syntax')
+local parse = request('Codec_Itness.parse')
+local compile = request('Codec_Itness.compile')
 
 local Interface =
   {

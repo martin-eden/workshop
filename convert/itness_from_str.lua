@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-26
+  Last mod.: 2026-05-31
 ]]
 
 -- Imports:
 local StringInputStreamClass = request('!.concepts.StreamIo.Input.String')
-local ItnessCodec = request('!.concepts.Codec_Itness.Interface')
+local ItnessCodec = request('!.concepts.Codec_Itness')
 
 local itness_from_string =
   function(str)
