@@ -2,14 +2,15 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-30
+  Last mod.: 2026-05-31
 ]]
 
 --[[
   Input:
     [s] raw_date -- data bytes as string
+
   Output:
-    [s] -- ISO date
+    [s] -- ISO time
 ]]
 
 -- Imports:
