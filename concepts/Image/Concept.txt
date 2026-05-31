@@ -1,0 +1,7 @@
+New module vision
+
+[Image] does not own data. Caller function owns data.
+
+Data is some canonical table and table with hints like dimensions,
+number of color channels and color granularity. They may be
+composed in one table for convenience.
