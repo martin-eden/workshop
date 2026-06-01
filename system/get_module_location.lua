@@ -1,22 +1,40 @@
---[[
-  For correct module name, require()-ready,
-  return file pathname which will be loaded as this module.
+-- For module name try to find it's file
 
-  * Not all cases can be resolved: module may be loaded but we can't
-    figure file's name. This is possible at least when
-    * <package.loaded> was directly modified
-    * <require> overriden with custom function (in this case record
-      for module in <package.loaded> may be absent)
-    * module is loaded via custom function in <package.searchers>
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-06-01
 ]]
 
+--[[
+  For correct require()-ready module name return file pathname which
+  was loaded as this module.
+
+  Not all cases can be resolved: module may be loaded but we can't
+  figure file's name. This is possible at least when
+    * <package.loaded> was directly modified
+    * module is loaded via custom function in <package.searchers>
+
+  Returns nil if is unable to find file.
+]]
+
+-- Imports:
 local normalize_name = request('!.file_system.file.normalize_name')
 
-return
+local get_module_location =
   function(module_name)
     assert_string(module_name)
-    local result
-    result = package.searchpath(module_name, _G.package.path)
-    result = normalize_name(result)
-    return result
+
+    local pathname = package.searchpath(module_name, _G.package.path)
+
+    if not pathname then return nil end
+
+    return normalize_name(pathname)
   end
+
+-- Export:
+return get_module_location
+
+--[[
+  2018 # #
+  2026-06-01
+]]
