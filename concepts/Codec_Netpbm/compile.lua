@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-31
+  Last mod.: 2026-06-01
 ]]
 
 -- Imports:
@@ -10,7 +10,7 @@ local convert_image_to_nif = request('Convert_ImageToNif.convert')
 local compile_nif_to_raw = request('Compiler_NifToRaw.compile')
 
 local compile =
-  function(Output, Image)
+  function(Image, Output)
     local ImageSettings, ImageNif = convert_image_to_nif(Image)
 
     ImageSettings.is_text_storage = true
