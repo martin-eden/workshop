@@ -1,4 +1,4 @@
--- Write optional data and comment strings as line to output
+-- Write optional data and comment strings as line to output stream
 
 --[[
   Author: Martin Eden
