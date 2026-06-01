@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-01-13
+  Last mod.: 2026-06-01
 ]]
 
 --[[
@@ -36,6 +36,8 @@
 ]]
 
 -- Imports:
+local create_color = request('!.concepts.Image.Color.SpawnColor')
+local patch_table = request('!.table.patch')
 local denormalize_color = request('!.concepts.Image.Color.Denormalize')
 local number_in_range = request('!.number.in_range')
 local add_to_list = request('!.concepts.list.add_item')
@@ -55,7 +57,11 @@ local get_channel_settings =
 
 local get_nif_color =
   function(color_format, Color, max_color_value)
-    local NifColor = new(Color)
+    -- <Color> can be nil
+
+    local NifColor = create_color(color_format)
+    patch_table(NifColor, Color)
+
     denormalize_color(NifColor)
 
     local Result = { }
@@ -112,4 +118,5 @@ return convert
   2025 # #
   2026-01-13
   2026-05-31
+  2026-06-01
 ]]
