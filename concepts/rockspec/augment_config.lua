@@ -2,14 +2,14 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-29
+  Last mod.: 2026-06-01
 ]]
 
 -- Imports:
 local strip_lua_postfix = request('strip_lua_postfix')
 local get_modules_dependencies = request('!.system.get_modules_dependencies')
 local add_to_list = request('!.concepts.list.add_item')
-local get_module_location = request('!.system.get_module_location')
+local get_module_pathname = request('!.system.get_module_pathname')
 
 local augment_config =
   function(Config)
@@ -46,7 +46,7 @@ local augment_config =
     local UsedFiles = { }
 
     for _, module_name in ipairs(UsedModules) do
-      add_to_list(UsedFiles, get_module_location(module_name))
+      add_to_list(UsedFiles, get_module_pathname(module_name))
     end
 
     table.sort(UsedFiles)

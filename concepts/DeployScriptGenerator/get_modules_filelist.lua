@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-29
+  Last mod.: 2026-06-01
 ]]
 
 --[[
@@ -13,7 +13,7 @@
 
 -- Imports:
 local get_modules_dependencies = request('!.system.get_modules_dependencies')
-local get_module_location = request('!.system.get_module_location')
+local get_module_pathname = request('!.system.get_module_pathname')
 local add_to_list = request('!.concepts.list.add_item')
 
 local get_modules_filelist =
@@ -23,7 +23,7 @@ local get_modules_filelist =
     local ModulesRequired = get_modules_dependencies(Modules)
 
     for _, module_name in ipairs(ModulesRequired) do
-      local module_pathname = get_module_location(module_name)
+      local module_pathname = get_module_pathname(module_name)
 
       add_to_list(Result, module_pathname)
     end
