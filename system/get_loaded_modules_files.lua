@@ -1,4 +1,4 @@
--- Returns a list of filenames for used modules
+-- Returns sorted list of filenames for used modules
 
 --[[
   Author: Martin Eden
@@ -25,6 +25,8 @@ local get_loaded_modules_files =
     for _, module_name in ipairs(ModulesNames) do
       add_to_list(ModulesPathnames, get_module_pathname(module_name))
     end
+
+    table.sort(ModulesPathnames)
 
     return ModulesPathnames
   end
