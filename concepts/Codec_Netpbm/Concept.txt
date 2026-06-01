@@ -8,20 +8,8 @@ Save receives image-based data and settings table, writes to output stream. [1]
 Image-based data is some custom encoding from [Image].
 Likely based on color channels normalized to unit [0.0, 1.0].
 
-[Image] should provide strict definition of it's structure and values.
-Because only we can convert weird color encodings to our working encoding.
 
-
-All that stuff with encoding format and comment character is our internal business.
-
-We may not expose detected encoding format, color granularity and
-number of color channels. But then we won't receive this info in Save().
-
-Same for width-height. We may not expose it because they can be derived
-from data we returned. But Save() will be simpler if we wont scan
-data to detect them.
-
-[1]: Streams, not string
+[1]: Stream, not string
 
   Stream is the base. String is actually stream when you're implementing it.
 
