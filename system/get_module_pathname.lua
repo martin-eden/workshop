@@ -20,7 +20,7 @@
 -- Imports:
 local normalize_name = request('!.file_system.file.normalize_name')
 
-local get_module_location =
+local get_module_pathname =
   function(module_name)
     assert_string(module_name)
 
@@ -32,7 +32,7 @@ local get_module_location =
   end
 
 -- Export:
-return get_module_location
+return get_module_pathname
 
 --[[
   2018 # #
