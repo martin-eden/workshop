@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-31
+  Last mod.: 2026-06-03
 ]]
 
 --[[
@@ -24,10 +24,10 @@
     1 2 255  # Width, Height, MaxValue
 
     # Line 1
-    0 128 255
+    000 128 255
 
     # Line 2
-    128 255 0
+    128 255 000
 ]]
 
 -- Imports:
@@ -72,28 +72,37 @@ local write_data =
       error('Unsupported number of color channels.')
     end
 
-    local components_delim = ' '
     local columns_delim = '  '
+    local components_delim = ' '
+    local color_component_fmt = '%03d'
 
     for y = 1, height do
-      local Chunks = { }
+      local Line = { }
 
       write_line(Output, '')
 
       write_line(Output, '', string.format('Line %d', y))
 
       for x = 1, width do
-        add_to_list(Chunks, list_to_string(ImageNif[y][x], components_delim))
+        local Color = { }
+
+        for color_component_num = 1, num_channels do
+          local color_component = ImageNif[y][x][color_component_num]
+
+          add_to_list(Color, string.format(color_component_fmt, color_component))
+        end
+
+        add_to_list(Line, list_to_string(Color, components_delim))
 
         if (x % num_colors_per_data_line == 0) then
-          write_line(Output, list_to_string(Chunks, columns_delim))
-          Chunks = { }
+          write_line(Output, list_to_string(Line, columns_delim))
+          Line = { }
         end
       end
 
       -- Write remained chunk
       if (width % num_colors_per_data_line ~= 0) then
-        write_line(Output, list_to_string(Chunks, columns_delim))
+        write_line(Output, list_to_string(Line, columns_delim))
       end
     end
   end
@@ -111,4 +120,5 @@ return compile
   2024 # # # #
   2025 # #
   2026-05-31
+  2026-06-06
 ]]
