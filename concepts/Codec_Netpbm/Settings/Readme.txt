@@ -13,21 +13,11 @@ They are supported.
 
 "P4", "P5", "P6" are binary formats for
 monochrome, grayscale and color data.
-They are not supported yet.
+They are not supported.
 
 
-Format labels are lost
-
-Parser returns image data and image settings.
-
-Format labels and format-specific header data are propagated in image settings.
-
-Compiler receives image data and image settings.
-
-It must write format label.
-
-
-So we're providing formats description table and functions to
+We're providing functions to
 
   * get settings from label
   * get label from settings
+  * get comment for human from label

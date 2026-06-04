@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-31
+  Last mod.: 2026-06-04
 ]]
 
 --[[
@@ -15,7 +15,6 @@
       height = 2,
       num_channels = 3,
       num_channel_values = 256,
-      is_text_storage = true,
     },
     {
       [1] = { [1] = { 0, 128, 255 } },
