@@ -2,12 +2,15 @@ I have vision now
 
 Here is PNM codec. It's two functions: one for load, other for save.
 
-Load receives data stream, returns image-based data and settings table.
-Save receives image-based data and settings table, writes to output stream. [1]
+Load requires data stream, returns image data and settings table.
+Save requires image data and settings table, writes to output stream. [1]
 
-Image-based data is some custom encoding from [Image].
-Likely based on color channels normalized to unit [0.0, 1.0].
+[Image] is our internal image class.
 
+Conceptually it protects image data, access should be only via
+GetPixel(), SetPixel().
+
+Class requires Settings{} table to be configured before access.
 
 [1]: Stream, not string
 
