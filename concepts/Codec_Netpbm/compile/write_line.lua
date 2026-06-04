@@ -2,24 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-30
+  Last mod.: 2026-06-04
 ]]
 
 --[[
   Input
 
+    [s] data -- data string
+    [s] comment -- comment string
     [t] Output -- output stream
-    [?s] data -- data string
-    [?s] comment -- comment string
 ]]
 local write_line =
-  function(Output, data, comment)
-    data = data or ''
-    comment = comment or ''
-
-    assert_string(data)
-    assert_string(comment)
-
+  function(data, comment, Output)
     local has_data = (data ~= '')
     local has_comment = (comment ~= '')
 
@@ -44,5 +38,6 @@ return write_line
 --[[
   2024
   2025
-  2026-05-31
+  2026-05 #
+  2026-06-04
 ]]
