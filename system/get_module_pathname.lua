@@ -6,8 +6,8 @@
 ]]
 
 --[[
-  For correct require()-ready module name return file pathname which
-  was loaded as this module.
+  For correct require()-ready module name return file pathname can be
+  loaded as this module. Also return flag that file is binary.
 
   Not all cases can be resolved: module may be loaded but we can't
   figure file's name. Possible cases for this:
@@ -27,14 +27,21 @@ local get_module_pathname =
 
     local source_files_path = _G.package.path
     local binary_files_path = _G.package.cpath
+    local is_binary = false
 
     local pathname =
-      package.searchpath(module_name, source_files_path) or
-      package.searchpath(module_name, binary_files_path)
+      package.searchpath(module_name, source_files_path)
 
-    if not pathname then return nil end
+    if not pathname then
+      pathname = package.searchpath(module_name, binary_files_path)
+      if pathname then
+        is_binary = true
+      end
+    end
 
-    return normalize_name(pathname)
+    if not pathname then return end
+
+    return normalize_name(pathname), is_binary
   end
 
 -- Export:
