@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-31
+  Last mod.: 2026-06-05
 ]]
 
 --[[
@@ -20,7 +20,7 @@
 ]]
 
 -- Imports:
-local CharacterClassifier = request('Internals.CharacterClassifier')
+local CharacterClassifier = request('get_next_item.CharacterClassifier')
 
 local drop_line_end =
   function(Input)

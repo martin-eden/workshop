@@ -1,8 +1,8 @@
--- Serialize image to PBM format
+-- Compile image to PBM format
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-04
+  Last mod.: 2026-06-05
 ]]
 
 --[[
