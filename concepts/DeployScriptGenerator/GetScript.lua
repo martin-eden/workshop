@@ -12,13 +12,41 @@
     [t] Modules -- strings list with Lua root module names
 ]]
 
--- Imports:
+-- ( Imports
 local add_dir_postfix = request('!.string.file_name.add_dir_postfix')
 local get_modules_filelist = request('get_modules_filelist')
 local get_docs_filelist = request('get_docs_filelist')
-local add_list = request('!.concepts.list.add_list')
-local BashScriptWriter = request('!.concepts.BashScriptWriter.Interface')
 local strip_updirs = request('!.string.file_name.strip_updirs')
+local add_to_list = request('!.concepts.list.add_item')
+local BashScriptWriter = request('!.concepts.BashScriptWriter.Interface')
+
+local get_package_config = request('!.system.get_package_config')
+local quote_regexp = request('!.lua.regexp.quote')
+-- )
+
+local name_sep = quote_regexp('.')
+local dirs_sep
+do
+  local PackageConfig = get_package_config()
+
+  dirs_sep = PackageConfig.dirs_sep
+end
+dirs_sep = quote_regexp(dirs_sep)
+
+local get_module_base_pathname =
+  function(module_name)
+    return string.gsub(module_name, name_sep, dirs_sep)
+  end
+
+local get_module_lua_pathname =
+  function(module_name)
+    return get_module_base_pathname(module_name) .. '.lua'
+  end
+
+local get_module_bin_pathname =
+  function(module_name)
+    return get_module_base_pathname(module_name) .. '.so'
+  end
 
 local GetScript =
   function(Me, Modules)
@@ -32,21 +60,37 @@ local GetScript =
     local DocFiles = { }
 
     if Me.include_docs then
-      DocFiles = get_docs_filelist(CodeFiles)
+      local CodeFilesList = { }
+      for _, rec in ipairs(CodeFiles) do
+        add_to_list(CodeFilesList, rec.file)
+      end
+      DocFiles = get_docs_filelist(CodeFilesList)
     end
-
-    local FilesToCopy = { }
-    add_list(FilesToCopy, CodeFiles)
-    add_list(FilesToCopy, DocFiles)
 
     local ScriptWriter = new(BashScriptWriter)
 
     ScriptWriter:DeleteDir(deploy_dir)
 
-    for _, pathname in ipairs(FilesToCopy) do
-      local dest_pathname = deploy_dir .. strip_updirs(pathname)
+    for _, Rec in ipairs(CodeFiles) do
+      local module_name = Rec.module
+      local src_pathname = Rec.file
+      local dest_pathname = deploy_dir
 
-      ScriptWriter:CopyFile(pathname, dest_pathname)
+      if Rec.is_binary then
+        dest_pathname =
+          dest_pathname .. get_module_bin_pathname(module_name)
+      else
+        dest_pathname =
+          dest_pathname .. get_module_lua_pathname(module_name)
+      end
+
+      ScriptWriter:CopyFile(src_pathname, dest_pathname)
+    end
+
+    for _, src_pathname in ipairs(DocFiles) do
+      local dest_pathname = deploy_dir .. strip_updirs(src_pathname)
+
+      ScriptWriter:CopyFile(src_pathname, dest_pathname)
     end
 
     return ScriptWriter:GetScript()
@@ -57,6 +101,6 @@ return GetScript
 
 --[[
   2018
-  2026-05-28
-  2026-05-29
+  2026-05 # #
+  2026-06-05
 ]]

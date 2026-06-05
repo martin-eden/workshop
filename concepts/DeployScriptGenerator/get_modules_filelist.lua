@@ -2,13 +2,20 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-01
+  Last mod.: 2026-06-05
 ]]
 
 --[[
   Input
 
     [t] Modules -- strings list with Lua root module names
+
+  Output
+
+    [t] -- list of tables with following structure:
+      [s] module -- module name
+      [s] file -- file pathname
+      [b] is_binary -- true for binary modules
 ]]
 
 -- Imports:
@@ -23,9 +30,20 @@ local get_modules_filelist =
     local ModulesRequired = get_modules_dependencies(Modules)
 
     for _, module_name in ipairs(ModulesRequired) do
-      local module_pathname = get_module_pathname(module_name)
+      local module_pathname, is_bin = get_module_pathname(module_name)
 
-      add_to_list(Result, module_pathname)
+      if not module_pathname then goto next end
+
+      add_to_list(
+        Result,
+        {
+          module = module_name,
+          file = module_pathname,
+          is_binary = is_bin,
+        }
+      )
+
+      ::next::
     end
 
     return Result
