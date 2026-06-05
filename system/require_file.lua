@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-08
+  Last mod.: 2026-06-05
 ]]
 
 --[[
@@ -16,7 +16,7 @@
 ]]
 
 -- Imports:
-local get_package_config = request('!.concepts.lua.get_package_config')
+local get_package_config = request('get_package_config')
 local split_string = request('!.string.split')
 local parse_path = request('!.concepts.path_name.parse')
 local file_exists = request('!.file_system.file.exists')
