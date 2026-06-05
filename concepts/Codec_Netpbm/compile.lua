@@ -34,13 +34,14 @@
 
 -- ( Imports
 local get_image_settings = request('compile.get_image_settings')
-local convert_color = request('compile.convert_color')
 local write_line = request('compile.write_line')
 
 local get_format_label = request('Settings.get_format_label')
 local get_format_comment = request('Settings.get_format_comment')
 
 local create_color = request('!.concepts.Image.Color.SpawnColor')
+local denormalize_color = request('!.concepts.Image.Color.Denormalize')
+local number_in_range = request('!.number.in_range')
 local add_to_list = request('!.concepts.list.add_item')
 local list_to_string = request('!.concepts.list.to_string')
 -- )
@@ -60,6 +61,15 @@ local write_header =
     local dims_comment = 'Width, Height, MaxValue'
 
     write_line(dims_str, dims_comment, Output)
+  end
+
+local convert_color =
+  function(Color, max_channel_value)
+    denormalize_color(Color)
+
+    for _, color_component in ipairs(Color) do
+      assert(number_in_range(color_component, 0, max_channel_value))
+    end
   end
 
 local write_data =
