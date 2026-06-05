@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-01
+  Last mod.: 2026-06-05
 ]]
 
 --[[
@@ -10,11 +10,12 @@
   was loaded as this module.
 
   Not all cases can be resolved: module may be loaded but we can't
-  figure file's name. This is possible at least when
+  figure file's name. Possible cases for this:
     * <package.loaded> was directly modified
     * module is loaded via custom function in <package.searchers>
+    * module is system. Like "os". Or "_G".
 
-  Returns nil if is unable to find file.
+  Returns nil if no file found.
 ]]
 
 -- Imports:
@@ -24,7 +25,12 @@ local get_module_pathname =
   function(module_name)
     assert_string(module_name)
 
-    local pathname = package.searchpath(module_name, _G.package.path)
+    local source_files_path = _G.package.path
+    local binary_files_path = _G.package.cpath
+
+    local pathname =
+      package.searchpath(module_name, source_files_path) or
+      package.searchpath(module_name, binary_files_path)
 
     if not pathname then return nil end
 
@@ -37,4 +43,5 @@ return get_module_pathname
 --[[
   2018 # #
   2026-06-01
+  2026-06-05
 ]]
