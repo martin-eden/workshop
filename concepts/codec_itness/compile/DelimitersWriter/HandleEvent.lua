@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-27
+  Last mod.: 2026-06-07
 ]]
 
 -- Write string. Update empty line state
@@ -18,45 +18,22 @@ local Emit =
 local EmitNewline =
   function(Me)
     if Me.is_on_empty_line then return end
+
     Emit(Me, Me.newline_char)
     Me.is_on_empty_line = true
   end
 
--- Emit indentation string
+-- Write newline and indentation
 local EmitIndent =
   function(Me)
+    EmitNewline(Me)
     Emit(Me, Me.Indent:ToString())
   end
 
--- Write newline and indentation
-local EmitNewlineIndent =
-  function(Me)
-    EmitNewline(Me)
-    EmitIndent(Me)
-  end
-
--- ( Delimiting functions
-
-local EmptyFunc =
-  function(Me)
-  end
-
-local NewlineFunc =
-  function(Me)
-    EmitNewline(Me)
-  end
-
-local NewlineIndentFunc =
-  function(Me)
-    EmitNewlineIndent(Me)
-  end
-
-local SpaceFunc =
-  function(Me)
-    Emit(Me, Me.space_char)
-  end
-
--- ) Delimiting functions
+-- Delimiting functions:
+local F_Empty = function(Me) end
+local F_Indent = function(Me) EmitIndent(Me) end
+local F_Space = function(Me) Emit(Me, Me.space_char) end
 
 --[[
   Decision matrix
@@ -67,31 +44,31 @@ local EventsToFunc =
   {
     ['nothing'] =
       {
-        ['nothing'] = EmptyFunc,
-        ['write_string'] = EmptyFunc,
-        ['start_list'] = EmptyFunc,
-        ['end_list'] = EmptyFunc,
+        ['nothing'] = F_Empty,
+        ['write_string'] = F_Empty,
+        ['start_list'] = F_Empty,
+        ['end_list'] = F_Empty,
       },
     ['write_string'] =
       {
-        ['nothing'] = EmptyFunc,
-        ['write_string'] = SpaceFunc,
-        ['start_list'] = NewlineIndentFunc,
-        ['end_list'] = SpaceFunc,
+        ['nothing'] = F_Empty,
+        ['write_string'] = F_Space,
+        ['start_list'] = F_Indent,
+        ['end_list'] = F_Space,
       },
     ['start_list'] =
       {
-        ['nothing'] = EmptyFunc,
-        ['write_string'] = SpaceFunc,
-        ['start_list'] = NewlineIndentFunc,
-        ['end_list'] = EmptyFunc,
+        ['nothing'] = F_Empty,
+        ['write_string'] = F_Space,
+        ['start_list'] = F_Indent,
+        ['end_list'] = F_Empty,
       },
     ['end_list'] =
       {
-        ['nothing'] = NewlineIndentFunc,
-        ['write_string'] = NewlineIndentFunc,
-        ['start_list'] = NewlineIndentFunc,
-        ['end_list'] = NewlineIndentFunc,
+        ['nothing'] = F_Indent,
+        ['write_string'] = F_Indent,
+        ['start_list'] = F_Indent,
+        ['end_list'] = F_Indent,
       },
   }
 
@@ -105,27 +82,23 @@ local EventsToFunc =
   Input
 
     Me [t]
-    event_name [s] -- event name:
+    cur_event [s] -- event name:
       ( nothing start_list write_string end_list )
 ]]
 local OnEvent =
-  function(Me, event_name)
+  function(Me, cur_event)
     if (Me.prev_event ~= 'nothing') then
       Me.is_on_empty_line = false
     end
 
-    if (event_name == 'end_list') then
-      Me.Indent:Dec()
-    end
+    if (cur_event == 'end_list') then Me.Indent:Dec() end
 
-    local IndentFunc = EventsToFunc[Me.prev_event][event_name]
-    IndentFunc(Me)
+    local PaddingFunc = EventsToFunc[Me.prev_event][cur_event]
+    PaddingFunc(Me)
 
-    if (event_name == 'start_list') then
-      Me.Indent:Inc()
-    end
+    if (cur_event == 'start_list') then Me.Indent:Inc() end
 
-    Me.prev_event = event_name
+    Me.prev_event = cur_event
   end
 
 -- Export:
@@ -134,4 +107,5 @@ return OnEvent
 --[[
   2024 # # # # #
   2026-05-23
+  2026-06-07
 ]]
