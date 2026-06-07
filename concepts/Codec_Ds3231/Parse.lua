@@ -2,26 +2,20 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-08
+  Last mod.: 2026-06-07
 ]]
 
 -- Imports:
+local StringValue = request('!.concepts.RangesTree.StringValue.Interface')
 local bytes_from_str = request('!.convert.bytes_from_str')
 local bits_from_bytes = request('!.convert.bits_from_bytes')
-local StringValue = request('!.concepts.RangesTree.StringValue.Interface')
 local apply_ranges_tree = request('!.concepts.RangesTree.apply_ranges_tree')
 local ds3231_values_from_bits = request('Internals.ds3231_values_from_bits')
 
 local Parse =
   function(Me, data_str)
-    assert_string(data_str)
-
-    local DataBytes = bytes_from_str(data_str)
-
-    local data_bits = bits_from_bytes(DataBytes)
-
     local InputStr = StringValue.create()
-    InputStr:SetValue(data_bits)
+    InputStr:SetValue(bits_from_bytes(bytes_from_str(data_str)))
 
     local OutputStr = StringValue.create()
 
