@@ -1,14 +1,14 @@
 This is codec for raw data from hardware module DS3231 (real-time clock)
 
-"Parse.lua" converts string of data to structured Lua table.
-"Compile.lua" converts structured Lua table to string of data.
+"parse.lua" converts string of data to structured Lua table.
+"compile.lua" converts structured Lua table to string of data.
 
 Core module is "ds3231_ranges_tree.is".
 
 That's tree of named bits segments. Tree is stored in Itness format,
 accessible both for humans and computers.
 
-Result Lua table from "Parse" has exactly same structure.
+Result Lua table from "parse" has exactly same structure.
 But data values is changed from strings with bits to integers
 or booleans.
 
