@@ -2,18 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-31
+  Last mod.: 2026-06-07
 ]]
 
 -- Imports:
-local StringOutputStreamClass = request('!.concepts.StreamIo.Output.String')
-local ItnessCodec = request('!.concepts.Codec_Itness')
+local StringOutputStream = request('!.concepts.StreamIo.Output.String')
+local itness_compile = request('!.concepts.codec_itness.compile')
 
 local itness_to_string =
   function(ItnessTree)
-    local StringOutputStream = new(StringOutputStreamClass)
+    local StringOutputStream = new(StringOutputStream)
 
-    ItnessCodec:Compile(ItnessTree, StringOutputStream)
+    itness_compile(ItnessTree, StringOutputStream)
 
     return StringOutputStream:GetString()
   end
@@ -22,6 +22,6 @@ local itness_to_string =
 return itness_to_string
 
 --[[
-  2026-04-27
-  2026-05-26
+  2026-04 #
+  2026-05 #
 ]]

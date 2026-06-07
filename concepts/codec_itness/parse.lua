@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-27
+  Last mod.: 2026-06-07
 ]]
 
 --[[
@@ -12,6 +12,7 @@
 ]]
 
 -- Imports:
+local Syntax = request('common.Syntax')
 local add_to_list = request('!.concepts.list.add_item')
 
 local add_item =
@@ -22,7 +23,7 @@ local add_item =
   end
 
 local parse_root =
-  function(Input, Syntax)
+  function(Input)
     -- Syntels shortcuts:
     local group_open_char = Syntax.group_open_char
     local group_close_char = Syntax.group_close_char
@@ -96,6 +97,6 @@ return parse_root
 
 --[[
   2024 # # # #
-  2026-05-23
-  2026-05-26
+  2026-05 # #
+  2026-06-07
 ]]

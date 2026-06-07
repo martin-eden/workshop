@@ -2,19 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-31
+  Last mod.: 2026-06-07
 ]]
 
 -- Imports:
-local StringInputStreamClass = request('!.concepts.StreamIo.Input.String')
-local ItnessCodec = request('!.concepts.Codec_Itness')
+local StringInputStream = request('!.concepts.StreamIo.Input.String')
+local itness_parse = request('!.concepts.codec_itness.parse')
 
 local itness_from_string =
   function(str)
-    local StringInputStream = new(StringInputStreamClass)
+    local StringInputStream = new(StringInputStream)
     StringInputStream:Init(str)
 
-    return ItnessCodec:Parse(StringInputStream)
+    return itness_parse(StringInputStream)
   end
 
 -- Export:

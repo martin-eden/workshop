@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-26
+  Last mod.: 2026-06-07
 ]]
 
 --[[
@@ -12,14 +12,16 @@
 ]]
 
 -- Imports:
-local DataWriterClass = request('Internals.DataWriter.Interface')
-local DelimitersWriter = request('Internals.DelimitersWriter.Interface')
+local DataWriter = request('compile.DataWriter.Interface')
+local DelimitersWriter = request('compile.DelimitersWriter.Interface')
+local Syntax = request('common.Syntax')
 
 local compile_root =
-  function(Tree, Output, Syntax)
+  function(Tree, Output)
     assert_table(Tree)
 
-    local DataWriter = new(DataWriterClass)
+    local DataWriter = new(DataWriter)
+    local DelimitersWriter = new(DelimitersWriter)
 
     local compile
     compile =
@@ -59,5 +61,6 @@ return compile_root
 
 --[[
   2024 # # #
-  2026-05-23
+  2026-05 #
+  2026-06-07
 ]]
