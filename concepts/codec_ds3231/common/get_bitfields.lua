@@ -13,7 +13,7 @@ local ranges_tree_from_itness = request('!.convert.ranges_tree_from_itness')
 local get_bitfields =
   function()
     local bitfields_filename =
-      '!/concepts/Codec_Ds3231/common/ds3231_ranges_tree.is'
+      '!/concepts/codec_ds3231/common/ds3231_ranges_tree.is'
 
     local bitfields_is_str = require_file(bitfields_filename)
     local Bitfields_Is = itness_from_str(bitfields_is_str)
