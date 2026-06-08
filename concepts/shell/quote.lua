@@ -2,23 +2,15 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-06-08
 ]]
 
---[[
-  Pack data for Bash
-
-  Input
-    [s] -- Data to encode
-  Output
-    [s] -- Encoded data
-]]
 local quote =
   function(str)
     --[[
       We're using single-quotes
 
-      Happy case when data string does not contain '. Then we just
+      Happy case is when data string does not contain '. Then we just
       enclose string in '.
 
       If it does contain ' we split string around it, quoting clean
@@ -50,19 +42,17 @@ local quote =
     local clean_part_capture = "(.-)'"
 
     local capture_start_idx, capture_end_idx, capture
-    local result
+    local result = ''
 
     capture_start_idx = 1
-    result = ''
+
     while true do
       capture_start_idx, capture_end_idx, capture =
         string.find(str, clean_part_capture, capture_start_idx)
 
       result = result .. "'" .. capture .. "'"
 
-      if (capture_end_idx == data_end_idx) then
-        break
-      end
+      if (capture_end_idx == data_end_idx) then break end
 
       result = result .. [[\']]
 
