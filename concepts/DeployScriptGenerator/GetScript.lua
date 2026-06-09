@@ -16,7 +16,6 @@
 local add_dir_postfix = request('!.string.file_name.add_dir_postfix')
 local get_modules_filelist = request('get_modules_filelist')
 local get_docs_filelist = request('get_docs_filelist')
-local strip_updirs = request('!.string.file_name.strip_updirs')
 local add_to_list = request('!.concepts.list.add_item')
 local BashScriptWriter = request('!.concepts.BashScriptWriter.Interface')
 
