@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-11
+  Last mod.: 2026-06-09
 ]]
 
 -- Imports:
@@ -34,7 +34,7 @@ local compare_pathnames =
 
 local compare_copyrecs =
   function(Rec_A, Rec_B)
-    return compare_pathnames(Rec_A.src_name, Rec_B.src_name)
+    return compare_pathnames(Rec_A.dest_name, Rec_B.dest_name)
   end
 
 --[[
