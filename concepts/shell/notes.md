@@ -47,9 +47,6 @@ If data does not contain `'`, we'll just surround it with `'`.
 However if it does contain `'`, we need to split it before and after
 `'` and concatenate with quoted `'`:
 
-   `a'b` -> `'a'\''b'` or `'a'"'"'b'`
+   `a'b` -> `a\'b` or `a"'"b`
 
-(Yeah, looks awful. That's why we invented Itness format where quotes
-are directional and similar case `a [ b` can be rendered as `[a [][ b]`.)
-
--- Martin, 2026-01-12
+-- Martin, 2026-06-09
