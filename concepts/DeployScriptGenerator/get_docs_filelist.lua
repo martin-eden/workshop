@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-29
+  Last mod.: 2026-06-11
 ]]
 
 --[[
@@ -60,9 +60,7 @@ local get_docs_filelist =
     for _, module_pathname in ipairs(FilesList) do
       assert(not path_is_dir(module_pathname))
 
-      local ParsedPathname = parse_pathname(module_pathname)
-
-      local module_dirname = ParsedPathname.HostDir
+      local module_dirname = parse_pathname(module_pathname).HostDir
 
       if ProcessedDirectories_Map[module_dirname] then goto next end
 
