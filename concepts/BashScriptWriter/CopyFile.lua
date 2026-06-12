@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-28
+  Last mod.: 2026-06-12
 ]]
 
 --[[
@@ -13,7 +13,7 @@
 ]]
 
 -- Imports:
-local normalize_name = request('!.file_system.file.normalize_name')
+local normalize_name = request('!.concepts.path_name.normalize')
 local add_to_list = request('!.concepts.list.add_item')
 
 local CopyFile =

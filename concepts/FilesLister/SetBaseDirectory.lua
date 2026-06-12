@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-26
+  Last mod.: 2026-06-12
 ]]
 
 -- Imports:
 local add_dir_postfix = request('!.string.file_name.add_dir_postfix')
-local normalize_name = request('!.file_system.file.normalize_name')
+local normalize_name = request('!.concepts.path_name.normalize')
 
 local SetBaseDir =
   function(Me, base_dir)

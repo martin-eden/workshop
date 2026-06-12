@@ -2,11 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-04
+  Last mod.: 2026-06-12
 ]]
 
 -- Imports:
-local normalize = request('!.file_system.file.normalize_name')
+local normalize = request('!.concepts.path_name.normalize')
 local quote = request('!.concepts.shell.quote')
 local glue_words = request('!.concepts.words.to_string')
 

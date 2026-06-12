@@ -1,8 +1,8 @@
--- For module name try to find it's file
+-- Try to find file by module name
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-05
+  Last mod.: 2026-06-12
 ]]
 
 --[[
@@ -19,7 +19,7 @@
 ]]
 
 -- Imports:
-local normalize_name = request('!.file_system.file.normalize_name')
+local normalize_name = request('!.concepts.path_name.normalize')
 
 local get_module_pathname =
   function(module_name)

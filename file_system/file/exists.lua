@@ -2,11 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-06-12
 ]]
 
 -- Imports:
-local normalize_name = request('normalize_name')
+local normalize_name = request('!.concepts.path_name.normalize')
 
 local pathname_exists =
   function(pathname)
