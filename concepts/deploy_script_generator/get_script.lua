@@ -2,39 +2,49 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-29
+  Last mod.: 2026-06-12
 ]]
 
 --[[
-  Input
+  Return string with shell script to copy given modules with
+  their dependencies.
 
-    [t] Me
-    [t] Modules -- strings list with Lua root module names
+  Input
+    [t] Modules -- list of Lua module names
+    [t] Config -- deploy configuration
+      [?s] deploy_dir -- deploy directory.
+        Default: "deploy/"
+      [?b] include_docs -- also locate and copy documentation files.
+        Default: true
 ]]
 
 -- ( Imports
-local add_dir_postfix = request('!.string.file_name.add_dir_postfix')
-local get_modules_filelist = request('get_modules_filelist')
-local get_docs_filelist = request('get_docs_filelist')
-local add_to_list = request('!.concepts.list.add_item')
+local get_modules_filelist = request('Internals.get_modules_filelist')
+local get_docs_filelist = request('Internals.get_docs_filelist')
+
 local BashScriptWriter = request('!.concepts.BashScriptWriter.Interface')
 
-local get_package_config = request('!.system.get_package_config')
+local add_dir_postfix = request('!.string.file_name.add_dir_postfix')
+local add_to_list = request('!.concepts.list.add_item')
+local strip_updirs = request('!.string.file_name.strip_updirs')
 local quote_regexp = request('!.lua.regexp.quote')
 -- )
 
-local name_sep = quote_regexp('.')
+local names_sep = quote_regexp('.')
+
 local dirs_sep
 do
+  -- Imports:
+  local get_package_config = request('!.system.get_package_config')
+
   local PackageConfig = get_package_config()
 
-  dirs_sep = PackageConfig.dirs_sep
+  dirs_sep = quote_regexp(PackageConfig.dirs_sep)
 end
-dirs_sep = quote_regexp(dirs_sep)
 
 local get_module_base_pathname =
   function(module_name)
-    return string.gsub(module_name, name_sep, dirs_sep)
+    return string.gsub(module_name, names_sep, dirs_sep)
   end
 
 local get_module_lua_pathname =
@@ -47,9 +57,19 @@ local get_module_bin_pathname =
     return get_module_base_pathname(module_name) .. '.so'
   end
 
-local GetScript =
-  function(Me, Modules)
-    local deploy_dir = Me.deploy_dir
+local DefaultConfig =
+  {
+    deploy_dir = 'deploy/',
+    include_docs = true,
+  }
+
+local get_script =
+  function(Modules, ArgConfig)
+    local Config = new(DefaultConfig, ArgConfig)
+
+    local deploy_dir = Config.deploy_dir
+    local include_docs = Config.include_docs
+
     assert_string(deploy_dir)
 
     deploy_dir = add_dir_postfix(deploy_dir)
@@ -58,7 +78,7 @@ local GetScript =
 
     local DocFiles = { }
 
-    if Me.include_docs then
+    if include_docs then
       local CodeFilesList = { }
       for _, rec in ipairs(CodeFiles) do
         add_to_list(CodeFilesList, rec.file)
@@ -96,10 +116,13 @@ local GetScript =
   end
 
 -- Export:
-return GetScript
+return get_script
 
 --[[
-  2018
+  2016
+  2017 # #
+  2018 # # # #
   2026-05 # #
   2026-06-05
+  2026-06-12
 ]]
