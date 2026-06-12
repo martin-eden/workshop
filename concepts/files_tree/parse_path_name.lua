@@ -2,50 +2,58 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-03
+  Last mod.: 2026-06-12
 ]]
 
-local parse_name = request('^.path_name.parse')
+--[[
+  It still looks broken but I revisited it
 
-local level_up_str = '..'
+  pathname_from_str() can return list with empty strings on ends.
+  Empty at start means absolute path. Empty at end means directory.
+]]
 
-return
-  function(self, path_name, is_file)
-    error('Not synced with [path_name.parse] interface')
+-- Imports:
+local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
 
-    local components = parse_name(path_name)
-    local current_node = self.tree
-    for i = 1, #components.Path do
-      local part_name = components[i]
-      if (part_name == level_up_str) then
-          if not current_node.parent then
-            current_node.parent =
-              {
-                name = '',
-                children =
-                  {
-                    [current_node.name] = current_node,
-                  },
-              }
-          end
-          current_node = current_node.parent
-      else
-        if not current_node.children[part_name] then
-          current_node.children[part_name] =
+local updir = '..'
+
+local ParsePathname =
+  function(Me, path_name, is_file)
+    local Pathname = pathname_from_str(path_name)
+    local CurrentNode = Me.tree
+
+    for _, part_name in ipairs(Pathname) do
+      if (part_name == updir) then
+        if not CurrentNode.parent then
+          CurrentNode.parent =
             {
-              name = part_name,
-              parent = current_node,
-              children = {},
+              name = '',
+              children = { [CurrentNode.name] = CurrentNode },
             }
         end
-        current_node = current_node.children[part_name]
+        CurrentNode = CurrentNode.parent
+      else
+        if not CurrentNode.children[part_name] then
+          CurrentNode.children[part_name] =
+            {
+              name = part_name,
+              parent = CurrentNode,
+              children = { },
+            }
+        end
+        CurrentNode = CurrentNode.children[part_name]
       end
     end
-    if is_file and not next(current_node.children) then
-      current_node.is_file = true
+
+    if is_file and not next(CurrentNode.children) then
+      CurrentNode.is_file = true
     end
   end
 
+-- Export:
+return ParsePathname
+
 --[[
   2017-09
+  2026-06-12
 ]]
