@@ -19,10 +19,9 @@
 ]]
 
 -- Imports:
-local patch_table = request('!.table.patch')
-local file_from_str = request('!.convert.file_from_str')
 local get_deploy_script =
   request('!.concepts.deploy_script_generator.get_script')
+local file_from_str = request('!.convert.file_from_str')
 
 local DefaultConfig =
   {
