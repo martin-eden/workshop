@@ -2,22 +2,29 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-25
+  Last mod.: 2026-06-12
 ]]
 
--- Imports:
-local ends_with = request('!.string.ends_with')
-local parse_pathname = request('parse')
+local empty = ''
+local self_dir = '.'
+local upper_dir = '..'
 
--- Check that pathname is directory. We're not doing any file access
 local is_directory =
-  function(path_name)
-    return ends_with(parse_pathname(path_name).FullName, '/')
+  function(Pathname)
+    assert_table(Pathname)
+
+    local last_node = Pathname[#Pathname]
+
+    return
+      (last_node == empty) or
+      (last_node == self_dir) or
+      (last_node == upper_dir)
   end
 
 -- Export:
 return is_directory
 
 --[[
-  2026-04-25
+  2026-04 #
+  2026-06-12
 ]]
