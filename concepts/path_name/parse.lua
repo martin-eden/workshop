@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-26
+  Last mod.: 2026-06-11
 ]]
 
 --[[
@@ -25,7 +25,6 @@
   * .HostDir always ends with "/"
   * .Name never contains "/"
   * .HostDir for absolute paths starts with "/"
-  * .HostDir for relative paths starts with "."
 ]]
 
 -- Imports:
@@ -45,10 +44,26 @@ local parse_pathname =
     local empty = ''
 
     path_name = path_name .. sep
-    local path = split_string(path_name, sep)
+    local Path = split_string(path_name, sep)
+
+    do
+      local index = 2
+      local current_item
+      while (index <= #Path - 1) do
+        current_item = Path[index]
+        if
+          (current_item == empty) or
+          (current_item == self_dir)
+        then
+          table.remove(Path, index)
+        else
+          index = index + 1
+        end
+      end
+    end
 
     setmetatable(
-      path,
+      Path,
       {
         __index =
           function(table, key)
@@ -61,89 +76,73 @@ local parse_pathname =
       }
     )
 
-    do
-      local index = 2
-      local current_item
-      while (index <= #path - 1) do
-        current_item = path[index]
-        if
-          (current_item == empty) or
-          (current_item == self_dir)
-        then
-          table.remove(path, index)
-        else
-          index = index + 1
-        end
-      end
+    local is_absolute =
+      (Path.first_node == empty)
+
+    if (Path.first_node == self_dir) and (#Path >= 3) then
+      table.remove(Path, 1)
+    end
+
+    if (Path.last_node == self_dir) and (#Path >= 2) then
+      Path[#Path] = ''
     end
 
     local is_directory =
-      (path.last_node == self_dir) or
-      (path.last_node == upper_dir) or
-      (path.last_node == empty)
+      (Path.last_node == self_dir) or
+      (Path.last_node == upper_dir) or
+      (Path.last_node == empty)
 
     if
-      (path.first_node == '.') and
-      (path[2] == '..')
+      is_directory and
+      (
+        (Path.last_node ~= empty) or
+        (#Path == 1)
+      )
     then
-      table.remove(path, 1)
+      table.insert(Path, '')
     end
 
-    if
-      (path.last_node == empty) and
-      (#path >= 2)
-    then
-      table.remove(path, #path)
-    end
+    --[[
+      Now <Path> contains at least two entries
 
-    while
-      (path.last_node == self_dir) and
-      (#path >= 2)
-    do
-      table.remove(path, #path)
-    end
+      If first entry is "" then it's absolute path.
+      If last entry is "" or ".." then it's directory.
+    ]]
+
+    local full_name = table.concat(Path, sep)
 
     local host_dir_name
     do
-      if
-        (path.first_node ~= empty) and
-        (path.first_node ~= self_dir) and
-        (path.first_node ~= upper_dir)
-      then
-        table.insert(path, 1, self_dir)
+      local host_dir_end_idx
+      if is_directory then
+        host_dir_end_idx = #Path - 2
+      else
+        host_dir_end_idx = #Path - 1
       end
-      if
-        (#path == 1) and
-        (path.first_node ~= empty) and
-        (path.first_node ~= upper_dir)
-      then
-        table.insert(path, 1, self_dir)
-      end
-      host_dir_name = table.concat(path, sep, 1, #path - 1)
-      if
-        (host_dir_name == empty) and
-        (path.first_node ~= empty)
-      then
-        -- Zen question: what is the "upper dir" for ".." ?
-        host_dir_name = self_dir
+      host_dir_name = table.concat(Path, sep, 1, host_dir_end_idx)
+      if (host_dir_name == empty) then
+        --[[
+          Cases when we can come here: ".", "..", "/", "abc".
+          We need to provide host dir for them.
+          Zen question: what is the name of "parent dir" for ".."?
+          That's why we're using name "host", not "parent".
+        ]]
+        if is_absolute then
+          host_dir_name = empty
+        else
+          host_dir_name = self_dir
+        end
       end
       host_dir_name = host_dir_name .. sep
     end
 
-    if
-      (#path == 2) and
-      (path.first_node == self_dir) and
-      (path.last_node == self_dir)
-    then
-      table.remove(path, #path)
-    end
-
-    local full_name = table.concat(path, sep)
+    local leaf_name
     if is_directory then
-      full_name = full_name .. sep
+      leaf_name = Path[#Path - 1]
+    else
+      leaf_name = Path[#Path]
     end
 
-    local leaf_name = path.last_node
     if (leaf_name == empty) then
       leaf_name = self_dir
     end
@@ -185,31 +184,35 @@ return parse_pathname
       FullName = '/'
       HostDir = '/'
       Name = '.'
+      Path = { '', '' }
 
     /.
       Same as for "/"
 
-    ./
+    .
       FullName = './'
       HostDir = './'
       Name = '.'
+      Path = { '.', '' }
 
-    .
-      Same as for "./"
+    ./
+      Same as for "."
 
-    ../
+    ..
       FullName = '../'
       HostDir = './'
       Name = '..'
+      Path = { '..', '' }
 
-    ..
+    ../
     ./..
-      Same as for "../"
+      Same as for ".."
 
     /..
       FullName = '/../'
       HostDir = '/'
       Name = '..'
+      Path = { '', '..', '' }
 
     a/b
       FullName = './a/b'
@@ -234,4 +237,5 @@ return parse_pathname
   2026-04-23
   2026-04-24
   2026-04-26
+  2026-06-11
 ]]
