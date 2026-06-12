@@ -152,6 +152,7 @@ local parse_pathname =
         HostDir = host_dir_name,
         Name = leaf_name,
         FullName = full_name,
+        Path = Path,
       }
 
     return Result
