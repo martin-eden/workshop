@@ -2,11 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-25
+  Last mod.: 2026-06-12
 ]]
 
 -- Imports:
-local parse_pathname = request('!.concepts.path_name.parse')
+local parse_pathname = request('parse')
 
 --[[
   Normalize string with Unix path-name.
