@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-09
+  Last mod.: 2026-06-12
 ]]
 
 -- Imports:
@@ -25,7 +25,7 @@ local SpecialChars =
     -- ',',
     -- '-',
     -- '.',
-    '/',
+    -- '/',
     -- ':',
     ';',
     '<',
@@ -52,4 +52,5 @@ return SpecialChars
 
 --[[
   2026-06-09
+  2026-06-12
 ]]
