@@ -1,16 +1,15 @@
--- Create bash script to deploy given modules with dependencies
+-- Create shell script to copy given modules with dependencies
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-29
+  Last mod.: 2026-06-12
 ]]
 
 --[[
   Input
 
     [t] Modules -- list of root Lua modules names (require()-ready)
-    [?t] Options -- settings overrides
-
+    [?t] Config -- configuration
       [?s] script_name -- file name of shell script to create
         Default: "deploy.sh"
       [?s] deploy_dir -- deploy directory name
@@ -22,10 +21,10 @@
 -- Imports:
 local patch_table = request('!.table.patch')
 local file_from_str = request('!.convert.file_from_str')
-local DeployScriptGenerator =
-  request('!.concepts.DeployScriptGenerator.Interface')
+local get_deploy_script =
+  request('!.concepts.deploy_script_generator.get_script')
 
-local DefaultSettings =
+local DefaultConfig =
   {
     script_name = 'deploy.sh',
     deploy_dir = 'deploy/',
@@ -33,17 +32,14 @@ local DefaultSettings =
   }
 
 local create_deploy_script =
-  function(Modules, SettingsOverrides)
+  function(Modules, ArgConfig)
     assert_table(Modules)
 
-    local Settings = new(DefaultSettings)
-    if is_table(SettingsOverrides) then
-      patch_table(Settings, SettingsOverrides)
-    end
+    local Config = new(DefaultConfig, ArgConfig)
 
-    local script_name = Settings.script_name
-    local deploy_dir = Settings.deploy_dir
-    local include_docs = Settings.include_docs
+    local script_name = Config.script_name
+    local deploy_dir = Config.deploy_dir
+    local include_docs = Config.include_docs
 
     assert_string(script_name)
     assert_string(deploy_dir)
@@ -54,11 +50,17 @@ local create_deploy_script =
       request(module_name)
     end
 
-    -- Deploy maker uses global dependencies table
-    local DeployMaker = new(DeployScriptGenerator)
-    DeployMaker.include_docs = include_docs
-    DeployMaker.deploy_dir = deploy_dir
-    local script_str = DeployMaker:GetScript(Modules)
+    -- Deploy script generator uses global dependencies table
+
+    local script_str
+    do
+      local Config =
+        {
+          deploy_dir = deploy_dir,
+          include_docs = include_docs,
+        }
+      script_str = get_deploy_script(Modules, Config)
+    end
 
     file_from_str(script_str, script_name)
   end
@@ -69,6 +71,5 @@ return create_deploy_script
 --[[
   2017
   2018
-  2026-05-28
-  2026-05-29
+  2026-05 ##
 ]]
