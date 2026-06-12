@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-11
+  Last mod.: 2026-06-12
 ]]
 
 --[[
@@ -20,8 +20,9 @@
 ]]
 
 -- Imports:
-local path_is_dir = request('!.concepts.path_name.is_directory')
-local parse_pathname = request('!.concepts.path_name.parse')
+local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
+local is_directory = request('!.concepts.path_name.is_directory')
+local get_host_dir = request('!.concepts.path_name.get_host_dir')
 local FilesLister = request('!.concepts.FilesLister.Interface')
 local add_to_list = request('!.concepts.list.add_item')
 
@@ -58,9 +59,11 @@ local get_docs_filelist =
     local ProcessedDirectories_Map = { }
 
     for _, module_pathname in ipairs(FilesList) do
-      assert(not path_is_dir(module_pathname))
+      local ModulePathname = pathname_from_str(module_pathname)
 
-      local module_dirname = parse_pathname(module_pathname).HostDir
+      assert(not is_directory(ModulePathname))
+
+      local module_dirname = get_host_dir(ModulePathname)
 
       if ProcessedDirectories_Map[module_dirname] then goto next end
 

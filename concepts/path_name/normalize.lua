@@ -6,7 +6,8 @@
 ]]
 
 -- Imports:
-local parse_pathname = request('parse')
+local pathname_from_str = request('pathname_from_str')
+local pathname_to_str = request('pathname_to_str')
 
 --[[
   Normalize string with Unix path-name.
@@ -15,7 +16,7 @@ local parse_pathname = request('parse')
 ]]
 local normalize_name =
   function(path_name)
-    return parse_pathname(path_name).FullName
+    return pathname_to_str(pathname_from_str(path_name))
   end
 
 -- Export:

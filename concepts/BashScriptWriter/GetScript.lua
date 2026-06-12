@@ -8,7 +8,8 @@
 -- Imports:
 local add_to_list = request('!.concepts.list.add_item')
 local split_string = request('!.string.split')
-local parse_pathname = request('!.concepts.path_name.parse')
+local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
+local get_host_dir = request('!.concepts.path_name.get_host_dir')
 local get_cmd_rmdir = request('!.mechs.cmdline.get_cmd_rmdir')
 local get_cmd_mkdir = request('!.mechs.cmdline.get_cmd_mkdir')
 local get_cmd_copyfile = request('!.mechs.cmdline.get_cmd_copy')
@@ -94,7 +95,7 @@ local GetScript =
       local src_name = CopyRec.src_name
       local dest_name = CopyRec.dest_name
 
-      local dest_dir = parse_pathname(dest_name).HostDir
+      local dest_dir = get_host_dir(pathname_from_str(dest_name))
 
       if (dest_dir ~= prev_dest_dir) then
         add_line('')

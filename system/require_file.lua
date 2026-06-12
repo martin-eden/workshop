@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-05
+  Last mod.: 2026-06-12
 ]]
 
 --[[
@@ -12,28 +12,37 @@
 
     "!/" at start means path is relative to "workshop"'s directory
 
-    You can use ".." for upper directory (not "^")
+    We are using ".." for upper directory (not "^")
 ]]
 
 -- Imports:
-local get_package_config = request('get_package_config')
 local split_string = request('!.string.split')
-local parse_path = request('!.concepts.path_name.parse')
+local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
+local get_host_dir = request('!.concepts.path_name.get_host_dir')
 local file_exists = request('!.file_system.file.exists')
 local map_table_values = request('!.table.map_values')
 local get_table_keys = request('!.table.get_keys')
 local add_to_list = request('!.concepts.list.add_item')
 local file_to_str = request('!.convert.file_to_str')
 
-local package_config = get_package_config()
+local package_capture_char, package_items_sep
+do
+  -- Imports:
+  local get_package_config = request('get_package_config')
+
+  local package_config = get_package_config()
+
+  package_capture_char = package_config.capture_char
+  package_items_sep = package_config.items_sep
+end
 
 local get_host_dir =
   function(luas_require_dir)
     local host_dir = luas_require_dir
 
     repeat
-      host_dir = parse_path(host_dir).HostDir
-    until not string.find(host_dir, package_config.capture_char)
+      host_dir = get_host_dir(pathname_from_str(host_dir))
+    until not string.find(host_dir, package_capture_char)
 
     return host_dir
   end
@@ -64,7 +73,7 @@ local require_file =
     workshops_dir = string.gsub(workshops_dir, '%.', '/')
 
     local SearchPathsList =
-      split_string(_G.package.path, package_config.items_sep)
+      split_string(_G.package.path, package_items_sep)
 
     local PathnamesToTry = { }
 
