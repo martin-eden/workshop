@@ -10,13 +10,13 @@ local list_to_str = request('!.concepts.list.to_string')
 
 local names_sep = '/'
 
-local compile =
+local pathname_to_str =
   function(Pathname)
     return list_to_str(Pathname, names_sep)
   end
 
 -- Export:
-return compile
+return pathname_to_str
 
 --[[
   2026-06-12
