@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-05
+  Last mod.: 2026-06-15
 ]]
 
 --[[
@@ -34,7 +34,7 @@
 
 -- ( Imports
 local get_image_settings = request('compile.get_image_settings')
-local write_line = request('compile.write_line')
+local Serializer = request('compile.Serializer')
 
 local get_format_label = request('Settings.get_format_label')
 local get_format_comment = request('Settings.get_format_comment')
@@ -47,20 +47,23 @@ local list_to_string = request('!.concepts.list.to_string')
 -- )
 
 local write_header =
-  function(ImageSettings, Output)
+  function(ImageSettings, Serializer)
     local format_label = get_format_label(ImageSettings)
     local format_comment = get_format_comment(format_label)
 
-    write_line(format_label, format_comment, Output)
+    Serializer:WriteData(format_label)
+    Serializer:WriteComment(format_comment)
 
     local width = ImageSettings.width
     local height = ImageSettings.height
     local max_channel_value = ImageSettings.max_channel_value
 
-    local dims_str = string.format('%s %s %s', width, height, max_channel_value)
-    local dims_comment = 'Width, Height, MaxValue'
+    local dims_comment = 'Width Height MaxValue'
 
-    write_line(dims_str, dims_comment, Output)
+    Serializer:WriteData(width)
+    Serializer:WriteData(height)
+    Serializer:WriteData(max_channel_value)
+    Serializer:WriteComment(dims_comment)
   end
 
 local convert_color =
@@ -73,7 +76,7 @@ local convert_color =
   end
 
 local write_data =
-  function(ImageSettings, Image, Output)
+  function(ImageSettings, Image, Serializer)
     local width = ImageSettings.width
     local height = ImageSettings.height
     local num_channels = ImageSettings.num_channels
@@ -91,18 +94,23 @@ local write_data =
       error('Unsupported number of color channels.')
     end
 
+    local line_comment_fmt = 'Line %d'
     local columns_delim = '  '
-    local components_delim = ' '
     local color_component_fmt = '%03d'
 
     for y = 1, height do
-      local Line = { }
+      Serializer:WriteNewline()
 
-      write_line('', '', Output)
+      local line_comment = string.format(line_comment_fmt, y)
+      Serializer:WriteComment(line_comment)
 
-      write_line('', string.format('Line %d', y), Output)
+      local is_first_item_in_line = true
 
       for x = 1, width do
+        if not is_first_item_in_line then
+          Serializer:WriteRaw(columns_delim)
+        end
+
         local ImageColor = Image:GetPixel({ y, x })
         if is_nil(ImageColor) then
           ImageColor = create_color(color_format)
@@ -111,23 +119,22 @@ local write_data =
         local PbmColor = new(ImageColor)
         convert_color(PbmColor, max_channel_value)
 
-        local StrColor = { }
-
-        for _, color_component in ipairs(PbmColor) do
-          add_to_list(StrColor, string.format(color_component_fmt, color_component))
+        for channel = 1, num_channels do
+          local color_component_str =
+            string.format(color_component_fmt, PbmColor[channel])
+          Serializer:WriteData(color_component_str)
         end
 
-        add_to_list(Line, list_to_string(StrColor, components_delim))
+        is_first_item_in_line = false
 
         if (x % num_colors_per_data_line == 0) then
-          write_line(list_to_string(Line, columns_delim), '', Output)
-          Line = { }
+          Serializer:WriteNewline()
+          is_first_item_in_line = true
         end
       end
 
-      -- Write remained chunk
       if (width % num_colors_per_data_line ~= 0) then
-        write_line(list_to_string(Line, columns_delim), '', Output)
+        Serializer:WriteNewline()
       end
     end
   end
@@ -136,8 +143,11 @@ local compile =
   function(Image, Output)
     local EncoderImageSettings = get_image_settings(Image)
 
-    write_header(EncoderImageSettings, Output)
-    write_data(EncoderImageSettings, Image, Output)
+    local Serializer = new(Serializer)
+    Serializer.Output = Output
+
+    write_header(EncoderImageSettings, Serializer)
+    write_data(EncoderImageSettings, Image, Serializer)
   end
 
 -- Exports:
@@ -149,4 +159,5 @@ return compile
   2026-01 #
   2026-05 #
   2026-06-04
+  2026-06-15
 ]]
