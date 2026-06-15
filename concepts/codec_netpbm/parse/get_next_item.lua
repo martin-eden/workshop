@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-05
+  Last mod.: 2026-06-15
 ]]
 
 --[[
@@ -16,7 +16,9 @@
       1920 1080 # Width Height
       255
 
-    Successive calls will return 'P3', '1920', '1080', '255'.
+    Successive calls will return
+
+      'P3' '1920' '1080' '255'
 ]]
 
 -- Imports:
