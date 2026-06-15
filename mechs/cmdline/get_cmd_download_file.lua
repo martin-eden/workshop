@@ -10,6 +10,7 @@ local quote = request('!.concepts.shell.quote')
 local normalize = request('!.concepts.path_name.normalize')
 local glue_words = request('!.concepts.words.to_string')
 
+--[[
 local get_cmd_wget =
   function(url_str, pathname)
     return
@@ -20,6 +21,7 @@ local get_cmd_wget =
         '--quiet',
       }
   end
+--]]
 
 local get_cmd_curl =
   function(url_str, pathname)
@@ -30,6 +32,7 @@ local get_cmd_curl =
         pathname,
         url_str,
         '--silent',
+        '--show-error',
       }
   end
 
