@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-04
+  Last mod.: 2026-06-15
 ]]
 
 local Formats =
@@ -10,17 +10,17 @@ local Formats =
     {
       label = 'P1',
       Settings = { num_channels = 1, num_channel_values = 2 },
-      comment = 'Monochrome, text',
+      comment = 'Monochrome image, text format',
     },
     {
       label = 'P2',
       Settings = { num_channels = 1 },
-      comment = 'Grayscale, text',
+      comment = 'Grayscale image, text format',
     },
     {
       label = 'P3',
       Settings = { num_channels = 3 },
-      comment = 'Color, text',
+      comment = 'Color image, text format',
     },
   }
 
