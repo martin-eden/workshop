@@ -35,9 +35,9 @@
 -- ( Imports
 local get_image_settings = request('compile.get_image_settings')
 local Serializer = request('compile.Serializer')
+local get_format_comment = request('compile.get_format_comment')
 
 local get_format_label = request('Settings.get_format_label')
-local get_format_comment = request('Settings.get_format_comment')
 
 local create_color = request('!.concepts.Image.Color.SpawnColor')
 local denormalize_color = request('!.concepts.Image.Color.Denormalize')
