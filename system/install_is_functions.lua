@@ -11,8 +11,8 @@
 ]]
 
 -- Imports:
-local DataTypes = request('!.lua.data_types')
-local MathTypes = request('!.lua.data_mathtypes')
+local TypeNames = request('!.lua.data_types')
+local NumberTypeNames = request('!.lua.data_mathtypes')
 
 local type_is =
   function(type_name)
@@ -39,10 +39,10 @@ local number_is =
 
 local install_is_functions =
   function()
-    for _, type_name in ipairs(DataTypes) do
+    for _, type_name in ipairs(TypeNames) do
       _G['is_' .. type_name] = type_is(type_name)
     end
-    for _, math_type_name in ipairs(MathTypes) do
+    for _, math_type_name in ipairs(NumberTypeNames) do
       _G['is_' .. math_type_name] = number_is(math_type_name)
     end
   end
@@ -52,8 +52,8 @@ return install_is_functions
 
 --[[
   2018-02
-  2020-01
-  2022-01
-  2024-03
+  2020 #
+  2022 #
+  2024 #
   2026-04-22
 ]]
