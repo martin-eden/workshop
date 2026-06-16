@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-12
+  Last mod.: 2026-06-16
 ]]
 
 --[[
@@ -24,7 +24,7 @@ local get_docs_filelist = request('Internals.get_docs_filelist')
 
 local BashScriptWriter = request('!.concepts.BashScriptWriter.Interface')
 
-local add_dir_postfix = request('!.string.file_name.add_dir_postfix')
+local add_dir_postfix = request('!.concepts.path_name.add_dir_postfix')
 local add_to_list = request('!.concepts.list.add_item')
 local strip_updirs = request('!.string.file_name.strip_updirs')
 local quote_regexp = request('!.lua.regexp.quote')
