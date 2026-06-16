@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-22
+  Last mod.: 2026-06-16
 ]]
 
 --[[
@@ -11,7 +11,7 @@
 ]]
 
 -- Imports:
-local TypeNames = request('!.lua.data_types')
+local TypeNames = request('!.concepts.lua.TypeNames')
 local NumberTypeNames = request('!.lua.data_mathtypes')
 
 local type_is =

@@ -6,7 +6,7 @@
 ]]
 
 -- Imports:
-local TypeNames = request('!.lua.data_types')
+local TypeNames = request('!.concepts.lua.TypeNames')
 local NumberTypeNames = request('!.lua.data_mathtypes')
 
 local spawn_assert_func =
