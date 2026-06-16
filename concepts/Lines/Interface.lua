@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-26
+  Last mod.: 2026-06-16
 ]]
 
 --[[
@@ -117,7 +117,7 @@ local GetLastLine =
     return Me:GetLineAt(Me:GetNumLines())
   end
 
--- Add line to start of list
+-- Add string to start of list
 local AddFirstLine =
   function(Me, str)
     Me:InsertLineBefore(Me.Core:ToItem(str), 1)
@@ -127,6 +127,12 @@ local AddFirstLine =
 local AddLastLine =
   function(Me, str)
     Me:InsertLineAfter(Me.Core:ToItem(str), Me:GetNumLines())
+  end
+
+-- Add string
+local Add =
+  function(Me, str)
+    Me:AddLastLine(str)
   end
 
 -- Remove first line
@@ -168,6 +174,7 @@ return
 
     AddFirstLine = AddFirstLine,
     AddLastLine = AddLastLine,
+    Add = Add,
 
     RemoveLineAt = RemoveLineAt,
 
@@ -184,7 +191,6 @@ return
 
 --[[
   2024 #
-  2026-04-17
-  2026-04-24
-  2026-04-26
+  2026-04 # # #
+  2026-06-16
 ]]
