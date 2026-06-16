@@ -12,7 +12,7 @@
 
 -- Imports:
 local TypeNames = request('!.concepts.lua.TypeNames')
-local NumberTypeNames = request('!.lua.data_mathtypes')
+local NumberTypeNames = request('!.concepts.lua.NumberTypeNames')
 
 local type_is =
   function(type_name)
