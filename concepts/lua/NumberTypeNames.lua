@@ -5,14 +5,14 @@
   Last mod.: 2026-06-16
 ]]
 
-local MathTypeNames =
+local NumberTypeNames =
   {
     'integer',
     'float',
   }
 
 -- Export:
-return MathTypeNames
+return NumberTypeNames
 
 --[[
   2024-03-02
