@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-22
+  Last mod.: 2026-06-16
 ]]
 
 -- Imports:
-local DataTypes = request('!.lua.data_types')
-local MathTypes = request('!.lua.data_mathtypes')
+local TypeNames = request('!.lua.data_types')
+local NumberTypeNames = request('!.lua.data_mathtypes')
 
 local spawn_assert_func =
   function(type_name)
@@ -28,11 +28,11 @@ local spawn_assert_func =
 
 local install_assert_funcs =
   function()
-    for _, type_name in ipairs(DataTypes) do
+    for _, type_name in ipairs(TypeNames) do
       _G['assert_' .. type_name] = spawn_assert_func(type_name)
     end
 
-    for _, number_type_name in ipairs(MathTypes) do
+    for _, number_type_name in ipairs(NumberTypeNames) do
       _G['assert_' .. number_type_name] = spawn_assert_func(number_type_name)
     end
   end
@@ -42,8 +42,8 @@ return install_assert_funcs
 
 --[[
   2018-02
-  2020-01
-  2022-01
-  2024-03
+  2020 #
+  2022 #
+  2024 #
   2026-04-22
 ]]
