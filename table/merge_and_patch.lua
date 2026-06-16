@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-30
+  Last mod.: 2026-06-16
 ]]
 
 -- Imports:
@@ -13,8 +13,6 @@ local merge_and_patch =
   function(Dest, Source)
     merge(Dest, Source)
     patch(Dest, Source)
-
-    return Dest
   end
 
 -- Exports:
@@ -23,4 +21,5 @@ return merge_and_patch
 --[[
   2024 #
   2026-04-30
+  2026-06-16
 ]]
