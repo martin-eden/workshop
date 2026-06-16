@@ -1,5 +1,13 @@
-local c_line_iterator = request('!.mechs.string.lines_iterator')
-local table_to_str = request('!.concepts.lua_table.save')
+-- Parse string with RFC
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-06-16
+]]
+
+-- Imports:
+local lines_iterator = request('!.mechs.string.lines_iterator')
+local table_to_str = request('!.convert.table_to_str')
 
 local get_block = request('get_block')
 
@@ -7,14 +15,14 @@ local process_title_block = request('process_title_block')
 local process_header_block = request('process_header_block')
 local print_block = request('print_block')
 
-return
+local load =
   function(s)
-    local line_iterator = new(c_line_iterator)
-    line_iterator:init(s)
+    local lines_iterator = new(lines_iterator)
+    lines_iterator:init(s)
 
-    local header = get_block(line_iterator)
+    local header = get_block(lines_iterator)
     -- print_block(header, 'Header')
-    local title = get_block(line_iterator)
+    local title = get_block(lines_iterator)
     -- print_block(title, 'Title')
 
     local result = {}
@@ -26,6 +34,9 @@ return
 
     return result
   end
+
+-- Export:
+return load
 
 --[[
   Sample data:
@@ -43,4 +54,8 @@ return
 
                       Enrollment over Secure Transport
 
+]]
+
+--[[
+  2018
 ]]
