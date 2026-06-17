@@ -2,23 +2,24 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-03
+  Last mod.: 2026-06-17
 ]]
 
 -- Imports:
+local CreateBaseHandlers = request('base')
 local RawCompile = request('!.struc.compile')
 local IsName = request('!.concepts.lua.is_identifier')
 
-local Handlers = {}
-
 -- State (
+-- Node handlers
+local ExistingHandlers
 -- Virtual printer interface
 local Printer
 -- Do not emit integer indices when possible
 local CompactSequences = true
 -- )
 
--- Mostly aliasing printers methods (
+-- Aliasing printer's methods (
 local GoToEmptyLine =
   function()
     Printer:request_clean_line()
@@ -42,10 +43,10 @@ local Emit =
 
 local Compile =
   function(Tree)
-    Emit(RawCompile(Tree, Handlers))
+    Emit(RawCompile(Tree, ExistingHandlers))
   end
 
-Handlers.table =
+local SerializeTable =
   function(Node)
     -- Shortcut: empty table
     if (#Node == 0) then
@@ -60,8 +61,8 @@ Handlers.table =
     Emit('{')
     Indent()
 
-    for Idx, El in ipairs(Node) do
-      local Key, Value = El.key, El.value
+    for _, Rec in ipairs(Node) do
+      local Key, Value = Rec.key, Rec.value
 
       GoToEmptyLine()
 
@@ -97,22 +98,26 @@ Handlers.table =
     Emit('}')
   end
 
-local ForceMerge = request('!.table.merge_and_patch')
-local InstallMinimalHandlers = request('minimal')
+local CreateNodeHandlers =
+  function(a_ExistingHandlers, a_Printer, a_CompactSequences)
+    ExistingHandlers = a_ExistingHandlers
+    Printer = a_Printer
+
+    if is_boolean(a_CompactSequences) then
+      CompactSequences = a_CompactSequences
+    end
+
+    ExistingHandlers['table'] = SerializeTable
+
+    return ExistingHandlers
+  end
 
 -- Export:
-return
-  function(a_Handlers, a_Printer, Options)
-    InstallMinimalHandlers(a_Handlers, a_Printer, Options)
-    Handlers = ForceMerge(a_Handlers, Handlers)
-    Printer = a_Printer
-    if is_table(Options) and is_boolean(Options.compact_sequences) then
-      CompactSequences = options.compact_sequences
-    end
-  end
+return CreateNodeHandlers
 
 --[[
   2018-02-05
   2024-08-09
   2026-05-03
+  2026-06-16
 ]]

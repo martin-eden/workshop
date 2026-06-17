@@ -1,0 +1,41 @@
+Lua syntax for tables is neat
+
+Let's describe RGB color (0, 64, 128).
+
+  Lua: { 0, 64, 128; color_format = 'rgb' }
+
+  JSON: { "color": [0, 64, 128], "format": "rgb" }
+
+  Meh, those quoted field names and we can't mix array and hash parts!
+
+Also we can describe graphs in Lua:
+
+  a -> b
+  ^    |
+  +----+
+
+  local Chain
+  do
+    local t_a = { }
+    local t_b = { t_a }
+    t_a[1] = t_b
+    Chain = t_a
+  end
+  return Chain
+
+You can't do it in JSON.
+
+So why not use it instead of JSON?
+
+Because Lua is programming language, not data-definition format.
+More powerful and more dangerous.
+
+Look at "parse.lua" loader here. It just executes given string as code.
+It's nice when string is yours graph data. It sucks when string
+is unknown.
+
+Yes we can implement subset of syntax just to mimic JSON.
+But then we lose ability to describe graphs. So it'll be custom
+decoder doing job similar to stock JSON decoders. No point in this.
+
+-- Martin, 2026-06-16

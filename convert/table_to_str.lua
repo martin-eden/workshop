@@ -7,8 +7,8 @@
 
 -- Imports:
 local graph_is_tree = request('!.table.is_tree')
-local tree_to_str = request('!.concepts.lua_table.save')
-local graph_to_str = request('!.concepts.lua_table_code.save')
+local tree_to_str = request('!.concepts.lua_table.compile')
+local graph_to_str = request('!.concepts.lua_table_code.compile')
 
 local table_to_str =
   function(Graph)
