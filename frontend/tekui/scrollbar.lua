@@ -1,24 +1,30 @@
 -- Return scrollbar object
 
--- Last mod.: 2024-11-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-06-17
+]]
 
+-- Imports:
 local tui = require('tek.ui')
 local force_merge = request('!.table.merge_and_patch')
 
-return
-  function(id, min, max, overrides)
-    local params =
-      force_merge(
-        {
-          Id = id,
-          Min = min,
-          Max = max,
-        },
-        overrides
-      )
+local create_scrollbar =
+  function(id, min, max, Overrides)
+    local Params =
+      {
+        Id = id,
+        Min = min,
+        Max = max,
+      }
 
-    return tui.ScrollBar:new(params)
+    force_merge(Params, Overrides)
+
+    return tui.ScrollBar:new(Params)
   end
+
+-- Export:
+return create_scrollbar
 
 --[[
   2020-02

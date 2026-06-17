@@ -1,24 +1,30 @@
 -- Return text label object
 
--- Last mod.: 2024-11-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-06-17
+]]
 
+-- Imports:
 local tui = require('tek.ui')
 local force_merge = request('!.table.merge_and_patch')
 
-return
-  function(text, overrides)
-    local params =
-      force_merge(
-        {
-          Class = 'caption',
-          Width = 'fill',
-          Text = text,
-        },
-        overrides
-      )
+local create_text_label =
+  function(text, Overrides)
+    local Params =
+      {
+        Class = 'caption',
+        Width = 'fill',
+        Text = text,
+      }
 
-    return tui.Text:new(params)
+    force_merge(Params, Overrides)
+
+    return tui.Text:new(Params)
   end
+
+-- Export:
+return create_text_label
 
 --[[
   2020-02

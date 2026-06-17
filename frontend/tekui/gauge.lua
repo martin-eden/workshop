@@ -1,24 +1,30 @@
 -- Return gauge object
 
--- Last mod.: 2024-11-11
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-06-17
+]]
 
+-- Imports:
 local tui = require('tek.ui')
 local force_merge = request('!.table.merge_and_patch')
 
-return
-  function(id, min, max, overrides)
-    local params =
-      force_merge(
-        {
-          Id = id,
-          Min = min,
-          Max = max,
-        },
-        overrides
-      )
+local create_gauge =
+  function(id, min, max, Overrides)
+    local Params =
+      {
+        Id = id,
+        Min = min,
+        Max = max,
+      }
 
-    return tui.Gauge:new(params)
+    force_merge(Params, Overrides)
+
+    return tui.Gauge:new(Params)
   end
+
+-- Export:
+return create_gauge
 
 --[[
   2020-02

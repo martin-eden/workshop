@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-27
+  Last mod.: 2026-06-17
 ]]
 
 -- Imports:
@@ -13,19 +13,18 @@ local force_merge = request('!.table.merge_and_patch')
 local create_window =
   function(title, Overrides, Children)
     local Params =
-      force_merge(
-        {
-          Title = title,
-          Children = { Children },
-          Id = 'main-window',
-          Status = 'hide',
-          HideOnEscape = true,
-          Orientation = 'vertical',
-          Width = 'free',
-          Height = 'free',
-        },
-        Overrides
-      )
+      {
+        Title = title,
+        Children = { Children },
+        Id = 'main-window',
+        Status = 'hide',
+        HideOnEscape = true,
+        Orientation = 'vertical',
+        Width = 'free',
+        Height = 'free',
+      }
+
+    force_merge(Params, Overrides)
 
     return TekUi.Window:new(Params)
   end
