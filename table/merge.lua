@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-05-18
+  Last mod.: 2025-06-17
 ]]
 
 --[[
@@ -31,8 +31,6 @@ local merge =
       }
 
     apply_table(Result, Additions, Rules)
-
-    return Result
   end
 
 -- Exports:
@@ -45,4 +43,5 @@ return merge
   2024 #
   2025 #
   2026-04-30
+  2026-06-17
 ]]
