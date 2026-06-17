@@ -2,14 +2,10 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-16
+  Last mod.: 2026-06-17
 ]]
 
-local NumberTypeNames =
-  {
-    'integer',
-    'float',
-  }
+local NumberTypeNames = { 'integer', 'float' }
 
 -- Export:
 return NumberTypeNames
