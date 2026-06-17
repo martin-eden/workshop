@@ -1,12 +1,11 @@
---[[
-  This code is used in postprocessing lua code data from [parser].
-  So strings should be correct by grammar design.
-  So no checks for correctness needed.
+-- Unquote Lua string
 
-  We transform values in quoted strings to raw values by
-  unescaping and removing quotes.
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-06-17
 ]]
 
+-- Imports:
 local unquote_linear = request('unquote_string.linear')
 
 local long_quote_start = '^%[=*%['
@@ -22,7 +21,7 @@ local get_long_quote_len =
     return result
   end
 
-return
+local unqote_string =
   function(s)
     local result
 
@@ -32,9 +31,7 @@ return
       result = unquote_linear(result)
     elseif (first_char == '[') then
       local quote_len = get_long_quote_len(s)
-      if not quote_len then
-        error(('String "%s" has bad long quotes?'):format(s), 2)
-      end
+      if not quote_len then return end
       result = s:sub(quote_len + 1, -(quote_len + 1))
       -- Special case with long quotes. Heading newline is dropped.
       if (result:sub(1, 2) == '\x0d\x0a') then
@@ -46,3 +43,11 @@ return
 
     return result
   end
+
+-- Export:
+return unqote_string
+
+--[[
+  2018
+  2026-06-17
+]]
