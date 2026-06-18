@@ -5,8 +5,14 @@
   Last mod.: 2026-06-18
 ]]
 
--- Imports:
-local Keywords_Map = request('keywords')
+local Keywords_Map
+do
+  -- Imports:
+  local Keywords = request('Keywords')
+  local map_values = request('!.table.map_values')
+
+  Keywords_Map = map_values(Keywords)
+end
 
 local is_identifier =
   function(str)

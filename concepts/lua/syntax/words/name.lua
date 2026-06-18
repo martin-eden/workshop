@@ -24,7 +24,15 @@ local match_regexp = request('!.mechs.parser.handy').match_regexp
 local opt_spc = request('opt_spc')
 
 local name_pattern = '^[_A-Za-z][_A-Za-z0-9]*'
-local Keywords_Map = request('!.concepts.lua.keywords')
+
+local Keywords_Map
+do
+  -- Imports:
+  local Keywords = request('!.concepts.lua.Keywords')
+  local map_values = request('!.table.map_values')
+
+  Keywords_Map = map_values(Keywords)
+end
 
 local is_name =
   function(StreamIn, StreamOut)
