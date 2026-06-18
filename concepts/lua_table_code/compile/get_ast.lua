@@ -88,7 +88,7 @@ local get_ast =
             end
           end
         else
-          TableRec = tree_get_ast(Node, ValueNames)
+          TableRec = tree_get_ast(Node, table_iterator, ValueNames)
         end
 
         local node_name = NameGiver:give_name(Node)
