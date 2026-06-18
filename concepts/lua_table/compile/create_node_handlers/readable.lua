@@ -47,8 +47,6 @@ local newline =
 
 local emit =
   function(str)
-    if (str == '') then return end
-
     if should_write_indent then
       if (Indent.RangePoint.value > 0) then
         OutputStream:Write(Indent:ToString())
@@ -56,6 +54,9 @@ local emit =
 
       should_write_indent = false
     end
+
+    -- Temporary fix for messed indents. This statement should be first in final code.
+    if (str == '') then return end
 
     OutputStream:Write(str)
   end
@@ -85,6 +86,9 @@ local serialize_table =
       local Key, Value = Rec.Key, Rec.Value
 
       newline()
+
+      -- Temporary fix for messed indents. This statement should be removed in final code
+      emit('')
 
       --[[
         if use_compact_sequences
