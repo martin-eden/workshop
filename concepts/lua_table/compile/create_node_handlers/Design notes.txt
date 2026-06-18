@@ -14,7 +14,7 @@ Data is provided in annotated tree (table).
     For any types except "table" we have field "value".
       It contains raw (non-table) value to serialize.
 
-    For "table" we have list of { key = .., value = .. } records.
+    For "table" we have list of { Key = .., Value = .. } records.
     And each ".." in that record is node with described structure.
 
 Yeah, graphs are amazing.

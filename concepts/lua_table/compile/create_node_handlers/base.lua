@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-17
+  Last mod.: 2026-06-18
 ]]
 
 --[[
@@ -12,79 +12,57 @@
   So code is human-unreadable.
 ]]
 
+--[=[
+  There is syntactic clash between "long quote" and "table index":
+
+  ['abc'] -- OK, [[[abc]]] -- NOK
+
+  This code converts last case to "[ [[abc]]]".
+]=]
+
 -- Imports:
 local raw_compile = request('!.struc.compile')
 local quote = request('!.lua.string.quote')
-local string_starts_with = request('!.string.starts_with')
-local string_ends_with = request('!.string.ends_with')
 local is_identifier = request('!.concepts.lua.is_identifier')
 
 -- Internal state:
 local NodeHandlers
 local TextBlock
 local use_compact_sequences = true
+local last_char = ''
 
+-- ( Wrappers
 local emit =
   function(str)
     TextBlock:add_curline(str)
+
+    last_char = string.sub(str, -1)
   end
 
 local compile =
   function(t)
     emit(raw_compile(t, NodeHandlers))
   end
+-- )
 
-local is_pos_inf = function(n) return (n == 1 / 0) end
-local is_neg_inf = function(n) return (n == -1 / 0) end
-local is_nan = function(n) return (n ~= n) end
-
---[[
-  tostring() of number, beyond orthodoxal values, can return
-  "-nan", "inf" and "-inf".
-
-  They are not loadable.
-
-  If number has one of those special values we emit expression
-  that produce those special value.
-]]
-local serialize_number =
+local serialize_terminal_value =
   function(Node)
-    local n = Node.value
+    -- Imported here to remove cycle dependency at load
+    local value_to_str = request('!.convert.value_to_str')
 
-    if is_pos_inf(n) then
-      emit('1/0')
-    elseif is_neg_inf(n) then
-      emit('-1/0')
-    elseif is_nan(n) then
-      emit('0/0')
-    else
-      emit(tostring(Node.value))
-    end
+    emit(value_to_str(Node.value))
   end
 
-local serialize_tostring =
+local serialize_as_string =
   function(Node)
-    emit(tostring(Node.value))
-  end
+    -- Imported here to remove cycle dependency at load
+    local value_to_str = request('!.convert.value_to_str')
 
-local serialize_quote =
-  function(Node)
-    local quoted_string = quote(tostring(Node.value))
+    local quoted_string = value_to_str(Node.value)
 
-    --[=[
-      There is syntactic clash between "long quote" and "table index":
+    local next_char = string.sub(quoted_string, 1, 1)
 
-      ['abc'] -- OK, [[[abc]]] -- NOK
-
-      This code converts last case to "[ [[abc]]]".
-    ]=]
-    if
-      string_starts_with(quoted_string, '[') and
-      not TextBlock:on_clean_line() and
-      string_ends_with(TextBlock.line_with_text:get_line(), '[')
-    then
-      emit(' ')
-    end
+    if (last_char == '[') and (next_char == '[') then emit(' ') end
 
     emit(quoted_string)
   end
@@ -104,8 +82,8 @@ local serialize_table =
     for i = 1, #Node do
       if (i > 1) then emit(',') end
 
-      local Key = Node[i].key
-      local Value = Node[i].value
+      local Key = Node[i].Key
+      local Value = Node[i].Value
 
       -- Serialize key
       do
@@ -145,14 +123,16 @@ local serialize_table =
 
 NodeHandlers =
   {
-    ['nil'] = serialize_tostring,
-    ['boolean'] = serialize_tostring,
-    ['number'] = serialize_number,
-    ['string'] = serialize_quote,
+    ['nil'] = serialize_terminal_value,
+    ['boolean'] = serialize_terminal_value,
+    ['number'] = serialize_terminal_value,
+    ['string'] = serialize_as_string,
+
     ['table'] = serialize_table,
-    ['function'] = serialize_quote,
-    ['thread'] = serialize_quote,
-    ['userdata'] = serialize_quote,
+
+    ['function'] = serialize_as_string,
+    ['thread'] = serialize_as_string,
+    ['userdata'] = serialize_as_string,
   }
 
 local get_node_handlers =
@@ -170,7 +150,8 @@ local get_node_handlers =
 return get_node_handlers
 
 --[[
-  2017-05
-  2019-06
+  2017 #
+  2019 #
   2026-06-16
+  2026-06-18
 ]]

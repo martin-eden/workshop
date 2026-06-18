@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-17
+  Last mod.: 2026-06-18
 ]]
 
 -- Imports:
@@ -62,7 +62,7 @@ local SerializeTable =
     Indent()
 
     for _, Rec in ipairs(Node) do
-      local Key, Value = Rec.key, Rec.value
+      local Key, Value = Rec.Key, Rec.Value
 
       GoToEmptyLine()
 

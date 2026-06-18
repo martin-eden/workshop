@@ -2,13 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-17
+  Last mod.: 2026-06-18
 ]]
 
 -- Imports:
 local ordered_pass = request('!.table.ordered_pass')
 local patch = request('!.table.patch')
-local tree_get_ast = request('!.concepts.lua_table.compile.get_ast')
 local get_ast = request('compile.get_ast')
 local TextBlock = request('!.mechs.text_block.interface')
 local tree_get_node_handlers =
@@ -20,7 +19,6 @@ local DefaultOptions =
   {
     style = 'readable',
     use_compact_sequences = true,
-    serialize_only_restorable = false,
     table_iterator = ordered_pass,
   }
 
@@ -32,22 +30,10 @@ local compile =
     patch(Options, ArgOptions)
 
     local table_iterator = Options.table_iterator
-    local serialize_only_restorable = Options.serialize_only_restorable
     local style = Options.style
     local use_compact_sequences = Options.use_compact_sequences
 
-    local tree_get_ast =
-      function(Tree, ValueNames)
-        return
-          tree_get_ast(
-            Tree,
-            table_iterator,
-            serialize_only_restorable,
-            ValueNames
-          )
-      end
-
-    local Ast = get_ast(Graph, table_iterator, tree_get_ast)
+    local Ast = get_ast(Graph, table_iterator)
 
     local TextBlock = new(TextBlock)
     TextBlock:init()

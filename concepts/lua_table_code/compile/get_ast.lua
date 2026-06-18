@@ -2,13 +2,14 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-17
+  Last mod.: 2026-06-18
 ]]
 
 -- Imports:
-local add_to_list = request('!.concepts.list.add_item')
-local get_assembly_order = request('!.mechs.graph.assembly_order')
 local NameGiver = request('!.mechs.name_giver')
+local get_assembly_order = request('!.mechs.graph.assembly_order')
+local tree_get_ast = request('!.concepts.lua_table.compile.get_ast')
+local add_to_list = request('!.concepts.list.add_item')
 
 local get_num_refs =
   function(NodeRec)
@@ -47,7 +48,7 @@ local may_print_inline =
   end
 
 local get_ast =
-  function(Data, table_iterator, tree_get_ast)
+  function(Data, table_iterator)
     local NameGiver = new(NameGiver)
 
     local NodeRecs, OrderedNodes =
@@ -80,8 +81,8 @@ local get_ast =
               add_to_list(
                 TableRec,
                 {
-                  key = tree_get_ast(k, ValueNames),
-                  value = tree_get_ast(v, ValueNames),
+                  Key = tree_get_ast(k, table_iterator, ValueNames),
+                  Value = tree_get_ast(v, table_iterator, ValueNames),
                 }
               )
             end

@@ -21,7 +21,6 @@ local DefaultOptions =
   {
     style = 'readable',
     use_compact_sequences = true,
-    serialize_only_restorable = false,
     table_iterator = ordered_pass,
   }
 
@@ -33,12 +32,10 @@ local compile =
     patch(Options, ArgOptions)
 
     local table_iterator = Options.table_iterator
-    local serialize_only_restorable = Options.serialize_only_restorable
     local style = Options.style
     local use_compact_sequences = Options.use_compact_sequences
 
-    local Ast =
-      get_ast(Tree, table_iterator, serialize_only_restorable, {})
+    local Ast = get_ast(Tree, table_iterator, {})
 
     local TextBlock = new(TextBlock)
     TextBlock:init()
