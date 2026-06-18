@@ -5,6 +5,24 @@
   Last mod.: 2026-06-18
 ]]
 
+--[[
+  [Bug] Messed indents
+
+  "{'A'}" is printed as
+
+    {
+    'A'  ,
+    }
+
+  That's because our state flag <should_write_indent>
+  is out of scope of base serializer.
+
+  Before it worked because we use advanced (and old and heavy) printer
+  which kept that state.
+
+  I think I'll solve this in forecoming rework of serialization mechs.
+]]
+
 -- Imports:
 local create_base_handlers = request('base')
 local raw_compile = request('!.struc.compile')
