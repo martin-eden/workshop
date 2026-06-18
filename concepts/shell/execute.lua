@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-30
+  Last mod.: 2026-06-18
 ]]
 
 --[[
@@ -12,6 +12,7 @@
 
   Output
 
+    [b] true if result code is 0
     [t]
       [b] is_aborted -- true in case of aborted execution
       [i] result_code -- Return code in case of normal ending.
@@ -58,7 +59,9 @@ local execute_shell_command =
     os.remove(output_filename)
     os.remove(error_filename)
 
-    return Result
+    local is_ok = (Result.result_code == 0)
+
+    return is_ok, Result
   end
 
 -- Export:
@@ -66,4 +69,5 @@ return execute_shell_command
 
 --[[
   2026-04-17
+  2026-06-18
 ]]
