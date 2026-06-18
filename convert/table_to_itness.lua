@@ -1,4 +1,4 @@
--- Convert data tree with named values to Itness format
+-- Convert Lua table to Itness format
 
 --[[
   Author: Martin Eden
