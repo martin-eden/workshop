@@ -1,6 +1,14 @@
+-- Map of Lua keywords
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-06-18
+]]
+
+-- Imports:
 local map_values = request('!.table.map_values')
 
-return
+local Keywords_Map =
   map_values(
     {
       'nil',
@@ -27,3 +35,11 @@ return
       'return',
     }
   )
+
+-- Export:
+return Keywords_Map
+
+--[[
+  2016
+  2026-06-18
+]]
