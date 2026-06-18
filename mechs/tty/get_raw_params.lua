@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-30
+  Last mod.: 2026-06-18
 ]]
 
 -- Imports:
@@ -29,7 +29,10 @@ local get_tty_params =
         '--save',
       }
 
-    return shell_execute(glue_words(Command)).output
+    local is_ok, ExecResult = shell_execute(glue_words(Command))
+    if not is_ok then return '' end
+
+    return ExecResult.output
   end
 
 -- Export:

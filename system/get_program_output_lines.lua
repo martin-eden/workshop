@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-30
+  Last mod.: 2026-06-18
 ]]
 
 -- Imports:
@@ -17,7 +17,7 @@ local get_program_output_lines =
   function(shell_cmd)
     assert_string(shell_cmd)
 
-    local ExecResult = shell_execute(shell_cmd)
+    local is_ok, ExecResult = shell_execute(shell_cmd)
 
     return lines_from_str(ExecResult.output)
   end
