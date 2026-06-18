@@ -61,12 +61,12 @@ local emit =
   end
 -- )
 
-local Compile =
+local compile =
   function(Tree)
     emit(raw_compile(Tree, ExistingHandlers))
   end
 
-local SerializeTable =
+local serialize_table =
   function(Node)
     -- Shortcut: empty table
     if (#Node == 0) then
@@ -101,13 +101,13 @@ local SerializeTable =
           emit(Key.value)
         else
           emit('[')
-          Compile(Key)
+          compile(Key)
           emit(']')
         end
         emit(' = ')
       end
 
-      Compile(Value)
+      compile(Value)
 
       emit(',')
     end
@@ -118,7 +118,7 @@ local SerializeTable =
     emit('}')
   end
 
-local CreateNodeHandlers =
+local create_node_handlers =
   function(a_ExistingHandlers, a_OutputStream, a_use_compact_sequences)
     ExistingHandlers = a_ExistingHandlers
     OutputStream = a_OutputStream
@@ -129,13 +129,13 @@ local CreateNodeHandlers =
 
     Indent = IndentClass.create()
 
-    ExistingHandlers['table'] = SerializeTable
+    ExistingHandlers['table'] = serialize_table
 
     return ExistingHandlers
   end
 
 -- Export:
-return CreateNodeHandlers
+return create_node_handlers
 
 --[[
   2018-02-05
