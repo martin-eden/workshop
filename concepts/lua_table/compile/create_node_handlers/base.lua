@@ -27,14 +27,14 @@ local is_identifier = request('!.concepts.lua.is_identifier')
 
 -- Internal state:
 local NodeHandlers
-local TextBlock
+local OutputStream
 local use_compact_sequences = true
 local last_char = ''
 
 -- ( Wrappers
 local emit =
   function(str)
-    TextBlock:add_curline(str)
+    OutputStream:Write(str)
 
     last_char = string.sub(str, -1)
   end
@@ -136,8 +136,8 @@ NodeHandlers =
   }
 
 local get_node_handlers =
-  function(Arg_TextBlock, arg_use_compact_sequences)
-    TextBlock = Arg_TextBlock
+  function(Arg_OutputStream, arg_use_compact_sequences)
+    OutputStream = Arg_OutputStream
 
     if is_boolean(arg_use_compact_sequences) then
       use_compact_sequences = arg_use_compact_sequences

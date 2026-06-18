@@ -2,21 +2,26 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-17
+  Last mod.: 2026-06-18
 ]]
 
 -- Imports:
+local StringOutputStream = request('!.concepts.StreamIo.Output.String')
 local graph_is_tree = request('!.table.is_tree')
 local tree_to_str = request('!.concepts.lua_table.compile')
 local graph_to_str = request('!.concepts.lua_table_code.compile')
 
 local table_to_str =
   function(Graph)
+    local StringStream = new(StringOutputStream)
+
     if graph_is_tree(Graph) then
-      return tree_to_str(Graph)
+      tree_to_str(Graph, StringStream)
+    else
+      graph_to_str(Graph, StringStream)
     end
 
-    return graph_to_str(Graph)
+    return StringStream:GetString()
   end
 
 -- Export:

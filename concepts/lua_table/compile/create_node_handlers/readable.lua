@@ -6,106 +6,110 @@
 ]]
 
 -- Imports:
-local CreateBaseHandlers = request('base')
-local RawCompile = request('!.struc.compile')
-local IsName = request('!.concepts.lua.is_identifier')
+local create_base_handlers = request('base')
+local raw_compile = request('!.struc.compile')
+local is_name = request('!.concepts.lua.is_identifier')
+local IndentClass = request('!.concepts.Indent')
 
 -- State (
--- Node handlers
 local ExistingHandlers
--- Virtual printer interface
-local Printer
--- Do not emit integer indices when possible
-local CompactSequences = true
+local OutputStream
+local use_compact_sequences = true
+local Indent
+local should_write_indent = true
 -- )
 
 -- Aliasing printer's methods (
-local GoToEmptyLine =
+local newline =
   function()
-    Printer:request_clean_line()
+    OutputStream:Write('\n')
+
+    should_write_indent = true
   end
 
-local Indent =
-  function()
-    Printer:inc_indent()
-  end
+local emit =
+  function(str)
+    if (str == '') then return end
 
-local Unindent =
-  function()
-    Printer:dec_indent()
-  end
+    if should_write_indent then
+      if (Indent.RangePoint.value > 0) then
+        OutputStream:Write(Indent:ToString())
+      end
 
-local Emit =
-  function(s)
-    Printer:add_curline(s)
+      should_write_indent = false
+    end
+
+    OutputStream:Write(str)
   end
 -- )
 
 local Compile =
   function(Tree)
-    Emit(RawCompile(Tree, ExistingHandlers))
+    emit(raw_compile(Tree, ExistingHandlers))
   end
 
 local SerializeTable =
   function(Node)
     -- Shortcut: empty table
     if (#Node == 0) then
-      Emit('{ }')
+      emit('{ }')
 
       return
     end
 
-    -- Array part tracking for <CompactSequences>
-    local LastIntKey = 0
+    -- Array part tracking for <use_compact_sequences>
+    local last_int_key = 0
 
-    Emit('{')
-    Indent()
+    emit('{')
+    Indent:Inc()
 
     for _, Rec in ipairs(Node) do
       local Key, Value = Rec.Key, Rec.Value
 
-      GoToEmptyLine()
+      newline()
 
       --[[
-        if CompactSequences
+        if use_compact_sequences
           Do not emit integer index while we are on array part
       ]]
-      local IsOnArray =
-        is_integer(Key.value) and (Key.value == LastIntKey + 1)
+      local is_on_array =
+        is_integer(Key.value) and (Key.value == last_int_key + 1)
 
-      if CompactSequences and IsOnArray then
-        LastIntKey = Key.value
+      if use_compact_sequences and is_on_array then
+        last_int_key = Key.value
       else
         -- No brackets required for identifiers
-        if IsName(Key.value) then
-          Emit(Key.value)
+        if is_name(Key.value) then
+          emit(Key.value)
         else
-          Emit('[')
+          emit('[')
           Compile(Key)
-          Emit(']')
+          emit(']')
         end
-        Emit(' = ')
+        emit(' = ')
       end
 
       Compile(Value)
 
-      Emit(',')
+      emit(',')
     end
 
-    GoToEmptyLine()
+    newline()
 
-    Unindent()
-    Emit('}')
+    Indent:Dec()
+    emit('}')
   end
 
 local CreateNodeHandlers =
-  function(a_ExistingHandlers, a_Printer, a_CompactSequences)
+  function(a_ExistingHandlers, a_OutputStream, a_use_compact_sequences)
     ExistingHandlers = a_ExistingHandlers
-    Printer = a_Printer
+    OutputStream = a_OutputStream
 
-    if is_boolean(a_CompactSequences) then
-      CompactSequences = a_CompactSequences
+    if is_boolean(a_use_compact_sequences) then
+      use_compact_sequences = a_use_compact_sequences
     end
+
+    Indent = IndentClass.create()
 
     ExistingHandlers['table'] = SerializeTable
 
@@ -120,4 +124,5 @@ return CreateNodeHandlers
   2024-08-09
   2026-05-03
   2026-06-16
+  2026-06-18
 ]]

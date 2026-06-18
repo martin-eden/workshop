@@ -9,7 +9,6 @@
 local ordered_pass = request('!.table.ordered_pass')
 local patch = request('!.table.patch')
 local get_ast = request('compile.get_ast')
-local TextBlock = request('!.mechs.text_block.interface')
 local tree_get_node_handlers =
   request('!.concepts.lua_table.compile.create_node_handlers')
 local install_node_handlers = request('compile.install_node_handlers')
@@ -23,7 +22,7 @@ local DefaultOptions =
   }
 
 local compile =
-  function(Graph, ArgOptions)
+  function(Graph, Output, ArgOptions)
     assert_table(Graph)
 
     local Options = new(DefaultOptions)
@@ -35,17 +34,14 @@ local compile =
 
     local Ast = get_ast(Graph, table_iterator)
 
-    local TextBlock = new(TextBlock)
-    TextBlock:init()
-
     local NodeHandlers =
-      tree_get_node_handlers(TextBlock, style, use_compact_sequences)
+      tree_get_node_handlers(Output, style, use_compact_sequences)
 
-    install_node_handlers(NodeHandlers, TextBlock)
+    install_node_handlers(NodeHandlers, Output)
 
     generic_compile(Ast, NodeHandlers)
 
-    return TextBlock:get_text() .. '\n'
+    Output:Write('\n')
   end
 
 -- Export:
@@ -55,4 +51,5 @@ return compile
   2016 #
   2017 #
   2026-06-17
+  2026-06-18
 ]]

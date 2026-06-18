@@ -11,23 +11,25 @@ local is_identifier = request('!.concepts.lua.is_identifier')
 local merge = request('!.table.merge')
 
 -- State:
-local TextBlock
+local OutputStream
 local NodeHandlers
 
 -- ( Convenience wrappers
-local add =
-  function(s)
-    TextBlock:add_curline(s)
+local emit =
+  function(str)
+    if (str == '') then return end
+
+    OutputStream:Write(str)
   end
 
-local request_clean_line =
+local newline =
   function()
-    TextBlock:request_clean_line()
+    OutputStream:Write('\n')
   end
 
 local compile =
   function(t)
-    add(raw_compile(t, NodeHandlers))
+    emit(raw_compile(t, NodeHandlers))
   end
 -- )
 
@@ -38,10 +40,10 @@ local serialize_name =
 
 local serialize_local_definition =
   function(Node)
-    request_clean_line()
-    add('local ')
+    newline()
+    emit('local ')
     compile(Node.name)
-    add(' = ')
+    emit(' = ')
     compile(Node.value)
   end
 
@@ -51,28 +53,28 @@ local serialize_index =
       (Node.value.type == 'string') and
       is_identifier(Node.value.value)
     then
-      add('.')
-      add(Node.value.value)
+      emit('.')
+      emit(Node.value.value)
     else
-      add('[')
+      emit('[')
       compile(Node.value)
-      add(']')
+      emit(']')
     end
   end
 
 local serialize_assignment =
   function(Node)
-    request_clean_line()
-    add(Node.name)
+    newline()
+    emit(Node.name)
     compile(Node.index)
-    add(' = ')
+    emit(' = ')
     compile(Node.value)
   end
 
 local serialize_return_statement =
   function(Node)
-    request_clean_line()
-    add('return ')
+    newline()
+    emit('return ')
     compile(Node.value)
   end
 
@@ -86,14 +88,15 @@ NodeHandlers =
   }
 
 return
-  function(Arg_NodeHandlers, Arg_TextBlock)
+  function(Arg_NodeHandlers, Arg_OutputStream)
     merge(Arg_NodeHandlers, NodeHandlers)
 
     NodeHandlers = Arg_NodeHandlers
-    TextBlock = Arg_TextBlock
+    OutputStream = Arg_OutputStream
   end
 
 --[[
   2018 # #
   2026-06-17
+  2026-06-18
 ]]

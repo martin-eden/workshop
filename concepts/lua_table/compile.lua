@@ -10,7 +10,6 @@
 -- ( Imports
 local ordered_pass = request('!.table.ordered_pass')
 local patch = request('!.table.patch')
-local TextBlock = request('!.mechs.text_block.interface')
 local generic_compile = request('!.struc.compile')
 
 local create_node_handlers = request('compile.create_node_handlers')
@@ -25,7 +24,7 @@ local DefaultOptions =
   }
 
 local compile =
-  function(Tree, ArgOptions)
+  function(Tree, Output, ArgOptions)
     assert_table(Tree)
 
     local Options = new(DefaultOptions)
@@ -37,15 +36,12 @@ local compile =
 
     local Ast = get_ast(Tree, table_iterator, {})
 
-    local TextBlock = new(TextBlock)
-    TextBlock:init()
-
     local NodeHandlers =
-      create_node_handlers(TextBlock, style, use_compact_sequences)
+      create_node_handlers(Output, style, use_compact_sequences)
 
     generic_compile(Ast, NodeHandlers)
 
-    return TextBlock:get_text() .. '\n'
+    Output:Write('\n')
   end
 
 -- Export:
