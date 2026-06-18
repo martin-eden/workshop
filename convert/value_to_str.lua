@@ -1,4 +1,4 @@
--- Serialize any Lua datatype to string
+-- Serialize any Lua value to string with Lua code for that value
 
 --[[
   Author: Martin Eden
@@ -19,6 +19,10 @@
 ]]
 
 --[[
+  Implementation can be reused to serialize to other data languages
+]]
+
+--[[
   Input
     [∀] Value -- any Lua value
     [?t] Encoders -- map of type_name-function
@@ -27,7 +31,9 @@
 ]]
 
 -- Imports:
-local patch = request('!.table.patch')
+local is_nan = request('!.number.is_nan')
+local is_pos_inf = request('!.number.is_pos_inf')
+local is_neg_inf = request('!.number.is_neg_inf')
 local stock_value_to_str = _G.tostring
 local lua_quote_str = request('!.concepts.lua.quote_string')
 local table_to_str = request('table_to_str')
@@ -39,11 +45,16 @@ local encode_nil =
 
 local encode_bool =
   function(val)
-    return true, stock_value_to_str(val)
+    if (val == false) then return true, 'false' end
+    if (val == true) then return true, 'true' end
   end
 
 local encode_number =
   function(val)
+    if is_nan(val) then return true, '0/0' end
+    if is_pos_inf(val) then return true, '1/0' end
+    if is_neg_inf(val) then return true, '-1/0' end
+
     return true, stock_value_to_str(val)
   end
 
@@ -53,23 +64,23 @@ local encode_string =
   end
 
 local encode_table =
-  function(Graph)
-    return true, table_to_str(Graph)
+  function(val)
+    return true, table_to_str(val)
   end
 
 local encode_function =
   function(val)
-    return true, stock_value_to_str(val)
+    return true, lua_quote_str(stock_value_to_str(val))
   end
 
 local encode_userdata =
   function(val)
-    return true, stock_value_to_str(val)
+    return true, lua_quote_str(stock_value_to_str(val))
   end
 
 local encode_thread =
   function(val)
-    return true, stock_value_to_str(val)
+    return true, lua_quote_str(stock_value_to_str(val))
   end
 
 local DefaultEncoders =
@@ -86,9 +97,9 @@ local DefaultEncoders =
 
 local value_to_str =
   function(Value, ArgEncoders)
-    local Encoders = new(DefaultEncoders)
+    local Encoders = DefaultEncoders
     if is_table(ArgEncoders) then
-      patch(Encoders, ArgEncoders)
+      Encoders = new(Encoders, ArgEncoders)
     end
 
     local encoder = Encoders[type(Value)]
@@ -109,4 +120,5 @@ return value_to_str
 
 --[[
   2026-06-17
+  2026-06-18
 ]]
