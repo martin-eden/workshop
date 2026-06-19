@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-18
+  Last mod.: 2026-06-19
 ]]
 
 -- Imports:
@@ -12,13 +12,13 @@ local tree_to_str = request('!.concepts.lua_table.compile')
 local graph_to_str = request('!.concepts.lua_table_code.compile')
 
 local table_to_str =
-  function(Graph)
+  function(Graph, Options)
     local StringStream = new(StringOutputStream)
 
     if graph_is_tree(Graph) then
-      tree_to_str(Graph, StringStream)
+      tree_to_str(Graph, StringStream, Options)
     else
-      graph_to_str(Graph, StringStream)
+      graph_to_str(Graph, StringStream, Options)
     end
 
     return StringStream:GetString()
