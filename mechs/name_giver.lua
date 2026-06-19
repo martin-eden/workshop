@@ -18,7 +18,7 @@ local Interface =
     templates =
       {
         ['function'] = 'f_%d',
-        table = 't_%d',
+        table = 'T_%d',
         thread = 'th_%d',
         userdata = 'u_%d',
       },
