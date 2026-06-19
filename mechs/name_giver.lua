@@ -1,15 +1,11 @@
+-- Generate string name for given function, thread, table or userdata
+
 --[[
-  Generate string name for given function, thread, table or userdata.
-
-  Usage:
-
-    [@]:give_name(<elem>)
-
-  * Main method is named "give_name", not "get_name" because module
-    name is "name_giver".
+  Author: Martin Eden
+  Last mod.: 2026-06-19
 ]]
 
-return
+local Interface =
   {
     names = {},
     counters =
@@ -44,3 +40,11 @@ return
         return self.names[obj]
       end,
   }
+
+-- Export:
+return Interface
+
+--[[
+  2016
+  2026-06-19
+]]
