@@ -20,8 +20,8 @@ local DefaultOptions =
     table_iterator = ordered_pass,
   }
 
-local last_char = ''
 local original_stream_write
+local last_char = ''
 
 local write_avoiding_syntax_clash =
   function(Me, str)

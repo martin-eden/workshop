@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-18
+  Last mod.: 2026-06-19
 ]]
 
 --[[
@@ -11,14 +11,6 @@
 
   So code is human-unreadable.
 ]]
-
---[=[
-  There is syntactic clash between "long quote" and "table index":
-
-  ['abc'] -- OK, [[[abc]]] -- NOK
-
-  This code converts last case to "[ [[abc]]]".
-]=]
 
 -- Imports:
 local raw_compile = request('!.struc.compile')
@@ -29,14 +21,11 @@ local is_identifier = request('!.concepts.lua.is_identifier')
 local NodeHandlers
 local OutputStream
 local use_compact_sequences = true
-local last_char = ''
 
 -- ( Wrappers
 local emit =
   function(str)
     OutputStream:Write(str)
-
-    last_char = string.sub(str, -1)
   end
 
 local compile =
@@ -51,20 +40,6 @@ local serialize_terminal_value =
     local value_to_str = request('!.convert.value_to_str')
 
     emit(value_to_str(Node.value))
-  end
-
-local serialize_as_string =
-  function(Node)
-    -- Imported here to remove cycle dependency at load
-    local value_to_str = request('!.convert.value_to_str')
-
-    local quoted_string = value_to_str(Node.value)
-
-    local next_char = string.sub(quoted_string, 1, 1)
-
-    if (last_char == '[') and (next_char == '[') then emit(' ') end
-
-    emit(quoted_string)
   end
 
 local serialize_table =
@@ -126,13 +101,13 @@ NodeHandlers =
     ['nil'] = serialize_terminal_value,
     ['boolean'] = serialize_terminal_value,
     ['number'] = serialize_terminal_value,
-    ['string'] = serialize_as_string,
+    ['string'] = serialize_terminal_value,
 
     ['table'] = serialize_table,
 
-    ['function'] = serialize_as_string,
-    ['thread'] = serialize_as_string,
-    ['userdata'] = serialize_as_string,
+    ['function'] = serialize_terminal_value,
+    ['thread'] = serialize_terminal_value,
+    ['userdata'] = serialize_terminal_value,
   }
 
 local get_node_handlers =

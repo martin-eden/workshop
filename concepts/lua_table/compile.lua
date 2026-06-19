@@ -22,8 +22,16 @@ local DefaultOptions =
     table_iterator = ordered_pass,
   }
 
-local last_char = ''
+--[=[
+  There is syntactic clash between "long quote" and "table index":
+
+  ['abc'] -- OK, [[[abc]]] -- NOK
+
+  This code converts last case to "[ [[abc]]]".
+]=]
+
 local original_stream_write
+local last_char = ''
 
 local write_avoiding_syntax_clash =
   function(Me, str)
