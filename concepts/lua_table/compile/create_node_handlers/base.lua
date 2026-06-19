@@ -25,6 +25,7 @@ local use_compact_sequences = true
 -- ( Wrappers
 local emit =
   function(str)
+    if (str == '') then return end
     OutputStream:Write(str)
   end
 
