@@ -8,7 +8,6 @@
 -- Imports:
 local NameGiver = request('!.mechs.name_giver')
 local get_assembly_order = request('!.mechs.graph.assembly_order')
-local tree_get_ast = request('!.concepts.lua_table.compile.get_ast')
 local add_to_list = request('!.concepts.list.add_item')
 
 local get_num_refs =
@@ -45,6 +44,39 @@ local may_print_inline =
         (get_num_refs(NodeRec) <= 1) and
         not NodeRec.part_of_cycle
       )
+  end
+
+local tree_get_ast =
+  function(Data, table_iterator, NamedNodes_Map)
+    local create_ast
+    create_ast =
+      function(Data)
+        local data_type = type(Data)
+
+        if NamedNodes_Map[Data] then
+          return { type = 'name', value = NamedNodes_Map[Data] }
+        end
+
+        if (data_type ~= 'table') then
+          return { type = data_type, value = Data }
+        end
+
+        local Result = { type = 'table' }
+
+        for Key, Value in table_iterator(Data) do
+          add_to_list(
+            Result,
+            {
+              Key = create_ast(Key),
+              Value = create_ast(Value),
+            }
+          )
+        end
+
+        return Result
+      end
+
+    return create_ast(Data)
   end
 
 local get_ast =
@@ -125,9 +157,9 @@ local get_ast =
                 Result,
                 {
                   type = 'assignment',
-                  name = ValueNames[parent],
+                  dest_name = ValueNames[parent],
                   IndexValue = key_slot,
-                  value = ValueNames[Node],
+                  src_name = ValueNames[Node],
                 }
               )
             end
@@ -140,7 +172,7 @@ local get_ast =
       Result,
       {
         type = 'return_statement',
-        value = ValueNames[Data],
+        Value = { type = 'name', value = ValueNames[Data] }
       }
     )
 
@@ -160,11 +192,11 @@ local get_ast =
 
     if (Result[#Result - 1].type == 'local_definition') then
       table.remove(Result)
-      local last_value = Result[#Result].Value
+      local LastValue = Result[#Result].Value
       Result[#Result] =
         {
           type = 'return_statement',
-          value = last_value,
+          Value = LastValue,
         }
     end
 
@@ -177,6 +209,10 @@ return get_ast
 --[[
   2018 # # #
   2019 #
+  2020 #
+  2022 #
+  2024 #
   2026-06-17
   2026-06-19
+  2026-06-20
 ]]
