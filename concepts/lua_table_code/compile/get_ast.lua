@@ -160,7 +160,7 @@ local get_ast =
 
     if (Result[#Result - 1].type == 'local_definition') then
       table.remove(Result)
-      local last_value = Result[#Result].value
+      local last_value = Result[#Result].Value
       Result[#Result] =
         {
           type = 'return_statement',
