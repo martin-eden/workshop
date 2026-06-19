@@ -40,8 +40,6 @@ local compile =
     install_node_handlers(NodeHandlers, Output)
 
     generic_compile(Ast, NodeHandlers)
-
-    Output:Write('\n')
   end
 
 -- Export:

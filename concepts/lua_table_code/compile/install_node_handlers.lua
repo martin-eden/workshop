@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-17
+  Last mod.: 2026-06-19
 ]]
 
 -- Imports:
@@ -40,49 +40,47 @@ local serialize_name =
 
 local serialize_local_definition =
   function(Node)
-    newline()
     emit('local ')
     compile(Node.name)
     emit(' = ')
-    compile(Node.value)
-  end
-
-local serialize_index =
-  function(Node)
-    if
-      (Node.value.type == 'string') and
-      is_identifier(Node.value.value)
-    then
-      emit('.')
-      emit(Node.value.value)
-    else
-      emit('[')
-      compile(Node.value)
-      emit(']')
-    end
+    compile(Node.Value)
+    newline()
   end
 
 local serialize_assignment =
   function(Node)
-    newline()
     emit(Node.name)
-    compile(Node.index)
+
+    -- Serialize index
+    local IndexNode = Node.IndexValue
+    if
+      (IndexNode.type == 'string') and
+      is_identifier(IndexNode.value)
+    then
+      emit('.')
+      emit(IndexNode.value)
+    else
+      emit('[')
+      compile(IndexNode)
+      emit(']')
+    end
+
     emit(' = ')
     compile(Node.value)
+    newline()
   end
 
 local serialize_return_statement =
   function(Node)
-    newline()
     emit('return ')
     compile(Node.value)
+    newline()
   end
 
 NodeHandlers =
   {
     ['name'] = serialize_name,
     ['local_definition'] = serialize_local_definition,
-    ['index'] = serialize_index,
     ['assignment'] = serialize_assignment,
     ['return_statement'] = serialize_return_statement,
   }
@@ -99,4 +97,5 @@ return
   2018 # #
   2026-06-17
   2026-06-18
+  2026-06-19
 ]]

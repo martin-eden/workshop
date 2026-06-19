@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-18
+  Last mod.: 2026-06-19
 ]]
 
 -- Imports:
@@ -100,7 +100,7 @@ local get_ast =
           {
             type = 'local_definition',
             name = node_name,
-            value = TableRec,
+            Value = TableRec,
           }
         )
       end
@@ -126,11 +126,7 @@ local get_ast =
                 {
                   type = 'assignment',
                   name = ValueNames[parent],
-                  index =
-                    {
-                      type = 'index',
-                      value = key_slot,
-                    },
+                  IndexValue = key_slot,
                   value = ValueNames[Node],
                 }
               )
@@ -182,4 +178,5 @@ return get_ast
   2018 # # #
   2019 #
   2026-06-17
+  2026-06-19
 ]]
