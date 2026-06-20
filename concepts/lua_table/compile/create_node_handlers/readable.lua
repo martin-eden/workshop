@@ -5,24 +5,6 @@
   Last mod.: 2026-06-18
 ]]
 
---[[
-  [Bug] Messed indents
-
-  "{'A'}" is printed as
-
-    {
-    'A'  ,
-    }
-
-  That's because our state flag <should_write_indent>
-  is out of scope of base serializer.
-
-  Before it worked because we use advanced (and old and heavy) printer
-  which kept that state.
-
-  I think I'll solve this in forecoming rework of serialization mechs.
-]]
-
 -- Imports:
 local create_base_handlers = request('base')
 local raw_compile = request('!.struc.compile')
@@ -34,38 +16,33 @@ local ExistingHandlers
 local OutputStream
 local use_compact_sequences = true
 local Indent
-local should_write_indent = true
 -- )
 
--- Aliasing printer's methods (
-local newline =
+-- Convenience (
+local emit_newline =
   function()
     OutputStream:Write('\n')
+  end
 
-    should_write_indent = true
+local emit_indent =
+  function()
+    if (Indent.RangePoint.value > 0) then
+      OutputStream:Write(Indent:ToString())
+    end
   end
 
 local emit =
   function(str)
-    if should_write_indent then
-      if (Indent.RangePoint.value > 0) then
-        OutputStream:Write(Indent:ToString())
-      end
-
-      should_write_indent = false
-    end
-
-    -- Temporary fix for messed indents. This statement should be first in final code.
     if (str == '') then return end
 
     OutputStream:Write(str)
   end
--- )
 
 local compile =
   function(Tree)
     emit(raw_compile(Tree, ExistingHandlers))
   end
+-- )
 
 local serialize_table =
   function(Node)
@@ -80,15 +57,15 @@ local serialize_table =
     local last_int_key = 0
 
     emit('{')
+
+    emit_newline()
+
     Indent:Inc()
 
     for _, Rec in ipairs(Node) do
       local Key, Value = Rec.Key, Rec.Value
 
-      newline()
-
-      -- Temporary fix for messed indents. This statement should be removed in final code
-      emit('')
+      emit_indent()
 
       --[[
         if use_compact_sequences
@@ -114,11 +91,14 @@ local serialize_table =
       compile(Value)
 
       emit(',')
+
+      emit_newline()
     end
 
-    newline()
-
     Indent:Dec()
+
+    emit_indent()
+
     emit('}')
   end
 
@@ -142,9 +122,10 @@ local create_node_handlers =
 return create_node_handlers
 
 --[[
-  2018-02-05
-  2024-08-09
-  2026-05-03
+  2018 #
+  2024 #
+  2026 #
   2026-06-16
   2026-06-18
+  2026-06-19
 ]]
