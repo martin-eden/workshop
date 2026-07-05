@@ -7,29 +7,29 @@
 
 -- Imports:
 local create_instance = request('!.table.create_instance')
-local RangePointClass = request('!.concepts.RangePoint')
+local RangePoint = request('!.concepts.RangePoint')
 
-local Core
-
-local RangePoint = RangePointClass.create()
+local RangePoint = RangePoint.create()
 RangePoint:SetMinValue(0)
 RangePoint:SetMaxValue(60)
 RangePoint:SetValue(RangePoint:GetMinValue())
 
-Core =
+--[[
+  Data storage format
+
+    1 [s] Indent chunk
+    2 [t] Range point of current indent level
+]]
+local Core =
   {
     '  ',
-    RangePoint = RangePoint,
+    RangePoint,
   }
 
 local Interface
 Interface =
   {
-    GetIndentChunk =
-      function(Me)
-        return Me[1]
-      end,
-
+    GetIndentChunk = function(Me) return Me[1] end,
     SetIndentChunk =
       function(Me, str)
         assert_string(str)
@@ -37,10 +37,7 @@ Interface =
         Me[1] = str
       end,
 
-    GetRangePoint =
-      function(Me)
-        return Me.RangePoint
-      end,
+    GetRangePoint = function(Me) return Me[2] end,
 
     ToString =
       function(Me)
