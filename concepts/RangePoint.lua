@@ -2,35 +2,61 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-11
+  Last mod.: 2026-07-05
 ]]
 
 -- Imports:
 local create_instance = request('!.table.create_instance')
+local min = math.min
+local max = math.max
 
-local Core
-Core =
-  {
-    value = 0,
-    min_value = 0,
-    max_value = 5,
-  }
+--[[
+  Data storage format
+
+    1 [i] Current value
+    2 [i] Minimum value
+    3 [i] Maximum value
+]]
+local Core = { 0, 0, 5 }
 
 local Interface
 Interface =
   {
+    GetCurValue = function(Me) return Me[1] end,
+    SetCurValue = function(Me, val) Me[1] = val end,
+
+    GetMinValue = function(Me) return Me[2] end,
+    SetMinValue = function(Me, val) Me[2] = val end,
+
+    GetMaxValue = function(Me) return Me[3] end,
+    SetMaxValue = function(Me, val) Me[3] = val end,
+
+    GetValue =
+      function(Me)
+        local cur_value = Me:GetCurValue()
+        local min_value = Me:GetMinValue()
+        local max_value = Me:GetMaxValue()
+
+        return max(min(cur_value, max_value), min_value)
+      end,
+    SetValue =
+      function(Me, arg_value)
+        local cur_value
+        local min_value = Me:GetMinValue()
+        local max_value = Me:GetMaxValue()
+
+        cur_value = max(min(arg_value, max_value), min_value)
+
+        Me:SetCurValue(cur_value)
+      end,
+
     IncBy =
       function(Me, value)
-        Me:SetValue(Me:GetValue() + value)
+        Me:SetCurValue(Me:GetCurValue() + value)
       end,
     DecBy =
       function(Me, value)
-        Me:SetValue(Me:GetValue() - value)
-      end,
-
-    create =
-      function(OptCore)
-        return create_instance(OptCore or Core, Interface)
+        Me:SetCurValue(Me:GetCurValue() - value)
       end,
 
     Inc =
@@ -42,13 +68,9 @@ Interface =
         Me:DecBy(1)
       end,
 
-    GetValue =
-      function(Me)
-        return math.max(math.min(Me.value, Me.max_value), Me.min_value)
-      end,
-    SetValue =
-      function(Me, value)
-        Me.value = math.max(math.min(value, Me.max_value), Me.min_value)
+    create =
+      function(OptCore)
+        return create_instance(OptCore or Core, Interface)
       end,
   }
 
@@ -57,4 +79,5 @@ return Interface
 
 --[[
   2026-05-11
+  2026-07-05
 ]]
