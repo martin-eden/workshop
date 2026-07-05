@@ -14,7 +14,7 @@ local Init =
 
     local Indent = Indent.create()
     Indent:SetIndentChunk(self.indent_chunk)
-    Indent.RangePoint:SetValue(self.next_line_indent)
+    Indent:GetRangePoint():SetValue(self.next_line_indent)
     self.Indent = Indent
 
     self.line_with_text:init(self.Indent:ToString())
