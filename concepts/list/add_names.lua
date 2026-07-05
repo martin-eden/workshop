@@ -1,9 +1,9 @@
 -- Add names to list entries
 
--- Last mod.: 2024-11-25
-
--- Imports:
-local InvertTable = request('!.table.invert')
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-07-05
+]]
 
 --[[
   Name list entries by attaching metatable to list
@@ -12,36 +12,54 @@ local InvertTable = request('!.table.invert')
 
     local Color = { 128, 0, 255 }
     local ColorNames = { 'Red', 'Green', 'Blue' }
-    NameList(Color, ColorNames)
+    add_names(Color, ColorNames)
     assert(Color.Red == Color[1])
 ]]
-local NameList =
+
+-- Imports:
+local invert_table = request('!.table.invert')
+
+local add_names =
   function(List, Names)
-    local NamesKeys = InvertTable(Names)
+    local NamesKeys = invert_table(Names)
 
-    local Metatable = {}
+    local get_field_by_name =
+      function(List, name)
+        return rawget(List, NamesKeys[name])
+      end
 
-    Metatable.__index =
+    local method_get =
       function(Table, Key)
-        return rawget(Table, NamesKeys[Key])
+        return get_field_by_name(Table, Key)
       end
 
-    Metatable.__newindex =
-      function(Table, Key, Value)
-        if NamesKeys[Key] then
-          rawset(Table, NamesKeys[Key], Value)
-          return
-        end
-        rawset(Table, Key, Value)
+    local set_field_by_name =
+      function(List, name, Value)
+        local index = NamesKeys[name]
+
+        if not index then return end
+
+        rawset(List, index, Value)
       end
+
+    local method_set =
+      function(Table, Key, Value)
+        set_field_by_name(Table, Key, Value)
+      end
+
+    local Metatable =
+      {
+        __index = method_get,
+        __newindex = method_set,
+      }
 
     setmetatable(List, Metatable)
   end
 
 -- Exports:
-return NameList
+return add_names
 
 --[[
-  2024-11-23
-  2024-11-24
+  2024 # #
+  2026-07-05
 ]]
