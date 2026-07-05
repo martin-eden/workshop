@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-23
+  Last mod.: 2026-07-05
 ]]
 
 --[[
@@ -29,9 +29,10 @@ local Interface =
     Init =
       function(Me)
         Me.Indent = IndentClass.create()
+        local space_char = Me.space_char
         local spaces_per_indent = 2
-        Me.Indent.indent_chunk =
-          string.rep(Me.space_char, spaces_per_indent)
+        local indent_chunk = string.rep(space_char, spaces_per_indent)
+        Me.Indent:SetIndentChunk(indent_chunk)
 
         Me.prev_event = 'nothing'
 
