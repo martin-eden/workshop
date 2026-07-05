@@ -15,7 +15,7 @@ local emit_indent =
   function(Output)
     Output:Write('\n')
 
-    if (Indent.RangePoint.value == 0) then return end
+    if (Indent.RangePoint:GetValue() == 0) then return end
 
     Output:Write(Indent:ToString())
   end

@@ -12,9 +12,9 @@ local RangePointClass = request('!.concepts.RangePoint')
 local Core
 
 local RangePoint = RangePointClass.create()
-RangePoint.min_value = 0
-RangePoint.max_value = 60
-RangePoint.value = 0
+RangePoint:SetMinValue(0)
+RangePoint:SetMaxValue(60)
+RangePoint:SetValue(RangePoint:GetMinValue())
 
 Core =
   {
