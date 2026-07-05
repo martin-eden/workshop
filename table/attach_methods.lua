@@ -37,7 +37,7 @@ local attach_methods =
           end,
       }
 
-    setmetatable(Object, Metatable )
+    setmetatable(Object, Metatable)
   end
 
 -- Export:
