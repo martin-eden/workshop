@@ -2,11 +2,8 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-12
+  Last mod.: 2026-07-05
 ]]
-
--- Imports:
-local IndentClass = request('!.concepts.Indent')
 
 local Interface =
   {
@@ -44,8 +41,7 @@ local Interface =
     init = request('init'),
 
     -- Intestines
-    Indent = {},
-    IndentClass = IndentClass,
+    Indent = { },
   }
 
 -- Export:
@@ -55,4 +51,5 @@ return Interface
   2017 # # #
   2024 #
   2026-05-12
+  2026-07-05
 ]]

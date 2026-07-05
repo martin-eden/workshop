@@ -2,16 +2,20 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-12
+  Last mod.: 2026-07-05
 ]]
+
+-- Imports:
+local Indent = request('!.concepts.Indent')
 
 local Init =
   function(self)
-    self.processed_text = {}
+    self.processed_text = { }
 
-    self.Indent = self.IndentClass.create()
-    self.Indent.indent_chunk = self.indent_chunk
-    self.Indent.RangePoint.value = self.next_line_indent
+    local Indent = Indent.create()
+    Indent:SetIndentChunk(self.indent_chunk)
+    Indent.RangePoint.value = self.next_line_indent
+    self.Indent = Indent
 
     self.line_with_text:init(self.Indent:ToString())
 
