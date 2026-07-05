@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-02
+  Last mod.: 2026-07-05
 ]]
 
 --[[
@@ -11,9 +11,15 @@
     local Object = { Data = { } }
     local Methods = { GetLength = function(Me) return #Me.Data end }
 
-    -- setmetatable(Object, { __index = Methods })
+  Instead of
+
+    setmetatable(Object, { __index = Methods })
+
+  We call
 
     attach_methods(Object, Methods)
+
+  Also it explodes when external code will try to add new field.
 ]]
 
 local attach_methods =
@@ -21,7 +27,17 @@ local attach_methods =
     assert_table(Object)
     assert_table(Methods)
 
-    setmetatable(Object, { __index = Methods } )
+    local Metatable =
+      {
+        __index = Methods,
+
+        __newindex =
+          function()
+            error('Table is locked for additions.')
+          end,
+      }
+
+    setmetatable(Object, Metatable )
   end
 
 -- Export:
@@ -29,4 +45,5 @@ return attach_methods
 
 --[[
   2026-05-02
+  2026-07-05
 ]]
