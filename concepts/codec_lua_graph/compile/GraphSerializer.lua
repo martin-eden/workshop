@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-20
+  Last mod.: 2026-07-06
 ]]
 
 -- Imports:
@@ -11,23 +11,24 @@ local is_identifier = request('!.concepts.lua.is_identifier')
 
 local SerializeValue =
   function(Me, Node, Output)
-    if (Node.type ~= 'table') then
-      if (Node.type == 'name') then
-        Output:Write(Node.value)
-      else
-        local val_str = serialize_terminal_value(Node.value)
-        if is_nil(val_str) then
-          val_str = serialize_terminal_value(_G.tostring(Node.value))
-        end
-        Output:Write(val_str)
-      end
-    else
+    local node_type = Node[1]
+    local node_value = Node[2]
+
+    if (node_type == 'name') then
+      Output:Write(node_value)
+    elseif (node_type == 'table') then
       Me:SerializeTree(Node, Output)
+    else
+      local val_str = serialize_terminal_value(node_value)
+      if is_nil(val_str) then
+        val_str = serialize_terminal_value(_G.tostring(node_value))
+      end
+      Output:Write(val_str)
     end
   end
 
 local SerializeTree =
-  function(Me, TreeAst, Output)
+  function(Me, TableAst, Output)
     local empty_table_str = Me.Config.empty_table_str
     local opening_table_str = Me.Config.opening_table_str
     local closing_table_str = Me.Config.closing_table_str
@@ -40,7 +41,9 @@ local SerializeTree =
 
     local notify = Me.Config.notify
 
-    if (#TreeAst == 0) then
+    local KeyVals = TableAst[2]
+
+    if (#KeyVals == 0) then
       Output:Write(empty_table_str)
 
       return
@@ -51,7 +54,7 @@ local SerializeTree =
 
     local last_integer_key = 0
 
-    for index, Rec in ipairs(TreeAst) do
+    for index, KeyVal_Rec in ipairs(KeyVals) do
       local is_first_rec = (index == 1)
       if not is_first_rec then
         notify('items_delimiter', Output)
@@ -60,35 +63,39 @@ local SerializeTree =
 
       notify('processing_item', Output)
 
-      local Key = Rec.Key
-      local Value = Rec.Value
-      local brackets_are_required
+      local Key = KeyVal_Rec[1]
+      local Value = KeyVal_Rec[2]
+
+      local key_type = Key[1]
+      local key_value = Key[2]
+
+      local brackets_not_required
 
       local skip_key_serialization =
-        (Key.type == 'number') and (Key.value == last_integer_key + 1) and
-        use_compact_sequences
+        use_compact_sequences and
+        (
+          (key_type == 'number') and
+          (key_value == last_integer_key + 1)
+        )
 
       if skip_key_serialization then
-        last_integer_key = Key.value
+        last_integer_key = key_value
 
         goto serialize_value
       end
 
-      brackets_are_required =
-        not ((Key.type == 'string') and is_identifier(Key.value)) or
-        not use_compact_indices
+      brackets_not_required =
+        use_compact_indices and
+        (
+          (key_type == 'string') and
+          is_identifier(key_value)
+        )
 
-      if brackets_are_required then
-        Output:Write('[')
-      end
-
-      if brackets_are_required then
-        Me:SerializeValue(Key, Output)
+      if brackets_not_required then
+        Output:Write(key_value)
       else
-        Output:Write(Key.value)
-      end
-
-      if brackets_are_required then
+        Output:Write('[')
+        Me:SerializeValue(Key, Output)
         Output:Write(']')
       end
 
@@ -116,10 +123,11 @@ local SerializeGraph =
     local equal_str = Me.Config.equal_str
 
     for index, Rec in ipairs(GraphAst) do
-      local rec_type = Rec.type
+      local rec_type = Rec[1]
+
       if (rec_type == 'local_definition') then
-        local name = Rec.name
-        local Value = Rec.Value
+        local name = Rec[2]
+        local Value = Rec[3]
 
         Output:Write('local')
         Output:Write(' ')
@@ -128,38 +136,39 @@ local SerializeGraph =
         Me:SerializeValue(Value, Output)
         Output:Write('\n')
       elseif (rec_type == 'assignment') then
-        local dest_name = Rec.dest_name
-        local Index = Rec.IndexValue
-        local src_name = Rec.src_name
+        local dest_name = Rec[2]
+        local Key = Rec[3]
+        local src_name = Rec[4]
 
-        Output:Write(dest_name)
+        local key_type = Key[1]
+        local key_value = Key[2]
 
         local brackets_not_required =
           use_compact_indices and
-          (Index.type == 'string') and
-          is_identifier(Index.value)
+          (
+            (key_type == 'string') and
+            is_identifier(key_value)
+          )
 
+        Output:Write(dest_name)
         if brackets_not_required then
           Output:Write('.')
-          Output:Write(Index.value)
+          Output:Write(key_value)
         else
           Output:Write('[')
-          Me:SerializeValue(Index, Output)
+          Me:SerializeValue(Key, Output)
           Output:Write(']')
         end
-
         Output:Write(equal_str)
         Output:Write(src_name)
         Output:Write('\n')
       elseif (rec_type == 'return_statement') then
-        local Value = Rec.Value
+        local Value = Rec[2]
 
         Output:Write('return')
         Output:Write(' ')
         Me:SerializeValue(Value, Output)
         Output:Write('\n')
-      else
-        error('Unknown record type ( ' .. rec_type .. ' )')
       end
     end
   end
@@ -194,6 +203,6 @@ local Interface =
 return Interface
 
 --[[
-  2026-06-19
-  2026-06-20
+  2026-06 # #
+  2026-07-06
 ]]

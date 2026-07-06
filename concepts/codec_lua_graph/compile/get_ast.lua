@@ -2,13 +2,72 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-19
+  Last mod.: 2026-07-06
 ]]
 
 -- Imports:
 local NameGiver = request('!.mechs.name_giver')
 local get_assembly_order = request('!.mechs.graph.assembly_order')
 local add_to_list = request('!.concepts.list.add_item')
+
+local create_name_rec =
+  function(name)
+    return { 'name', name }
+  end
+
+local create_terminal_type_rec =
+  function(data)
+    return { type(data), data }
+  end
+
+local create_table_rec =
+  function()
+    return { 'table', { } }
+  end
+
+local create_local_def_rec =
+  function(name, Value)
+    return { 'local_definition', name, Value }
+  end
+
+local create_assignment_rec =
+  function(dest, index, value)
+    return { 'assignment', dest, index, value }
+  end
+
+local create_return_rec =
+  function(Value)
+    return { 'return_statement', Value }
+  end
+
+local tree_get_ast =
+  function(Data, table_iterator, NamedNodes_Map)
+    local create_ast
+    create_ast =
+      function(Data)
+        if NamedNodes_Map[Data] then
+          return create_name_rec(NamedNodes_Map[Data])
+        end
+
+        if not is_table(Data) then
+          return create_terminal_type_rec(Data)
+        end
+
+        local Result = create_table_rec()
+        local KeyVals = Result[2]
+
+        for Key, Value in table_iterator(Data) do
+          add_to_list(
+            KeyVals,
+            { create_ast(Key), create_ast(Value) }
+          )
+        end
+
+        return Result
+      end
+
+    return create_ast(Data)
+  end
 
 local get_num_refs =
   function(NodeRec)
@@ -46,39 +105,6 @@ local may_print_inline =
       )
   end
 
-local tree_get_ast =
-  function(Data, table_iterator, NamedNodes_Map)
-    local create_ast
-    create_ast =
-      function(Data)
-        local data_type = type(Data)
-
-        if NamedNodes_Map[Data] then
-          return { type = 'name', value = NamedNodes_Map[Data] }
-        end
-
-        if (data_type ~= 'table') then
-          return { type = data_type, value = Data }
-        end
-
-        local Result = { type = 'table' }
-
-        for Key, Value in table_iterator(Data) do
-          add_to_list(
-            Result,
-            {
-              Key = create_ast(Key),
-              Value = create_ast(Value),
-            }
-          )
-        end
-
-        return Result
-      end
-
-    return create_ast(Data)
-  end
-
 local get_ast =
   function(Data, table_iterator)
     local NameGiver = new(NameGiver)
@@ -103,7 +129,8 @@ local get_ast =
         local TableRec
 
         if NodeRec.part_of_cycle then
-          TableRec = { type = 'table' }
+          TableRec = create_table_rec()
+          local KeyVals = TableRec[2]
 
           for k, v in table_iterator(Node) do
             local key_is_ok = not is_table(k) or ProcessedTables[k]
@@ -111,10 +138,10 @@ local get_ast =
 
             if key_is_ok and value_is_ok then
               add_to_list(
-                TableRec,
+                KeyVals,
                 {
-                  Key = tree_get_ast(k, table_iterator, ValueNames),
-                  Value = tree_get_ast(v, table_iterator, ValueNames),
+                  tree_get_ast(k, table_iterator, ValueNames),
+                  tree_get_ast(v, table_iterator, ValueNames),
                 }
               )
             end
@@ -129,11 +156,7 @@ local get_ast =
 
         add_to_list(
           Result,
-          {
-            type = 'local_definition',
-            name = node_name,
-            Value = TableRec,
-          }
+          create_local_def_rec(node_name, TableRec)
         )
       end
 
@@ -141,26 +164,17 @@ local get_ast =
 
       if NodeRec.part_of_cycle then
         -- Add links to a table we just processed:
-        for parent, parent_keys in pairs(NodeRec.refs) do
-          if ProcessedTables[parent] then
-            for parent_key in pairs(parent_keys) do
-              local key_slot
-              local key_name = ValueNames[parent_key]
-
-              if key_name then
-                key_slot = { type = 'name', value = key_name }
-              else
-                key_slot = { type = type(parent_key), value = parent_key }
-              end
+        for Parent, ParentKeys in pairs(NodeRec.refs) do
+          if ProcessedTables[Parent] then
+            for parent_key in pairs(ParentKeys) do
+              local key_slot =
+                tree_get_ast(parent_key, table_iterator, ValueNames)
 
               add_to_list(
                 Result,
-                {
-                  type = 'assignment',
-                  dest_name = ValueNames[parent],
-                  IndexValue = key_slot,
-                  src_name = ValueNames[Node],
-                }
+                create_assignment_rec(
+                  ValueNames[Parent], key_slot, ValueNames[Node]
+                )
               )
             end
           end
@@ -170,10 +184,7 @@ local get_ast =
 
     add_to_list(
       Result,
-      {
-        type = 'return_statement',
-        Value = { type = 'name', value = ValueNames[Data] }
-      }
+      create_return_rec(create_name_rec(ValueNames[Data]))
     )
 
     --[[
@@ -188,16 +199,12 @@ local get_ast =
         ...
         return {...}
     ]]
-    assert(#Result >= 2)
-
-    if (Result[#Result - 1].type == 'local_definition') then
+    local prelast_type = Result[#Result - 1][1]
+    if (prelast_type == 'local_definition') then
+      local prelast_value = Result[#Result - 1][3]
       table.remove(Result)
-      local LastValue = Result[#Result].Value
-      Result[#Result] =
-        {
-          type = 'return_statement',
-          Value = LastValue,
-        }
+      table.remove(Result)
+      add_to_list(Result, create_return_rec(prelast_value))
     end
 
     return Result
@@ -212,7 +219,6 @@ return get_ast
   2020 #
   2022 #
   2024 #
-  2026-06-17
-  2026-06-19
-  2026-06-20
+  2026-06 # # #
+  2026-07-06
 ]]
