@@ -1,15 +1,23 @@
 -- Quote string in long quotes
 
--- Last mod.: 2024-11-19
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-07-12
+]]
 
 --[==[
   Long quotes
 
-  Long quotes is multi-character quotes in Lua. String data inside them
-  are not processed. So no need to worry about quoting some "special"
-  characters.
+  Long quotes are directed multi-character quotes in Lua.
 
-  That's all the same:
+  String data inside them is mostly not processed. So no need to worry
+  about quoting some "special" characters.
+
+  However if first character after quote is newline -- it's dropped.
+  That's language curtsy for readability. Nice but still you can't
+  indent data. And tail newline is not dropped.
+
+  So that's all the same:
 
     > s = [[
     Hello!]]
@@ -17,43 +25,53 @@
     > s = [=[Hello!]=]
 ]==]
 
-local has_newlines = request('!.string.content_attributes').has_newlines
+local str_find = string.find
+local str_sub = string.sub
 
-return
-  function(s)
-    assert_string(s)
+local quote_long =
+  function(str)
+    local opening_bracket = '['
+    local closing_bracket = ']'
+    local filler_char = '='
+    local newline_char = '\010'
+    local return_char = '\013'
 
     -- (1)
-    s = s .. ']'
+    str = str .. closing_bracket
 
-    local eq_chunk = ''
-    local postfix
-    while true do
-      postfix = ']' .. eq_chunk .. ']'
-      if not s:find(postfix, 1, true) then
-        break
+    local filler_chunk = ''
+    do
+      while true do
+        local postfix =
+          closing_bracket .. filler_chunk .. closing_bracket
+
+        if not str_find(str, postfix) then break end
+
+        filler_chunk = filler_chunk .. filler_char
       end
-      eq_chunk = eq_chunk .. '='
     end
 
-    local prefix = '[' .. eq_chunk .. '['
+    local prefix = opening_bracket .. filler_chunk .. opening_bracket
 
     -- (2)
-    local first_char = s:sub(1, 1)
+    local first_char = str_sub(str, 1, 1)
     if
-      (first_char == '\x0D') or
-      (first_char == '\x0A')
+      (first_char == newline_char) or (first_char == return_char)
     then
       prefix = prefix .. first_char
     end
 
     -- (3)
-    if has_newlines(s) then
-      prefix = prefix .. '\x0A'
+    local has_newlines = not is_nil(str_find(str, newline_char))
+    if has_newlines then
+      prefix = prefix .. newline_char
     end
 
-    return prefix .. s .. eq_chunk .. ']'
+    return prefix .. str .. filler_chunk .. closing_bracket
   end
+
+-- Export:
+return quote_long
 
 --[===[
   [1] Quoted result string will have following structure:
@@ -107,7 +125,8 @@ return
 ]===]
 
 --[[
-  2017-03
-  2018-12
-  2024-11
+  2017 #
+  2018 #
+  2024 #
+  2026-07-11
 ]]

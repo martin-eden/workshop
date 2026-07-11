@@ -1,12 +1,23 @@
+-- Quote one character
+
 --[[
-  Return string with escaped hex byte for given string with byte.
-
-  So for ' ' it will return '\x20'.
-
-  This function intended for use as gsub() match handler.
+  Author: Martin Eden
+  Last mod.: 2026-07-12
 ]]
 
-return
-  function(c)
-    return ([[\x%02X]]):format(c:byte(1, 1))
+local str_format = string.format
+local str_byte = string.byte
+
+local quote_char_fmt = [[\]] .. '%03d'
+
+local quote_char =
+  function(char)
+    return str_format(quote_char_fmt, str_byte(char))
   end
+
+-- Export:
+return quote_char
+
+--[[
+  2026-07-12
+]]
