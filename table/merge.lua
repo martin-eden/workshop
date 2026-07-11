@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-06-17
+  Last mod.: 2026-07-11
 ]]
 
 --[[
@@ -26,8 +26,8 @@ local merge =
 
     local Rules =
       {
-        { HasA = true, HasB = true, Action = 'use_a' },
-        { HasA = false, HasB = true, Action = 'use_b' },
+        { has_a = true, has_b = true, action = 'use_a' },
+        { has_a = false, has_b = true, action = 'use_b' },
       }
 
     apply_table(Result, Additions, Rules)
