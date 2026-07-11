@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-20
+  Last mod.: 2026-07-11
 ]]
 
 -- Imports:
@@ -15,9 +15,11 @@ local emit_indent =
   function(Output)
     Output:Write('\n')
 
-    if (Indent:GetRangePoint():GetValue() == 0) then return end
+    local indent_str = Indent:ToString()
 
-    Output:Write(Indent:ToString())
+    if (indent_str == '') then return end
+
+    Output:Write(indent_str)
   end
 
 local prev_event_name = 'nothing'

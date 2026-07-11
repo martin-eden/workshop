@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-06
+  Last mod.: 2026-07-11
 ]]
 
 -- Imports:
@@ -73,10 +73,7 @@ local SerializeTree =
 
       local skip_key_serialization =
         use_compact_sequences and
-        (
-          (key_type == 'number') and
-          (key_value == last_integer_key + 1)
-        )
+        ((key_type == 'number') and (key_value == last_integer_key + 1))
 
       if skip_key_serialization then
         last_integer_key = key_value
@@ -86,10 +83,7 @@ local SerializeTree =
 
       brackets_not_required =
         use_compact_indices and
-        (
-          (key_type == 'string') and
-          is_identifier(key_value)
-        )
+        ((key_type == 'string') and is_identifier(key_value))
 
       if brackets_not_required then
         Output:Write(key_value)
@@ -135,7 +129,7 @@ local SerializeGraph =
         Output:Write(equal_str)
         Me:SerializeValue(Value, Output)
         Output:Write('\n')
-      elseif (rec_type == 'assignment') then
+      elseif (rec_type == 'key_assignment') then
         local dest_name = Rec[2]
         local Key = Rec[3]
         local src_name = Rec[4]
@@ -145,10 +139,7 @@ local SerializeGraph =
 
         local brackets_not_required =
           use_compact_indices and
-          (
-            (key_type == 'string') and
-            is_identifier(key_value)
-          )
+          ((key_type == 'string') and is_identifier(key_value))
 
         Output:Write(dest_name)
         if brackets_not_required then
