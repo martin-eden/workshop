@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-29
+  Last mod.: 2026-07-11
 ]]
 
 --[[
@@ -55,34 +55,33 @@
 local split_name =
   function(qualified_name)
     local prefix_name_pattern = '^(.+%.)([^%.]+)$'  -- a.b.c --> (a.b.) (c)
-    local prefix, name = qualified_name:match(prefix_name_pattern)
+    local prefix, name =
+      string.match(qualified_name, prefix_name_pattern)
+
     if not prefix then
       prefix = ''
-      name = qualified_name
-      if not name:find('^([^%.]+)$') then
+      if string.find(qualified_name, '%.') then
         name = ''
+      else
+        name = qualified_name
       end
     end
+
     return prefix, name
   end
 
 local unite_prefixes =
   function(base_prefix, rel_prefix)
-    local init_base_prefix, init_rel_prefix = base_prefix, rel_prefix
-    local list_without_tail_pattern = '(.+%.)[^%.]-%.$' -- a.b.c. --> (a.b.)
-    local list_without_head_pattern = '[^%.]+%.(.+)$' -- a.b.c. --> (b.c.)
-    while rel_prefix:find('^%^%.') do
+    local uplevel_capture = '(.+%.)[^%.]-%.$' -- a.b.c. --> (a.b.)
+
+    while (string.sub(rel_prefix, 1, 2) == '^.') do
       if (base_prefix == '') then
-        error(
-          ([[Link "%s" is outside of caller's prefix "%s".]]):format(
-            init_rel_prefix,
-            init_base_prefix
-          )
-        )
+        error("Link is outside of caller's prefix.")
       end
-      base_prefix = base_prefix:match(list_without_tail_pattern) or ''
-      rel_prefix = rel_prefix:match(list_without_head_pattern) or ''
+      base_prefix = string.match(base_prefix, uplevel_capture) or ''
+      rel_prefix = string.sub(rel_prefix, 3)
     end
+
     return base_prefix .. rel_prefix
   end
 
@@ -91,22 +90,20 @@ local depth = 1
 
 local get_caller_prefix =
   function()
-    local result = ''
-    if Names[depth] then
-      result = Names[depth].prefix
-    end
-    return result
+    local NameRec = Names[depth]
+
+    if not NameRec then return '' end
+
+    return NameRec.prefix
   end
 
 local get_caller_name =
   function()
-    local result = 'anonymous'
+    local NameRec = Names[depth]
 
-    if Names[depth] then
-      result = Names[depth].prefix .. Names[depth].name
-    end
+    if not NameRec then return 'anonymous' end
 
-    return result
+    return NameRec.prefix .. NameRec.name
   end
 
 local push =
@@ -135,10 +132,10 @@ local get_require_name =
   function(qualified_name)
     local caller_prefix
 
-    local is_absolute_name = (qualified_name:sub(1, 2) == '!.')
+    local is_absolute_name = (string.sub(qualified_name, 1, 2) == '!.')
 
     if is_absolute_name then
-      qualified_name = qualified_name:sub(3)
+      qualified_name = string.sub(qualified_name, 3)
       caller_prefix = base_prefix
     else
       caller_prefix = get_caller_prefix()
@@ -200,4 +197,5 @@ end
   2024 #
   2026-05-08
   2026-05-28
+  2026-07-11
 ]]
