@@ -1,15 +1,27 @@
+-- From table A remove keys that are present in table B
+
 --[[
-  From table <a> remove key-value pairs that present in table <b>.
-  Return nothing.
+  Author: Martin Eden
+  Last mod.: 2026-07-12
 ]]
 
-return
-  function(a, b)
-    assert_table(a)
-    assert_table(b)
-    for k in pairs(b) do
-      if a[k] and (a[k] == b[k]) then
-        a[k] = nil
-      end
-    end
+-- Imports:
+local apply_table = request('apply_table')
+
+local Rules =
+  {
+    { has_a = true, has_b = true, action = 'remove' },
+  }
+
+local subtract_table =
+  function(A, B)
+    apply_table(A, B, Rules)
   end
+
+-- Export:
+return subtract_table
+
+--[[
+  2018
+  2026-07-12
+]]
