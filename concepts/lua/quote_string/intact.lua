@@ -55,15 +55,16 @@ local quote_long =
 
     -- (2)
     local first_char = str_sub(str, 1, 1)
-    if
+    local first_char_is_newline =
       (first_char == newline_char) or (first_char == return_char)
-    then
+
+    if first_char_is_newline then
       prefix = prefix .. first_char
     end
 
     -- (3)
     local has_newlines = not is_nil(str_find(str, newline_char))
-    if has_newlines then
+    if has_newlines and not first_char_is_newline then
       prefix = prefix .. newline_char
     end
 
@@ -120,6 +121,9 @@ return quote_long
       > ]]
 
     For the sake of readability.
+
+    Here we should be careful not to collide with possible newline
+    from step 2.
   ]=]
 
 ]===]
