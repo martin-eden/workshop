@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-11
+  Last mod.: 2026-07-12
 ]]
 
 --[[
@@ -16,20 +16,13 @@
 -- Imports:
 local apply_table = request('apply_table')
 
+local Rules =
+  {
+    { has_a = false, has_b = true, action = 'replace' },
+  }
+
 local merge =
   function(Result, Additions)
-    assert_table(Result)
-
-    if is_nil(Additions) then
-      return Result
-    end
-
-    local Rules =
-      {
-        { has_a = true, has_b = true, action = 'use_a' },
-        { has_a = false, has_b = true, action = 'use_b' },
-      }
-
     apply_table(Result, Additions, Rules)
   end
 
