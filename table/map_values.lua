@@ -2,13 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-26
+  Last mod.: 2026-07-12
 ]]
 
 --[[
   Useful to check presence item in a list:
 
-    { 'A', _ = 'a' } -> { A = true, a = true }
+    { 'A', _ = 'a' } -> { ['A'] = true, ['a'] = true }
 ]]
 
 local map_values =
