@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-13
+  Last mod.: 2026-07-14
 ]]
 
 --[[
@@ -134,8 +134,6 @@ local add_to_list = request('!.concepts.list.add_item')
 
 local parse_function =
   function(InputLinesStream)
-    local str_starts_with = request('!.string.starts_with')
-
     local remove_first_item =
       function(List)
         local remove_item = table.remove
