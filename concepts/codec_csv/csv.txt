@@ -1,0 +1,74 @@
+Notes on CSV format and implementation
+
+
+At first glance CSV looks like TSV.
+
+Imagine you are in 1960s and have paper printout of TSV data.
+You want to parse it yourself.. Fuck, you can't distinguish TAB
+from SPC! It's all yellowish paper!
+
+So yeah, let's just use "," instead of ASCII 9 ('\t')!
+
+Problem is that "," is common character and so your fields can't
+contain ",".
+
+
+Two solutions arouse.
+
+First idea (1960s?)
+
+Let's use more weird (but printable) character! Like "~"! Or "|"!..
+Or "$"..
+
+Yeah this may work but you need to specify that fields separator
+character somewhere. And format doesn't have place for this.
+
+( My original implementation from 2017 supported another field
+  separators. This one fixed to ",". We grew stubborn. )
+
+
+Second idea (1970s?)
+
+Quotes!
+
+  > data_value,"field ,,, with commas!"
+
+Fine. Quoting also frees newline \n:
+
+  > data_value,"Wheee!!!
+  >
+  > It's multi-line value!"
+
+Yeah, but how you can have " in data then? And it'll probably break
+existing flavor of non-quoted CSV:
+
+  > data_value,No problem "dudes"!
+
+Let's just treat "" as " if we are after first "!
+
+  > data_value,"No problem ""dudes""!"
+
+Yeah it's fucking ugly but works.
+
+( I would design stream format with overriding instructions for
+  field and record separators. But I'm in 2026. )
+
+So if field starts with " then it's quoted field and
+that starting " won't come to it's contents.
+
+Parsing double quotes is also some challenge. Because it looks that
+if you are inside quotes and received " ("No problem ") you still can't
+decide whether quotes are closed or not.
+
+Also ending of quote does not means ending of field:
+
+  > data_value,"This" is "valid"!
+
+( I think I handled these cases nicely in this implementation.
+  You can have fun too if you write your own CSV parser without
+  looking at code. )
+
+So be aware, CSV (unlike TSV) actually is ad-hoc format with local
+idiosyncrasies and dirty data.
+
+-- Martin, 2026-07-14
