@@ -1,11 +1,22 @@
+-- CSV codec
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-07-14
+]]
+
+local init = request('specific.init')
+local parse = request('specific.parse')
+local get_next_rec = request('specific.get_next_rec')
+
 local csv_parser_class =
-  new(
-    request('^.^.tsv.parse.specific'),
-    {
-      field_sep_char = ',',
-      get_next_rec = request('specific.get_next_rec'),
-    }
-  )
+  {
+    init = init,
+    parse = parse,
+    get_next_rec = get_next_rec,
+    field_sep_char = ',',
+    lines_iterator = nil,
+  }
 
 return
   function(csv_str, options)
@@ -13,3 +24,7 @@ return
     csv_parser:init(csv_str)
     return csv_parser:parse()
   end
+
+--[[
+  2017
+]]
