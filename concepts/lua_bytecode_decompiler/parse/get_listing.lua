@@ -5,34 +5,26 @@
   Last mod.: 2026-07-13
 ]]
 
+-- Imports:
+local file_from_str = request('!.convert.file_from_str')
+local get_cmd_decompile = request('!.mechs.cmdline.get_cmd_decompile_lua_bytecode')
+local run_shell_command = request('!.concepts.shell.execute')
+local rmfile = request('!.file_system.file.remove')
+
 local get_listing =
   function(bytecode_str)
     local output_str
-    do
-      local bytecode_file_name = os.tmpname()
 
-      do
-        local file_from_str = request('!.convert.file_from_str')
-        file_from_str(bytecode_str, bytecode_file_name)
-      end
+    local bytecode_file_name = os.tmpname()
 
-      do
-        local get_cmd_decompile = request('!.mechs.cmdline.get_cmd_decompile_lua_bytecode')
+    file_from_str(bytecode_str, bytecode_file_name)
 
-        local shell_command = get_cmd_decompile(bytecode_file_name)
+    local shell_command = get_cmd_decompile(bytecode_file_name)
+    local is_ok, Results = run_shell_command(shell_command)
 
-        local run_shell_command = request('!.concepts.shell.execute')
-        local is_ok, Results = run_shell_command(shell_command)
+    output_str = Results.output
 
-        output_str = Results.output
-      end
-
-      do
-        local rmfile = request('!.file_system.file.remove')
-
-        rmfile(bytecode_file_name)
-      end
-    end
+    rmfile(bytecode_file_name)
 
     return output_str
   end
