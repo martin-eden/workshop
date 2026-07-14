@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-11
+  Last mod.: 2026-07-14
 ]]
 
 -- Imports:
@@ -42,7 +42,7 @@ local create_return_rec =
 
 local get_num_refs =
   function(NodeRec)
-    local Node = NodeRec.Node
+    local Node = NodeRec.node
     local Refs = NodeRec.refs
 
     local num_refs = 0
