@@ -1,0 +1,52 @@
+-- For given string with bytecode return string with decompiled text
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-07-13
+]]
+
+local get_listing =
+  function(bytecode_str)
+    local output_str
+    do
+      local bytecode_file_name = os.tmpname()
+
+      do
+        local file_from_str = request('!.convert.file_from_str')
+        file_from_str(bytecode_str, bytecode_file_name)
+      end
+
+      do
+        local ShellCommand =
+          {
+            'luac',
+            '-l',
+            '-p',
+            bytecode_file_name
+          }
+
+        local glue_words = request('!.concepts.words.to_string')
+        local shell_command = glue_words(ShellCommand)
+
+        local run_shell_command = request('!.concepts.shell.execute')
+        local is_ok, Results = run_shell_command(shell_command)
+
+        output_str = Results.output
+      end
+
+      do
+        local rmfile = request('!.file_system.file.remove')
+
+        rmfile(bytecode_file_name)
+      end
+    end
+
+    return output_str
+  end
+
+-- Export:
+return get_listing
+
+--[[
+  2026-07-13
+]]
