@@ -17,16 +17,9 @@ local get_listing =
       end
 
       do
-        local ShellCommand =
-          {
-            'luac',
-            '-l',
-            '-p',
-            bytecode_file_name
-          }
+        local get_cmd_decompile = request('!.mechs.cmdline.get_cmd_decompile_lua_bytecode')
 
-        local glue_words = request('!.concepts.words.to_string')
-        local shell_command = glue_words(ShellCommand)
+        local shell_command = get_cmd_decompile(bytecode_file_name)
 
         local run_shell_command = request('!.concepts.shell.execute')
         local is_ok, Results = run_shell_command(shell_command)
