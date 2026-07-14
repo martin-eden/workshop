@@ -14,21 +14,30 @@ local quote = request('!.concepts.shell.quote')
 local glue_words = request('!.concepts.words.to_string')
 
 local get_cmd_copy =
-  function(src_name, dest_name)
-    local src_file_name = get_file_name(pathname_from_str(src_name))
+  function(src_pathname, dest_pathname)
+    --[[
+      Implementation smartness details:
 
-    local DestPathname = pathname_from_str(dest_name)
-    local dest_file_name = get_file_name(DestPathname)
+        When called to copy file to same name but in another directory
+        ( call like ( one_dir/file_a another_dir/file_a ) ) --
+        file name is not mentioned in destination
+        ( returned command is like "cp one_dir/file_a another_dir/" )
+    ]]
 
-    if (src_file_name == dest_file_name) then
-      dest_name = get_host_dir(DestPathname)
+    local src_filename = get_file_name(pathname_from_str(src_pathname))
+
+    local DestPathname = pathname_from_str(dest_pathname)
+    local dest_filename = get_file_name(DestPathname)
+
+    if (src_filename == dest_filename) then
+      dest_pathname = get_host_dir(DestPathname)
     end
 
     local Command =
       {
         'cp',
-        quote(normalize(src_name)),
-        quote(normalize(dest_name)),
+        quote(normalize(src_pathname)),
+        quote(normalize(dest_pathname)),
       }
 
     return glue_words(Command)
