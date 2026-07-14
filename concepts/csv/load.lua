@@ -1,1 +1,0 @@
-return request('parse.specific')
