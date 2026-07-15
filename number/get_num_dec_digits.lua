@@ -2,13 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-04
+  Last mod.: 2026-07-15
 ]]
 
 -- Imports:
 local assert_integer = _G.assert_integer
 local abs = math.abs
-local log_10 = math.log10
+local log = math.log
 local floor = math.floor
 
 local get_num_dec_digits =
@@ -17,7 +17,7 @@ local get_num_dec_digits =
 
     if (n == 0) then return 1 end
 
-    return floor(log_10(abs(n))) + 1
+    return floor(log(abs(n), 10)) + 1
   end
 
 -- Export:
