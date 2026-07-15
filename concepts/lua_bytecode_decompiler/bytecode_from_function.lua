@@ -1,4 +1,4 @@
--- Compile chunk of Lua code (usually function)
+-- Compile chunk of Lua code (usually function) to string with bytecode
 
 --[[
   Author: Martin Eden
@@ -7,15 +7,17 @@
 
 local get_func_code = string.dump
 
-local compile =
+local strip = true
+
+local bytecode_from_function =
   function(lua_func)
-    local strip = true
+    assert_function(lua_func)
 
     return get_func_code(lua_func, strip)
   end
 
 -- Export:
-return compile
+return bytecode_from_function
 
 --[[
   2026-07-13

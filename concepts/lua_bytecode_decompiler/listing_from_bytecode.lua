@@ -1,8 +1,8 @@
--- Return strings tree with bytecode instructions for function
+-- Return strings tree with bytecode instructions for bytecode string
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-14
+  Last mod.: 2026-07-15
 ]]
 
 --[[
@@ -10,17 +10,14 @@
 ]]
 
 -- Imports:
-local compile = request('compile')
-local get_listing = request('parse.get_listing')
+local get_listing = request('listing_from_bytecode.get_listing')
 local StringStream = request('!.concepts.StreamIo.Input.String')
 local LinesStream = request('!.concepts.StreamIo.Input.Lines')
-local parse_listing = request('parse.parse_listing')
+local parse_listing = request('listing_from_bytecode.parse_listing')
 
-local parse =
-  function(func)
-    assert_function(func)
-
-    local bytecode_str = compile(func)
+local listing_from_bytecode =
+  function(bytecode_str)
+    assert_string(bytecode_str)
 
     local listing_str = get_listing(bytecode_str)
 
@@ -36,7 +33,7 @@ local parse =
   end
 
 -- Export:
-return parse
+return listing_from_bytecode
 
 --[[
   2026-07-12

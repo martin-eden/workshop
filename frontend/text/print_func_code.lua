@@ -38,14 +38,18 @@
 
 -- Imports:
 local StdoutStream = request('!.concepts.StreamIo.Output.Pipe')
-local parse = request('!.concepts.lua_bytecode_decompiler.parse')
+local bytecode_from_function =
+  request('!.concepts.lua_bytecode_decompiler.bytecode_from_function')
+local listing_from_bytecode =
+  request('!.concepts.lua_bytecode_decompiler.listing_from_bytecode')
 local itness_to_tsv = request('!.concepts.codec_tsv.compile')
 
 local print_func_code =
   function(func, OutStream)
     OutStream = OutStream or StdoutStream
 
-    local Functions = parse(func)
+    local Functions =
+      listing_from_bytecode(bytecode_from_function(func))
 
     local newline = '\010'
 
