@@ -1,15 +1,32 @@
-return
-  function(self)
-    local result = {}
+-- Return string with formatted Lua code from AST
 
-    table.insert(result, self.data_struc.shebang_str)
-    table.insert(result, self.printer:get_text())
-    table.insert(result, self.data_struc.unparsed_tail)
-    if not self.is_ok then
-      table.insert(result, '<no_valid_representation>')
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-07-17
+]]
+
+-- Imports:
+local add_to_list = request('!.concepts.list.add_item')
+local lines_to_str = request('!.convert.lines_to_str')
+
+local get_code_str =
+  function(Me)
+    local Lines = { }
+
+    add_to_list(Lines, Me.data_struc.shebang_str)
+    add_to_list(Lines, Me.printer:get_text())
+    add_to_list(Lines, Me.data_struc.unparsed_tail)
+    if not Me.is_ok then
+      add_to_list(Lines, '<no_valid_representation>')
     end
 
-    result = table.concat(result, '\n')
-
-    return result
+    return lines_to_str(Lines)
   end
+
+-- Export:
+return get_code_str
+
+--[[
+  2018
+  2026-07-17
+]]
