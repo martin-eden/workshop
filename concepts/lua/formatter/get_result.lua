@@ -13,7 +13,6 @@ local get_code_str =
   function(Me)
     local Lines = { }
 
-    add_to_list(Lines, Me.data_struc.shebang_str)
     add_to_list(Lines, Me.printer:get_text())
     add_to_list(Lines, Me.data_struc.unparsed_tail)
     if not Me.is_ok then
