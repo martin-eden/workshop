@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-12
+  Last mod.: 2026-07-17
 ]]
 
 --[[
@@ -28,7 +28,9 @@ local upper_dir = '..'
 local pathname_from_str =
   function(path_name)
     assert_string(path_name)
-    assert(path_name ~= '', 'Please pass not empty path_name')
+    if (path_name == '') then
+      error('Empty pathname.')
+    end
 
     path_name = path_name .. sep
     local Path = split_string(path_name, sep)
