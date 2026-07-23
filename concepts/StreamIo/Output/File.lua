@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-27
+  Last mod.: 2026-07-23
 ]]
 
 -- Imports:
@@ -11,6 +11,18 @@ local close_file = request('!.file_system.file.close')
 
 local Interface =
   {
+    -- [Required extension]
+    Open =
+      function(Me, pathname)
+        Me.File = open_file_for_writing(pathname)
+      end,
+
+    -- [Required extension]
+    Close =
+      function(Me)
+        close_file(Me.File)
+      end,
+
     -- [Main]
     Write =
       function(Me, data_str)
@@ -18,24 +30,6 @@ local Interface =
         assert(data_str ~= '')
 
         Me.File:write(data_str)
-      end,
-
-    -- [Required extension]
-    Open =
-      function(Me, pathname)
-        local File = open_file_for_writing(pathname)
-
-        if is_nil(File) then return false end
-
-        Me.File = File
-
-        return true
-      end,
-
-    -- [Required extension]
-    Close =
-      function(Me)
-        close_file(Me.File)
       end,
 
     -- [Internal]
