@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-22
+  Last mod.: 2026-07-23
 ]]
 
 -- Imports:
@@ -15,7 +15,7 @@ local shell_execute = request('!.concepts.shell.execute')
 
   Returns true if directory is present before or after execution.
 ]]
-local creare_dir =
+local create_dir =
   function(dir_name)
     assert_string(dir_name)
 
@@ -30,7 +30,7 @@ local creare_dir =
   end
 
 -- Export:
-return creare_dir
+return create_dir
 
 --[[
   2024-02-17
