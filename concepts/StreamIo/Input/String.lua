@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-27
+  Last mod.: 2026-07-23
 ]]
 
 -- Imports:
@@ -10,6 +10,16 @@ local is_natural = request('!.number.is_natural')
 
 local Interface =
   {
+    -- [Required extension]
+    Init =
+      function(Me, arg_data_str)
+        assert_string(arg_data_str)
+
+        Me.data_str = arg_data_str
+        Me.data_len = string.len(Me.data_str)
+        Me.read_pos = 1
+      end,
+
     -- [Main]
     Read =
       function(Me, num_bytes)
@@ -22,16 +32,6 @@ local Interface =
         Me.read_pos = end_pos + 1
 
         return string.sub(Me.data_str, start_pos, end_pos)
-      end,
-
-    -- [Required extension]
-    Init =
-      function(Me, arg_data_str)
-        assert_string(arg_data_str)
-
-        Me.data_str = arg_data_str
-        Me.data_len = string.len(Me.data_str)
-        Me.read_pos = 1
       end,
 
     -- [Internals]:
