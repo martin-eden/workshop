@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-05
+  Last mod.: 2026-07-24
 ]]
 
 --[[
@@ -33,7 +33,7 @@ local attach_methods =
 
         __newindex =
           function()
-            error('Table is locked for additions.')
+            error('Table is locked for additions/removals.')
           end,
       }
 
