@@ -21,14 +21,14 @@ local Ascii = request('!.concepts.Ascii')
 local quote_variable = request('quote_string.intact')
 local quote_char_func = request('quote_string.quote_char')
 
-local newline_code = QuoteChars.newline_code
+local newline_code = Ascii.Codes.newline
 
 local str_gsub = string.gsub
 
 local has_messy_control_chars =
   function(UsedChars)
     for code in pairs(UsedChars) do
-      if (code ~= newline_code) and Ascii.is_control_code(code) then
+      if Ascii.is_control_code(code) and (code ~= newline_code) then
         return true
       end
     end
