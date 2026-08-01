@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-17
+  Last mod.: 2026-08-01
 ]]
 
 -- Imports:
@@ -21,7 +21,7 @@ local get_long_quote_len =
     return result
   end
 
-local unqote_string =
+local unquote_string =
   function(s)
     local result
 
@@ -45,7 +45,7 @@ local unqote_string =
   end
 
 -- Export:
-return unqote_string
+return unquote_string
 
 --[[
   2018
