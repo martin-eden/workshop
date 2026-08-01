@@ -12,18 +12,14 @@ and computational-heavy...
 Truth is that there is no natural distinction between data and code.
 Between data, data structures and algorithms.
 
-So this directory is historical artifact still containing code
+Currently this directory is historical artifact still containing code
 used by older projects and internal parts.
 
-I don't want to move it to "concepts" without analysis and refactoring.
-And (as usually) I perceive that writing new things or redesigning
-another parts is more important for progress.
+New code is welcome here too, but expect old code to expose some
+weirdness that should be tolerated.
 
-Still, it's not abandoned code. It's not rotten. It should work.
+Its problem is experimental interfaces and lack of documentation.
+Some parts can migrate to "concepts" after analysis and refactoring.
+Some parts may be substituted and removed.
 
-Problem with it is experimental interfaces and lack of documentation.
-
-So generally nothing is added here anymore. Some parts can migrate
-after rework. Some parts may be substituted and removed.
-
--- Martin, 2026-06-12
+-- Martin, 2026-08-01 (with help of Devin @ deepwiki)
