@@ -8,8 +8,12 @@
 local Codes =
   {
     -- Whitespace / control
+    bell = 7,               -- BEL
+    backspace = 8,          -- BS
     tab = 9,                -- TAB
     newline = 10,           -- LF
+    vertical_tab = 11,      -- VT
+    form_feed = 12,         -- FF
     carriage_return = 13,   -- CR
     space = 32,             -- SPACE
     delete = 127,           -- DEL
