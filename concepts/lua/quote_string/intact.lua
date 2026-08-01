@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-12
+  Last mod.: 2026-08-01
 ]]
 
 --[==[
@@ -25,17 +25,25 @@
     > s = [=[Hello!]=]
 ]==]
 
+local opening_bracket
+local closing_bracket
+local filler_char
+local newline_char
+local return_char
+do
+  local Ascii = request('!.concepts.Ascii')
+  opening_bracket = Ascii.Chars.opening_bracket
+  closing_bracket = Ascii.Chars.closing_bracket
+  filler_char = Ascii.Chars.equals
+  newline_char = Ascii.Chars.newline
+  return_char = Ascii.Chars.carriage_return
+end
+
 local str_find = string.find
 local str_sub = string.sub
 
 local quote_long =
   function(str)
-    local opening_bracket = '['
-    local closing_bracket = ']'
-    local filler_char = '='
-    local newline_char = '\010'
-    local return_char = '\013'
-
     -- (1)
     str = str .. closing_bracket
 
