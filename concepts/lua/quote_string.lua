@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-12
+  Last mod.: 2026-08-01
 ]]
 
 --[[
@@ -17,9 +17,7 @@
 -- Imports:
 local QuoteChars = request('QuoteChars')
 local get_chars_count = request('!.string.get_chars_count')
-local ControlChars_Map = request('!.concepts.AsciiControlCodes_Map')
-local intersect_set = request('!.table.intersect')
-local is_empty_set = request('!.table.is_empty')
+local Ascii = request('!.concepts.Ascii')
 local quote_variable = request('quote_string.intact')
 local quote_char_func = request('quote_string.quote_char')
 
@@ -29,14 +27,12 @@ local str_gsub = string.gsub
 
 local has_messy_control_chars =
   function(UsedChars)
-    local MessyControlChars = new(ControlChars_Map)
-
-    -- We can handle code 10 (newline), so remove it from messy chars
-    MessyControlChars[newline_code] = nil
-
-    intersect_set(MessyControlChars, UsedChars)
-
-    return not is_empty_set(MessyControlChars)
+    for code in pairs(UsedChars) do
+      if (code ~= newline_code) and Ascii.is_control_code(code) then
+        return true
+      end
+    end
+    return false
   end
 
 local determine_fixed_quote_char =
