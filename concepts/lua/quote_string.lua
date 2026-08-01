@@ -15,42 +15,45 @@
 ]]
 
 -- Imports:
-local QuoteChars = request('QuoteChars')
-local get_chars_count = request('!.string.get_chars_count')
 local Ascii = request('!.concepts.Ascii')
-local quote_variable = request('quote_string.intact')
-local quote_char_func = request('quote_string.quote_char')
+local QuoteChars = request('QuoteChars')
 
 local newline_code = Ascii.Codes.newline
 
-local str_gsub = string.gsub
+local has_messy_control_chars
+do
+  local is_control_code = Ascii.is_control_code
 
-local has_messy_control_chars =
-  function(UsedChars)
-    for code in pairs(UsedChars) do
-      if Ascii.is_control_code(code) and (code ~= newline_code) then
-        return true
+  has_messy_control_chars =
+    function(UsedChars)
+      for code in pairs(UsedChars) do
+        if is_control_code(code) and (code ~= newline_code) then
+          return true
+        end
+      end
+      return false
+    end
+end
+
+local determine_fixed_quote_char
+do
+  local single_quote_code = QuoteChars.single_quote_code
+  local double_quote_code = QuoteChars.double_quote_code
+  local single_quote = QuoteChars.single_quote
+  local double_quote = QuoteChars.double_quote
+
+  determine_fixed_quote_char =
+    function(UsedChars)
+      local num_single_quotes = UsedChars[single_quote_code] or 0
+      local num_double_quotes = UsedChars[double_quote_code] or 0
+
+      if (num_single_quotes <= num_double_quotes) then
+        return single_quote
+      else
+        return double_quote
       end
     end
-    return false
-  end
-
-local determine_fixed_quote_char =
-  function(UsedChars)
-    local single_quote_code = QuoteChars.single_quote_code
-    local double_quote_code = QuoteChars.double_quote_code
-    local single_quote = QuoteChars.single_quote
-    local double_quote = QuoteChars.double_quote
-
-    local num_single_quotes = UsedChars[single_quote_code] or 0
-    local num_double_quotes = UsedChars[double_quote_code] or 0
-
-    if (num_single_quotes <= num_double_quotes) then
-      return single_quote
-    else
-      return double_quote
-    end
-  end
+end
 
 local BinaryEntitiesLengths_Map =
   {
@@ -60,59 +63,68 @@ local BinaryEntitiesLengths_Map =
     [1 << 3] = true,
   }
 
-local quote_string =
-  function(str)
-    local single_quote_code = QuoteChars.single_quote_code
-    local double_quote_code = QuoteChars.double_quote_code
-    local backslash_code = QuoteChars.backslash_code
-    local backslash = QuoteChars.backslash
+local quote_string
+do
+  local single_quote_code = QuoteChars.single_quote_code
+  local double_quote_code = QuoteChars.double_quote_code
+  local backslash_code = QuoteChars.backslash_code
+  local backslash = QuoteChars.backslash
 
-    local UsedChars_Map = get_chars_count(str)
+  local get_chars_count = request('!.string.get_chars_count')
+  local quote_variable = request('quote_string.intact')
+  local quote_char_func = request('quote_string.quote_char')
 
-    local str_has_messy_control_chars =
-      has_messy_control_chars(UsedChars_Map)
+  local str_gsub = string.gsub
 
-    local str_has_messy_printable_chars =
-      UsedChars_Map[newline_code] or
-      UsedChars_Map[backslash_code] or
-      (
-        UsedChars_Map[single_quote_code] and
-        UsedChars_Map[double_quote_code]
-      )
+  quote_string =
+    function(str)
+      local UsedChars_Map = get_chars_count(str)
 
-    local use_variable_quotes =
-      str_has_messy_printable_chars and not str_has_messy_control_chars
+      local str_has_messy_control_chars =
+        has_messy_control_chars(UsedChars_Map)
 
-    if use_variable_quotes then
-      return quote_variable(str)
-    else
-      local quote_char = determine_fixed_quote_char(UsedChars_Map)
+      local str_has_messy_printable_chars =
+        UsedChars_Map[newline_code] or
+        UsedChars_Map[backslash_code] or
+        (
+          UsedChars_Map[single_quote_code] and
+          UsedChars_Map[double_quote_code]
+        )
 
-      local quote_all = false
-      local quote_control = false
+      local use_variable_quotes =
+        str_has_messy_printable_chars and not str_has_messy_control_chars
 
-      if str_has_messy_control_chars then
-        if BinaryEntitiesLengths_Map[#str] then
-          quote_all = true
-        else
-          quote_control = true
-        end
-      end
-
-      if quote_all then
-        str = str_gsub(str, '.', quote_char_func)
+      if use_variable_quotes then
+        return quote_variable(str)
       else
-        str = str_gsub(str, backslash, backslash .. backslash)
-        str = str_gsub(str, quote_char, backslash .. quote_char)
+        local quote_char = determine_fixed_quote_char(UsedChars_Map)
 
-        if quote_control then
-          str = str_gsub(str, '[%c]', quote_char_func)
+        local quote_all = false
+        local quote_control = false
+
+        if str_has_messy_control_chars then
+          if BinaryEntitiesLengths_Map[#str] then
+            quote_all = true
+          else
+            quote_control = true
+          end
         end
-      end
 
-      return quote_char .. str .. quote_char
+        if quote_all then
+          str = str_gsub(str, '.', quote_char_func)
+        else
+          str = str_gsub(str, backslash, backslash .. backslash)
+          str = str_gsub(str, quote_char, backslash .. quote_char)
+
+          if quote_control then
+            str = str_gsub(str, '[%c]', quote_char_func)
+          end
+        end
+
+        return quote_char .. str .. quote_char
+      end
     end
-  end
+end
 
 -- Export:
 return quote_string
