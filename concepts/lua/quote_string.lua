@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-01
+  Last mod.: 2026-08-07
 ]]
 
 --[[
@@ -15,14 +15,17 @@
 ]]
 
 -- Imports:
-local Ascii = request('!.concepts.Ascii')
 local QuoteChars = request('QuoteChars')
 
-local newline_code = Ascii.Codes.newline
+local newline_code
+do
+ local AsciiCodes = request('!.concepts.Ascii.Codes')
+ newline_code = AsciiCodes.newline
+end
 
 local has_messy_control_chars
 do
-  local is_control_code = Ascii.is_control_code
+  local is_control_code = request('!.concepts.Ascii.is_control_code')
 
   has_messy_control_chars =
     function(UsedChars)
