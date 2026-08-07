@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-08-07
 ]]
 
 -- Imports:
@@ -13,18 +13,17 @@ local add_to_list = request('!.concepts.list.add_item')
 --[[
   Split delimited string into list
 
-  ( 'a/b' '/' ) -> ( 'a' 'b' )
-  ( 'a/' '/' ) -> ( 'a' )
-
   String is always treated as it ends on delimiter.
 
-  Cases/examples:
+  Cases/examples (Itness format):
 
-    ('', '') ->  ( '' )
-    ('a', '') ->  ( 'a' )
-    ('a', '/') -> ( 'a' )
-    ('/', '/') ->  ( '' )
-    ('//', '/') -> ( '' '' )
+    ( a/b / ) -> ( a b )
+    ( [] [] ) -> ( [] )
+    ( / / ) -> ( [] )
+    ( a [] ) -> ( a )
+    ( a / ) -> ( a )
+    ( a/ / ) -> ( a )
+    ( // / ) -> ( [] [] )
 ]]
 local split_string =
   function(str, delimiter)
