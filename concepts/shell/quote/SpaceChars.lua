@@ -2,10 +2,8 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-09
+  Last mod.: 2026-08-07
 ]]
-
--- Imports:
 
 --[[
   Whitespaces are context-free special characters
@@ -24,11 +22,14 @@
   module.
 ]]
 
+-- Imports:
+local AsciiChars = request('!.concepts.Ascii.Chars')
+
 local SpaceChars =
   {
-    '\009',
-    '\010',
-    ' ',
+    AsciiChars.tab,
+    AsciiChars.newline,
+    AsciiChars.space,
   }
 
 -- Export:
