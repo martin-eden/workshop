@@ -2,21 +2,23 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-01
+  Last mod.: 2026-08-07
 ]]
 
 local QuoteChars
 do
-  local Ascii = request('!.concepts.Ascii')
+  local AsciiCodes = request('!.concepts.Ascii.Codes')
+  local AsciiChars = request('!.concepts.Ascii.Chars')
+
   QuoteChars =
     {
-      single_quote_code = Ascii.Codes.single_quote,
-      double_quote_code = Ascii.Codes.double_quote,
-      backslash_code = Ascii.Codes.backslash,
+      single_quote_code = AsciiCodes.single_quote,
+      double_quote_code = AsciiCodes.double_quote,
+      backslash_code = AsciiCodes.backslash,
 
-      single_quote = Ascii.Chars.single_quote,
-      double_quote = Ascii.Chars.double_quote,
-      backslash = Ascii.Chars.backslash,
+      single_quote = AsciiChars.single_quote,
+      double_quote = AsciiChars.double_quote,
+      backslash = AsciiChars.backslash,
     }
 end
 
