@@ -2,60 +2,145 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-01
+  Last mod.: 2026-08-07
 ]]
 
 -- Imports:
-local Ascii = request('!.concepts.Ascii')
+local AsciiChars = request('!.concepts.Ascii.Chars')
+local separator = AsciiChars.backslash
 
 local str_to_int = tonumber
 local str_char = string.char
 local utf8_char = utf8.char
-local str_gsub = string.gsub
+local str_find = string.find
+local str_sub = string.sub
 
+-- Decodes that magic sequences "\f", "\v", etc
 local unescape
+-- States: in_plain, after_backslash
+local state
+
 do
-  local one_char_seq_subst =
+  -- Handling simple one-char substitutions like "\n"
+  local FixedSubsts_Map =
     {
-      [ [[\a]] ] = Ascii.Chars.bell,
-      [ [[\b]] ] = Ascii.Chars.backspace,
-      [ [[\f]] ] = Ascii.Chars.form_feed,
-      [ [[\n]] ] = Ascii.Chars.newline,
-      [ [[\r]] ] = Ascii.Chars.carriage_return,
-      [ [[\t]] ] = Ascii.Chars.tab,
-      [ [[\v]] ] = Ascii.Chars.vertical_tab,
-      [ [[\"]] ] = Ascii.Chars.double_quote,
-      [ [[\']] ] = Ascii.Chars.single_quote,
-      [ [[\]] .. Ascii.Chars.newline] = Ascii.Chars.newline,
+      ['a'] = AsciiChars.bell,
+      ['b'] = AsciiChars.backspace,
+      ['f'] = AsciiChars.form_feed,
+      ['n'] = AsciiChars.newline,
+      ['r'] = AsciiChars.carriage_return,
+      ['t'] = AsciiChars.tab,
+      ['v'] = AsciiChars.vertical_tab,
+      [AsciiChars.double_quote] = AsciiChars.double_quote,
+      [AsciiChars.single_quote] = AsciiChars.single_quote,
+      [AsciiChars.newline] = AsciiChars.newline,
     }
 
-  local space_chars_seq = [[\z[\000-\032]*]]
+  -- Handling "\z"
+  local space_chars_seq_fmt = 'z' .. '[\000-\032]*'
 
-  local dec_code_seq = [[\(%d%d?%d?)]]
+  -- Handing "\10"
+  local dec_code_fmt = '(%d%d?%d?)'
   local decode_dec_code =
     function(code_str)
       return str_char(str_to_int(code_str, 10))
     end
 
-  local hex_code_seq = [[\x(%x%x)]]
+  -- Handling "\x0a"
+  local hex_code_fmt = 'x' .. '(%x%x)'
   local decode_hex_code =
     function(code_str)
       return str_char(str_to_int(code_str, 16))
     end
 
-  local utf_code_seq = [[\u{(%x+)}]]
+  -- Handling "\u{2424}"
+  local utf_code_fmt = 'u' .. '{' .. '(%x+)' .. '}'
   local decode_utf_code =
     function(code_str)
       return utf8_char(str_to_int(code_str, 16))
     end
 
+  local start_of_string_fmt = '^'
+
   unescape =
     function(str)
-      str = str_gsub(str, [[\.]], one_char_seq_subst)
-      str = str_gsub(str, space_chars_seq, '')
-      str = str_gsub(str, dec_code_seq, decode_dec_code)
-      str = str_gsub(str, hex_code_seq, decode_hex_code)
-      str = str_gsub(str, utf_code_seq, decode_utf_code)
+      if (state == 'in_plain') then
+        state = 'after_backslash'
+        goto done
+      end
+
+      -- We are here after backslash
+
+      -- Case \\
+      if (str == '') then
+        str = separator
+        state = 'in_plain'
+        goto done
+      end
+
+      do
+        local fmt
+
+        -- One-char substs: \n \t etc
+        for key, val in pairs(FixedSubsts_Map) do
+          fmt = start_of_string_fmt .. key
+          if str_find(str, fmt) then
+            str = val .. str_sub(str, 2)
+            goto done
+          end
+        end
+
+        -- Handling \z
+        do
+          fmt = start_of_string_fmt .. space_chars_seq_fmt
+          local _, match_end_pos = str_find(str, fmt)
+          if match_end_pos then
+            str = str_sub(str, match_end_pos + 1)
+            goto done
+          end
+        end
+
+        -- Handling \10
+        do
+          fmt = start_of_string_fmt .. dec_code_fmt
+          local _, match_end_pos, dec_code_str = str_find(str, fmt)
+          if dec_code_str then
+            str =
+              decode_dec_code(dec_code_str) ..
+              str_sub(str, match_end_pos + 1)
+            goto done
+          end
+        end
+
+        -- Handling \x0a
+        do
+          fmt = start_of_string_fmt .. hex_code_fmt
+          local _, match_end_pos, hex_code_str = str_find(str, fmt)
+          if hex_code_str then
+            str =
+              decode_hex_code(hex_code_str) ..
+              str_sub(str, match_end_pos + 1)
+            goto done
+          end
+        end
+
+        -- Handling \u{2424}
+        do
+          fmt = start_of_string_fmt .. utf_code_fmt
+          local _, match_end_pos, utf_code_str = str_find(str, fmt)
+          if utf_code_str then
+            str =
+              decode_utf_code(utf_code_str) ..
+              str_sub(str, match_end_pos + 1)
+            goto done
+          end
+        end
+
+        -- Something unknown after backslash. Leave it as is:
+        str = separator .. str
+      end
+
+      :: done ::
 
       return str
     end
@@ -64,26 +149,26 @@ end
 -- Unquote Lua string quoted in linear encoding (backslashes)
 local unquote_string
 do
-  local backslash = Ascii.Chars.backslash
-  local double_backslash = backslash .. backslash
-
-  local str_find = string.find
   local str_split = request('!.string.split')
   local list_to_str = request('!.concepts.list.to_string')
 
   unquote_string =
     function(str)
-      if str_find(str, double_backslash) then
-        -- Always correct
-        local Parts = str_split(str, double_backslash)
+      state = 'in_plain'
+
+      if str_find(str, separator) then
+        -- Always correct but costly
+        str = str .. separator
+        local Parts = str_split(str, separator)
         for index, part_str in ipairs(Parts) do
           Parts[index] = unescape(part_str)
         end
-        str = list_to_str(Parts, backslash)
+        str = list_to_str(Parts)
       else
         -- Fast
         str = unescape(str)
       end
+
       return str
     end
 end
@@ -95,4 +180,5 @@ return unquote_string
   2017 # #
   2026-04 # #
   2026-08-01
+  2026-08-07
 ]]
