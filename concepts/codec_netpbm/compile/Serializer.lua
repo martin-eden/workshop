@@ -2,13 +2,16 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-15
+  Last mod.: 2026-08-08
 ]]
 
-local newline = '\n'
-local data_separator = ' '
-local comment_indent = '  '
-local comment_prefix = '# '
+-- Imports:
+local Syntels = request('^.Syntels')
+
+local newline = Syntels.newline
+local data_separator = Syntels.space
+local comment_indent = Syntels.space .. Syntels.space
+local comment_prefix = Syntels.comment_char .. Syntels.space
 
 local Interface =
   {
