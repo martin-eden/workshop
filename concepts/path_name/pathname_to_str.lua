@@ -2,17 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-12
+  Last mod.: 2026-08-08
 ]]
 
 -- Imports:
+local Syntels = request('Syntels')
 local list_to_str = request('!.concepts.list.to_string')
 
-local names_sep = '/'
+local sep = Syntels.separator
 
 local pathname_to_str =
   function(Pathname)
-    return list_to_str(Pathname, names_sep)
+    return list_to_str(Pathname, sep)
   end
 
 -- Export:
