@@ -20,7 +20,7 @@ local reformat =
   function(lua_code_str)
     assert_string(lua_code_str)
 
-    local shebang_str, code_str = split_shebang(s)
+    local shebang_str, code_str = split_shebang(lua_code_str)
 
     local result_str = ast_as_code(get_ast(code_str))
 
@@ -37,4 +37,5 @@ return reformat
 --[[
   2018
   2026-07-17
+  2026-08-08
 ]]
