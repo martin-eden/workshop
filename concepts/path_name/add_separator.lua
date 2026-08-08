@@ -1,4 +1,4 @@
--- Add "/" to end of string if needed
+-- Add directory separator to end of string if needed
 
 --[[
   Author: Martin Eden
@@ -11,14 +11,14 @@ local ends_with = request('!.string.ends_with')
 
 local sep = Syntels.separator
 
-local add_dir_postfix =
+local add_separator =
   function(str)
     if ends_with(str, sep) then return str end
 
     return str .. sep
   end
 
-return add_dir_postfix
+return add_separator
 
 --[[
   2018-02-05
