@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-05-31
+  Last mod.: 2026-08-08
 ]]
 
 --[[
@@ -13,19 +13,28 @@
     [f] is_newline
 ]]
 
+-- Imports:
+local Syntels = request('^.^.Syntels')
+
+local space = Syntels.space
+local tab = Syntels.tab
+local newline = Syntels.newline
+local carriage_return = Syntels.carriage_return
+local comment_char = Syntels.comment_char
+
 local is_space =
   function(char)
-    return (char == ' ') or (char == '\t')
+    return (char == space) or (char == tab)
   end
 
 local is_newline =
   function(char)
-    return (char == '\n') or (char == '\r')
+    return (char == newline) or (char == carriage_return)
   end
 
 local is_comment =
   function(char)
-    return (char == '#')
+    return (char == comment_char)
   end
 
 local is_delimiter =
