@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-07
+  Last mod.: 2026-08-08
 ]]
 
 -- Imports:
@@ -136,8 +136,8 @@ do
           end
         end
 
-        -- Something unknown after backslash. Leave it as is:
-        str = separator .. str
+        -- Something unknown after backslash
+        error('Unknown escape sequence.')
       end
 
       :: done ::
@@ -181,4 +181,5 @@ return unquote_string
   2026-04 # #
   2026-08-01
   2026-08-07
+  2026-08-08
 ]]
