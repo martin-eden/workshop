@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-17
+  Last mod.: 2026-08-08
 ]]
 
 --[[
@@ -23,14 +23,17 @@
   ( 'code' ) -> ( nil 'code' )
 ]]
 
--- Imports:
+local shebang_prefix = '#!'
+local newline
+do
+  local AsciiChars = request('!.concepts.Ascii.Chars')
+  newline = AsciiChars.newline
+end
+
 local starts_with = request('!.string.starts_with')
 
 local str_find = string.find
 local str_sub = string.sub
-
-local shebang_prefix = '#!'
-local newline = '\010'
 
 local split_shebang =
   function(str)
