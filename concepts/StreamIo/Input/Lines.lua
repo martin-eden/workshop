@@ -2,14 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-13
+  Last mod.: 2026-08-08
 ]]
 
 --[[
   Actually it's wrapper over provided base stream.
 ]]
 
--- Imports:
+local newline
+do
+  local AsciiChars = request('!.concepts.Ascii.Chars')
+  newline = AsciiChars.newline
+end
 
 local Init =
   function(Me, BaseStream)
@@ -40,8 +44,6 @@ local Read =
     if (char == '') then return false end
 
     local line = ''
-
-    local newline = '\010'
 
     while true do
       if (char == '') then break end
