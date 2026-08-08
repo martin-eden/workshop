@@ -2,11 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-17
+  Last mod.: 2026-08-08
 ]]
 
 -- Imports:
-local add_dir_postfix = request('!.concepts.path_name.add_dir_postfix')
+local add_separator = request('!.concepts.path_name.add_separator')
 local normalize = request('!.concepts.path_name.normalize')
 local quote = request('!.concepts.shell.quote')
 local glue_words = request('!.concepts.words.to_string')
@@ -18,7 +18,7 @@ local get_cmd_clone_repo =
 
     assert(dest_dir ~= '')
 
-    dest_dir = add_dir_postfix(dest_dir)
+    dest_dir = add_separator(dest_dir)
     dest_dir = normalize(dest_dir)
 
     local Command =
