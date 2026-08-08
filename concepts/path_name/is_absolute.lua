@@ -2,11 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-12
+  Last mod.: 2026-08-08
 ]]
 
 -- Imports:
-local empty = ''
+local Syntels = request('Syntels')
+
+local empty = Syntels.empty
 
 local is_absolute =
   function(Pathname)
