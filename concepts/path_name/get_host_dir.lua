@@ -2,16 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-12
+  Last mod.: 2026-08-08
 ]]
 
 -- Imports:
+local Syntels = request('Syntels')
 local is_directory = request('is_directory')
 local is_absolute = request('is_absolute')
 
-local sep = '/'
-local empty = ''
-local self_dir = '.'
+local sep = Syntels.separator
+local empty = Syntels.empty
+local self_dir = Syntels.self_dir
 
 local get_host_dir =
   function(Pathname)
