@@ -2,19 +2,20 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-16
+  Last mod.: 2026-08-08
 ]]
 
 -- Imports:
+local Syntels = request('Syntels')
 local ends_with = request('!.string.ends_with')
+
+local sep = Syntels.separator
 
 local add_dir_postfix =
   function(str)
-    local dir_sep = '/'
+    if ends_with(str, sep) then return str end
 
-    if ends_with(str, dir_sep) then return str end
-
-    return str .. dir_sep
+    return str .. sep
   end
 
 return add_dir_postfix
