@@ -2,12 +2,15 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-12
+  Last mod.: 2026-08-08
 ]]
 
-local empty = ''
-local self_dir = '.'
-local upper_dir = '..'
+-- Imports:
+local Syntels = request('Syntels')
+
+local empty = Syntels.empty
+local self_dir = Syntels.self_dir
+local upper_dir = Syntels.upper_dir
 
 local is_directory =
   function(Pathname)
