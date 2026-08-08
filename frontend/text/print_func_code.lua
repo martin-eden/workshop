@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-15
+  Last mod.: 2026-08-08
 ]]
 
 -- Prints in TSV format
@@ -44,14 +44,18 @@ local listing_from_bytecode =
   request('!.concepts.lua_bytecode_decompiler.listing_from_bytecode')
 local itness_to_tsv = request('!.concepts.codec_tsv.compile')
 
+local newline
+do
+  local AsciiChars = request('!.concepts.Ascii.Chars')
+  newline = AsciiChars.newline
+end
+
 local print_func_code =
   function(func, OutStream)
     OutStream = OutStream or StdoutStream
 
     local Functions =
       listing_from_bytecode(bytecode_from_function(func))
-
-    local newline = '\010'
 
     for _, Function in ipairs(Functions) do
       itness_to_tsv(Function, OutStream)
