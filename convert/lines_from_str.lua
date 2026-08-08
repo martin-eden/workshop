@@ -2,16 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-29
+  Last mod.: 2026-08-08
 ]]
 
--- Imports:
-local split_string = request('!.string.split')
+local split_string
+local newline
+do
+  split_string = request('!.string.split')
+  local AsciiChars = request('!.concepts.Ascii.Chars')
+  newline = AsciiChars.newline
+end
 
 local string_to_lines =
   function(str)
-    local newline = '\n'
-
     return split_string(str, newline)
   end
 
