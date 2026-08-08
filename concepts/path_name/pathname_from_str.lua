@@ -32,11 +32,12 @@
 -- Imports:
 local add_to_list = request('!.concepts.list.add_item')
 local split_string = request('!.string.split')
+local Syntels = request('Syntels')
 
-local sep = '/'
-local empty = ''
-local self_dir = '.'
-local upper_dir = '..'
+local sep = Syntels.separator
+local empty = Syntels.empty
+local self_dir = Syntels.self_dir
+local upper_dir = Syntels.upper_dir
 
 local pathname_from_str =
   function(path_name)
