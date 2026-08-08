@@ -2,15 +2,20 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-15
+  Last mod.: 2026-08-08
 ]]
 
-local FormatComments =
-  {
-    ['P1'] = 'Monochrome image, text format',
-    ['P2'] = 'Grayscale image, text format',
-    ['P3'] = 'Color image, text format',
-  }
+local FormatComments
+do
+  local Syntels = request('^.Syntels')
+
+  FormatComments =
+    {
+      [Syntels.monochrome_label] = 'Monochrome image, text format',
+      [Syntels.grayscale_label] = 'Grayscale image, text format',
+      [Syntels.color_label] = 'Color image, text format',
+    }
+end
 
 local get_format_comment =
   function(format_label)
