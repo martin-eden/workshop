@@ -1,3 +1,10 @@
+-- JSON serializer with structural indentations
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-08-09
+]]
+
 local minimal_interface = request('^.minimal.interface')
 local merge = request('!.table.merge')
 
@@ -23,3 +30,9 @@ merge(
 )
 
 return result
+
+--[[
+  2016
+  2017
+  2026-08-09
+]]
