@@ -1,3 +1,10 @@
+-- File contents as string. Strips UTF headers
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-08-09
+]]
+
 --[[
   Fucken editors tend to save files in UTF-8 or UTF-16.
   In this case staring bytes are (EF BB BF) for UTF-8,
@@ -9,7 +16,7 @@
   and parsing will fail anyway.
 ]]
 
-local file_as_string = request('as_string')
+local file_as_string = request('to_string')
 
 local utf8_prefix = '\xef\xbb\xbf'
 
@@ -22,3 +29,10 @@ return
     end
     return result
   end
+
+--[[
+  2017
+  2018
+  2019
+  2026-08-09
+]]
