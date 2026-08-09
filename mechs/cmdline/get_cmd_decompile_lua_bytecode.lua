@@ -2,27 +2,26 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-14
+  Last mod.: 2026-08-09
 ]]
 
 -- Imports:
 local normalize = request('!.concepts.path_name.normalize')
-local quote = request('!.concepts.shell.quote')
-local glue_words = request('!.concepts.words.to_string')
+local ShellCommand = request('!.concepts.ShellCommand')
 
 local get_cmd_decompile_lua_bytecode =
   function(bytecode_file_name)
-    bytecode_file_name = normalize(bytecode_file_name)
-
     local Command =
       {
         'luac',
-        '-l',
-        '-p',
-        quote(bytecode_file_name)
+        {
+          '-l',
+          '-p',
+          normalize(bytecode_file_name),
+        },
       }
 
-    return glue_words(Command)
+    return ShellCommand.create(Command):ToString()
   end
 
 -- Export:

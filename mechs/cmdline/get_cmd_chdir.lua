@@ -2,24 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-12
+  Last mod.: 2026-08-09
 ]]
 
 -- Imports:
 local normalize = request('!.concepts.path_name.normalize')
-local quote = request('!.concepts.shell.quote')
-local glue_words = request('!.concepts.words.to_string')
+local ShellCommand = request('!.concepts.ShellCommand')
 
 -- Export:
 return
   function(dir_name)
-    local Command =
-      {
-        'cd',
-        quote(normalize(dir_name)),
-      }
+    local Command = { 'cd', { normalize(dir_name) } }
 
-    return glue_words(Command)
+    return ShellCommand.create(Command):ToString()
   end
 
 --[[

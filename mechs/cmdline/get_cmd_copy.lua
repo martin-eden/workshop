@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-12
+  Last mod.: 2026-08-09
 ]]
 
 -- Imports:
@@ -10,8 +10,7 @@ local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
 local get_file_name = request('!.concepts.path_name.get_name')
 local get_host_dir = request('!.concepts.path_name.get_host_dir')
 local normalize = request('!.concepts.path_name.normalize')
-local quote = request('!.concepts.shell.quote')
-local glue_words = request('!.concepts.words.to_string')
+local ShellCommand = request('!.concepts.ShellCommand')
 
 local get_cmd_copy =
   function(src_pathname, dest_pathname)
@@ -36,11 +35,13 @@ local get_cmd_copy =
     local Command =
       {
         'cp',
-        quote(normalize(src_pathname)),
-        quote(normalize(dest_pathname)),
+        {
+          normalize(src_pathname),
+          normalize(dest_pathname),
+        },
       }
 
-    return glue_words(Command)
+    return ShellCommand.create(Command):ToString()
   end
 
 -- Export:

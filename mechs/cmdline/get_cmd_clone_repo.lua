@@ -2,14 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-08-09
 ]]
 
 -- Imports:
 local add_separator = request('!.concepts.path_name.add_separator')
 local normalize = request('!.concepts.path_name.normalize')
-local quote = request('!.concepts.shell.quote')
-local glue_words = request('!.concepts.words.to_string')
+local ShellCommand = request('!.concepts.ShellCommand')
 
 local get_cmd_clone_repo =
   function(url, dest_dir)
@@ -24,13 +23,15 @@ local get_cmd_clone_repo =
     local Command =
       {
         'git',
-        'clone',
-        quote(url),
-        quote(dest_dir),
-        '--quiet',
+        {
+          'clone',
+          url,
+          dest_dir,
+          '--quiet',
+        }
       }
 
-    return glue_words(Command)
+    return ShellCommand.create(Command):ToString()
   end
 
 -- Export:

@@ -2,13 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-12
+  Last mod.: 2026-08-09
 ]]
 
 -- Imports:
 local normalize = request('!.concepts.path_name.normalize')
-local quote = request('!.concepts.shell.quote')
-local glue_words = request('!.concepts.words.to_string')
+local ShellCommand = request('!.concepts.ShellCommand')
 
 -- Export:
 return
@@ -16,19 +15,18 @@ return
     local Command =
       {
         'rm',
-        '-r',
-        '-f',
-        quote(normalize(dir_name)),
+        {
+          '-r',
+          '-f',
+          normalize(dir_name),
+        },
       }
 
-    return glue_words(Command)
+    return ShellCommand.create(Command):ToString()
   end
-
 
 --[[
   2018 #
   2024 # #
-  2026-01-12
-  2026-04-17
-  2026-04-28
+  2026 # # #
 ]]
