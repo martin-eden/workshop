@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-05
+  Last mod.: 2026-08-09
 ]]
 
 --[[
@@ -22,13 +22,13 @@
 return
   {
     -- parameters
-    f_in_name = arg[1] or '',
-    f_out_name = arg[2] or '',
+    f_in_name = '',
+    f_out_name = '',
     action_name = 'Generic file conversion',
-    load = request('!.file_system.file.text_file_as_string'),
-    parse = request('!.concepts.lua_table_code.load'),
+    load = request('!.convert.file_to_str'),
+    parse = request('!.function.identity'),
     transform = request('!.function.identity'),
-    compile = request('!.convert.table_to_str'),
+    compile = request('!.function.identity'),
     save = request('!.convert.file_from_str'),
     -- runmes
     run = request('run'),
