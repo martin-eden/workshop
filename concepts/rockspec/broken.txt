@@ -1,0 +1,35 @@
+This module is currently broken
+
+Problem is template. Excerpt from it:
+
+  build = {
+    type = 'builtin',
+    install = {
+      bin = $wrappers,
+    },
+    modules = $modules,
+  }
+
+So it's multi-line string with Lua code. And we were capturing
+$-identifiers and replacing them with multi-line strings.
+
+At least "$modules" is a table. Before we had way to serialize
+Lua table to table-expression string. There it worked.
+
+Currently we can't serialize Lua table to table-expression string.
+We can serialize it to Lua-statement string. Like "return { }".
+
+So code embedded in such way will be broken:
+
+  modules = return { },
+
+We can wrap it with function definition and invocation tho:
+
+  modules = (function() return { } end)(),
+
+But man it's ugly! I won't do that.
+
+So for now module will remain in broken state. It's no longer needed
+by [lua_code_formatter] anyway.
+
+-- Martin, 2026-08-10
