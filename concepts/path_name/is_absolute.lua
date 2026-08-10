@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-08-10
 ]]
 
 -- Imports:
@@ -12,8 +12,6 @@ local empty = Syntels.empty
 
 local is_absolute =
   function(Pathname)
-    assert_table(Pathname)
-
     return (Pathname[1] == empty)
   end
 
