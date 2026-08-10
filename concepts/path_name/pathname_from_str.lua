@@ -32,6 +32,8 @@
 -- Imports:
 local Syntels = request('Syntels')
 local split_string = request('!.string.split')
+local check_is_absolute = request('is_absolute')
+local check_is_directory = request('is_directory')
 local add_to_list = request('!.concepts.list.add_item')
 local add_list = request('!.concepts.list.add_list')
 
@@ -58,15 +60,8 @@ local pathname_from_str =
         Segments = split_string(path_name .. sep, sep)
       end
 
-      is_absolute = (Segments[1] == empty)
-
-      do
-        local last_segment = Segments[#Segments]
-        is_directory =
-          (last_segment == empty) or
-          (last_segment == self_dir) or
-          (last_segment == upper_dir)
-      end
+      is_absolute = check_is_absolute(Segments)
+      is_directory = check_is_directory(Segments)
 
       for _, segment in ipairs(Segments) do
         if (segment ~= empty) and (segment ~= self_dir) then
