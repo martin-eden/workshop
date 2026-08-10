@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-08-10
 ]]
 
 -- Imports:
@@ -14,8 +14,6 @@ local upper_dir = Syntels.upper_dir
 
 local is_directory =
   function(Pathname)
-    assert_table(Pathname)
-
     local last_node = Pathname[#Pathname]
 
     return
