@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-08-10
 ]]
 
 --[[
@@ -26,7 +26,7 @@ local BashScriptWriter = request('!.concepts.BashScriptWriter.Interface')
 
 local add_separator = request('!.concepts.path_name.add_separator')
 local add_to_list = request('!.concepts.list.add_item')
-local strip_updirs = request('!.string.file_name.strip_updirs')
+local rebase_dir_to = request('!.concepts.path_name.rebase_to')
 local quote_regexp = request('!.lua.regexp.quote')
 -- )
 
@@ -107,7 +107,7 @@ local get_script =
     end
 
     for _, src_pathname in ipairs(DocFiles) do
-      local dest_pathname = deploy_dir .. strip_updirs(src_pathname)
+      local dest_pathname = rebase_dir_to(deploy_dir, src_pathname)
 
       ScriptWriter:CopyFile(src_pathname, dest_pathname)
     end
