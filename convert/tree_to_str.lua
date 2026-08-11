@@ -12,6 +12,8 @@ local is_tree = request('!.table.is_tree')
 
 local tree_to_str =
   function(Tree, Options)
+    assert_table(Tree)
+
     if not is_tree(Tree) then
       error('Is not tree.')
     end
