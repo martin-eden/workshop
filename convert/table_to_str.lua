@@ -2,18 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-20
+  Last mod.: 2026-08-11
 ]]
 
 -- Imports:
 local StringOutputStream = request('!.concepts.StreamIo.Output.String')
-local graph_to_str = request('!.concepts.codec_lua_graph.compile')
+local compile_graph = request('!.concepts.codec_lua_graph.compile_graph')
 
 local table_to_str =
   function(Graph, Options)
     local StringStream = new(StringOutputStream)
 
-    graph_to_str(Graph, StringStream, Options)
+    compile_graph(Graph, StringStream, Options)
 
     return StringStream:GetString()
   end
