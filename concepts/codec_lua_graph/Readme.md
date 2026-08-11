@@ -16,7 +16,7 @@ this data.
 
 ## Interesting parts
 
-  * [Formatters][formatters] just tune base serializer
+  * [Formatters][formatters] just tunes base serializer
 
 
 [formatters]: compile/Formatters/
