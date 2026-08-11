@@ -2,19 +2,23 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-16
+  Last mod.: 2026-08-11
 ]]
 
 -- Imports:
-local table_to_str = request('!.convert.table_to_str')
+local tree_to_str = request('!.convert.tree_to_str')
 local trim_head = request('!.string.trim_head')
+local Lines = request('!.concepts.Lines.Interface')
 
 local get_wrappers_text =
   function(Wrappers)
-    local result =
-      table_to_str(
-        Wrappers, { c_text_block = { next_line_indent = 2 } }
-      )
+    local result = tree_to_str(Wrappers)
+
+    local Lines = new(Lines)
+    Lines:FromString(result)
+    Lines:Indent()
+    Lines:Indent()
+    result = Lines:ToString()
 
     return trim_head(result)
   end
@@ -25,4 +29,5 @@ return get_wrappers_text
 --[[
   2018
   2026-06-16
+  2026-08-11
 ]]
