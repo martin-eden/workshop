@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-15
+  Last mod.: 2026-08-12
 ]]
 
 --[[
@@ -20,8 +20,6 @@ local listing_from_bytecode =
     assert_string(bytecode_str)
 
     local listing_str = get_listing(bytecode_str)
-
-    -- print(listing_str)
 
     local StringStream = new(StringStream)
     StringStream:Init(listing_str)
