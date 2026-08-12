@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-26
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
 local get_cmd_listdirs = request('!.mechs.cmdline.get_cmd_listdirs')
-local get_program_output_lines = request('!.system.get_program_output_lines')
+local get_command_output_lines = request('!.system.get_command_output_lines')
 
 --[[
   Return directory names in base directory as list of strings
@@ -20,18 +20,13 @@ local get_program_output_lines = request('!.system.get_program_output_lines')
 ]]
 local get_dirs_list =
   function(base_dir)
-    local cmd_get_dirs = get_cmd_listdirs(base_dir)
-
-    local Dirs = get_program_output_lines(cmd_get_dirs)
-
-    return Dirs
+    return get_command_output_lines(get_cmd_listdirs(base_dir))
   end
 
 -- Export:
 return get_dirs_list
 
 --[[
-  2017-08-11
-  2026-04-22
-  2026-04-26
+  2017 #
+  2026 # #
 ]]
