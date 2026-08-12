@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-10
+  Last mod.: 2026-08-12
 ]]
 
 --[[
@@ -18,44 +18,9 @@
         Default: true
 ]]
 
--- ( Imports
-local get_modules_filelist = request('Internals.get_modules_filelist')
-local get_docs_filelist = request('Internals.get_docs_filelist')
-
+-- Imports:
+local get_deploy_plan = request('!.mechs.get_deploy_plan')
 local BashScriptWriter = request('!.concepts.BashScriptWriter.Interface')
-
-local add_separator = request('!.concepts.path_name.add_separator')
-local add_to_list = request('!.concepts.list.add_item')
-local rebase_dir_to = request('!.concepts.path_name.rebase_to')
-local quote_regexp = request('!.lua.regexp.quote')
--- )
-
-local names_sep = quote_regexp('.')
-
-local dirs_sep
-do
-  -- Imports:
-  local get_package_config = request('!.system.get_package_config')
-
-  local PackageConfig = get_package_config()
-
-  dirs_sep = quote_regexp(PackageConfig.dirs_sep)
-end
-
-local get_module_base_pathname =
-  function(module_name)
-    return string.gsub(module_name, names_sep, dirs_sep)
-  end
-
-local get_module_lua_pathname =
-  function(module_name)
-    return get_module_base_pathname(module_name) .. '.lua'
-  end
-
-local get_module_bin_pathname =
-  function(module_name)
-    return get_module_base_pathname(module_name) .. '.so'
-  end
 
 local DefaultConfig =
   {
@@ -68,48 +33,17 @@ local get_script =
     local Config = new(DefaultConfig, ArgConfig)
 
     local deploy_dir = Config.deploy_dir
-    local include_docs = Config.include_docs
 
     assert_string(deploy_dir)
 
-    deploy_dir = add_separator(deploy_dir)
-
-    local CodeFiles = get_modules_filelist(Modules)
-
-    local DocFiles = { }
-
-    if include_docs then
-      local CodeFilesList = { }
-      for _, rec in ipairs(CodeFiles) do
-        add_to_list(CodeFilesList, rec.file)
-      end
-      DocFiles = get_docs_filelist(CodeFilesList)
-    end
+    local FilesToCopy = get_deploy_plan(Modules, Config)
 
     local ScriptWriter = new(BashScriptWriter)
 
     ScriptWriter:DeleteDir(deploy_dir)
 
-    for _, Rec in ipairs(CodeFiles) do
-      local module_name = Rec.module
-      local src_pathname = Rec.file
-      local dest_pathname = deploy_dir
-
-      if Rec.is_binary then
-        dest_pathname =
-          dest_pathname .. get_module_bin_pathname(module_name)
-      else
-        dest_pathname =
-          dest_pathname .. get_module_lua_pathname(module_name)
-      end
-
-      ScriptWriter:CopyFile(src_pathname, dest_pathname)
-    end
-
-    for _, src_pathname in ipairs(DocFiles) do
-      local dest_pathname = rebase_dir_to(deploy_dir, src_pathname)
-
-      ScriptWriter:CopyFile(src_pathname, dest_pathname)
+    for _, Rec in ipairs(FilesToCopy) do
+      ScriptWriter:CopyFile(Rec[1], Rec[2])
     end
 
     return ScriptWriter:GetScript()
@@ -122,7 +56,6 @@ return get_script
   2016
   2017 # #
   2018 # # # #
-  2026-05 # #
-  2026-06-05
-  2026-06-12
+  2026 # # # #
+  2026-08-12
 ]]
