@@ -2,24 +2,23 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-18
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
 local get_cmd_download_file = request('!.mechs.cmdline.get_cmd_download_file')
-local run_cmd = request('!.concepts.shell.execute')
 
 local download_file =
   function(url, pathname)
-    local cmd = get_cmd_download_file(url, pathname)
+    local Command = get_cmd_download_file(url, pathname)
 
-    local is_ok, ExecResult = run_cmd(cmd)
+    local is_ok, ExecResult = Command:Execute()
 
     if not is_ok then
       return
         false,
         {
-          command = cmd,
+          command = Command:ToString(),
           Result = ExecResult,
         }
     end

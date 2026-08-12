@@ -2,13 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
 local file_exists = request('exists')
 local get_rmfile_command = request('!.mechs.cmdline.get_cmd_rmfile')
-local shell_execute = request('!.concepts.shell.execute')
 
 --[[
   Delete file by pathname
@@ -21,8 +20,7 @@ local remove_file =
 
     if not file_exists(pathname) then return true end
 
-    local remove_file_cmd = get_rmfile_command(pathname)
-    shell_execute(remove_file_cmd)
+    get_rmfile_command(pathname):Execute()
 
     if not file_exists(pathname) then return true end
 
@@ -33,6 +31,6 @@ local remove_file =
 return remove_file
 
 --[[
-  2024-02-13
-  2026-04-22
+  2024
+  2026 #
 ]]

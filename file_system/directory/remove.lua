@@ -2,13 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-22
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
 local directory_exists = request('exists')
 local get_rmdir_command = request('!.mechs.cmdline.get_cmd_rmdir')
-local shell_execute = request('!.concepts.shell.execute')
 
 --[[
   Delete directory by pathname
@@ -21,8 +20,7 @@ local delete_dir =
 
     if not directory_exists(dir_name) then return true end
 
-    local rmdir_cmd = get_rmdir_command(dir_name)
-    shell_execute(rmdir_cmd)
+    get_rmdir_command(dir_name):Execute()
 
     if not directory_exists(dir_name) then return true end
 

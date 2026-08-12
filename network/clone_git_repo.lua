@@ -2,24 +2,23 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-18
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
 local get_cmd_clone_repo = request('!.mechs.cmdline.get_cmd_clone_repo')
-local run_cmd = request('!.concepts.shell.execute')
 
 local clone_git_repo =
   function(url, dest_dir)
-    local cmd = get_cmd_clone_repo(url, dest_dir)
+    local Command = get_cmd_clone_repo(url, dest_dir)
 
-    local is_ok, ExecResult = run_cmd(cmd)
+    local is_ok, ExecResult = Command:Execute()
 
     if not is_ok then
       return
         false,
         {
-          command = cmd,
+          command = Command:ToString(),
           Result = ExecResult,
         }
     end

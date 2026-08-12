@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-09
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
@@ -80,7 +80,8 @@ local GetScript =
     table.sort(Me.DirsToDelete)
 
     for _, pathname in ipairs(Me.DirsToDelete) do
-      add_line(get_cmd_rmdir(pathname))
+      local rmdir_str = get_cmd_rmdir(pathname):ToString()
+      add_line(rmdir_str)
     end
     -- )
 
@@ -104,12 +105,14 @@ local GetScript =
       end
 
       if not DirectoriesCreated_Map[dest_dir] then
-        add_line(get_cmd_mkdir(dest_dir))
+        local mkdir_str = get_cmd_mkdir(dest_dir):ToString()
+        add_line(mkdir_str)
 
         mark_directories_created(dest_dir, DirectoriesCreated_Map)
       end
 
-      add_line(get_cmd_copyfile(src_name, dest_name))
+      local copyfile_str = get_cmd_copyfile(src_name, dest_name):ToString()
+      add_line(copyfile_str)
     end
     -- )
 

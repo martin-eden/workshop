@@ -2,13 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-23
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
 local directory_exists = request('exists')
 local get_mkdir_command = request('!.mechs.cmdline.get_cmd_mkdir')
-local shell_execute = request('!.concepts.shell.execute')
 
 --[[
   Create directory by pathname
@@ -21,8 +20,7 @@ local create_dir =
 
     if directory_exists(dir_name) then return true end
 
-    local mkdir_cmd = get_mkdir_command(dir_name)
-    shell_execute(mkdir_cmd)
+    get_mkdir_command(dir_name):Execute()
 
     if directory_exists(dir_name) then return true end
 

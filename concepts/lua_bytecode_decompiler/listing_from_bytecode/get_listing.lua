@@ -2,27 +2,32 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-13
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
 local file_from_str = request('!.convert.file_from_str')
 local get_cmd_decompile = request('!.mechs.cmdline.get_cmd_decompile_lua_bytecode')
-local run_shell_command = request('!.concepts.shell.execute')
 local rmfile = request('!.file_system.file.remove')
+
+local os_tmpname = os.tmpname
 
 local get_listing =
   function(bytecode_str)
     local output_str
 
-    local bytecode_file_name = os.tmpname()
+    local bytecode_file_name = os_tmpname()
 
     file_from_str(bytecode_str, bytecode_file_name)
 
-    local shell_command = get_cmd_decompile(bytecode_file_name)
-    local is_ok, Results = run_shell_command(shell_command)
+    local Command = get_cmd_decompile(bytecode_file_name)
+    local is_ok, Results = Command:Execute()
 
-    output_str = Results.output
+    if not is_ok then
+      output_str = ''
+    else
+      output_str = Results.output
+    end
 
     rmfile(bytecode_file_name)
 
