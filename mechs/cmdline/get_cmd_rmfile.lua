@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-09
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
@@ -12,13 +12,12 @@ local ShellCommand = request('!.concepts.ShellCommand')
 -- Export:
 return
   function(file_name)
-    local Command =
-      { 'rm', { normalize(file_name) } }
+    local Command = { 'rm', { normalize(file_name) } }
 
-    return ShellCommand.create(Command):ToString()
+    return ShellCommand.create(Command)
   end
 
 --[[
   2024 # #
-  2026 # # #
+  2026 # # # #
 ]]

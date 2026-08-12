@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-09
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
@@ -21,12 +21,12 @@ local get_cmd_decompile_lua_bytecode =
         },
       }
 
-    return ShellCommand.create(Command):ToString()
+    return ShellCommand.create(Command)
   end
 
 -- Export:
 return get_cmd_decompile_lua_bytecode
 
 --[[
-  2026-07-14
+  2026 # #
 ]]

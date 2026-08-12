@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-09
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
@@ -14,12 +14,10 @@ return
   function(dir_name)
     local Command = { 'cd', { normalize(dir_name) } }
 
-    return ShellCommand.create(Command):ToString()
+    return ShellCommand.create(Command)
   end
 
 --[[
   2024 # #
-  2026-01-12
-  2026-04-17
-  2026-04-28
+  2026 # # # #
 ]]

@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-09
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
-local ShellCommand = request('!.concepts.ShellCommand')
 local str_format = string.format
+local ShellCommand = request('!.concepts.ShellCommand')
 
 -- Export:
 return
@@ -16,10 +16,10 @@ return
     local Command =
       { 'sleep', { str_format('%.2f', seconds) } }
 
-    return ShellCommand.create(Command):ToString()
+    return ShellCommand.create(Command)
   end
 
 --[[
   2020 #
-  2026-04-17
+  2026 # #
 ]]

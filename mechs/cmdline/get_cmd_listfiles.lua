@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-09
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
@@ -24,11 +24,11 @@ return
         },
       }
 
-    return ShellCommand.create(Command):ToString()
+    return ShellCommand.create(Command)
   end
 
 --[[
   2019 #
   2024 #
-  2026 # # #
+  2026 # # # #
 ]]

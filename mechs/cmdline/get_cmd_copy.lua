@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-09
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
@@ -41,7 +41,7 @@ local get_cmd_copy =
         },
       }
 
-    return ShellCommand.create(Command):ToString()
+    return ShellCommand.create(Command)
   end
 
 -- Export:
@@ -50,7 +50,5 @@ return get_cmd_copy
 --[[
   2018 #
   2024 #
-  2026-01 #
-  2026-04 # #
-  2026-06-12
+  2026 # # # # #
 ]]

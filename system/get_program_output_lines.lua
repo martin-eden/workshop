@@ -2,22 +2,15 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-18
+  Last mod.: 2026-08-12
 ]]
 
 -- Imports:
-local shell_execute = request('!.concepts.shell.execute')
 local lines_from_str = request('!.convert.lines_from_str')
 
 local get_program_output_lines =
-  --[[
-    Execute shell command in given string.
-    Return command output as list of lines.
-  ]]
-  function(shell_cmd)
-    assert_string(shell_cmd)
-
-    local is_ok, ExecResult = shell_execute(shell_cmd)
+  function(Command)
+    local is_ok, ExecResult = Command:Execute()
 
     return lines_from_str(ExecResult.output)
   end
@@ -28,5 +21,6 @@ return get_program_output_lines
 --[[
   2017 #
   2024 # #
-  2026-04-22
+  2026 #
+  2026-08-12
 ]]
