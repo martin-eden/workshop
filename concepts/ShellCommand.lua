@@ -2,47 +2,54 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-09
+  Last mod.: 2026-08-12
 ]]
 
 --[[
-  Shell command is just command (string) and arguments
-  (list of strings):
+  Data format
 
-    ls -l ~
-    ->
-    ( ls ( -l ~ ) )
+    1 [s] command
+    2 [t] list of arguments
+      1+ [s] argument
+]]
 
-  This module is added also to quote shell stings in one place.
+--[[
+  F.e. ( ls -l ~ ) is represented as ( ls ( -l ~ ) ) (Itness format)
+]]
+
+--[[
+  This module quotes command and arguments if needed,
+  so it's safe to use special characters in them.
 
   Note that it won't suit you for cases when you really
   want fancy stuff like "sh -c ls 2>/dev/null".
 ]]
 
 --[[
-  Examples for serializing to "ls -l ~":
+  Examples
 
-    * Short way
+    Serializing to "ls -l ~"
 
-      print(ShellCommand.create({ 'ls', { '-l', '~' } }):ToString())
+      * Short way
 
-    * Long way
+        s = ShellCommand.create({ 'ls', { '-l', '~' } }):ToString()
 
-      local Command = ShellCommand.create()
-      Command[1] = 'ls'
-      Command[2] = { '-l', '~' }
-      print(Command:ToString())
+      * Longer way
+
+        local Command = { 'ls', { '-l', '~' } }
+        Command = ShellCommand.create(Command)
+        s = Command:ToString()
+
+    Executing "ls -l ~"
+
+      *
+        local Command = { 'ls', { '-l', '~' } }
+        Command = ShellCommand.create(Command)
+        Command:Execute()
 ]]
 
 local Interface
 do
-  --[[
-    Data storage format
-
-      1 [s] program name
-      2 [t] arguments (list of strings)
-  ]]
-
   local check_core =
     function(Core)
       assert_table(Core)
@@ -91,10 +98,24 @@ do
       end
   end
 
+  -- See [shell.execute] for output format
+  local Execute
+  do
+    local execute_shell_command = request('!.concepts.shell.execute')
+
+    Execute =
+      function(Me)
+        check_core(Me)
+
+        return execute_shell_command(Me:ToString())
+      end
+  end
+
   Interface =
     {
       create = create,
       ToString = ToString,
+      Execute = Execute,
     }
 end
 
@@ -103,4 +124,5 @@ return Interface
 
 --[[
   2026-08-09
+  2026-08-12
 ]]
