@@ -2,13 +2,16 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-08-13
 ]]
 
 --[[
   Given root modules list and deploy config, resolve full module
   dependencies and (optionally) documentation files sitting next
   to them.
+
+  Side effect: requires() all given modules, populating global
+  modules dependency table used for dependency resolution.
 
   Return flat list of "where file is now" / "where it should end up"
   pairs.
@@ -84,6 +87,11 @@ local get_deploy_plan =
 
     deploy_dir = add_separator(deploy_dir)
 
+    -- Load all modules. This will populate global dependencies table
+    for _, module_name in ipairs(Modules) do
+      request(module_name)
+    end
+
     local CodeFiles = get_modules_filelist(Modules)
 
     local DocFiles = { }
@@ -130,6 +138,6 @@ return get_deploy_plan
   2016
   2017 # #
   2018 # # # #
-  2026 # # # #
-  2026-08-12
+  2026 # # # # #
+  2026-08-13
 ]]
