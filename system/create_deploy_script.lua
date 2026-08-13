@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-12
+  Last mod.: 2026-08-13
 ]]
 
 --[[
@@ -19,8 +19,7 @@
 ]]
 
 -- Imports:
-local get_deploy_script =
-  request('!.concepts.deploy_script_generator.get_script')
+local get_deploy_script = request('!.mechs.get_deploy_script')
 local file_from_str = request('!.convert.file_from_str')
 
 local DefaultConfig =
