@@ -11,9 +11,7 @@ local OutputStrStream = request('!.concepts.StreamIo.Output.String')
 
 local SpecialChars_Map
 local SpaceChars_Map
-
 do
-  -- Imports:
   local map_table_values = request('!.table.map_values')
   local SpecialChars = request('SpecialChars')
   local SpaceChars = request('SpaceChars')
@@ -22,12 +20,12 @@ do
   SpaceChars_Map = map_table_values(SpaceChars)
 end
 
+local comment = '#'
+local backslash = [[\]]
+local empty_str_quoted = [['']]
+
 local quote =
   function(Input, Output)
-    local comment = '#'
-    local backslash = [[\]]
-    local empty_str_quoted = [['']]
-
     local state = 'init'
     local needs_quoting
 
@@ -65,7 +63,7 @@ local quote =
     end
   end
 
-local quote_root =
+return
   function(str)
     local Input = new(InputStrStream)
     Input:Init(str)
@@ -76,9 +74,6 @@ local quote_root =
 
     return Output:GetString()
   end
-
--- Export:
-return quote_root
 
 --[[
   2026-06-12
