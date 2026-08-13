@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-29
+  Last mod.: 2026-08-13
 ]]
 
 --[[
@@ -27,16 +27,18 @@ local get_modules_dependencies =
     assert_table(Modules)
 
     local Result = { }
-    local UsedModules_Map = { }
+    do
+      local UsedModules_Map = { }
 
-    for _, root_module_name in ipairs(Modules) do
-      local ModuleDependencies = get_module_dependencies(root_module_name)
+      for _, root_module_name in ipairs(Modules) do
+        local ModuleDependencies = get_module_dependencies(root_module_name)
 
-      for _, module_name in ipairs(ModuleDependencies) do
-        if not UsedModules_Map[module_name] then
-          add_to_list(Result, module_name)
+        for _, module_name in ipairs(ModuleDependencies) do
+          if not UsedModules_Map[module_name] then
+            UsedModules_Map[module_name] = true
 
-          UsedModules_Map[module_name] = true
+            add_to_list(Result, module_name)
+          end
         end
       end
     end
