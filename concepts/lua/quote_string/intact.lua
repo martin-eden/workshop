@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-07
+  Last mod.: 2026-08-13
 ]]
 
 --[==[
@@ -42,7 +42,7 @@ end
 local str_find = string.find
 local str_sub = string.sub
 
-local quote_long =
+return
   function(str)
     -- (1)
     str = str .. closing_bracket
@@ -78,9 +78,6 @@ local quote_long =
 
     return prefix .. str .. filler_chunk .. closing_bracket
   end
-
--- Export:
-return quote_long
 
 --[===[
   [1] Quoted result string will have following structure:
