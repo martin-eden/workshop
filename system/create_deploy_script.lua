@@ -25,7 +25,7 @@ local file_from_str = request('!.convert.file_from_str')
 local DefaultConfig =
   {
     script_name = 'deploy.sh',
-    deploy_dir = 'deploy/',
+    deploy_dir = 'deploy',
     include_docs = true,
   }
 
@@ -42,13 +42,6 @@ local create_deploy_script =
     assert_string(script_name)
     assert_string(deploy_dir)
     assert_boolean(include_docs)
-
-    -- Load all modules. This will populate global dependencies table
-    for _, module_name in ipairs(Modules) do
-      request(module_name)
-    end
-
-    -- Deploy script generator uses global dependencies table
 
     local script_str
     do
@@ -69,5 +62,5 @@ return create_deploy_script
 --[[
   2017
   2018
-  2026-05 ##
+  2026 # #
 ]]
