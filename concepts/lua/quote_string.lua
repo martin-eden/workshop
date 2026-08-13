@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-07
+  Last mod.: 2026-08-13
 ]]
 
 --[[
@@ -14,13 +14,34 @@
   amount of "="'s determined in situ.
 ]]
 
--- Imports:
-local QuoteChars = request('QuoteChars')
-
 local newline_code
 do
  local AsciiCodes = request('!.concepts.Ascii.Codes')
  newline_code = AsciiCodes.newline
+end
+
+local BinaryEntitiesLengths_Map =
+  {
+    [1 << 0] = true,
+    [1 << 1] = true,
+    [1 << 2] = true,
+    [1 << 3] = true,
+  }
+
+local single_quote_code
+local double_quote_code
+local backslash_code
+local single_quote
+local double_quote
+local backslash
+do
+  local QuoteChars = request('QuoteChars')
+  single_quote_code = QuoteChars.single_quote_code
+  double_quote_code = QuoteChars.double_quote_code
+  backslash_code = QuoteChars.backslash_code
+  single_quote = QuoteChars.single_quote
+  double_quote = QuoteChars.double_quote
+  backslash = QuoteChars.backslash
 end
 
 local has_messy_control_chars
@@ -38,105 +59,75 @@ do
     end
 end
 
-local determine_fixed_quote_char
-do
-  local single_quote_code = QuoteChars.single_quote_code
-  local double_quote_code = QuoteChars.double_quote_code
-  local single_quote = QuoteChars.single_quote
-  local double_quote = QuoteChars.double_quote
+local determine_fixed_quote_char =
+  function(UsedChars)
+    local num_single_quotes = UsedChars[single_quote_code] or 0
+    local num_double_quotes = UsedChars[double_quote_code] or 0
 
-  determine_fixed_quote_char =
-    function(UsedChars)
-      local num_single_quotes = UsedChars[single_quote_code] or 0
-      local num_double_quotes = UsedChars[double_quote_code] or 0
-
-      if (num_single_quotes <= num_double_quotes) then
-        return single_quote
-      else
-        return double_quote
-      end
+    if (num_single_quotes <= num_double_quotes) then
+      return single_quote
+    else
+      return double_quote
     end
-end
+  end
 
-local BinaryEntitiesLengths_Map =
-  {
-    [1 << 0] = true,
-    [1 << 1] = true,
-    [1 << 2] = true,
-    [1 << 3] = true,
-  }
+local get_chars_count = request('!.string.get_chars_count')
+local quote_variable = request('quote_string.intact')
+local quote_char_func = request('quote_string.quote_char')
+local str_gsub = string.gsub
 
-local quote_string
-do
-  local single_quote_code = QuoteChars.single_quote_code
-  local double_quote_code = QuoteChars.double_quote_code
-  local backslash_code = QuoteChars.backslash_code
-  local backslash = QuoteChars.backslash
+return
+  function(str)
+    local UsedChars_Map = get_chars_count(str)
 
-  local get_chars_count = request('!.string.get_chars_count')
-  local quote_variable = request('quote_string.intact')
-  local quote_char_func = request('quote_string.quote_char')
+    local str_has_messy_control_chars =
+      has_messy_control_chars(UsedChars_Map)
 
-  local str_gsub = string.gsub
+    local str_has_messy_printable_chars =
+      UsedChars_Map[newline_code] or
+      UsedChars_Map[backslash_code] or
+      (
+        UsedChars_Map[single_quote_code] and
+        UsedChars_Map[double_quote_code]
+      )
 
-  quote_string =
-    function(str)
-      local UsedChars_Map = get_chars_count(str)
+    local use_variable_quotes =
+      str_has_messy_printable_chars and not str_has_messy_control_chars
 
-      local str_has_messy_control_chars =
-        has_messy_control_chars(UsedChars_Map)
+    if use_variable_quotes then
+      return quote_variable(str)
+    else
+      local quote_char = determine_fixed_quote_char(UsedChars_Map)
 
-      local str_has_messy_printable_chars =
-        UsedChars_Map[newline_code] or
-        UsedChars_Map[backslash_code] or
-        (
-          UsedChars_Map[single_quote_code] and
-          UsedChars_Map[double_quote_code]
-        )
+      local quote_all = false
+      local quote_control = false
 
-      local use_variable_quotes =
-        str_has_messy_printable_chars and not str_has_messy_control_chars
-
-      if use_variable_quotes then
-        return quote_variable(str)
-      else
-        local quote_char = determine_fixed_quote_char(UsedChars_Map)
-
-        local quote_all = false
-        local quote_control = false
-
-        if str_has_messy_control_chars then
-          if BinaryEntitiesLengths_Map[#str] then
-            quote_all = true
-          else
-            quote_control = true
-          end
-        end
-
-        if quote_all then
-          str = str_gsub(str, '.', quote_char_func)
+      if str_has_messy_control_chars then
+        if BinaryEntitiesLengths_Map[#str] then
+          quote_all = true
         else
-          str = str_gsub(str, backslash, backslash .. backslash)
-          str = str_gsub(str, quote_char, backslash .. quote_char)
-
-          if quote_control then
-            str = str_gsub(str, '[%c]', quote_char_func)
-          end
+          quote_control = true
         end
-
-        return quote_char .. str .. quote_char
       end
-    end
-end
 
--- Export:
-return quote_string
+      if quote_all then
+        str = str_gsub(str, '.', quote_char_func)
+      else
+        str = str_gsub(str, backslash, backslash .. backslash)
+        str = str_gsub(str, quote_char, backslash .. quote_char)
+
+        if quote_control then
+          str = str_gsub(str, '[%c]', quote_char_func)
+        end
+      end
+
+      return quote_char .. str .. quote_char
+    end
+  end
 
 --[[
   2016 #
   2017 #
   2024 #
-  2026 #
-  2026-07-11
-  2026-07-12
+  2026 # # #
 ]]
