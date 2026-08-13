@@ -2,21 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-12
+  Last mod.: 2026-08-13
 ]]
 
-local str_format = string.format
+local quote_char_fmt = [[\%03d]]
 local str_byte = string.byte
+local str_format = string.format
 
-local quote_char_fmt = [[\]] .. '%03d'
-
-local quote_char =
+return
   function(char)
     return str_format(quote_char_fmt, str_byte(char))
   end
-
--- Export:
-return quote_char
 
 --[[
   2026-07-12
