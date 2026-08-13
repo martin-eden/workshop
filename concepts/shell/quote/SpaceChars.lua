@@ -24,13 +24,12 @@
 
 local SpaceChars
 do
-  local AsciiChars = request('!.concepts.Ascii.Chars')
-
+  local Ascii = request('!.concepts.Ascii.Chars')
   SpaceChars =
     {
-      AsciiChars.tab,
-      AsciiChars.newline,
-      AsciiChars.space,
+      Ascii.tab,
+      Ascii.space,
+      Ascii.newline,
     }
 end
 
