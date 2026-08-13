@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-08-13
 ]]
 
 --[[
@@ -12,21 +12,14 @@
   Input
     [t] Modules -- list of Lua module names
     [t] Config -- deploy configuration
-      [?s] deploy_dir -- deploy directory.
-        Default: "deploy/"
-      [?b] include_docs -- also locate and copy documentation files.
-        Default: true
+      [?s] deploy_dir -- deploy directory
+      [?b] include_docs -- also locate and copy documentation files
 ]]
 
 -- Imports:
 local get_deploy_plan = request('!.mechs.get_deploy_plan')
 local BashScriptWriter = request('!.concepts.BashScriptWriter.Interface')
-
-local DefaultConfig =
-  {
-    deploy_dir = 'deploy/',
-    include_docs = true,
-  }
+local DefaultConfig = request('get_deploy_plan.DefaultConfig')
 
 local get_script =
   function(Modules, ArgConfig)

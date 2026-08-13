@@ -20,9 +20,7 @@
     [t] Modules -- list of Lua root module names
     [t] Config -- deploy configuration
       [?s] deploy_dir -- deploy directory
-        Default: "deploy/"
       [?b] include_docs -- also locate and copy documentation files
-        Default: true
 
   Output
     [t] -- list of tables (pairs)
@@ -30,10 +28,9 @@
       2 [s] destination pathname
 ]]
 
--- Imports:
 local get_modules_filelist = request('get_deploy_plan.get_modules_filelist')
 local get_docs_filelist = request('get_deploy_plan.get_docs_filelist')
-
+local DefaultConfig = request('get_deploy_plan.DefaultConfig')
 local add_separator = request('!.concepts.path_name.add_separator')
 local add_to_list = request('!.concepts.list.add_item')
 local rebase_to = request('!.concepts.path_name.rebase_to')
@@ -69,12 +66,6 @@ do
       return get_module_base_pathname(module_name) .. '.so'
     end
 end
-
-local DefaultConfig =
-  {
-    deploy_dir = 'deploy/',
-    include_docs = true,
-  }
 
 local get_deploy_plan =
   function(Modules, ArgConfig)

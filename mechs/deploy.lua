@@ -12,24 +12,17 @@
     [t] Modules -- list of Lua module names
     [t] Config -- deploy configuration
       [?s] deploy_dir -- deploy directory
-        Default: "deploy/"
       [?b] include_docs -- also locate and copy documentation files
-        Default: true
 
   Output
     None. Performs file operations immediately.
 ]]
 
 -- Imports:
+local DefaultConfig = request('get_deploy_plan.DefaultConfig')
 local get_deploy_plan = request('!.mechs.get_deploy_plan')
 local delete_dir = request('!.file_system.directory.remove')
 local copy_file = request('!.file_system.file.copy')
-
-local DefaultConfig =
-  {
-    deploy_dir = 'deploy/',
-    include_docs = true,
-  }
 
 local deploy =
   function(Modules, ArgConfig)
