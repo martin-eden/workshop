@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-14
+  Last mod.: 2026-08-13
 ]]
 
 --[[
@@ -100,6 +100,16 @@
   )
 ]]
 
+local space
+local tab
+local semicolon
+do
+  local AsciiChars = request('!.concepts.Ascii.Chars')
+  space = AsciiChars.space
+  tab = AsciiChars.tab
+  semicolon = AsciiChars.semicolon
+end
+
 local cleanup_spaces
 do
   local str_gsub = string.gsub
@@ -107,8 +117,8 @@ do
 
   cleanup_spaces =
     function(str)
-      str = str_gsub(str, '\t', ' ')
-      str = str_gsub(str, '  +', ' ')
+      str = str_gsub(str, tab, space)
+      str = str_gsub(str, space .. space .. '+', space)
       str = str_trim(str)
 
       return str
@@ -121,7 +131,7 @@ do
 
   str_split =
     function(str)
-      return base_str_split(str, ' ')
+      return base_str_split(str, space)
     end
 end
 
@@ -148,6 +158,7 @@ local parse_function =
 
     local Instructions = { }
     do
+      local comment_char = semicolon
       local str_find = string.find
       local str_sub = string.sub
 
@@ -158,7 +169,7 @@ local parse_function =
 
         local Instruction
         do
-          local comment_pos = str_find(opcode_line, ';')
+          local comment_pos = str_find(opcode_line, comment_char)
 
           if comment_pos then
             opcode_line = str_sub(opcode_line, 1, comment_pos - 1)
