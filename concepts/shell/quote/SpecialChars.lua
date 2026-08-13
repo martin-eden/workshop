@@ -2,52 +2,53 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-12
+  Last mod.: 2026-08-13
 ]]
 
--- Imports:
-local SpaceChars = request('SpaceChars')
-local add_list = request('!.concepts.list.add_list')
+local SpecialChars
+do
+  local SpaceChars = request('SpaceChars')
+  local add_list = request('!.concepts.list.add_list')
 
-local SpecialChars =
-  {
-    -- '!',
-    '"',
-    -- '#',
-    '$',
-    -- '%',
-    '&',
-    "'",
-    '(',
-    ')',
-    '*',
-    -- '+',
-    -- ',',
-    -- '-',
-    -- '.',
-    -- '/',
-    -- ':',
-    ';',
-    '<',
-    -- '=',
-    '>',
-    -- '?',
-    -- '@',
-    '[',
-    [[\]],
-    ']',
-    '^',
-    -- '_',
-    '`',
-    '{',
-    '|',
-    '}',
-    -- '~',
-  }
+  SpecialChars =
+    {
+      -- '!',
+      '"',
+      -- '#',
+      '$',
+      -- '%',
+      '&',
+      "'",
+      '(',
+      ')',
+      '*',
+      -- '+',
+      -- ',',
+      -- '-',
+      -- '.',
+      -- '/',
+      -- ':',
+      ';',
+      '<',
+      -- '=',
+      '>',
+      -- '?',
+      -- '@',
+      '[',
+      [[\]],
+      ']',
+      '^',
+      -- '_',
+      '`',
+      '{',
+      '|',
+      '}',
+      -- '~',
+    }
 
-add_list(SpecialChars, SpaceChars)
+  add_list(SpecialChars, SpaceChars)
+end
 
--- Export:
 return SpecialChars
 
 --[[
