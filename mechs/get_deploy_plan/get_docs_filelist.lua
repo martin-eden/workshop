@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-12
+  Last mod.: 2026-08-14
 ]]
 
 --[[
@@ -23,7 +23,7 @@
 local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
 local is_directory = request('!.concepts.path_name.is_directory')
 local get_host_dir = request('!.concepts.path_name.get_host_dir')
-local FilesLister = request('!.concepts.FilesLister.Interface')
+local FilesLister = request('!.concepts.FilesLister')
 local add_to_list = request('!.concepts.list.add_item')
 
 -- Regexps for documentation file names
@@ -57,6 +57,8 @@ local get_docs_filelist =
     local Result = { }
 
     local ProcessedDirectories_Map = { }
+
+    local FilesLister = FilesLister.create()
 
     for _, module_pathname in ipairs(FilesList) do
       local ModulePathname = pathname_from_str(module_pathname)
