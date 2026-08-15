@@ -1,13 +1,11 @@
--- Tree formatter for long or complex data
+-- Notify handler for readable-long indentation
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-11
+  Last mod.: 2026-08-15
 ]]
 
--- Imports:
 local Indent = request('!.concepts.Indent')
-local patch_table = request('!.table.patch')
 
 Indent = Indent.create()
 
@@ -24,7 +22,7 @@ local emit_indent =
 
 local prev_event_name = 'nothing'
 
-local on_notify =
+local notify =
   function(next_event_name, Output)
     if (next_event_name == 'start_table') then
       Indent:Inc()
@@ -49,29 +47,10 @@ local on_notify =
     prev_event_name = next_event_name
   end
 
-local install =
-  function(Config)
-    patch_table(
-      Config,
-      {
-        use_compact_indices = true,
-        use_compact_sequences = false,
-        omit_tail_delimiter = false,
-
-        empty_table_str = '{ }',
-        opening_table_str = '{',
-        closing_table_str = '}',
-        delimiter_str = ',',
-        equal_str = ' = ',
-
-        notify = on_notify,
-      }
-    )
-  end
-
 -- Export:
-return install
+return notify
 
 --[[
   2026-06-19
+  2026-08-15
 ]]

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-11
+  Last mod.: 2026-08-15
 ]]
 
 local Initializer = request('compile.Initializer')
@@ -20,11 +20,16 @@ local compile_tree =
     do
       local TreeSerializer = new(TreeSerializer)
 
-      Initializer.configure_style(TreeSerializer, Options.style, ArgOptions)
+      Initializer.configure_style(
+        TreeSerializer,
+        Output,
+        Options.style,
+        ArgOptions
+      )
 
       local Ast = GetTreeAst.get_tree_ast(Tree, Options.table_iterator)
 
-      TreeSerializer:SerializeTree(Ast, Output)
+      TreeSerializer:SerializeTree(Ast)
     end
 
     Initializer.unwrap_output(Output, original_write)

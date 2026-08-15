@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-11
+  Last mod.: 2026-08-15
 ]]
 
 -- Imports:
@@ -10,9 +10,11 @@ local is_identifier = request('!.concepts.lua.is_identifier')
 local TreeSerializer = request('TreeSerializer')
 
 local SerializeGraph =
-  function(Me, GraphAst, Output)
-    local use_compact_indices = Me.Config.use_compact_indices
-    local equal_str = Me.Config.equal_str
+  function(Me, GraphAst)
+    local Output = Me.Output
+    local Writer = Me.Writer
+
+    local use_compact_indices = Me.use_compact_indices
 
     for index, Rec in ipairs(GraphAst) do
       local rec_type = Rec[1]
@@ -21,12 +23,11 @@ local SerializeGraph =
         local name = Rec[2]
         local Value = Rec[3]
 
-        Output:Write('local')
-        Output:Write(' ')
+        Writer:Keyword_Local()
         Output:Write(name)
-        Output:Write(equal_str)
-        Me:SerializeValue(Value, Output)
-        Output:Write('\n')
+        Writer:Assign()
+        Me:SerializeValue(Value)
+        Writer:EndStatement()
       elseif (rec_type == 'key_assignment') then
         local dest_name = Rec[2]
         local Key = Rec[3]
@@ -41,23 +42,22 @@ local SerializeGraph =
 
         Output:Write(dest_name)
         if brackets_not_required then
-          Output:Write('.')
+          Writer:SeparateName()
           Output:Write(key_value)
         else
-          Output:Write('[')
-          Me:SerializeValue(Key, Output)
-          Output:Write(']')
+          Writer:StartIndex()
+          Me:SerializeValue(Key)
+          Writer:EndIndex()
         end
-        Output:Write(equal_str)
+        Writer:Assign()
         Output:Write(src_name)
-        Output:Write('\n')
+        Writer:EndStatement()
       elseif (rec_type == 'return_statement') then
         local Value = Rec[2]
 
-        Output:Write('return')
-        Output:Write(' ')
-        Me:SerializeValue(Value, Output)
-        Output:Write('\n')
+        Writer:Keyword_Return()
+        Me:SerializeValue(Value)
+        Writer:EndStatement()
       end
     end
   end
@@ -66,9 +66,6 @@ local Interface =
   {
     -- Main:
     SerializeGraph = SerializeGraph,
-
-    -- Optional config:
-    Config = new(TreeSerializer.Config),
 
     -- Internals:
     SerializeValue = TreeSerializer.SerializeValue,
@@ -81,4 +78,5 @@ return Interface
 --[[
   2026 # # #
   2026-08-11
+  2026-08-15
 ]]

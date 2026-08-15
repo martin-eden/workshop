@@ -2,10 +2,10 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-11
+  Last mod.: 2026-08-15
 ]]
 
-local get_ast
+local get_graph_ast
 do
   local get_tree_ast
   local create_table_rec
@@ -72,7 +72,7 @@ do
   local NameGiver = request('!.mechs.name_giver')
   local add_to_list = request('!.concepts.list.add_item')
 
-  get_ast =
+  get_graph_ast =
     function(Root, table_iterator)
       local NamedValues = { }
       local NameGiver = new(NameGiver)
@@ -165,13 +165,16 @@ do
           ...
           return {...}
       ]]
-      local PrelastNode = Result[#Result - 1]
-      local prelast_type = PrelastNode[1]
-      if (prelast_type == 'local_definition') then
-        local prelast_value = PrelastNode[3]
-        table.remove(Result)
-        table.remove(Result)
-        add_to_list(Result, create_return_rec(prelast_value))
+      do
+        local tbl_remove = table.remove
+        local PrelastNode = Result[#Result - 1]
+        local prelast_type = PrelastNode[1]
+        if (prelast_type == 'local_definition') then
+          local prelast_value = PrelastNode[3]
+          tbl_remove(Result)
+          tbl_remove(Result)
+          add_to_list(Result, create_return_rec(prelast_value))
+        end
       end
 
       return Result
@@ -179,7 +182,7 @@ do
 end
 
 -- Export:
-return get_ast
+return get_graph_ast
 
 --[[
   2018 # # #

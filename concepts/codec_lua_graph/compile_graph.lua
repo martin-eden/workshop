@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-11
+  Last mod.: 2026-08-15
 ]]
 
 local Initializer = request('compile.Initializer')
 local GraphSerializer = request('compile.GraphSerializer')
-local get_ast = request('compile.get_ast')
+local get_graph_ast = request('compile.get_graph_ast')
 
 local compile_graph =
   function(Graph, Output, ArgOptions)
@@ -20,11 +20,16 @@ local compile_graph =
     do
       local GraphSerializer = new(GraphSerializer)
 
-      Initializer.configure_style(GraphSerializer, Options.style, ArgOptions)
+      Initializer.configure_style(
+        GraphSerializer,
+        Output,
+        Options.style,
+        ArgOptions
+      )
 
-      local Ast = get_ast(Graph, Options.table_iterator)
+      local Ast = get_graph_ast(Graph, Options.table_iterator)
 
-      GraphSerializer:SerializeGraph(Ast, Output)
+      GraphSerializer:SerializeGraph(Ast)
     end
 
     Initializer.unwrap_output(Output, original_write)
