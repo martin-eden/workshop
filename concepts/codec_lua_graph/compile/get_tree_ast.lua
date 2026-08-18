@@ -2,30 +2,26 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-11
+  Last mod.: 2026-08-20
 ]]
-
-local create_name_rec =
-  function(name)
-    return { 'name', name }
-  end
-
-local create_table_rec =
-  function()
-    return { 'table', { } }
-  end
 
 local get_tree_ast
 do
-  local create_terminal_type_rec =
-    function(data)
-      return { type(data), data }
-    end
+  local create_name_rec
+  local create_terminal_type_rec
+  local create_table_rec
+  do
+    local Methods = request('Ast.Methods')
+    create_name_rec = Methods.create_name_rec
+    create_terminal_type_rec = Methods.create_terminal_type_rec
+    create_table_rec = Methods.create_table_rec
+  end
 
+  local table_iterator = request('!.table.ordered_pass')
   local add_to_list = request('!.concepts.list.add_item')
 
   get_tree_ast =
-    function(Data, table_iterator, NamedValues)
+    function(Data, NamedValues)
       NamedValues = NamedValues or { }
 
       if NamedValues[Data] then
@@ -43,8 +39,8 @@ do
         add_to_list(
           KeyVals,
           {
-            get_tree_ast(Key, table_iterator, NamedValues),
-            get_tree_ast(Value, table_iterator, NamedValues),
+            get_tree_ast(Key, NamedValues),
+            get_tree_ast(Value, NamedValues),
           }
         )
       end
@@ -53,16 +49,8 @@ do
     end
 end
 
-local Interface =
-  {
-    get_tree_ast = get_tree_ast,
-
-    create_name_rec = create_name_rec,
-    create_table_rec = create_table_rec,
-  }
-
 -- Export:
-return Interface
+return get_tree_ast
 
 --[[
   2018 # # #
@@ -70,6 +58,6 @@ return Interface
   2020 #
   2022 #
   2024 #
-  2026 # # # #
-  2026-08-11
+  2026 # # # # # # #
+  2026-08-20
 ]]

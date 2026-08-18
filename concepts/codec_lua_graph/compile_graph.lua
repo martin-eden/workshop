@@ -2,37 +2,37 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-15
+  Last mod.: 2026-08-20
 ]]
 
-local Initializer = request('compile.Initializer')
-local GraphSerializer = request('compile.GraphSerializer')
+local wrap_output
+local unwrap_output
+local configure_style
+do
+  local Initializer = request('compile.Initializer')
+  wrap_output = Initializer.wrap_output
+  unwrap_output = Initializer.unwrap_output
+  configure_style = Initializer.configure_style
+end
+
+local serialize_graph = request('compile.serialize_graph')
 local get_graph_ast = request('compile.get_graph_ast')
 
 local compile_graph =
-  function(Graph, Output, ArgOptions)
+  function(Graph, Output, Options)
     assert_table(Graph)
+    Options = Options or { }
 
-    local Options = new(Initializer.DefaultOptions, ArgOptions)
-
-    local original_write = Initializer.wrap_output(Output)
+    local original_write = wrap_output(Output)
 
     do
-      local GraphSerializer = new(GraphSerializer)
+      local Settings = { }
+      configure_style(Settings, Output, Options)
 
-      Initializer.configure_style(
-        GraphSerializer,
-        Output,
-        Options.style,
-        ArgOptions
-      )
-
-      local Ast = get_graph_ast(Graph, Options.table_iterator)
-
-      GraphSerializer:SerializeGraph(Ast)
+      serialize_graph(Settings, get_graph_ast(Graph))
     end
 
-    Initializer.unwrap_output(Output, original_write)
+    unwrap_output(Output, original_write)
   end
 
 -- Export:
@@ -42,6 +42,5 @@ return compile_graph
   2016 #
   2017 #
   2018 #
-  2026-06 # # # # #
-  2026-08-11
+  2026 # # # # # # #
 ]]

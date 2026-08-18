@@ -2,23 +2,23 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-15
+  Last mod.: 2026-08-19
 ]]
 
 local space = ' '
 local newline = '\n'
 
-local Keyword_Local = function(Me) Me:Write('local' .. space) end
-local Keyword_Return = function(Me) Me:Write('return' .. space) end
-local EndStatement = function(Me) Me:Write(newline) end
-local SeparateName = function(Me) Me:Write('.') end
-local Assign = function(Me) Me:Write('=') end
-local SeparateItem = function(Me) Me:Write(',') end
-local StartTable = function(Me) Me:Write('{') end
-local EndTable = function(Me) Me:Write('}') end
-local EmptyTable = function(Me) Me:Write('{}') end
-local StartIndex = function(Me) Me:Write('[') end
-local EndIndex = function(Me) Me:Write(']') end
+local Keyword_Local = function(Stream) Stream:Write('local' .. space) end
+local Keyword_Return = function(Stream) Stream:Write('return' .. space) end
+local EndStatement = function(Stream) Stream:Write(newline) end
+local SeparateName = function(Stream) Stream:Write('.') end
+local Assign = function(Stream) Stream:Write('=') end
+local SeparateItem = function(Stream) Stream:Write(',') end
+local StartTable = function(Stream) Stream:Write('{') end
+local EndTable = function(Stream) Stream:Write('}') end
+local EmptyTable = function(Stream) Stream:Write('{}') end
+local StartIndex = function(Stream) Stream:Write('[') end
+local EndIndex = function(Stream) Stream:Write(']') end
 
 local Interface
 

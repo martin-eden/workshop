@@ -2,42 +2,42 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-15
+  Last mod.: 2026-08-20
 ]]
 
-local Initializer = request('compile.Initializer')
-local TreeSerializer = request('compile.TreeSerializer')
-local GetTreeAst = request('compile.GetTreeAst')
+local wrap_output
+local unwrap_output
+local configure_style
+do
+  local Initializer = request('compile.Initializer')
+  wrap_output = Initializer.wrap_output
+  unwrap_output = Initializer.unwrap_output
+  configure_style = Initializer.configure_style
+end
+
+local get_tree_ast = request('compile.get_tree_ast')
+local serialize_tree = request('compile.serialize_tree')
 
 local compile_tree =
-  function(Tree, Output, ArgOptions)
+  function(Tree, Output, Options)
     assert_table(Tree)
+    Options = Options or { }
 
-    local Options = new(Initializer.DefaultOptions, ArgOptions)
-
-    local original_write = Initializer.wrap_output(Output)
+    local original_write = wrap_output(Output)
 
     do
-      local TreeSerializer = new(TreeSerializer)
+      local Settings = { }
+      configure_style(Settings, Output, Options)
 
-      Initializer.configure_style(
-        TreeSerializer,
-        Output,
-        Options.style,
-        ArgOptions
-      )
-
-      local Ast = GetTreeAst.get_tree_ast(Tree, Options.table_iterator)
-
-      TreeSerializer:SerializeTree(Ast)
+      serialize_tree(Settings, get_tree_ast(Tree))
     end
 
-    Initializer.unwrap_output(Output, original_write)
+    unwrap_output(Output, original_write)
   end
 
 -- Export:
 return compile_tree
 
 --[[
-  2026-08-11
+  2026 #
 ]]

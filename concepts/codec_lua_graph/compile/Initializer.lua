@@ -2,60 +2,92 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-15
+  Last mod.: 2026-08-20
 ]]
 
 --[[
   We have two data sources: "style" and "behavior flags".
 
-  "style" determines general layout (compact one-liner, readable one-liner
-  or readable multi-liner).
+  "style" determines general layout (one-liner, multi-liner).
+  It determines amount of whitespaces.
 
-  "behavior flags" are settings for Tree Serializer. And technically
-  they are independent from "style".
+  "behavior flags" determines amount of additional tokens.
 
-  * If caller passed nothing, we'll use some default style.
-  * We'll still pre-set behavior flags from style.
-  * If caller passed some behavior flags, we'll override our
-    pre-set flags.
+  For example in "{1,}", "," is additional token controlled by
+  "omit_tail_delimiter" flag.
+
+  Although technically "behavior flags" are independent from "style",
+  we see sense deriving behavior flags from style.
+
+  For example for one-liner we don't want tail delimiter.
+  But want it in multi-liner.
+
+  Arguments processing:
+
+    * If caller passed nothing, we'll use some default style.
+    * We'll set behavior flags from style.
+    * If caller passed some behavior flags, we'll apply them.
 ]]
-
-local DefaultOptions =
-  {
-    style = 'readable_long',
-
-    table_iterator = request('!.table.ordered_pass'),
-  }
 
 local configure_style
 do
+  local KnownStyles =
+    {
+      [1] = 'minimal',
+      [2] = 'readable_short',
+      [3] = 'readable_long',
+    }
+
+  local default_style = KnownStyles[3]
+
+  -- Map of style name to integer
+  local Styles
+  do
+    local invert_table = request('!.table.invert')
+    Styles = invert_table(KnownStyles)
+  end
+
+  local KnownBehaviors =
+    {
+      [1] = 'use_compact_indices',
+      [2] = 'use_compact_sequences',
+      [3] = 'omit_tail_delimiter',
+    }
+
+  -- Map of behavior name to integer
+  local Behaviors
+  do
+    local invert_table = request('!.table.invert')
+    Behaviors = invert_table(KnownBehaviors)
+  end
+
   local StyleToBehavior =
     {
-      ['minimal'] =
+      [Styles.minimal] =
         {
-          use_compact_indices = true,
-          use_compact_sequences = true,
-          omit_tail_delimiter = true,
+          [Behaviors.use_compact_indices] = true,
+          [Behaviors.use_compact_sequences] = true,
+          [Behaviors.omit_tail_delimiter] = true,
         },
-      ['readable_short'] =
+      [Styles.readable_short] =
         {
-          use_compact_indices = true,
-          use_compact_sequences = true,
-          omit_tail_delimiter = true,
+          [Behaviors.use_compact_indices] = true,
+          [Behaviors.use_compact_sequences] = true,
+          [Behaviors.omit_tail_delimiter] = true,
         },
-      ['readable_long'] =
+      [Styles.readable_long] =
         {
-          use_compact_indices = true,
-          use_compact_sequences = false,
-          omit_tail_delimiter = false,
+          [Behaviors.use_compact_indices] = true,
+          [Behaviors.use_compact_sequences] = false,
+          [Behaviors.omit_tail_delimiter] = false,
         },
     }
 
   local Writers_Map =
     {
-      ['minimal'] = request('Writers.Minimal'),
-      ['readable_short'] = request('Writers.Readable_Short'),
-      ['readable_long'] = request('Writers.Readable_Long'),
+      [Styles.minimal] = request('Writers.Minimal'),
+      [Styles.readable_short] = request('Writers.Readable_Short'),
+      [Styles.readable_long] = request('Writers.Readable_Long'),
     }
 
   local Notify_Map
@@ -63,41 +95,48 @@ do
     local notify_default = function(event_name, Output) end
     Notify_Map =
       {
-        ['minimal'] = notify_default,
-        ['readable_short'] = notify_default,
-        ['readable_long'] = request('Formatters.readable_long'),
+        [Styles.minimal] = notify_default,
+        [Styles.readable_short] = notify_default,
+        [Styles.readable_long] = request('Formatters.readable_long'),
       }
   end
 
-  local set_field =
-    function(BaseTable, OptTable, field_name)
-      if not is_table(OptTable) then return end
-      if is_nil(OptTable[field_name]) then return end
-
-      BaseTable[field_name] = OptTable[field_name]
-    end
-
   configure_style =
-    function(Serializer, Output, style_str, ArgOptions)
-      local Writer_Module = Writers_Map[style_str]
-      local Behavior = StyleToBehavior[style_str]
+    function(Settings, Output, Options)
+      assert_table(Options)
 
-      if not is_table(Writer_Module) or not is_table(Behavior) then
-        error('No writer/behavior for given style.')
+      local style_idx
+      do
+        local style_str = Options.style or default_style
+        style_idx = Styles[style_str]
       end
 
-      Serializer.Output = Output
-      Serializer.Writer = Writer_Module.create(Output)
+      if not style_idx then
+        error('Unknown style.')
+      end
 
-      Serializer.use_compact_indices = Behavior.use_compact_indices
-      Serializer.use_compact_sequences = Behavior.use_compact_sequences
-      Serializer.omit_tail_delimiter = Behavior.omit_tail_delimiter
+      local Writer_Module = Writers_Map[style_idx]
 
-      set_field(Serializer, ArgOptions, 'use_compact_indices')
-      set_field(Serializer, ArgOptions, 'use_compact_sequences')
-      set_field(Serializer, ArgOptions, 'omit_tail_delimiter')
+      Settings.Output = Output
+      Settings.Writer = Writer_Module.create(Output)
 
-      Serializer.notify = Notify_Map[style_str]
+      -- Apply behavior flags from style
+      do
+        local Behavior = StyleToBehavior[style_idx]
+
+        for behavior_idx, flag_value in ipairs(Behavior) do
+          Settings[KnownBehaviors[behavior_idx]] = flag_value
+        end
+      end
+
+      -- Apply directly passed behavior flags
+      for behavior_idx, behavior_flag_name in ipairs(KnownBehaviors) do
+        if is_boolean(Options[behavior_flag_name]) then
+          Settings[behavior_flag_name] = Options[behavior_flag_name]
+        end
+      end
+
+      Settings.notify = Notify_Map[style_idx]
     end
 end
 
@@ -161,8 +200,6 @@ local unwrap_output =
 
 local Interface =
   {
-    DefaultOptions = DefaultOptions,
-
     configure_style = configure_style,
 
     wrap_output = wrap_output,
@@ -176,7 +213,6 @@ return Interface
   2016 #
   2017 #
   2018 #
-  2026 # # # # #
-  2026-08-11
-  2026-08-15
+  2026 # # # # # # # #
+  2026-08-20
 ]]

@@ -2,36 +2,26 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-15
+  Last mod.: 2026-08-20
 ]]
 
 local get_graph_ast
 do
-  local get_tree_ast
+  local get_tree_ast = request('get_tree_ast')
+
   local create_table_rec
   local create_name_rec
+  local create_local_def_rec
+  local create_assignment_rec
+  local create_return_rec
   do
-    local TreeAst = request('GetTreeAst')
-
-    get_tree_ast = TreeAst.get_tree_ast
-    create_table_rec = TreeAst.create_table_rec
-    create_name_rec = TreeAst.create_name_rec
+    local Methods = request('Ast.Methods')
+    create_table_rec = Methods.create_table_rec
+    create_name_rec = Methods.create_name_rec
+    create_local_def_rec = Methods.create_local_def_rec
+    create_assignment_rec = Methods.create_assignment_rec
+    create_return_rec = Methods.create_return_rec
   end
-
-  local create_local_def_rec =
-    function(name, Value)
-      return { 'local_definition', name, Value }
-    end
-
-  local create_assignment_rec =
-    function(dest, index, value)
-      return { 'key_assignment', dest, index, value }
-    end
-
-  local create_return_rec =
-    function(Value)
-      return { 'return_statement', Value }
-    end
 
   local may_print_inline
   do
@@ -68,12 +58,14 @@ do
       end
   end
 
+  local table_iterator = request('!.table.ordered_pass')
   local get_assembly_order = request('!.mechs.graph.assembly_order')
   local NameGiver = request('!.mechs.name_giver')
   local add_to_list = request('!.concepts.list.add_item')
+  local tbl_remove = table.remove
 
   get_graph_ast =
-    function(Root, table_iterator)
+    function(Root)
       local NamedValues = { }
       local NameGiver = new(NameGiver)
 
@@ -105,15 +97,15 @@ do
               add_to_list(
                 KeyVals,
                 {
-                  get_tree_ast(k, table_iterator, NamedValues),
-                  get_tree_ast(v, table_iterator, NamedValues),
+                  get_tree_ast(k, NamedValues),
+                  get_tree_ast(v, NamedValues),
                 }
               )
 
               :: next ::
             end
           else
-            TableRec = get_tree_ast(Node, table_iterator, NamedValues)
+            TableRec = get_tree_ast(Node, NamedValues)
           end
 
           local node_name = NameGiver:give_name(Node)
@@ -129,12 +121,12 @@ do
         ProcessedTables[Node] = true
 
         if NodeRec.part_of_cycle then
-          -- Add links to a table we just processed:
+          -- Assign links to table we just processed:
           for Parent, ParentKeys in pairs(NodeRec.refs) do
             if ProcessedTables[Parent] then
               for parent_key in pairs(ParentKeys) do
                 local key_slot =
-                  get_tree_ast(parent_key, table_iterator, NamedValues)
+                  get_tree_ast(parent_key, NamedValues)
 
                 add_to_list(
                   Result,
@@ -154,23 +146,22 @@ do
       )
 
       --[[
-        Apply shortcut:
+        Make "return" return expression, not variable name:
 
-          ...
           local t_x = {...}
           return t_x
 
-        can be shortened to
+        converted to
 
-          ...
           return {...}
       ]]
       do
-        local tbl_remove = table.remove
         local PrelastNode = Result[#Result - 1]
         local prelast_type = PrelastNode[1]
+
         if (prelast_type == 'local_definition') then
           local prelast_value = PrelastNode[3]
+
           tbl_remove(Result)
           tbl_remove(Result)
           add_to_list(Result, create_return_rec(prelast_value))
@@ -190,6 +181,6 @@ return get_graph_ast
   2020 #
   2022 #
   2024 #
-  2026 # # # #
-  2026-08-11
+  2026 # # # # #
+  2026-08-20
 ]]
