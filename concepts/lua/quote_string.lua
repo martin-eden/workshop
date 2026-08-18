@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-13
+  Last mod.: 2026-08-18
 ]]
 
 --[[
@@ -16,8 +16,8 @@
 
 local newline_code
 do
- local AsciiCodes = request('!.concepts.Ascii.Codes')
- newline_code = AsciiCodes.newline
+  local AsciiCodes = request('!.concepts.Ascii.Codes')
+  newline_code = AsciiCodes.newline
 end
 
 local BinaryEntitiesLengths_Map =
