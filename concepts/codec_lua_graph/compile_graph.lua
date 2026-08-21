@@ -15,8 +15,8 @@ do
   configure_style = Initializer.configure_style
 end
 
-local serialize_graph = request('compile.serialize_graph')
-local get_graph_ast = request('compile.get_graph_ast')
+local get_ast = request('compile.get_graph_ast')
+local serialize_ast = request('compile.serialize_graph_ast')
 
 local compile_graph =
   function(Graph, Output, Options)
@@ -29,7 +29,7 @@ local compile_graph =
       local Settings = { }
       configure_style(Settings, Output, Options)
 
-      serialize_graph(Settings, get_graph_ast(Graph))
+      serialize_ast(Settings, get_ast(Graph))
     end
 
     unwrap_output(Output, original_write)

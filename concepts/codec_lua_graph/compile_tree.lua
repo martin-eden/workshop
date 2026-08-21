@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-20
+  Last mod.: 2026-08-21
 ]]
 
 local wrap_output
@@ -15,8 +15,8 @@ do
   configure_style = Initializer.configure_style
 end
 
-local get_tree_ast = request('compile.get_tree_ast')
-local serialize_tree = request('compile.serialize_tree')
+local get_ast = request('compile.get_tree_ast')
+local serialize_ast = request('compile.serialize_tree_ast')
 
 local compile_tree =
   function(Tree, Output, Options)
@@ -29,7 +29,7 @@ local compile_tree =
       local Settings = { }
       configure_style(Settings, Output, Options)
 
-      serialize_tree(Settings, get_tree_ast(Tree))
+      serialize_ast(Settings, get_ast(Tree))
     end
 
     unwrap_output(Output, original_write)

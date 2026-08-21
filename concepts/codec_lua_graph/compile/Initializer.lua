@@ -83,23 +83,19 @@ do
         },
     }
 
-  local Writers_Map =
+  local Syntels_Map =
     {
-      [Styles.minimal] = request('Writers.Minimal'),
-      [Styles.readable_short] = request('Writers.Readable_Short'),
-      [Styles.readable_long] = request('Writers.Readable_Long'),
+      [Styles.minimal] = request('Syntels.minimal'),
+      [Styles.readable_short] = request('Syntels.readable_short'),
+      [Styles.readable_long] = request('Syntels.readable_long'),
     }
 
-  local Notify_Map
-  do
-    local notify_default = function(event_name, Output) end
-    Notify_Map =
-      {
-        [Styles.minimal] = notify_default,
-        [Styles.readable_short] = notify_default,
-        [Styles.readable_long] = request('Formatters.readable_long'),
-      }
-  end
+  local Formatters =
+    {
+      [Styles.readable_long] = request('Formatters.Readable_Long'),
+    }
+
+  local empty_func = function() end
 
   configure_style =
     function(Settings, Output, Options)
@@ -115,10 +111,8 @@ do
         error('Unknown style.')
       end
 
-      local Writer_Module = Writers_Map[style_idx]
-
       Settings.Output = Output
-      Settings.Writer = Writer_Module.create(Output)
+      Settings.Syntels = Syntels_Map[style_idx]
 
       -- Apply behavior flags from style
       do
@@ -136,7 +130,16 @@ do
         end
       end
 
-      Settings.notify = Notify_Map[style_idx]
+      -- Assign formatter function
+      do
+        local Formatter = Formatters[style_idx]
+        local notify_func = empty_func
+        if Formatter then
+          notify_func = Formatter.create()
+        end
+
+        Settings.notify = notify_func
+      end
     end
 end
 
