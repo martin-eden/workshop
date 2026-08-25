@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-22
+  Last mod.: 2026-08-26
 ]]
 
 local Indent
@@ -34,14 +34,12 @@ do
 
   local event_start_table
   local event_end_table
-  local event_start_item
-  local event_end_item
+  local event_item
   do
     local NotificationEvents = request('^.NotificationEvents')
     event_start_table = NotificationEvents.start_table
     event_end_table = NotificationEvents.end_table
-    event_start_item = NotificationEvents.start_item
-    event_end_item = NotificationEvents.end_item
+    event_item = NotificationEvents.item
   end
 
   process_event =
@@ -57,7 +55,7 @@ do
           (prev_event_name == event_start_table) and
           (next_event_name ~= event_end_table)
         ) or
-        (prev_event_name == event_end_item) or
+        (next_event_name == event_item) or
         (
           (prev_event_name ~= event_start_table) and
           (next_event_name == event_end_table)

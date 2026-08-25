@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-22
+  Last mod.: 2026-08-26
 ]]
 
 local type_name
@@ -74,14 +74,12 @@ do
 
   local event_start_table
   local event_end_table
-  local event_start_item
-  local event_end_item
+  local event_item
   do
     local NotificationEvents = request('NotificationEvents')
     event_start_table = NotificationEvents.start_table
     event_end_table = NotificationEvents.end_table
-    event_start_item = NotificationEvents.start_item
-    event_end_item = NotificationEvents.end_item
+    event_item = NotificationEvents.item
   end
 
   serialize_tree =
@@ -120,11 +118,10 @@ do
 
       for index, KeyVal_Rec in ipairs(KeyVals) do
         if (index ~= 1) then
-          notify(event_end_item, Output)
           Output:Write(item_separator)
         end
 
-        notify(event_start_item, Output)
+        notify(event_item, Output)
 
         local Key = KeyVal_Rec[1]
         local Value = KeyVal_Rec[2]
@@ -146,7 +143,6 @@ do
       end
 
       if not omit_tail_delimiter then
-        notify(event_end_item, Output)
         Output:Write(item_separator)
       end
 

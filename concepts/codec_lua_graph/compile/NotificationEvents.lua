@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-22
+  Last mod.: 2026-08-26
 ]]
 
 --[[
@@ -16,10 +16,10 @@ return
   {
     start_table = 'start_table',
     end_table = 'end_table',
-    start_item = 'start_item',
-    end_item = 'end_item',
+    item = 'item',
   }
 
 --[[
   2026-08-22
+  2026-08-26
 ]]
