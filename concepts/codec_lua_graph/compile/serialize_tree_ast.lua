@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-26
+  Last mod.: 2026-08-28
 ]]
 
 local type_name
@@ -17,6 +17,16 @@ do
   type_string = TypeNames.type_string
 end
 
+local Syntels = request('Syntels')
+
+local is_serializeable =
+  function(val_type)
+    return
+      (val_type ~= 'function') and
+      (val_type ~= 'thread') and
+      (val_type ~= 'userdata')
+  end
+
 local serialize_value
 local serialize_tree
 
@@ -29,6 +39,8 @@ do
       local Output = Settings.Output
       local node_type = Node[1]
       local node_value = Node[2]
+
+      if not is_serializeable(node_type) then return end
 
       if (node_type == type_name) then
         Output:Write(node_value)
@@ -48,12 +60,12 @@ do
   local serialize_index
   do
     local is_identifier = request('!.concepts.lua.is_identifier')
+    local start_index = Syntels.start_index
+    local end_index = Syntels.end_index
 
     serialize_index =
       function(Settings, Index)
         local Output = Settings.Output
-        local start_index = Settings.Syntels.start_index
-        local end_index = Settings.Syntels.end_index
         local index_type = Index[1]
         local index_value = Index[2]
         local use_compact_indices = Settings.use_compact_indices
@@ -72,81 +84,69 @@ do
       end
   end
 
-  local event_start_table
-  local event_end_table
-  local event_item
-  do
-    local NotificationEvents = request('NotificationEvents')
-    event_start_table = NotificationEvents.start_table
-    event_end_table = NotificationEvents.end_table
-    event_item = NotificationEvents.item
-  end
+  local start_table = Syntels.start_table
+  local end_table = Syntels.end_table
+  local item_separator = Syntels.item_separator
+  local assign = Syntels.assign
 
   serialize_tree =
     function(Settings, TableAst)
       local Output = Settings.Output
 
-      local empty_table
-      local start_table
-      local end_table
-      local item_separator
-      local assign
-      do
-        local Syntels = Settings.Syntels
-        empty_table = Syntels.empty_table
-        start_table = Syntels.start_table
-        end_table = Syntels.end_table
-        item_separator = Syntels.item_separator
-        assign = Syntels.assign
-      end
-
-      local notify = Settings.notify
       local use_compact_sequences = Settings.use_compact_sequences
       local omit_tail_delimiter = Settings.omit_tail_delimiter
       local KeyVals = TableAst[2]
 
-      if (#KeyVals == 0) then
-        Output:Write(empty_table)
-
-        return
-      end
-
-      notify(event_start_table, Output)
       Output:Write(start_table)
 
-      local next_integer_key = 1
+      local has_items = false
 
-      for index, KeyVal_Rec in ipairs(KeyVals) do
-        if (index ~= 1) then
-          Output:Write(item_separator)
+      do
+        local wrote_something = false
+        local next_integer_key = 1
+
+        for index, KeyVal_Rec in ipairs(KeyVals) do
+          local Key = KeyVal_Rec[1]
+          local Value = KeyVal_Rec[2]
+          local key_type = Key[1]
+          local key_value = Key[2]
+          local val_type = Value[1]
+
+          if not
+            (is_serializeable(key_type) and is_serializeable(val_type))
+          then
+            goto next
+          end
+
+          has_items = true
+
+          if wrote_something then
+            Output:Write(item_separator)
+          end
+
+          local skip_key_serialization =
+            use_compact_sequences and
+            ((key_type == type_number) and (key_value == next_integer_key))
+
+          if skip_key_serialization then
+            next_integer_key = key_value + 1
+          else
+            serialize_index(Settings, Key)
+            Output:Write(assign)
+          end
+
+          serialize_value(Settings, Value)
+
+          wrote_something = true
+
+          :: next ::
         end
-
-        notify(event_item, Output)
-
-        local Key = KeyVal_Rec[1]
-        local Value = KeyVal_Rec[2]
-        local key_type = Key[1]
-        local key_value = Key[2]
-
-        local skip_key_serialization =
-          use_compact_sequences and
-          ((key_type == type_number) and (key_value == next_integer_key))
-
-        if skip_key_serialization then
-          next_integer_key = key_value + 1
-        else
-          serialize_index(Settings, Key)
-          Output:Write(assign)
-        end
-
-        serialize_value(Settings, Value)
       end
 
-      if not omit_tail_delimiter then
+      if has_items and not omit_tail_delimiter then
         Output:Write(item_separator)
       end
 
-      notify(event_end_table, Output)
       Output:Write(end_table)
     end
 end
@@ -157,4 +157,5 @@ return serialize_value
 --[[
   2026 # # # # # #
   2026-08-22
+  2026-08-28
 ]]

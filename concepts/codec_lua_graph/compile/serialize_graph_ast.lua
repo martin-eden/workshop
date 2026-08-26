@@ -2,8 +2,10 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-22
+  Last mod.: 2026-08-27
 ]]
+
+local Syntels = request('Syntels')
 
 local serialize_graph
 do
@@ -23,13 +25,15 @@ do
 
   local serialize_index
   do
+    local name_separator = Syntels.name_separator
+    local start_index = Syntels.start_index
+    local end_index = Syntels.end_index
+
     local is_identifier = request('!.concepts.lua.is_identifier')
+
     serialize_index =
       function(Settings, Index)
         local Output = Settings.Output
-        local name_separator = Settings.Syntels.name_separator
-        local start_index = Settings.Syntels.start_index
-        local end_index = Settings.Syntels.end_index
         local index_value = Index[2]
 
         local brackets_not_required
@@ -52,13 +56,14 @@ do
       end
   end
 
+  local kw_local = Syntels.kw_local
+  local assign = Syntels.assign
+  local statement_separator = Syntels.statement_separator
+  local kw_return = Syntels.kw_return
+
   serialize_graph =
     function(Settings, GraphAst)
       local Output = Settings.Output
-      local kw_local = Settings.Syntels.kw_local
-      local assign = Settings.Syntels.assign
-      local statement_separator = Settings.Syntels.statement_separator
-      local kw_return = Settings.Syntels.kw_return
 
       for index, Rec in ipairs(GraphAst) do
         local rec_type = Rec[1]
