@@ -2,31 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-26
+  Last mod.: 2026-08-28
 ]]
 
--- Imports:
-local quote_regexp = request('!.lua.regexp.quote')
-
---[[
-  Returns true if string ends with given string
-
-  Magic characters are quoted.
-]]
-local ends_with =
-  function(base_str, postfix_str)
-    local postfix_pattern = quote_regexp(postfix_str) .. '$'
-
-    local start_pos = string.find(base_str, postfix_pattern)
-
-    local result = is_number(start_pos)
-
-    return result
-  end
+local str_sub = string.sub
 
 -- Export:
-return ends_with
+return
+  function(base_str, postfix_str)
+    return (str_sub(base_str, -#postfix_str, -1) == postfix_str)
+  end
 
 --[[
   2026-04-23
+  2026-08-28
 ]]

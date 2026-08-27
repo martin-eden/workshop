@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-12
+  Last mod.: 2026-08-28
 ]]
 
 --[[
@@ -92,7 +92,8 @@ local check_rule =
     return has_a and has_b and is_known_action
   end
 
-local apply_table_root =
+-- Export:
+return
   function(A, B, Rules)
     assert_table(A)
     assert_table(B)
@@ -110,11 +111,6 @@ local apply_table_root =
     apply_table(A, B, Rules)
   end
 
--- Export:
-return apply_table_root
-
 --[[
-  2026-04-30
-  2026-07-11
-  2026-07-12
+  2026 # # #
 ]]

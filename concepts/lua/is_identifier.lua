@@ -2,8 +2,10 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-18
+  Last mod.: 2026-08-28
 ]]
+
+local identifier_pattern = '^[%a_][%w_]*$'
 
 local Keywords_Map
 do
@@ -14,16 +16,17 @@ do
   Keywords_Map = map_values(Keywords)
 end
 
-local is_identifier =
-  function(str)
-    return
-      is_string(str) and
-      string.match(str, '^[%a_][%w_]*$') and
-      not Keywords_Map[str]
-  end
+local str_match = string.match
 
 -- Export:
-return is_identifier
+return
+  function(str)
+    if not is_string(str) then return false end
+
+    return
+      str_match(str, identifier_pattern) and
+      not Keywords_Map[str]
+  end
 
 --[[
   2016

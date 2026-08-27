@@ -2,16 +2,16 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-08-28
 ]]
 
-local add_item =
-  function(OurList, item)
-    table.insert(OurList, item)
-  end
+local tbl_insert = table.insert
 
 -- Export:
-return add_item
+return
+  function(OurList, item)
+    tbl_insert(OurList, item)
+  end
 
 --[[
   2026-05-04

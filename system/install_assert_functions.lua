@@ -2,29 +2,33 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-16
+  Last mod.: 2026-08-28
 ]]
 
--- Imports:
+local spawn_assert_func
+do
+  local str_format = string.format
+
+  spawn_assert_func =
+    function(type_name)
+      local checker = _G['is_'.. type_name]
+
+      assert(checker)
+
+      return
+        function(val)
+          if not checker(val) then
+            local err_msg =
+              str_format('assert_%s(%s)', type_name, tostring(val))
+
+            error(err_msg)
+          end
+        end
+    end
+end
+
 local TypeNames = request('!.concepts.lua.TypeNames')
 local NumberTypeNames = request('!.concepts.lua.NumberTypeNames')
-
-local spawn_assert_func =
-  function(type_name)
-    local checker = _G['is_'.. type_name]
-
-    assert(checker)
-
-    return
-      function(val)
-        if not checker(val) then
-          local err_msg =
-            string.format('assert_%s(%s)', type_name, tostring(val))
-
-          error(err_msg)
-        end
-      end
-  end
 
 local install_assert_funcs =
   function()
@@ -41,9 +45,9 @@ local install_assert_funcs =
 return install_assert_funcs
 
 --[[
-  2018-02
+  2018 #
   2020 #
   2022 #
   2024 #
-  2026-04-22
+  2026 #
 ]]

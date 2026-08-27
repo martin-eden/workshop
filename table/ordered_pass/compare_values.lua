@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-23
+  Last mod.: 2026-08-28
 ]]
 
 local TypeRank_Map =
@@ -18,7 +18,8 @@ local ComparableTypes_Map =
     ['string'] = true,
   }
 
-local compare_values =
+-- Export:
+return
   function(a, b)
     local type_a = type(a)
     local rank_a = TypeRank_Map[type_a] or TypeRank_Map.other
@@ -36,9 +37,6 @@ local compare_values =
 
     return (tostring(a) < tostring(b))
   end
-
--- Export:
-return compare_values
 
 --[[
   2026-05-23

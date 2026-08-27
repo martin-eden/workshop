@@ -2,28 +2,24 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-07
+  Last mod.: 2026-08-28
 ]]
 
-local QuoteChars
-do
-  local AsciiCodes = request('!.concepts.Ascii.Codes')
-  local AsciiChars = request('!.concepts.Ascii.Chars')
-
-  QuoteChars =
-    {
-      single_quote_code = AsciiCodes.single_quote,
-      double_quote_code = AsciiCodes.double_quote,
-      backslash_code = AsciiCodes.backslash,
-
-      single_quote = AsciiChars.single_quote,
-      double_quote = AsciiChars.double_quote,
-      backslash = AsciiChars.backslash,
-    }
-end
+local AsciiCodes = request('!.concepts.Ascii.Codes')
+local AsciiChars = request('!.concepts.Ascii.Chars')
 
 -- Export:
-return QuoteChars
+return
+  {
+    single_quote_code = AsciiCodes.single_quote,
+    single_quote = AsciiChars.single_quote,
+
+    double_quote_code = AsciiCodes.double_quote,
+    double_quote = AsciiChars.double_quote,
+
+    backslash_code = AsciiCodes.backslash,
+    backslash = AsciiChars.backslash,
+  }
 
 --[[
   2026-07-12

@@ -2,36 +2,45 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-20
+  Last mod.: 2026-08-28
 ]]
-
--- Imports:
-local is_nan = request('!.number.is_nan')
-local is_pos_inf = request('!.number.is_pos_inf')
-local is_neg_inf = request('!.number.is_neg_inf')
-local lua_quote_str = request('!.concepts.lua.quote_string')
 
 local encode_bool =
   function(val)
-    if (val == false) then return 'false' end
-    if (val == true) then return 'true' end
+    if (val == false) then return 'false' else return 'true' end
   end
 
-local encode_number =
-  function(val)
-    if is_nan(val) then return '0/0' end
-    if is_pos_inf(val) then return '1/0' end
-    if is_neg_inf(val) then return '-1/0' end
+local encode_number
+do
+  local is_nan = request('!.number.is_nan')
+  local is_pos_inf = request('!.number.is_pos_inf')
+  local is_neg_inf = request('!.number.is_neg_inf')
 
-    return _G.tostring(val)
-  end
+  encode_number =
+    function(val)
+      if is_nan(val) then
+        return '0/0'
+      elseif is_pos_inf(val) then
+        return '1/0'
+      elseif is_neg_inf(val) then
+        return '-1/0'
+      end
 
-local encode_string =
-  function(val)
-    return lua_quote_str(val)
-  end
+      return _G.tostring(val)
+    end
+end
 
-local serialize_terminal_value =
+local encode_string
+do
+  local lua_quote_str = request('!.concepts.lua.quote_string')
+  encode_string =
+    function(val)
+      return lua_quote_str(val)
+    end
+end
+
+-- Export:
+return
   function(val)
     if is_nil(val) then
       return 'nil'
@@ -43,9 +52,6 @@ local serialize_terminal_value =
       return encode_string(val)
     end
   end
-
--- Export:
-return serialize_terminal_value
 
 --[[
   2026-06-20

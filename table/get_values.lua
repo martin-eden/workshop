@@ -2,13 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-26
+  Last mod.: 2026-08-28
 ]]
 
--- Imports:
 local add_to_list = request('!.concepts.list.add_item')
 
-local get_values =
+-- Export:
+return
   function(List)
     assert_table(List)
 
@@ -21,10 +21,7 @@ local get_values =
     return Values
   end
 
--- Export:
-return get_values
-
 --[[
-  2015-07
-  2026-05-26
+  2015 #
+  2026 #
 ]]

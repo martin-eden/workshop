@@ -2,14 +2,14 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-11
+  Last mod.: 2026-08-28
 ]]
 
--- Imports:
 local clone = request('clone')
 local attach_methods = request('attach_methods')
 
-local create_instance =
+-- Export:
+return
   function(Data, Methods)
     assert_table(Data)
     assert_table(Methods)
@@ -21,9 +21,6 @@ local create_instance =
     return Result
   end
 
--- Export:
-return create_instance
-
 --[[
-  2026-05-11
+  2026 #
 ]]

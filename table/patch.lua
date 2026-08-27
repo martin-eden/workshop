@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-12
+  Last mod.: 2026-08-28
 ]]
 
 --[[
@@ -13,25 +13,22 @@
     { a = 'A'}, { b = 'B' } -> { a = 'A' }
 ]]
 
--- Imports:
-local apply_table = request('apply_table')
-
 local Rules =
   {
     { has_a = true, has_b = true, action = 'replace' },
   }
 
-local patch =
+local apply_table = request('apply_table')
+
+-- Export:
+return
   function(Result, Additions)
     apply_table(Result, Additions, Rules)
   end
-
--- Exports:
-return patch
 
 --[[
   2016 #
   2024 # #
   2025 #
-  2026-04-30
+  2026 #
 ]]

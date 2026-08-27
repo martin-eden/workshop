@@ -2,10 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-07
+  Last mod.: 2026-08-28
 ]]
 
-local Codes =
+-- Export:
+return
   {
     -- Whitespace / control
     bell = 7,               -- BEL
@@ -62,9 +63,6 @@ local Codes =
     opening_brace = 123,    -- {
     closing_brace = 125,    -- }
   }
-
--- Export:
-return Codes
 
 --[[
   2026-08-01

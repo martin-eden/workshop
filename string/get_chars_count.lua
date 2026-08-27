@@ -1,20 +1,20 @@
--- Return map of used ASCII characters codes count in string
+-- Return map with count of used ASCII characters codes in string
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-12
+  Last mod.: 2026-08-28
 ]]
 
 local str_sub = string.sub
 local str_byte = string.byte
 
-local get_chars_count =
+-- Export:
+return
   function(str)
     local UsedChars_Map = { }
 
     for index = 1, #str do
-      local char = str_sub(str, index, index)
-      local code = str_byte(char)
+      local code = str_byte(str_sub(str, index, index))
 
       if is_nil(UsedChars_Map[code]) then
         UsedChars_Map[code] = 0
@@ -25,9 +25,6 @@ local get_chars_count =
 
     return UsedChars_Map
   end
-
--- Export:
-return get_chars_count
 
 --[[
   2026-07-12

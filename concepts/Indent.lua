@@ -2,12 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-05
+  Last mod.: 2026-08-27
 ]]
 
 -- Imports:
 local create_instance = request('!.table.create_instance')
 local RangePoint = request('!.concepts.RangePoint')
+local str_rep = string.rep
 
 local RangePoint = RangePoint.create()
 RangePoint:SetMinValue(0)
@@ -41,10 +42,13 @@ Interface =
 
     ToString =
       function(Me)
-        local indent_chunk = Me:GetIndentChunk()
         local indent_level = Me:GetRangePoint():GetValue()
 
-        return string.rep(indent_chunk, indent_level)
+        if (indent_level == 0) then return '' end
+
+        local indent_chunk = Me:GetIndentChunk()
+
+        return str_rep(indent_chunk, indent_level)
       end,
 
     Inc =

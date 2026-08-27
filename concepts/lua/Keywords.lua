@@ -2,10 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-18
+  Last mod.: 2026-08-28
 ]]
 
-local Keywords =
+-- Export:
+return
   {
     'nil',
 
@@ -41,9 +42,6 @@ local Keywords =
     'function',
     'return',
   }
-
--- Export:
-return Keywords
 
 --[[
   2016

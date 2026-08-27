@@ -2,13 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-17
+  Last mod.: 2026-08-28
 ]]
 
-local NumberTypeNames = { 'integer', 'float' }
-
 -- Export:
-return NumberTypeNames
+return { 'integer', 'float' }
 
 --[[
   2024-03-02

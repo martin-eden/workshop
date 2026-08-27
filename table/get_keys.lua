@@ -2,13 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-08
+  Last mod.: 2026-08-28
 ]]
 
--- Imports:
 local add_to_list = request('!.concepts.list.add_item')
 
-local get_keys =
+-- Export:
+return
   function(List)
     assert_table(List)
 
@@ -20,9 +20,6 @@ local get_keys =
 
     return Keys
   end
-
--- Export:
-return get_keys
 
 --[[
   2016

@@ -2,21 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-23
+  Last mod.: 2026-08-28
 ]]
 
--- Imports:
 local compare_values = request('compare_values')
 
-local compare_keys =
-  function(a, b)
-    return compare_values(a.key, b.key)
+-- Export:
+return
+  function(A, B)
+    return compare_values(A.key, B.key)
   end
 
--- Export:
-return compare_keys
-
 --[[
-  2016-09
-  2017-09
+  2016 #
+  2017 #
 ]]
