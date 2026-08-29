@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-18
+  Last mod.: 2026-08-29
 ]]
 
 --[[
@@ -14,19 +14,10 @@
   amount of "="'s determined in situ.
 ]]
 
-local newline_code
-do
-  local AsciiCodes = request('!.concepts.Ascii.Codes')
-  newline_code = AsciiCodes.newline
-end
+local newline_code = request('!.concepts.Ascii.Codes').newline
 
 local BinaryEntitiesLengths_Map =
-  {
-    [1 << 0] = true,
-    [1 << 1] = true,
-    [1 << 2] = true,
-    [1 << 3] = true,
-  }
+  { [1] = true, [2] = true, [4] = true, [8] = true }
 
 local single_quote_code
 local double_quote_code
