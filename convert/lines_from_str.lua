@@ -2,26 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-08-29
 ]]
 
-local split_string
-local newline
-do
-  split_string = request('!.string.split')
-  local AsciiChars = request('!.concepts.Ascii.Chars')
-  newline = AsciiChars.newline
-end
+local newline = request('!.concepts.Ascii.Chars').newline
+local split_string = request('!.string.split')
 
-local string_to_lines =
+-- Export:
+return
   function(str)
     return split_string(str, newline)
   end
 
--- Exports:
-return string_to_lines
-
 --[[
   2024 # # #
-  2026-05-04
+  2026 #
 ]]
