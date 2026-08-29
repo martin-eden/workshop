@@ -2,10 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-16
+  Last mod.: 2026-08-29
 ]]
 
-local TypeNames =
+-- Export:
+return
   {
     'nil',
     'boolean',
@@ -17,10 +18,7 @@ local TypeNames =
     'table',
   }
 
--- Export:
-return TypeNames
-
 --[[
-  2018-02
-  2026-06-16
+  2018 #
+  2026 #
 ]]
