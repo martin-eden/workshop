@@ -2,22 +2,14 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-10
+  Last mod.: 2026-08-29
 ]]
 
--- Imports:
-local Syntels = request('Syntels')
-
-local empty = Syntels.empty
-
-local is_absolute =
+return
   function(Pathname)
-    return (Pathname[1] == empty)
+    return (Pathname[1] == '')
   end
 
--- Export:
-return is_absolute
-
 --[[
-  2026-06-12
+  2026 #
 ]]

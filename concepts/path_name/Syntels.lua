@@ -2,20 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-08-29
 ]]
 
-local Syntels =
+-- Export:
+return
   {
     separator = '/',
-    empty = '',
     self_dir = '.',
     upper_dir = '..',
   }
 
--- Export:
-return Syntels
-
 --[[
-  2026-08-08
+  2026 # #
 ]]

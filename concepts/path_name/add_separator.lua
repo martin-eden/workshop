@@ -2,25 +2,20 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-08-29
 ]]
 
--- Imports:
-local Syntels = request('Syntels')
+local sep = request('Syntels').separator
 local ends_with = request('!.string.ends_with')
 
-local sep = Syntels.separator
-
-local add_separator =
+return
   function(str)
     if ends_with(str, sep) then return str end
 
     return str .. sep
   end
 
-return add_separator
-
 --[[
-  2018-02-05
-  2026-06-16
+  2018 #
+  2026 #
 ]]

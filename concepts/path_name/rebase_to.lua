@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-10
+  Last mod.: 2026-08-29
 ]]
 
 --[[
@@ -26,19 +26,24 @@
       are concatenated and serialized back to a pathname string.
 ]]
 
--- Imports:
-local Syntels = request('Syntels')
+--[[
+  Examples (Itness format)
+
+    ( deploy  /abc ) -> deploy/abc
+    ( deploy/ sub/dir/ ) -> deploy/sub/dir/
+    ( deploy ../../docs/readme.md ) -> deploy/docs/readme.md
+]]
+
 local pathname_from_str = request('pathname_from_str')
 local is_directory = request('is_directory')
 local is_absolute = request('is_absolute')
+local tbl_remove = table.remove
+local upper_dir = request('Syntels').upper_dir
 local add_list = request('!.concepts.list.add_list')
 local pathname_to_str = request('pathname_to_str')
 
-local tbl_remove = table.remove
-
-local upper_dir = Syntels.upper_dir
-
-local rebase_to =
+-- Export:
+return
   function(dest_dir, dir_to_rebase)
     assert_string(dest_dir)
     assert_string(dir_to_rebase)
@@ -72,17 +77,6 @@ local rebase_to =
     return pathname_to_str(Result)
   end
 
--- Export:
-return rebase_to
-
 --[[
-  Examples (Itness format)
-
-    ( deploy  /abc ) -> deploy/abc
-    ( deploy/ sub/dir/ ) -> deploy/sub/dir/
-    ( deploy ../../docs/readme.md ) -> deploy/docs/readme.md
-]]
-
---[[
-  2026-08-10
+  2026 #
 ]]

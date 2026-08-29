@@ -2,17 +2,14 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-08-29
 ]]
 
--- Imports:
-local Syntels = request('Syntels')
 local is_directory = request('is_directory')
+local self_dir = request('Syntels').self_dir
 
-local empty = Syntels.empty
-local self_dir = Syntels.self_dir
-
-local get_name =
+-- Export:
+return
   function(Pathname)
     assert_table(Pathname)
 
@@ -24,16 +21,13 @@ local get_name =
       leaf_name = Pathname[#Pathname]
     end
 
-    if (leaf_name == empty) then
+    if (leaf_name == '') then
       leaf_name = self_dir
     end
 
     return leaf_name
   end
 
--- Export:
-return get_name
-
 --[[
-  2026-06-12
+  2026 #
 ]]

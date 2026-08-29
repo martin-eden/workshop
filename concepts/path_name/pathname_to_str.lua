@@ -2,23 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-08-29
 ]]
 
--- Imports:
-local Syntels = request('Syntels')
+local sep = request('Syntels').separator
 local list_to_str = request('!.concepts.list.to_string')
 
-local sep = Syntels.separator
-
-local pathname_to_str =
+-- Export:
+return
   function(Pathname)
     return list_to_str(Pathname, sep)
   end
 
--- Export:
-return pathname_to_str
-
 --[[
-  2026-06-12
+  2026 #
 ]]

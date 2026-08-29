@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-10
+  Last mod.: 2026-08-29
 ]]
 
 --[[
@@ -29,18 +29,24 @@
   relative name with no path separators, like "a".
 ]]
 
--- Imports:
-local Syntels = request('Syntels')
 local split_string = request('!.string.split')
 local check_is_absolute = request('is_absolute')
 local check_is_directory = request('is_directory')
 local add_to_list = request('!.concepts.list.add_item')
 local add_list = request('!.concepts.list.add_list')
 
-local empty = Syntels.empty
-local self_dir = Syntels.self_dir
+local empty = ''
 
-local pathname_from_str =
+local self_dir
+local sep
+do
+  local Syntels = request('Syntels')
+  self_dir = Syntels.self_dir
+  sep = Syntels.separator
+end
+
+-- Export:
+return
   function(path_name)
     assert_string(path_name)
 
@@ -53,12 +59,7 @@ local pathname_from_str =
     local Names = { }
 
     do
-      local upper_dir = Syntels.upper_dir
-      local Segments
-      do
-        local sep = Syntels.separator
-        Segments = split_string(path_name .. sep, sep)
-      end
+      local Segments = split_string(path_name .. sep, sep)
 
       is_absolute = check_is_absolute(Segments)
       is_directory = check_is_directory(Segments)
@@ -90,9 +91,6 @@ local pathname_from_str =
       return Result
     end
   end
-
--- Export:
-return pathname_from_str
 
 --[[
   Notes
@@ -142,10 +140,7 @@ return pathname_from_str
 ]]
 
 --[[
-  2016-09
-  2018-06
-  2026-04 # # # #
-  2026-06-11
-  2026-06-12
-  2026-08-08
+  2016 #
+  2018 #
+  2026 # # # # # # #
 ]]

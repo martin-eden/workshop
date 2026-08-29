@@ -2,30 +2,28 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-10
+  Last mod.: 2026-08-29
 ]]
 
--- Imports:
-local Syntels = request('Syntels')
+local self_dir
+local upper_dir
+do
+  local Syntels = request('Syntels')
+  self_dir = Syntels.self_dir
+  upper_dir = Syntels.upper_dir
+end
 
-local empty = Syntels.empty
-local self_dir = Syntels.self_dir
-local upper_dir = Syntels.upper_dir
-
-local is_directory =
+-- Export:
+return
   function(Pathname)
     local last_node = Pathname[#Pathname]
 
     return
-      (last_node == empty) or
+      (last_node == '') or
       (last_node == self_dir) or
       (last_node == upper_dir)
   end
 
--- Export:
-return is_directory
-
 --[[
-  2026-04 #
-  2026-06-12
+  2026 # #
 ]]
