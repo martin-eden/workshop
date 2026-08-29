@@ -29,95 +29,87 @@
     * If caller passed some behavior flags, we'll apply them.
 ]]
 
-local initialize
-do
-  local default_style = 'readable_long'
+local invert_table = request('!.table.invert')
 
-  local invert_table = request('!.table.invert')
+local Styles =
+  invert_table(
+    {
+      [1] = 'minimal',
+      [2] = 'readable_short',
+      [3] = 'readable_long',
+    }
+  )
 
-  local Styles =
-    invert_table(
+local default_style = 'readable_long'
+
+local TokensOutputStream = request('TokensOutputStream')
+
+local KnownBehaviors =
+  {
+    [1] = 'use_compact_indices',
+    [2] = 'use_compact_sequences',
+    [3] = 'omit_tail_delimiter',
+  }
+
+local Behaviors = invert_table(KnownBehaviors)
+
+local StyleToBehavior =
+  {
+    ['minimal'] =
       {
-        [1] = 'minimal',
-        [2] = 'readable_short',
-        [3] = 'readable_long',
-      }
-    )
+        ['use_compact_indices'] = true,
+        ['use_compact_sequences'] = true,
+        ['omit_tail_delimiter'] = true,
+      },
+    ['readable_short'] =
+      {
+        ['use_compact_indices'] = true,
+        ['use_compact_sequences'] = true,
+        ['omit_tail_delimiter'] = true,
+      },
+    ['readable_long'] =
+      {
+        ['use_compact_indices'] = true,
+        ['use_compact_sequences'] = false,
+        ['omit_tail_delimiter'] = false,
+      },
+  }
 
-  local TokensOutputStream = request('TokensOutputStream')
-
-  local KnownBehaviors =
-    {
-      [1] = 'use_compact_indices',
-      [2] = 'use_compact_sequences',
-      [3] = 'omit_tail_delimiter',
-    }
-
-  local Behaviors = invert_table(KnownBehaviors)
-
-  local StyleToBehavior =
-    {
-      ['minimal'] =
-        {
-          ['use_compact_indices'] = true,
-          ['use_compact_sequences'] = true,
-          ['omit_tail_delimiter'] = true,
-        },
-      ['readable_short'] =
-        {
-          ['use_compact_indices'] = true,
-          ['use_compact_sequences'] = true,
-          ['omit_tail_delimiter'] = true,
-        },
-      ['readable_long'] =
-        {
-          ['use_compact_indices'] = true,
-          ['use_compact_sequences'] = false,
-          ['omit_tail_delimiter'] = false,
-        },
-    }
-
-  local empty_func = function() end
-
-  initialize =
-    function(Settings, Output, Options)
-      assert_table(Options)
-
-      local style = Options.style or default_style
-
-      if not Styles[style] then
-        error('Unknown style.')
-      end
-
-      Settings.Output = TokensOutputStream.create(Output, style)
-
-      -- Apply behavior flags from style
-      do
-        local Behavior = StyleToBehavior[style]
-
-        for behavior_flag_name, flag_value in pairs(Behavior) do
-          Settings[behavior_flag_name] = flag_value
-        end
-      end
-
-      -- Apply directly passed behavior flags
-      for behavior_idx, behavior_flag_name in ipairs(KnownBehaviors) do
-        if is_boolean(Options[behavior_flag_name]) then
-          Settings[behavior_flag_name] = Options[behavior_flag_name]
-        end
-      end
-    end
-end
+local empty_func = function() end
 
 -- Export:
-return initialize
+return
+  function(Settings, Output, Options)
+    assert_table(Options)
+
+    local style = Options.style or default_style
+
+    if not Styles[style] then
+      error('Unknown style.')
+    end
+
+    Settings.Output = TokensOutputStream.create(Output, style)
+
+    -- Apply behavior flags from style
+    do
+      local Behavior = StyleToBehavior[style]
+
+      for behavior_flag_name, flag_value in pairs(Behavior) do
+        Settings[behavior_flag_name] = flag_value
+      end
+    end
+
+    -- Apply directly passed behavior flags
+    for _, behavior_flag_name in ipairs(KnownBehaviors) do
+      if is_boolean(Options[behavior_flag_name]) then
+        Settings[behavior_flag_name] = Options[behavior_flag_name]
+      end
+    end
+  end
 
 --[[
   2016 #
   2017 #
   2018 #
-  2026 # # # # # # # #
-  2026-08-20
-  2026-08-26
-  2026-08-27
+  2026 # # # # # # # # # # #
 ]]

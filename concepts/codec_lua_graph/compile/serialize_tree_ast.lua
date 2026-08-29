@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-28
+  Last mod.: 2026-08-29
 ]]
 
 local type_name
@@ -47,11 +47,7 @@ do
       elseif (node_type == type_table) then
         serialize_tree(Settings, Node)
       else
-        local val_str = serialize_terminal_value(node_value)
-        if is_nil(val_str) then
-          val_str = serialize_terminal_value(tostring(node_value))
-        end
-        Output:Write(val_str)
+        Output:Write(serialize_terminal_value(node_value))
       end
     end
 end
@@ -92,17 +88,15 @@ do
   serialize_tree =
     function(Settings, TableAst)
       local Output = Settings.Output
-
       local use_compact_sequences = Settings.use_compact_sequences
       local omit_tail_delimiter = Settings.omit_tail_delimiter
       local KeyVals = TableAst[2]
 
       Output:Write(start_table)
 
-      local has_items = false
+      local wrote_something = false
 
       do
-        local wrote_something = false
         local next_integer_key = 1
 
         for index, KeyVal_Rec in ipairs(KeyVals) do
@@ -117,8 +111,6 @@ do
           then
             goto next
           end
-
-          has_items = true
 
           if wrote_something then
             Output:Write(item_separator)
@@ -143,7 +135,7 @@ do
         end
       end
 
-      if has_items and not omit_tail_delimiter then
+      if wrote_something and not omit_tail_delimiter then
         Output:Write(item_separator)
       end
 
@@ -155,7 +147,5 @@ end
 return serialize_value
 
 --[[
-  2026 # # # # # #
-  2026-08-22
-  2026-08-28
+  2026 # # # # # # # #
 ]]
