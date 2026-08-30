@@ -2,17 +2,15 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-18
+  Last mod.: 2026-08-30
 ]]
 
-local is_pos_inf =
+-- Export:
+return
   function(n)
     return (n == 1 / 0)
   end
 
--- Export:
-return is_pos_inf
-
 --[[
-  2026-06-18
+  2026 #
 ]]

@@ -2,17 +2,15 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-18
+  Last mod.: 2026-08-30
 ]]
 
-local is_nan =
+-- Export:
+return
   function(n)
     return (n ~= n)
   end
 
--- Export:
-return is_nan
-
 --[[
-  2026-06-18
+  2026 #
 ]]
