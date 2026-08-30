@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-23
+  Last mod.: 2026-08-30
 ]]
 
 --[[
@@ -11,29 +11,34 @@
   This method is assumed to be overridden for custom formats.
 ]]
 
--- Imports:
 local get_key_vals = request('!.table.get_key_vals')
+local add_to_list = request('!.concepts.list.add_item')
 local compare_keys = request('!.table.ordered_pass.compare_keys')
+local tbl_sort = table.sort
 
-local get_children =
-  function(self, node)
-    local result = {}
-    local key_vals = get_key_vals(node)
-    local also_visit_keys = self.also_visit_keys
-    for _, rec in ipairs(key_vals) do
-      if is_table(rec.value) then
-        result[#result + 1] = rec
+-- Export:
+return
+  function(Me, Node)
+    local also_visit_keys = Me.also_visit_keys
+    local KeyVals = get_key_vals(Node)
+
+    local Result = { }
+
+    for _, Rec in ipairs(KeyVals) do
+      if is_table(Rec.value) then
+        add_to_list(Result, Rec)
       end
-      if also_visit_keys and is_table(rec.key) then
-        result[#result + 1] = {key = rec.key, value = rec.key}
+      if also_visit_keys and is_table(Rec.key) then
+        add_to_list(Result, { key = Rec.key, value = Rec.key })
       end
     end
-    table.sort(result, compare_keys)
-    return result
+
+    tbl_sort(Result, compare_keys)
+
+    return Result
   end
 
-return get_children
-
 --[[
-  2017-09-13
+  2017 #
+  2026 #
 ]]
