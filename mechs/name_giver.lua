@@ -2,49 +2,45 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-19
+  Last mod.: 2026-08-30
 ]]
 
-local Interface =
+local Templates =
   {
-    names = {},
-    counters =
+    ['function'] = 'f_%d',
+    ['table'] = 'T_%d',
+    ['thread'] = 'th_%d',
+    ['userdata'] = 'u_%d',
+  }
+
+local str_format = string.format
+
+-- Export:
+return
+  {
+    Names = { },
+    Counters =
       {
         ['function'] = 0,
-        table = 0,
-        thread = 0,
-        userdata = 0,
-      },
-    templates =
-      {
-        ['function'] = 'f_%d',
-        table = 'T_%d',
-        thread = 'th_%d',
-        userdata = 'u_%d',
+        ['table'] = 0,
+        ['thread'] = 0,
+        ['userdata'] = 0,
       },
     give_name =
-      function(self, obj)
-        if not self.names[obj] then
+      function(Me, obj)
+        if not Me.Names[obj] then
           local obj_type = type(obj)
-          if not self.counters[obj_type] then
-            error(
-              ('Argument type "%s" is not supported for counting.'):
-              format(obj_type),
-              2
-            )
-          end
-          self.counters[obj_type] = self.counters[obj_type] + 1
-          self.names[obj] =
-            (self.templates[obj_type]):format(self.counters[obj_type])
+          local counter = Me.Counters[obj_type]
+          assert_integer(counter)
+          counter = counter + 1
+          Me.Names[obj] = str_format(Templates[obj_type], counter)
+          Me.Counters[obj_type] = counter
         end
-        return self.names[obj]
+        return Me.Names[obj]
       end,
   }
 
--- Export:
-return Interface
-
 --[[
-  2016
-  2026-06-19
+  2016 #
+  2026 # #
 ]]
