@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-21
+  Last mod.: 2026-08-30
 ]]
 
 --[[
@@ -14,7 +14,8 @@
   But actual literals is not important for code.
 ]]
 
-local TypeNames =
+-- Export:
+return
   {
     type_name = 'name',
 
@@ -26,9 +27,6 @@ local TypeNames =
     type_assignment = 'indexed_assignment',
     type_return = 'emit',
   }
-
--- Export:
-return TypeNames
 
 --[[
   2026-08-19

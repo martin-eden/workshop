@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-27
+  Last mod.: 2026-08-30
 ]]
 
 --[=[
@@ -14,10 +14,11 @@
 ]=]
 
 --[[
-  It's implemented as wrapper over output stream
+  Contract
 
-  We expect that chunks to write are Lua tokens and
-  write whitespaces before them according to our judgement.
+  * You must pass us Lua tokens
+  * We will write passed token
+  * We may write whitespaces around it
 ]]
 
 --[[
@@ -148,10 +149,7 @@ do
         end
         if action_emit_newline then
           Output:Write(newline)
-          local indent_str = Indent:ToString()
-          if (indent_str ~= empty) then
-            Output:Write(indent_str)
-          end
+          Output:Write(Indent:ToString())
         end
       end
 
