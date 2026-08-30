@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-28
+  Last mod.: 2026-08-30
 ]]
 
 --[[
@@ -27,7 +27,6 @@ return
     Write =
       function(Me, data_str)
         assert_string(data_str)
-        assert(data_str ~= '')
 
         list_add_item(Me.Chunks, data_str)
       end,
@@ -40,4 +39,5 @@ return
   2024 # # # #
   2025 #
   2026-05-27
+  2026-08-30
 ]]
