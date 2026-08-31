@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-20
+  Last mod.: 2026-08-31
 ]]
 
 local get_tree_ast = request('get_tree_ast')
@@ -59,6 +59,7 @@ end
 local table_iterator = request('!.table.ordered_pass')
 local get_assembly_order = request('!.mechs.graph.assembly_order')
 local NameGiver = request('!.mechs.name_giver')
+local type_local = request('Ast.TypeNames').type_local
 local add_to_list = request('!.concepts.list.add_item')
 local tbl_remove = table.remove
 
@@ -158,7 +159,7 @@ return
       local PrelastNode = Result[#Result - 1]
       local prelast_type = PrelastNode[1]
 
-      if (prelast_type == 'local_definition') then
+      if (prelast_type == type_local) then
         local prelast_value = PrelastNode[3]
 
         tbl_remove(Result)
