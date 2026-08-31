@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-27
+  Last mod.: 2026-08-31
 ]]
 
 --[[
@@ -74,8 +74,6 @@ local StyleToBehavior =
         ['omit_tail_delimiter'] = false,
       },
   }
-
-local empty_func = function() end
 
 -- Export:
 return
