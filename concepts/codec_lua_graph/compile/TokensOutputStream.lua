@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-30
+  Last mod.: 2026-08-31
 ]]
 
 --[=[
@@ -78,6 +78,7 @@ do
   local syntel_assign = Syntels.assign
   local syntel_item_separator = Syntels.item_separator
   local syntel_statement_separator = Syntels.statement_separator
+  local syntel_return = Syntels.kw_return
 
   local space
   local newline
@@ -111,7 +112,8 @@ do
               (next_token == syntel_end_table) or
               (prev_token == syntel_assign) or
               (next_token == syntel_assign) or
-              (prev_token == syntel_item_separator)
+              (prev_token == syntel_item_separator) or
+              (prev_token == syntel_return)
             action_emit_newline =
               action_emit_newline or
               (prev_token == syntel_statement_separator)
@@ -128,7 +130,8 @@ do
               action_emit_space or
               (prev_token == syntel_assign) or
               (next_token == syntel_assign) or
-              is_empty_table
+              is_empty_table or
+              (prev_token == syntel_return)
             action_emit_newline =
               action_emit_newline or
               (
