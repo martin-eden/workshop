@@ -14,7 +14,7 @@ local handle_block_num = request('helpers.handle_block_num')
 
 local create_block = request('create_block')
 local generate_shuffle_routine = request('generate_shuffle_routine')
-local xor_strings = request('!.strings.xor')
+local xor_strings = request('!.string.xor')
 
 local C = {0x61707865, 0x3320646E, 0x79622D32, 0x6B206574}
 
