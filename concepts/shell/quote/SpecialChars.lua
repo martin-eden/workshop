@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-13
+  Last mod.: 2026-09-01
 ]]
 
 local SpecialChars
@@ -15,6 +15,7 @@ do
     {
       Ascii.single_quote,
       Ascii.double_quote,
+      Ascii.bang,
       Ascii.dollar_sign,
       Ascii.ampersand,
       Ascii.asterisk,
@@ -36,7 +37,7 @@ do
   --[[
     Punctuation chars that are not considered special in this scope:
 
-      ! # % + - . , / : = ? @ _ ~
+      # % + - . , / : = ? @ _ ~
   ]]
 
   add_list(SpecialChars, SpaceChars)
@@ -45,6 +46,5 @@ end
 return SpecialChars
 
 --[[
-  2026-06-09
-  2026-06-12
+  2026 # # #
 ]]
