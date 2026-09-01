@@ -1,0 +1,15 @@
+I have several Lua programs that are mostly built on code of this repo.
+
+They are command-line tools. Each of them has some frontend code
+and lives in a separate repo.
+
+Also I have vision of several more tool programs but do not want to
+create separate repo for each of them.
+
+I want to place their frontend code here.
+
+This will make it possible to call them as functions (with args that
+are command-line strings). And this will keep ability to export
+them as standalone programs.
+
+-- Martin, 2026-09-01
