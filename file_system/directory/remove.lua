@@ -1,4 +1,4 @@
--- Remove directory by name
+-- Remove directory if it does exist
 
 --[[
   Author: Martin Eden

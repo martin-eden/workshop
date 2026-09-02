@@ -1,8 +1,8 @@
--- Create directory by name
+-- Create directory if it does not exist
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-09-02
 ]]
 
 -- Imports:
