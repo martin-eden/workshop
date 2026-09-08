@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-09-08
 ]]
 
 -- Imports:
@@ -17,12 +17,12 @@ return
         'find',
         {
           normalize(dir_name),
-          '-maxdepth',
-          '1',
-          '-mindepth',
-          '1',
           '-type',
           'd',
+          '-mindepth',
+          '1',
+          '-maxdepth',
+          '1',
         },
       }
 
