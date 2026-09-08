@@ -57,6 +57,7 @@ do
         return Result
       end
   end
+  local tbl_sort = table.sort
   do
     local get_files_list = request('!.file_system.directory.get_files_list')
     get_files =
@@ -65,6 +66,7 @@ do
 
         local FileNames = get_files_list(base_dir)
         FileNames = get_clean_pathnames(FileNames, base_dir)
+        tbl_sort(FileNames)
 
         return FileNames
       end
@@ -77,6 +79,7 @@ do
 
         local Dirs = get_dirs_list(base_dir)
         Dirs = get_clean_pathnames(Dirs, base_dir)
+        tbl_sort(Dirs)
 
         return Dirs
       end
@@ -121,6 +124,6 @@ return Interface
 
 --[[
   2017
-  2026 #
-  2026-08-14
+  2026 # #
+  2026-09-08
 ]]
