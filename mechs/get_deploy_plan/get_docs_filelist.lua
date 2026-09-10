@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-14
+  Last mod.: 2026-09-10
 ]]
 
 --[[
@@ -21,6 +21,7 @@
 
 -- Imports:
 local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
+local pathname_to_str = request('!.concepts.path_name.pathname_to_str')
 local is_directory = request('!.concepts.path_name.is_directory')
 local get_host_dir = request('!.concepts.path_name.get_host_dir')
 local FilesLister = request('!.concepts.FilesLister')
@@ -65,7 +66,7 @@ local get_docs_filelist =
 
       assert(not is_directory(ModulePathname))
 
-      local module_dirname = get_host_dir(ModulePathname)
+      local module_dirname = pathname_to_str(get_host_dir(ModulePathname))
 
       if ProcessedDirectories_Map[module_dirname] then goto next end
 

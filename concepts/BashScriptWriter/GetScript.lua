@@ -5,61 +5,71 @@
   Last mod.: 2026-09-10
 ]]
 
--- Imports:
-local add_to_list = request('!.concepts.list.add_item')
-local split_string = request('!.string.split')
-local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
-local get_host_dir = request('!.concepts.path_name.get_host_dir')
-local get_cmd_rmdir = request('!.mechs.cmdline.get_cmd_rmdir')
-local get_cmd_mkdir = request('!.mechs.cmdline.get_cmd_mkdir')
-local get_cmd_copyfile = request('!.mechs.cmdline.get_cmd_file_copy')
-local lines_to_str = request('!.convert.lines_to_str')
-
 --[[
-  Compare pathnames by name depth and name
-]]
-local compare_pathnames =
-  function(path_a_str, path_b_str)
-    local Path_A = split_string(path_a_str, '/')
-    local Path_B = split_string(path_b_str, '/')
-
-    local depth_a = #Path_A
-    local depth_b = #Path_B
-
-    if (depth_a == depth_b) then
-      return (path_a_str < path_b_str)
-    end
-
-    return (depth_a < depth_b)
-  end
-
-local compare_copyrecs =
-  function(Rec_A, Rec_B)
-    return compare_pathnames(Rec_A.dest_name, Rec_B.dest_name)
-  end
-
---[[
-  For "a/b/c/" mark as created "a/", "a/b/" and "a/b/c".
-]]
-local mark_directories_created =
-  function(pathname, DirectoriesCreated_Map)
-    local parent_pathname = ''
-
-    for dir_name in pathname:gmatch('(.-)/') do
-      parent_pathname = parent_pathname .. dir_name .. '/'
-
-      DirectoriesCreated_Map[parent_pathname] = true
-    end
-
-    DirectoriesCreated_Map[pathname] = true
-  end
-
---[[
-  Generate Bash script that
+  Generates Bash script that
 
     * deletes directories in given list
     * copies files with directories creation
 ]]
+
+local compare_copyrecs
+do
+  --[[
+    Compare pathnames by name depth and name
+  ]]
+  local compare_pathnames
+  do
+    local split_string = request('!.string.split')
+    compare_pathnames =
+      function(path_a_str, path_b_str)
+        local Path_A = split_string(path_a_str, '/')
+        local Path_B = split_string(path_b_str, '/')
+
+        local depth_a = #Path_A
+        local depth_b = #Path_B
+
+        if (depth_a == depth_b) then
+          return (path_a_str < path_b_str)
+        end
+
+        return (depth_a < depth_b)
+      end
+  end
+  compare_copyrecs =
+    function(Rec_A, Rec_B)
+      return compare_pathnames(Rec_A.dest_name, Rec_B.dest_name)
+    end
+end
+
+--[[
+  For "a/b/c/" mark as created "a/", "a/b/" and "a/b/c".
+]]
+local mark_directories_created
+do
+  local str_gmatch = string.gmatch
+  mark_directories_created =
+    function(pathname, DirectoriesCreated_Map)
+      local parent_pathname = ''
+
+      for dir_name in str_gmatch(pathname, '(.-)/') do
+        parent_pathname = parent_pathname .. dir_name .. '/'
+
+        DirectoriesCreated_Map[parent_pathname] = true
+      end
+
+      DirectoriesCreated_Map[pathname] = true
+    end
+end
+
+local add_to_list = request('!.concepts.list.add_item')
+local tbl_sort = table.sort
+local get_host_dir = request('!.concepts.path_name.get_host_dir')
+local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
+local pathname_to_str = request('!.concepts.path_name.pathname_to_str')
+local get_cmd_rmdir = request('!.mechs.cmdline.get_cmd_rmdir')
+local get_cmd_mkdir = request('!.mechs.cmdline.get_cmd_mkdir')
+local get_cmd_copyfile = request('!.mechs.cmdline.get_cmd_file_copy')
+local lines_to_str = request('!.convert.lines_to_str')
 
 -- Export:
 return
@@ -79,18 +89,17 @@ return
       add_line('')
     end
 
-    table.sort(Me.DirsToDelete)
+    tbl_sort(Me.DirsToDelete)
 
     for _, pathname in ipairs(Me.DirsToDelete) do
-      local rmdir_str = get_cmd_rmdir(pathname):ToString()
-      add_line(rmdir_str)
+      add_line(get_cmd_rmdir(pathname):ToString())
     end
     -- )
 
     -- ( Commands to copy files and create directories
     local DirectoriesCreated_Map = { }
 
-    table.sort(Me.FilesToCopy, compare_copyrecs)
+    tbl_sort(Me.FilesToCopy, compare_copyrecs)
 
     local prev_dest_dir = ''
 
@@ -98,7 +107,8 @@ return
       local src_name = CopyRec.src_name
       local dest_name = CopyRec.dest_name
 
-      local dest_dir = get_host_dir(pathname_from_str(dest_name))
+      local dest_dir =
+        pathname_to_str(get_host_dir(pathname_from_str(dest_name)))
 
       if (dest_dir ~= prev_dest_dir) then
         add_line('')
@@ -107,14 +117,12 @@ return
       end
 
       if not DirectoriesCreated_Map[dest_dir] then
-        local mkdir_str = get_cmd_mkdir(dest_dir):ToString()
-        add_line(mkdir_str)
+        add_line(get_cmd_mkdir(dest_dir):ToString())
 
         mark_directories_created(dest_dir, DirectoriesCreated_Map)
       end
 
-      local copyfile_str = get_cmd_copyfile(src_name, dest_name):ToString()
-      add_line(copyfile_str)
+      add_line(get_cmd_copyfile(src_name, dest_name):ToString())
     end
     -- )
 
