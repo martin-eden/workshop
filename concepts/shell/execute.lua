@@ -38,8 +38,6 @@ local get_is_aborted =
   end
 
 local os_tmpname = os.tmpname
-local get_execute_command =
-  request('!.mechs.cmdline.get_cmd_execute_with_redirects')
 local os_execute = os.execute
 local file_to_str = request('!.convert.file_to_str')
 local os_remove = os.remove
@@ -50,8 +48,11 @@ return
     local output_filename = os_tmpname()
     local error_filename = os_tmpname()
 
+    -- Adds redirects for stdout and stderr
     local shell_command =
-      get_execute_command(command, output_filename, error_filename)
+      command .. ' ' ..
+      '1>' .. output_filename .. ' ' ..
+      '2>' ..error_filename
 
     local _, result_type_code, result_code = os_execute(shell_command)
 
