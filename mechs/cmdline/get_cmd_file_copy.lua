@@ -6,9 +6,8 @@
 ]]
 
 local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
-local pathname_to_str = request('!.concepts.path_name.pathname_to_str')
 local get_file_name = request('!.concepts.path_name.get_name')
-local get_host_dir = request('!.concepts.path_name.get_host_dir')
+local get_host_dir = request('!.concepts.path_name.get_host_dir_str')
 local normalize = request('!.concepts.path_name.normalize')
 local ShellCommand = request('!.concepts.ShellCommand')
 
@@ -30,7 +29,7 @@ return
     local dest_filename = get_file_name(DestPathname)
 
     if (src_filename == dest_filename) then
-      dest_pathname = pathname_to_str(get_host_dir(DestPathname))
+      dest_pathname = get_host_dir(dest_pathname)
     end
 
     local Command =

@@ -18,7 +18,7 @@
 local split_string = request('!.string.split')
 local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
 local pathname_to_str = request('!.concepts.path_name.pathname_to_str')
-local get_host_dir = request('!.concepts.path_name.get_host_dir')
+local get_host_dir = request('!.concepts.path_name.get_host_dir_str')
 local file_exists = request('!.file_system.file.exists')
 local map_table_values = request('!.table.map_values')
 local get_table_keys = request('!.table.get_keys')
@@ -41,8 +41,7 @@ local get_base_dir =
     local host_dir = luas_require_dir
 
     repeat
-      host_dir =
-        pathname_to_str(get_host_dir(pathname_from_str(host_dir)))
+      host_dir = get_host_dir(host_dir)
     until not str_find(host_dir, package_capture_char)
 
     return host_dir

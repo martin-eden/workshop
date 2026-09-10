@@ -19,11 +19,9 @@
       Only files that really exists are included.
 ]]
 
--- Imports:
 local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
-local pathname_to_str = request('!.concepts.path_name.pathname_to_str')
 local is_directory = request('!.concepts.path_name.is_directory')
-local get_host_dir = request('!.concepts.path_name.get_host_dir')
+local get_host_dir = request('!.concepts.path_name.get_host_dir_str')
 local FilesLister = request('!.concepts.FilesLister')
 local add_to_list = request('!.concepts.list.add_item')
 
@@ -53,7 +51,8 @@ local is_documentation_name =
     return false
   end
 
-local get_docs_filelist =
+-- Export:
+return
   function(FilesList)
     local Result = { }
 
@@ -66,7 +65,7 @@ local get_docs_filelist =
 
       assert(not is_directory(ModulePathname))
 
-      local module_dirname = pathname_to_str(get_host_dir(ModulePathname))
+      local module_dirname = get_host_dir(module_pathname)
 
       if ProcessedDirectories_Map[module_dirname] then goto next end
 
@@ -90,12 +89,8 @@ local get_docs_filelist =
     return Result
   end
 
--- Export:
-return get_docs_filelist
-
 --[[
   2018 #
   2024 # #
-  2026-05-11
-  2026-05-28
+  2026 # #
 ]]

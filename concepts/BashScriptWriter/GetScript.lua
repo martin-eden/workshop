@@ -63,9 +63,7 @@ end
 
 local add_to_list = request('!.concepts.list.add_item')
 local tbl_sort = table.sort
-local get_host_dir = request('!.concepts.path_name.get_host_dir')
-local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
-local pathname_to_str = request('!.concepts.path_name.pathname_to_str')
+local get_host_dir = request('!.concepts.path_name.get_host_dir_str')
 local get_cmd_rmdir = request('!.mechs.cmdline.get_cmd_rmdir')
 local get_cmd_mkdir = request('!.mechs.cmdline.get_cmd_mkdir')
 local get_cmd_copyfile = request('!.mechs.cmdline.get_cmd_file_copy')
@@ -107,8 +105,7 @@ return
       local src_name = CopyRec.src_name
       local dest_name = CopyRec.dest_name
 
-      local dest_dir =
-        pathname_to_str(get_host_dir(pathname_from_str(dest_name)))
+      local dest_dir = get_host_dir(dest_name)
 
       if (dest_dir ~= prev_dest_dir) then
         add_line('')
