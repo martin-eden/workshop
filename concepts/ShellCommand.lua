@@ -2,26 +2,26 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-09-10
 ]]
 
 --[[
   Data format
 
-    1 [s] command
-    2 [t] list of arguments
-      1+ [s] argument
+    1 [s] -- command
+    2 [t] -- list of arguments
+      0+ [s] argument
 ]]
 
 --[[
-  F.e. ( ls -l ~ ) is represented as ( ls ( -l ~ ) ) (Itness format)
+  F.e. "ls -l ~" is represented as ( ls ( -l ~ ) ) (Itness format)
 ]]
 
 --[[
   This module quotes command and arguments if needed,
   so it's safe to use special characters in them.
 
-  Note that it won't suit you for cases when you really
+  It won't suit you for cases when you really
   want fancy stuff like "sh -c ls 2>/dev/null".
 ]]
 
@@ -48,66 +48,58 @@
         Command:Execute()
 ]]
 
+local ToString
+do
+  local quote = request('!.concepts.shell.quote')
+  local add_to_list = request('!.concepts.list.add_item')
+  local glue_words = request('!.concepts.words.to_string')
+  ToString =
+    function(Me)
+      local command = Me[1]
+      local Args = Me[2]
+
+      local Words = { }
+      add_to_list(Words, quote(command))
+      for _, arg in ipairs(Args) do
+        add_to_list(Words, quote(arg))
+      end
+
+      return glue_words(Words)
+    end
+end
+
+local Execute
+do
+  local execute_shell_command = request('!.concepts.shell.execute')
+  Execute =
+    function(Me)
+      return execute_shell_command(Me:ToString())
+    end
+end
+
 local Interface
 do
-  local check_core =
-    function(Core)
-      assert_table(Core)
-      assert(#Core == 2)
-      assert_string(Core[1])
-      assert_table(Core[2])
-      for _, arg in ipairs(Core[2]) do
-        assert_string(arg)
-      end
-    end
-
   local create
   do
-    local DefaultCore = { '', { } }
     local create_instance = request('!.table.create_instance')
-
     create =
-      function(OptCore)
-        local Core = OptCore or DefaultCore
+      function(Core)
+        -- Check core
+        do
+          assert_table(Core)
+          assert(#Core == 2)
 
-        check_core(Core)
+          local command = Core[1]
+          local Args = Core[2]
 
-        return create_instance(Core, Interface)
-      end
-  end
-
-  local ToString
-  do
-    local quote = request('!.concepts.shell.quote')
-    local add_to_list = request('!.concepts.list.add_item')
-    local glue_words = request('!.concepts.words.to_string')
-
-    ToString =
-      function(Me)
-        check_core(Me)
-
-        local Words = { }
-
-        add_to_list(Words, quote(Me[1]))
-
-        for _, arg in ipairs(Me[2]) do
-          add_to_list(Words, quote(arg))
+          assert_string(command)
+          assert_table(Args)
+          for _, arg in ipairs(Args) do
+            assert_string(arg)
+          end
         end
 
-        return glue_words(Words)
-      end
-  end
-
-  -- See [shell.execute] for output format
-  local Execute
-  do
-    local execute_shell_command = request('!.concepts.shell.execute')
-
-    Execute =
-      function(Me)
-        check_core(Me)
-
-        return execute_shell_command(Me:ToString())
+        return create_instance(Core, Interface)
       end
   end
 
@@ -123,6 +115,5 @@ end
 return Interface
 
 --[[
-  2026-08-09
-  2026-08-12
+  2026 # # #
 ]]
