@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-09-10
 ]]
 
 -- Imports:
@@ -12,7 +12,7 @@ local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
 local get_host_dir = request('!.concepts.path_name.get_host_dir')
 local get_cmd_rmdir = request('!.mechs.cmdline.get_cmd_rmdir')
 local get_cmd_mkdir = request('!.mechs.cmdline.get_cmd_mkdir')
-local get_cmd_copyfile = request('!.mechs.cmdline.get_cmd_copy')
+local get_cmd_copyfile = request('!.mechs.cmdline.get_cmd_file_copy')
 local lines_to_str = request('!.convert.lines_to_str')
 
 --[[
@@ -60,7 +60,9 @@ local mark_directories_created =
     * deletes directories in given list
     * copies files with directories creation
 ]]
-local GetScript =
+
+-- Export:
+return
   function(Me)
     local Lines = { }
 
@@ -119,13 +121,8 @@ local GetScript =
     return lines_to_str(Lines)
   end
 
--- Export:
-return GetScript
-
 --[[
-  2018
-  2019
-  2026-04-17
-  2026-05-11
-  2026-05-28
+  2018 #
+  2019 #
+  2026 # # #
 ]]
