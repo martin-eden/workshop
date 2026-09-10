@@ -2,19 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-02
+  Last mod.: 2026-09-10
 ]]
 
--- Imports:
-
-local add_list =
-  function(OurList, AnotherList)
-    table.move(AnotherList, 1, #AnotherList, #OurList + 1, OurList)
-  end
+local tbl_move = table.move
 
 -- Export:
-return add_list
+return
+  function(OurList, AnotherList)
+    assert(OurList ~= AnotherList)
+    tbl_move(AnotherList, 1, #AnotherList, #OurList + 1, OurList)
+  end
 
 --[[
   2026-05-02
+  2026-09-10
 ]]
