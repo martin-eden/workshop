@@ -2,17 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-09-10
 ]]
 
--- Imports:
 local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
 local get_file_name = request('!.concepts.path_name.get_name')
 local get_host_dir = request('!.concepts.path_name.get_host_dir')
 local normalize = request('!.concepts.path_name.normalize')
 local ShellCommand = request('!.concepts.ShellCommand')
 
-local get_cmd_copy =
+-- Export:
+return
   function(src_pathname, dest_pathname)
     --[[
       Implementation smartness details:
@@ -43,9 +43,6 @@ local get_cmd_copy =
 
     return ShellCommand.create(Command)
   end
-
--- Export:
-return get_cmd_copy
 
 --[[
   2018 #
