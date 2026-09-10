@@ -2,10 +2,9 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-09-10
 ]]
 
--- Imports:
 local normalize = request('!.concepts.path_name.normalize')
 local ShellCommand = request('!.concepts.ShellCommand')
 
