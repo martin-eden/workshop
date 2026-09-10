@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-09
+  Last mod.: 2026-09-10
 ]]
 
 --[[
@@ -15,7 +15,7 @@
 local is_natural_num = request('!.number.is_natural')
 local add_to_list = request('!.concepts.list.add_item')
 local add_list = request('!.concepts.list.add_list')
-local select_list_range = request('!.concepts.list.select_range')
+local select_list_seg = request('!.concepts.list.select_seg')
 
 local skip_n_read =
   function(Ranges, num_to_skip, num_to_read)
@@ -89,7 +89,7 @@ get_real_ranges =
 
     if (#NodesPath >= 2) then
       local ParentNodesPath =
-        select_list_range(NodesPath, 1, #NodesPath - 1)
+        select_list_seg(NodesPath, 1, #NodesPath - 1)
 
       return get_real_ranges(OurRanges, ParentNodesPath)
     end
