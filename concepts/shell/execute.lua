@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-10
+  Last mod.: 2026-09-14
 ]]
 
 --[[
@@ -52,7 +52,7 @@ return
     local shell_command =
       command .. ' ' ..
       '1>' .. output_filename .. ' ' ..
-      '2>' ..error_filename
+      '2>' .. error_filename
 
     local _, result_type_code, result_code = os_execute(shell_command)
 
