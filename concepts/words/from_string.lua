@@ -2,28 +2,25 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-29
+  Last mod.: 2026-09-14
 ]]
 
--- Imports:
+local str_gmatch = string.gmatch
 local add_to_list = request('!.concepts.list.add_item')
 
-local from_string =
+-- Export:
+return
   function(str)
     local Words = { }
 
     -- "%S+" - capture non-space sequences
-    for word in str:gmatch('%S+') do
+    for word in str_gmatch(str, '%S+') do
       add_to_list(Words, word)
     end
 
     return Words
   end
 
--- Export:
-return from_string
-
 --[[
-  2026-04-15
-  2026-05-29
+  2026 # #
 ]]
