@@ -2,31 +2,24 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-17
+  Last mod.: 2026-09-14
 ]]
 
 --[[
-  Written for bit codec functions to have common data source.
+  Written to have common data source for bit codec functions.
 ]]
 
--- Imports:
+local BitToChar_Map = { [false] = '.', [true] = 'X' }
+
 local invert_table = request('!.table.invert')
-
-local BitToChar_Map =
-  {
-    [false] = '.',
-    [true] = 'X',
-  }
-
-local CharToBit_Map = invert_table(BitToChar_Map)
 
 -- Export:
 return
   {
     BitToChar_Map = BitToChar_Map,
-    CharToBit_Map = CharToBit_Map,
+    CharToBit_Map = invert_table(BitToChar_Map),
   }
 
 --[[
-  2026-05-17
+  2026 #
 ]]
