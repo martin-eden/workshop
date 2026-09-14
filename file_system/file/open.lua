@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-12
+  Last mod.: 2026-09-14
 ]]
 
 --[[
@@ -11,12 +11,12 @@
   No pesky ( nil error_msg ) from stock io.open().
 ]]
 
--- Imports:
 local normalize_name = request('!.concepts.path_name.normalize')
-
 local default_mode = 'rb'
+local io_open = io.open
 
-local open_file =
+-- Export:
+return
   function(pathname, mode)
     assert_string(pathname)
     assert(is_nil(mode) or is_string(mode))
@@ -33,11 +33,8 @@ local open_file =
     return file
   end
 
--- Export:
-return open_file
-
 --[[
   2016 #
   2017 #
-  2026-05-04
+  2026 #
 ]]

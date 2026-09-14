@@ -2,26 +2,22 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-23
+  Last mod.: 2026-09-14
 ]]
 
 --[[
   If there is error opening file -- explodes. Else returns file object.
 ]]
 
--- Imports:
 local open_file = request('open')
 
-local open_for_writing =
+-- Export:
+return
   function(pathname)
     return open_file(pathname, 'w+b')
   end
 
--- Export:
-return open_for_writing
-
 --[[
-  2024-08-09
-  2026-05-27
-  2026-07-23
+  2024 #
+  2026 # #
 ]]

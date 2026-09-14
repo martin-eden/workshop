@@ -2,22 +2,23 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-27
+  Last mod.: 2026-09-14
 ]]
 
-local close =
+local io_type = io.type
+
+-- Export:
+return
   function(File)
-    local file_type = io.type(File)
+    local file_type = io_type(File)
+
     if not is_string(file_type) then return end
     if (file_type == 'closed file') then return end
 
-    io.close(File)
+    File:close()
   end
 
--- Export:
-return close
-
 --[[
-  2024-08-09
-  2026-05-27
+  2024 #
+  2026 #
 ]]

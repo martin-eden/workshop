@@ -2,19 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-09-14
 ]]
 
--- Imports:
 local file_exists = request('exists')
 local get_rmfile_command = request('!.mechs.cmdline.get_cmd_rmfile')
 
 --[[
-  Delete file by pathname
-
   Returns true if file does not exist before or after execution.
 ]]
-local remove_file =
+
+-- Export:
+return
   function(pathname)
     assert_string(pathname)
 
@@ -27,10 +26,7 @@ local remove_file =
     return false
   end
 
--- Export:
-return remove_file
-
 --[[
-  2024
+  2024 #
   2026 #
 ]]

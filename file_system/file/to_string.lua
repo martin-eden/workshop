@@ -2,27 +2,26 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-30
+  Last mod.: 2026-09-14
 ]]
 
--- Imports:
 local open_file = request('open')
+local close_file = request('close')
 
-local load_file_contents =
+-- Export:
+return
   function(pathname)
     local File = open_file(pathname, 'rb')
+
     local result = File:read('a')
-    File:close()
+
+    close_file(File)
 
     return result
   end
 
--- Export:
-return load_file_contents
-
 --[[
   2016 # #
   2019 #
-  2026-05-04
-  2026-05-30
+  2026 # #
 ]]
