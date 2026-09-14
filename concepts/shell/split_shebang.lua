@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-09-14
 ]]
 
 --[[
@@ -24,18 +24,14 @@
 ]]
 
 local shebang_prefix = '#!'
-local newline
-do
-  local AsciiChars = request('!.concepts.Ascii.Chars')
-  newline = AsciiChars.newline
-end
+local newline = request('!.concepts.Ascii.Chars').newline
 
 local starts_with = request('!.string.starts_with')
-
 local str_find = string.find
 local str_sub = string.sub
 
-local split_shebang =
+-- Export:
+return
   function(str)
     assert_string(str)
 
@@ -51,9 +47,6 @@ local split_shebang =
     return shebang_str, rest_str
   end
 
--- Export:
-return split_shebang
-
 --[[
-  2026-07-17
+  2026 #
 ]]
