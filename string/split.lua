@@ -2,13 +2,8 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-07
+  Last mod.: 2026-09-14
 ]]
-
--- Imports:
-local ends_with = request('!.string.ends_with')
-local quote_regexp = request('!.lua.regexp.quote')
-local add_to_list = request('!.concepts.list.add_item')
 
 --[[
   Split delimited string into list
@@ -25,7 +20,14 @@ local add_to_list = request('!.concepts.list.add_item')
     ( a/ / ) -> ( a )
     ( // / ) -> ( [] [] )
 ]]
-local split_string =
+
+local ends_with = request('!.string.ends_with')
+local quote_regexp = request('!.lua.regexp.quote')
+local str_find = string.find
+local add_to_list = request('!.concepts.list.add_item')
+
+-- Export:
+return
   function(str, delimiter)
     assert_string(str)
     assert_string(delimiter)
@@ -52,7 +54,7 @@ local split_string =
 
     while true do
       start_pos, end_pos, item_str =
-        string.find(str, item_capture, start_pos)
+        str_find(str, item_capture, start_pos)
 
       if not start_pos then break end
 
@@ -64,10 +66,7 @@ local split_string =
     return Result
   end
 
--- Export:
-return split_string
-
 --[[
   2016 # #
-  2026-04 # #
+  2026 # #
 ]]
