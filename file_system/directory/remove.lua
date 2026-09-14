@@ -2,19 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-09-14
 ]]
 
--- Imports:
 local directory_exists = request('exists')
 local get_rmdir_command = request('!.mechs.cmdline.get_cmd_rmdir')
 
 --[[
-  Delete directory by pathname
-
   Returns true if directory does not exist before or after execution.
 ]]
-local delete_dir =
+
+-- Export:
+return
   function(dir_name)
     assert_string(dir_name)
 
@@ -27,10 +26,7 @@ local delete_dir =
     return false
   end
 
--- Export:
-return delete_dir
-
 --[[
-  2024-02-17
-  2026-04-22
+  2024 #
+  2026 #
 ]]
