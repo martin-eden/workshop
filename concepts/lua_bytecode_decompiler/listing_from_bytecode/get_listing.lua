@@ -2,23 +2,22 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-09-14
 ]]
 
--- Imports:
+local os_tmpname = os.tmpname
 local file_from_str = request('!.convert.file_from_str')
 local get_cmd_decompile = request('!.mechs.cmdline.get_cmd_decompile_lua_bytecode')
-local rmfile = request('!.file_system.file.remove')
+local remove_file = request('!.file_system.file.remove')
 
-local os_tmpname = os.tmpname
-
-local get_listing =
+-- Export:
+return
   function(bytecode_str)
     local output_str
 
     local bytecode_file_name = os_tmpname()
 
-    file_from_str(bytecode_str, bytecode_file_name)
+    file_from_str(bytecode_file_name, bytecode_str)
 
     local Command = get_cmd_decompile(bytecode_file_name)
     local is_ok, Results = Command:Execute()
@@ -29,14 +28,11 @@ local get_listing =
       output_str = Results.output
     end
 
-    rmfile(bytecode_file_name)
+    remove_file(bytecode_file_name)
 
     return output_str
   end
 
--- Export:
-return get_listing
-
 --[[
-  2026-07-13
+  2026 #
 ]]

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-13
+  Last mod.: 2026-09-14
 ]]
 
 --[[
@@ -18,7 +18,6 @@
         Default: true
 ]]
 
--- Imports:
 local get_deploy_script = request('!.mechs.get_deploy_script')
 local file_from_str = request('!.convert.file_from_str')
 
@@ -29,35 +28,32 @@ local DefaultConfig =
     include_docs = true,
   }
 
-local create_deploy_script =
+-- Export:
+return
   function(Modules, ArgConfig)
     assert_table(Modules)
 
     local Config = new(DefaultConfig, ArgConfig)
 
-    local script_name = Config.script_name
+    local script_filename = Config.script_name
     local deploy_dir = Config.deploy_dir
     local include_docs = Config.include_docs
 
-    assert_string(script_name)
+    assert_string(script_filename)
     assert_string(deploy_dir)
     assert_boolean(include_docs)
 
-    local script_str
-    do
-      local Config =
+    local script =
+      get_deploy_script(
+        Modules,
         {
           deploy_dir = deploy_dir,
           include_docs = include_docs,
         }
-      script_str = get_deploy_script(Modules, Config)
-    end
+      )
 
-    file_from_str(script_str, script_name)
+    file_from_str(script_filename, script)
   end
-
--- Export:
-return create_deploy_script
 
 --[[
   2017
