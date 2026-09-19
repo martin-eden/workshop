@@ -2,63 +2,57 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-31
+  Last mod.: 2026-09-19
 ]]
-
-local is_natural = request('!.number.is_natural')
 
 --[[
   Data storage format
 
-    1 [i] Max index (natural number)
-    2 [s] Zero-padding format string for that max index
+    1 [i] -- max index (natural number)
+    2 [s] -- zero-padding format string
 ]]
 
-local get_max_index =
-  function(Me)
-    return Me[1]
-  end
+local to_string
+do
+  local str_format = string.format
 
-local get_format =
-  function(Me)
-    return Me[2]
-  end
+  to_string =
+    function(Me, index)
+      local max_index = Me[1]
+      local format_str = Me[2]
 
-local to_string =
-  function(Me, index)
-    assert(is_natural(index))
-    assert(index <= get_max_index(Me))
+      assert(is_natural(index))
+      assert(index <= max_index)
 
-    local str_format = string.format
-
-    return str_format(get_format(Me), index)
-  end
+      return str_format(format_str, index)
+    end
+end
 
 local Interface
+
+local create
+do
+  local is_natural = request('!.number.is_natural')
+  local get_num_dec_digits = request('!.number.get_num_dec_digits')
+  local create_instance = request('!.table.create_instance')
+  local int_to_str = tostring
+  create =
+    function(max_index)
+      assert(is_natural(max_index))
+
+      local zeroes_padding_format =
+        '%0' .. int_to_str(get_num_dec_digits(max_index)) .. 'd'
+
+      local Core = { max_index, zeroes_padding_format }
+
+      return create_instance(Core, Interface)
+    end
+end
+
 Interface =
   {
+    create = create,
     ToString = to_string,
-
-    create =
-      function(max_index)
-        assert(is_natural(max_index))
-
-        local zeroes_padding_format
-        do
-          local get_num_dec_digits = request('!.number.get_num_dec_digits')
-          local int_to_str = tostring
-
-          local num_digits = get_num_dec_digits(max_index)
-
-          zeroes_padding_format = '%0' .. int_to_str(num_digits) .. 'd'
-        end
-
-        local create_instance = request('!.table.create_instance')
-
-        local Core = { max_index, zeroes_padding_format }
-
-        return create_instance(Core, Interface)
-      end,
   }
 
 -- Export:
@@ -66,4 +60,5 @@ return Interface
 
 --[[
   2026-07-31
+  2026-09-19
 ]]
