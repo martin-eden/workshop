@@ -27,8 +27,8 @@ local create
 do
   local is_natural = request('!.number.is_natural')
   local get_num_dec_digits = request('!.number.get_num_dec_digits')
-  local create_instance = request('!.table.create_instance')
   local int_to_str = tostring
+  local create_instance = request('!.table.create_instance')
   create =
     function(max_index)
       assert(is_natural(max_index))
@@ -36,9 +36,7 @@ do
       local zeroes_padding_format =
         '%0' .. int_to_str(get_num_dec_digits(max_index)) .. 'd'
 
-      local Core = { zeroes_padding_format }
-
-      return create_instance(Core, Interface)
+      return create_instance({ zeroes_padding_format }, Interface)
     end
 end
 
