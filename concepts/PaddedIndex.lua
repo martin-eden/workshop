@@ -8,8 +8,7 @@
 --[[
   Data storage format
 
-    1 [i] -- max index (natural number)
-    2 [s] -- zero-padding format string
+    1 [s] -- zero-padding format string
 ]]
 
 local to_string
@@ -18,13 +17,7 @@ do
 
   to_string =
     function(Me, index)
-      local max_index = Me[1]
-      local format_str = Me[2]
-
-      assert(is_natural(index))
-      assert(index <= max_index)
-
-      return str_format(format_str, index)
+      return str_format(Me[1], index)
     end
 end
 
@@ -43,7 +36,7 @@ do
       local zeroes_padding_format =
         '%0' .. int_to_str(get_num_dec_digits(max_index)) .. 'd'
 
-      local Core = { max_index, zeroes_padding_format }
+      local Core = { zeroes_padding_format }
 
       return create_instance(Core, Interface)
     end
