@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-28
+  Last mod.: 2026-09-22
 ]]
 
 --[[
@@ -20,7 +20,6 @@ local Rules =
 
 local apply_table = request('apply_table')
 
--- Export:
 return
   function(Result, Additions)
     apply_table(Result, Additions, Rules)

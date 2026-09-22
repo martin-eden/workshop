@@ -2,26 +2,22 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-12
+  Last mod.: 2026-09-22
 ]]
-
--- Imports:
-local apply_table = request('apply_table')
 
 local Rules =
   {
     { has_a = true, has_b = true, action = 'remove' },
   }
 
-local subtract_table =
+local apply_table = request('apply_table')
+
+return
   function(A, B)
     apply_table(A, B, Rules)
   end
 
--- Export:
-return subtract_table
-
 --[[
-  2018
-  2026-07-12
+  2018 #
+  2026 #
 ]]

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-12
+  Last mod.: 2026-09-22
 ]]
 
 --[[
@@ -13,21 +13,17 @@
     { a = 'A'}, { b = 'B' } -> { a = 'A', b = 'B' }
 ]]
 
--- Imports:
-local apply_table = request('apply_table')
-
 local Rules =
   {
     { has_a = false, has_b = true, action = 'replace' },
   }
 
-local merge =
+local apply_table = request('apply_table')
+
+return
   function(Result, Additions)
     apply_table(Result, Additions, Rules)
   end
-
--- Exports:
-return merge
 
 --[[
   2016 # #
@@ -35,6 +31,5 @@ return merge
   2019 #
   2024 #
   2025 #
-  2026-04-30
-  2026-06-17
+  2026 # #
 ]]

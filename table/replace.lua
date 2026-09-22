@@ -2,11 +2,8 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-12
+  Last mod.: 2026-09-22
 ]]
-
--- Imports:
-local apply_table = request('apply_table')
 
 local Rules =
   {
@@ -15,15 +12,14 @@ local Rules =
     { has_a = true, has_b = false, action = 'remove' },
   }
 
-local replace_table =
+local apply_table = request('apply_table')
+
+return
   function(Dest, Src)
     apply_table(Dest, Src, Rules)
   end
 
--- Export:
-return replace_table
-
 --[[
-  2018
-  2026-07-12
+  2018 #
+  2026 #
 ]]
