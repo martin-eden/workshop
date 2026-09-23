@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-10
+  Last mod.: 2026-09-23
 ]]
 
 --[[
@@ -37,7 +37,7 @@ local DocNameRegexps =
     '.+%.txt$',
     '.+%.md$',
     '.+%.[mM]ark[dD]own$',
-    '.+%.[iI]s'
+    '.+%.[iI]s$'
   }
 
 local is_documentation_name =
