@@ -2,21 +2,14 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-07
+  Last mod.: 2026-09-23
 ]]
 
---[[
-  Contract
-
-  Function never fails.
-]]
-
--- Imports:
 local DataWriter = request('compile.DataWriter.Interface')
 local DelimitersWriter = request('compile.DelimitersWriter.Interface')
 local Syntax = request('common.Syntax')
 
-local compile_root =
+return
   function(Tree, Output)
     assert_table(Tree)
 
@@ -49,18 +42,13 @@ local compile_root =
     DelimitersWriter.newline_char = Syntax.delimiters_newline_char
     DelimitersWriter:Init()
 
-    for _, Node in ipairs(Tree) do
-      compile(Node)
-    end
+    compile(Tree)
 
     DelimitersWriter:HandleEvent('nothing')
   end
 
--- Export:
-return compile_root
-
 --[[
   2024 # # #
-  2026-05 #
-  2026-06-07
+  2026 # #
+  2026-09-23
 ]]
