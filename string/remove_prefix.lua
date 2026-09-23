@@ -2,25 +2,20 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-22
+  Last mod.: 2026-09-23
 ]]
 
--- Imports:
-local quote_regexp = request('!.lua.regexp.quote')
+local starts_with = request('starts_with')
+local str_sub = string.sub
 
---[[
-  Remove possible prefix string from string
-]]
-local remove_prefix =
+return
   function(base_str, prefix_str)
-    local prefix_regexp = '^' .. quote_regexp(prefix_str)
-    local result = string.gsub(base_str, prefix_regexp, '')
-    return result
+    if not starts_with(base_str, prefix_str) then return base_str end
+
+    return str_sub(base_str, #prefix_str + 1)
   end
 
--- Export:
-return remove_prefix
-
 --[[
-  2026-04-22
+  2026 #
+  2026-09-23
 ]]
