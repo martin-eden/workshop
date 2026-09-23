@@ -6,80 +6,77 @@
 ]]
 
 local Syntax = request('common.Syntax')
-local group_open_char = Syntax.group_open_char
-local group_close_char = Syntax.group_close_char
-local quote_open_char = Syntax.quote_open_char
-local quote_close_char = Syntax.quote_close_char
-local space_char = Syntax.delimiters_space_char
-local newline_char = Syntax.delimiters_newline_char
 
-local add_item
+local read_token
 do
-  local add_to_list = request('!.concepts.list.add_item')
-  add_item =
-    function(List, Item)
-      if not is_nil(Item) then
-        add_to_list(List, Item)
+  local quote_open_char = Syntax.quote_open_char
+  local quote_close_char = Syntax.quote_close_char
+  local space_char = Syntax.delimiters_space_char
+  local newline_char = Syntax.delimiters_newline_char
+  read_token =
+    function(Input)
+      local token = ''
+      local in_quotes = false
+
+      while true do
+        local char = Input:Read(1)
+
+        if (char == '') then
+          return token
+        end
+
+        if in_quotes then
+          if (char == quote_close_char) then
+            in_quotes = false
+          else
+            token = token .. char
+          end
+        else
+          if (char == space_char) or (char == newline_char) then
+            return token
+          end
+
+          if (char == quote_open_char) then
+            in_quotes = true
+          else
+            token = token .. char
+          end
+        end
       end
     end
 end
 
 local parse
-parse =
-  function(Input)
-    local Result = { }
-    local term = nil
-    local in_quotes = false
+do
+  local group_open_char = Syntax.group_open_char
+  local group_close_char = Syntax.group_close_char
 
-    while true do
-      local char = Input:Read(1)
+  local add_to_list = request('!.concepts.list.add_item')
+  parse =
+    function(Input)
+      while true do
+        local token = read_token(Input)
 
-      if (char == '') then break end
-
-      local action = 'add_char'
-
-      if not in_quotes then
-        if ((char == space_char) or (char == newline_char)) then
-          action = 'end_term'
-        elseif (char == quote_open_char) then
-          action = 'start_quote'
-        elseif (char == group_open_char) then
-          action = 'start_group'
-        elseif (char == group_close_char) then
-          action = 'end_group'
+        if (token == '') then
+          return
         end
-      elseif in_quotes then
-        if (char == quote_close_char) then
-          action = 'end_quote'
+
+        if (token == group_open_char) then
+          local Result = { }
+          while true do
+            local Node = parse(Input)
+            if not Node then break end
+            add_to_list(Result, Node)
+          end
+          return Result
+        elseif (token == group_close_char) then
+          return
+        else
+          return token
         end
-      end
-
-      if (action == 'add_char') then
-        term = term or ''
-        term = term .. char
-      elseif (action == 'end_term') then
-        add_item(Result, term)
-        term = nil
-      elseif (action == 'start_quote') then
-        term = term or ''
-        in_quotes = true
-      elseif (action == 'end_quote') then
-        in_quotes = false
-      elseif (action == 'start_group') then
-        add_item(Result, term)
-        term = nil
-        add_item(Result, parse(Input))
-      elseif (action == 'end_group') then
-        add_item(Result, term)
-
-        return Result
       end
     end
-
-    add_item(Result, term)
-
-    return Result
-  end
+end
 
 -- Export:
 return parse
