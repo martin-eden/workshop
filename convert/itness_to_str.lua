@@ -2,24 +2,20 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-07
+  Last mod.: 2026-09-23
 ]]
 
--- Imports:
 local StringOutputStream = request('!.concepts.StreamIo.Output.String')
 local itness_compile = request('!.concepts.codec_itness.compile')
 
-local itness_to_string =
-  function(ItnessTree)
+return
+  function(ItnessNode)
     local StringOutputStream = new(StringOutputStream)
 
-    itness_compile(ItnessTree, StringOutputStream)
+    itness_compile(ItnessNode, StringOutputStream)
 
     return StringOutputStream:GetString()
   end
-
--- Export:
-return itness_to_string
 
 --[[
   2026-04 #
