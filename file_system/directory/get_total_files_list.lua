@@ -5,6 +5,8 @@
   Last mod.: 2026-09-23
 ]]
 
+local normalize = request('!.concepts.path_name.normalize')
+
 local retrieve
 do
   local get_files = request('get_files_list')
@@ -18,17 +20,16 @@ do
 
       local Files = get_files(base_dir)
       for _, file_name in ipairs(Files) do
-        add_to_list(Result, base_dir .. file_name)
+        add_to_list(Result, normalize(base_dir .. file_name))
       end
 
       local Dirs = get_dirs(base_dir)
       for _, dir_name in ipairs(Dirs) do
-        retrieve(base_dir .. dir_name, Result)
+        retrieve(normalize(base_dir .. dir_name), Result)
       end
     end
 end
 
-local normalize = request('!.concepts.path_name.normalize')
 return
   function(base_dir)
     local Result = { }
