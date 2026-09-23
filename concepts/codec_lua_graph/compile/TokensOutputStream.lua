@@ -2,16 +2,8 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-31
+  Last mod.: 2026-09-24
 ]]
-
---[=[
-  There is syntactic clash between "long quote" and "table index":
-
-    ['abc'] -- OK, [[[abc]]] -- not OK
-
-  This module handles this.
-]=]
 
 --[[
   Contract
@@ -22,7 +14,7 @@
 ]]
 
 --[[
-  Instance storage format
+  Storage format
 
   Table with named values:
 
@@ -31,6 +23,14 @@
     [s] style -- formatting style name
     [t] Indent -- line indent instance
 ]]
+
+--[=[
+  There is syntactic clash between "long quote" and "table index":
+
+    ['abc'] -- OK, [[[abc]]] -- not OK
+
+  This module handles this.
+]=]
 
 local empty = ''
 local Syntels = request('Syntels')
@@ -99,6 +99,8 @@ do
       do
         local action_emit_space = false
         local action_emit_newline = false
+        local action_inc_indent = false
+        local action_dec_indent = false
 
         do
           action_emit_space =
@@ -118,20 +120,25 @@ do
               action_emit_newline or
               (prev_token == syntel_statement_separator)
           elseif (style == 'readable_long') then
-            if (next_token == syntel_start_table) then
-              Indent:Inc()
-            elseif (next_token == syntel_end_table) then
-              Indent:Dec()
-            end
+            action_inc_indent =
+              action_inc_indent or
+              (prev_token == syntel_start_table) or
+              (next_token == syntel_start_table)
+            action_dec_indent =
+              action_dec_indent or
+              (prev_token == syntel_end_table) or
+              (next_token == syntel_end_table)
             local is_empty_table =
               (prev_token == syntel_start_table) and
               (next_token == syntel_end_table)
             action_emit_space =
               action_emit_space or
-              (prev_token == syntel_assign) or
+              (
+                (prev_token == syntel_assign) and
+                (next_token ~= syntel_start_table)
+              ) or
               (next_token == syntel_assign) or
-              is_empty_table or
-              (prev_token == syntel_return)
+              is_empty_table
             action_emit_newline =
               action_emit_newline or
               (
@@ -142,6 +149,10 @@ do
                 (next_token == syntel_end_table) and
                 not is_empty_table
               ) or
+              (
+                (next_token == syntel_start_table) and
+                not is_empty_table
+              ) or
               (prev_token == syntel_item_separator) or
               (prev_token == syntel_statement_separator)
           end
@@ -149,6 +160,12 @@ do
 
         if action_emit_space then
           Output:Write(space)
+        end
+        if action_inc_indent then
+          Indent:Inc()
+        end
+        if action_dec_indent then
+          Indent:Dec()
         end
         if action_emit_newline then
           Output:Write(newline)
@@ -200,6 +217,6 @@ end
 return Interface
 
 --[[
-  2026-08-26
-  2026-08-27
+  2026 # # #
+  2026-09-24
 ]]
