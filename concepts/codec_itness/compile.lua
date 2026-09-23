@@ -10,9 +10,7 @@ local DelimitersWriter = request('compile.DelimitersWriter.Interface')
 local Syntax = request('common.Syntax')
 
 return
-  function(Tree, Output)
-    assert_table(Tree)
-
+  function(Node, Output)
     local DataWriter = new(DataWriter)
     local DelimitersWriter = new(DelimitersWriter)
 
@@ -42,7 +40,7 @@ return
     DelimitersWriter.newline_char = Syntax.delimiters_newline_char
     DelimitersWriter:Init()
 
-    compile(Tree)
+    compile(Node)
 
     DelimitersWriter:HandleEvent('nothing')
   end
