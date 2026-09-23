@@ -2,101 +2,90 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-07
+  Last mod.: 2026-09-23
 ]]
 
---[[
-  Contract
-
-  Function never fails.
-]]
-
--- Imports:
 local Syntax = request('common.Syntax')
-local add_to_list = request('!.concepts.list.add_item')
+local group_open_char = Syntax.group_open_char
+local group_close_char = Syntax.group_close_char
+local quote_open_char = Syntax.quote_open_char
+local quote_close_char = Syntax.quote_close_char
+local space_char = Syntax.delimiters_space_char
+local newline_char = Syntax.delimiters_newline_char
 
-local add_item =
-  function(List, Item)
-    if not is_nil(Item) then
-      add_to_list(List, Item)
+local add_item
+do
+  local add_to_list = request('!.concepts.list.add_item')
+  add_item =
+    function(List, Item)
+      if not is_nil(Item) then
+        add_to_list(List, Item)
+      end
     end
-  end
+end
 
-local parse_root =
+local parse
+parse =
   function(Input)
-    -- Syntels shortcuts:
-    local group_open_char = Syntax.group_open_char
-    local group_close_char = Syntax.group_close_char
-    local quote_open_char = Syntax.quote_open_char
-    local quote_close_char = Syntax.quote_close_char
-    local space_char = Syntax.delimiters_space_char
-    local newline_char = Syntax.delimiters_newline_char
+    local Result = { }
+    local term = nil
+    local in_quotes = false
 
-    local parse
-    parse =
-      function()
-        local Result = { }
-        local term = nil
-        local in_quotes = false
+    while true do
+      local char = Input:Read(1)
 
-        while true do
-          local char = Input:Read(1)
+      if (char == '') then break end
 
-          if (char == '') then break end
+      local action = 'add_char'
 
-          local action = 'add_char'
-
-          if not in_quotes then
-            if ((char == space_char) or (char == newline_char)) then
-              action = 'end_term'
-            elseif (char == quote_open_char) then
-              action = 'start_quote'
-            elseif (char == group_open_char) then
-              action = 'start_group'
-            elseif (char == group_close_char) then
-              action = 'end_group'
-            end
-          elseif in_quotes then
-            if (char == quote_close_char) then
-              action = 'end_quote'
-            end
-          end
-
-          if (action == 'add_char') then
-            term = term or ''
-            term = term .. char
-          elseif (action == 'end_term') then
-            add_item(Result, term)
-            term = nil
-          elseif (action == 'start_quote') then
-            term = term or ''
-            in_quotes = true
-          elseif (action == 'end_quote') then
-            in_quotes = false
-          elseif (action == 'start_group') then
-            add_item(Result, term)
-            term = nil
-            add_item(Result, parse())
-          elseif (action == 'end_group') then
-            add_item(Result, term)
-
-            return Result
-          end
+      if not in_quotes then
+        if ((char == space_char) or (char == newline_char)) then
+          action = 'end_term'
+        elseif (char == quote_open_char) then
+          action = 'start_quote'
+        elseif (char == group_open_char) then
+          action = 'start_group'
+        elseif (char == group_close_char) then
+          action = 'end_group'
         end
+      elseif in_quotes then
+        if (char == quote_close_char) then
+          action = 'end_quote'
+        end
+      end
 
+      if (action == 'add_char') then
+        term = term or ''
+        term = term .. char
+      elseif (action == 'end_term') then
+        add_item(Result, term)
+        term = nil
+      elseif (action == 'start_quote') then
+        term = term or ''
+        in_quotes = true
+      elseif (action == 'end_quote') then
+        in_quotes = false
+      elseif (action == 'start_group') then
+        add_item(Result, term)
+        term = nil
+        add_item(Result, parse(Input))
+      elseif (action == 'end_group') then
         add_item(Result, term)
 
         return Result
       end
+    end
 
-    return parse()
+    add_item(Result, term)
+
+    return Result
   end
 
 -- Export:
-return parse_root
+return parse
 
 --[[
   2024 # # # #
-  2026-05 # #
-  2026-06-07
+  2026 # # #
+  2026-09-23
 ]]
