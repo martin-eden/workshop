@@ -20,36 +20,25 @@
 ]]
 
 local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
-local is_directory = request('!.concepts.path_name.is_directory')
 local get_host_dir = request('!.concepts.path_name.get_host_dir_str')
-local FilesLister = request('!.concepts.FilesLister')
+local get_files_list = request('!.file_system.directory.get_files_list')
 local add_to_list = request('!.concepts.list.add_item')
 
--- Regexps for documentation file names
-local DocNameRegexps =
-  {
-    --[[
-      ".+" - filler
-      "%." - dot
-      "txt$" - ends with "txt"
-      "[mM]" - "m" or "M"
-    ]]
-    '.+%.txt$',
-    '.+%.md$',
-    '.+%.[mM]ark[dD]own$',
-    '.+%.[iI]s$'
-  }
+local is_documentation_name
+do
+  local DocNameEndings = { '.txt', '.md', '.is' }
+  local ends_with = request('!.string.ends_with')
 
-local is_documentation_name =
-  function(filename)
-    for _, regexp_str in ipairs(DocNameRegexps) do
-      if string.find(filename, regexp_str) then
-        return true
+  is_documentation_name =
+    function(filename)
+      for _, doc_ending in ipairs(DocNameEndings) do
+        if ends_with(filename, doc_ending) then
+          return true
+        end
       end
+      return false
     end
-
-    return false
-  end
+end
 
 -- Export:
 return
@@ -58,26 +47,15 @@ return
 
     local ProcessedDirectories_Map = { }
 
-    local FilesLister = FilesLister.create()
-
     for _, module_pathname in ipairs(FilesList) do
-      local ModulePathname = pathname_from_str(module_pathname)
-
-      assert(not is_directory(ModulePathname))
-
-      local module_dirname = get_host_dir(module_pathname)
-
       if ProcessedDirectories_Map[module_dirname] then goto next end
 
-      FilesLister:SetBaseDirectory(module_dirname)
-
-      local Files = FilesLister:GetFiles()
+      local module_dirname = get_host_dir(module_pathname)
+      local Files = get_files_list(module_dirname)
 
       for _, filename in ipairs(Files) do
         if is_documentation_name(filename) then
-          local doc_pathname = module_dirname .. filename
-
-          add_to_list(Result, doc_pathname)
+          add_to_list(Result, module_dirname .. filename)
         end
       end
 
@@ -93,4 +71,5 @@ return
   2018 #
   2024 # #
   2026 # #
+  2026-09-23
 ]]
