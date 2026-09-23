@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-14
+  Last mod.: 2026-09-23
 ]]
 
 --[[
@@ -40,7 +40,6 @@ local get_directories
 do
   local get_clean_pathnames
   do
-    local empty = ''
     local remove_prefix = request('!.string.remove_prefix')
     local add_to_list = request('!.concepts.list.add_item')
     get_clean_pathnames =
@@ -49,7 +48,7 @@ do
 
         for idx, file_name in ipairs(PathNames) do
           local cleaned_file_name = remove_prefix(file_name, base_dir)
-          if (cleaned_file_name ~= empty) then
+          if (cleaned_file_name ~= '') then
             add_to_list(Result, cleaned_file_name)
           end
         end
@@ -57,16 +56,16 @@ do
         return Result
       end
   end
-  local tbl_sort = table.sort
+  local sort = table.sort
   do
     local get_files_list = request('!.file_system.directory.get_files_list')
     get_files =
       function(Me)
         local base_dir = Me:GetBaseDirectory()
 
-        local FileNames = get_files_list(base_dir)
-        FileNames = get_clean_pathnames(FileNames, base_dir)
-        tbl_sort(FileNames)
+        local FileNames =
+          get_clean_pathnames(get_files_list(base_dir), base_dir)
+        sort(FileNames)
 
         return FileNames
       end
@@ -77,9 +76,9 @@ do
       function(Me)
         local base_dir = Me:GetBaseDirectory()
 
-        local Dirs = get_dirs_list(base_dir)
-        Dirs = get_clean_pathnames(Dirs, base_dir)
-        tbl_sort(Dirs)
+        local Dirs =
+          get_clean_pathnames(get_dirs_list(base_dir), base_dir)
+        sort(Dirs)
 
         return Dirs
       end
@@ -90,19 +89,16 @@ local Interface
 
 local create
 do
-  local DefaultCore
-  do
-    local self_dir
-    do
-      local PathEls = request('!.concepts.path_name.Syntels')
-      self_dir = PathEls.self_dir
-    end
-    DefaultCore = { self_dir }
-  end
-  local create_instance = request('!.table.create_instance')
+  local self_dir = request('!.concepts.path_name.Syntels').self_dir
+  local attach_methods = request('!.table.attach_methods')
   create =
     function()
-      return create_instance(DefaultCore, Interface)
+      local Me = { }
+
+      set_base_directory(Me, self_dir)
+      attach_methods(Me, Interface)
+
+      return Me
     end
 end
 
