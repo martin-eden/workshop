@@ -2,13 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-14
+  Last mod.: 2026-09-24
 ]]
 
 --[[
   Input
 
-    [t] Modules -- list of root Lua modules names (require()-ready)
+    [t] PathsList -- list of source files pathnames
     [?t] Config -- configuration
       [?s] script_name -- file name of shell script to create
         Default: "deploy.sh"
@@ -30,8 +30,8 @@ local DefaultConfig =
 
 -- Export:
 return
-  function(Modules, ArgConfig)
-    assert_table(Modules)
+  function(PathsList, ArgConfig)
+    assert_table(PathsList)
 
     local Config = new(DefaultConfig, ArgConfig)
 
@@ -45,7 +45,7 @@ return
 
     local script =
       get_deploy_script(
-        Modules,
+        PathsList,
         {
           deploy_dir = deploy_dir,
           include_docs = include_docs,
@@ -56,7 +56,8 @@ return
   end
 
 --[[
-  2017
-  2018
+  2017 #
+  2018 #
   2026 # #
+  2026-09-24
 ]]
