@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-10
+  Last mod.: 2026-09-24
 ]]
 
 --[[
@@ -16,8 +16,6 @@
 ]]
 
 local split_string = request('!.string.split')
-local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
-local pathname_to_str = request('!.concepts.path_name.pathname_to_str')
 local get_host_dir = request('!.concepts.path_name.get_host_dir_str')
 local file_exists = request('!.file_system.file.exists')
 local map_table_values = request('!.table.map_values')
@@ -104,6 +102,6 @@ return
   end
 
 --[[
-  2026-05-08
+  2026 #
   2026-09-10
 ]]
