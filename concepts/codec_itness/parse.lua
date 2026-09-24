@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-23
+  Last mod.: 2026-09-24
 ]]
 
 local Syntax = request('common.Syntax')
@@ -33,10 +33,10 @@ do
           end
         else
           if (char == space_char) or (char == newline_char) then
-            return token
-          end
-
-          if (char == quote_open_char) then
+            if (token ~= '') then
+              return token
+            end
+          elseif (char == quote_open_char) then
             in_quotes = true
           else
             token = token .. char
@@ -83,6 +83,5 @@ return parse
 
 --[[
   2024 # # # #
-  2026 # # #
-  2026-09-23
+  2026 # # # #
 ]]
