@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-09-24
 ]]
 
 -- Imports:
@@ -25,6 +25,7 @@ local get_cmd_download_file =
           '--output',
           normalize(pathname),
           url_str,
+          '--location',
           '--silent',
           '--show-error',
         },
