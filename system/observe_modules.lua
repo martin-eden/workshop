@@ -1,3 +1,45 @@
+-- require() given modules and return module locations and dependencies
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-09-24
+]]
+
+--[[
+  Input
+    [t] list of module names
+
+  Output
+    1 [t] list of module locations
+      1 [s] module name
+      2 [s] module path
+    2 [t] map of module dependencies
+      * [t] dependency record
+        <key> [s] source module name
+        <value> [t] destination modules map
+          <key> [s] destination module name
+          <value> [b] true
+]]
+
+--[[
+  This is root-level module with zero dependencies
+
+  It's similar by design with [base]. Internally we're using similar
+  sequence for calls tracking.
+
+  But [base] uses it mainly for request() -- relative require().
+  We are using it to store dependencies and modules locations.
+
+  List of used modules is crucial for deploy scripts.
+
+  Locations are very neat addition. Processing package.path "manually"
+  is not fun.
+
+  Dependencies can be used to build nice graphs.
+  (Yes, it's not crucial, currently not used, and occupies most of
+  code. Still, we consider this as important.)
+]]
+
 local ModulePaths = { }
 local Dependencies = { }
 
@@ -122,3 +164,7 @@ return
 
     return ModulePaths, Dependencies
   end
+
+--[[
+  2026-09-24
+]]
