@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-02
+  Last mod.: 2026-09-24
 ]]
 
 --[[
@@ -13,69 +13,75 @@
     3 [i] Maximum value
 ]]
 
+local get_min_value =
+  function(Me)
+    return Me[2]
+  end
+
+local set_min_value =
+  function(Me, val)
+    Me[2] = val
+  end
+
+local get_max_value =
+  function(Me)
+    return Me[3]
+  end
+
+local set_max_value =
+  function(Me, val)
+    Me[3] = val
+  end
+
+local get_value
+local set_value
+do
+  local min = math.min
+  local max = math.max
+
+  get_value =
+    function(Me)
+      return min(max(Me[1], Me[2]), Me[3])
+    end
+
+  set_value =
+    function(Me, value)
+      Me[1] = min(max(value, Me[2]), Me[3])
+    end
+end
+
 local Interface
 
 local create
 do
-  local DefaultCore = { 0, 0, 5 }
-  local create_instance = request('!.table.create_instance')
+  local attach_methods = request('!.table.attach_methods')
   create =
-    function(OptCore)
-      return create_instance(OptCore or DefaultCore, Interface)
+    function()
+      local Core = { 0, 0, 1 }
+      attach_methods(Core, Interface)
+
+      return Core
     end
 end
-
-local min = math.min
-local max = math.max
 
 Interface =
   {
     create = create,
 
-    GetMinValue = function(Me) return Me[2] end,
-    SetMinValue = function(Me, val) Me[2] = val end,
+    GetMinValue = get_min_value,
+    SetMinValue = set_min_value,
 
-    GetMaxValue = function(Me) return Me[3] end,
-    SetMaxValue = function(Me, val) Me[3] = val end,
+    GetMaxValue = get_max_value,
+    SetMaxValue = set_max_value,
 
-    GetValue =
-      function(Me)
-        local min_value = Me:GetMinValue()
-        local max_value = Me:GetMaxValue()
-
-        return min(max(Me[1], min_value), max_value)
-      end,
-    SetValue =
-      function(Me, arg_value)
-        local min_value = Me:GetMinValue()
-        local max_value = Me:GetMaxValue()
-
-        Me[1] = min(max(arg_value, min_value), max_value)
-      end,
-
-    IncBy =
-      function(Me, value)
-        Me[1] = Me[1] + value
-      end,
-    DecBy =
-      function(Me, value)
-        Me[1] = Me[1] - value
-      end,
-
-    Inc =
-      function(Me)
-        Me:IncBy(1)
-      end,
-    Dec =
-      function(Me)
-        Me:DecBy(1)
-      end,
+    GetValue = get_value,
+    SetValue = set_value,
   }
 
 -- Export:
 return Interface
 
 --[[
-  2026 # #
-  2026-09-02
+  2026 # # #
+  2026-09-24
 ]]
