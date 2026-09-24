@@ -22,27 +22,11 @@
       ^. -- upper directory
       !. -- root directory
 
-  * Global "get_dependencies()"
-
-    Return table with dependencies map.
-
-    If module "a.b" request()-ed module "c.d" then
-    dependencies map will contain
-
-      {
-        ...
-        ["a.b"] = { ..., ["c.d"] = true },
-      }
-
   * Global "get_base_prefix()"
 
     Implementation of "request()" knows it's own module name prefix
     for "require()". It's critical information for niche tools.
-
-  * Global "get_require_name()"
-
-    Not essential -- can be recreated with already provided information.
-    Used by [require_file]. Shared because we don't like duplicated code.
+    Used by [require_file].
 
   * Convenience globals
 
@@ -118,15 +102,6 @@ local get_caller_prefix =
     if not NameRec then return empty end
 
     return NameRec.prefix
-  end
-
-local get_caller_name =
-  function()
-    local NameRec = stack_get()
-
-    if not NameRec then return empty end
-
-    return NameRec.prefix .. NameRec.name
   end
 
 local split_name
@@ -207,41 +182,11 @@ local get_require_name =
     return prefix .. name
   end
 
-local init_dependencies
-local get_dependencies
-local add_dependency
-do
-  local Dependencies_Map
-
-  init_dependencies =
-    function()
-      Dependencies_Map = { }
-    end
-
-  get_dependencies =
-    function()
-      return Dependencies_Map
-    end
-
-  add_dependency =
-    function(src_name, dest_name)
-      Dependencies_Map[src_name] = Dependencies_Map[src_name] or { }
-
-      Dependencies_Map[src_name][dest_name] = true
-    end
-end
-
 local request =
   function(qualified_name)
     local require_name = get_require_name(qualified_name)
 
-    local src_name = get_caller_name()
-
     stack_add(split_name(require_name))
-
-    local dest_name = get_caller_name()
-
-    add_dependency(src_name, dest_name)
 
     local Results = tbl_pack(require(require_name))
 
@@ -256,12 +201,9 @@ do
   local our_require_name = (...)
 
   set_base_prefix(split_name(our_require_name))
-  init_dependencies()
 
   _G.request = request
-  _G.get_require_name = get_require_name
   _G.get_base_prefix = get_base_prefix
-  _G.get_dependencies = get_dependencies
 
   -- We can now use request() but need to add our name to call stack
 
@@ -280,7 +222,6 @@ end
   2017 #
   2018 # #
   2024 #
-  2026 # # #
-  2026-08-23
+  2026 # # # #
   2026-09-24
 ]]
