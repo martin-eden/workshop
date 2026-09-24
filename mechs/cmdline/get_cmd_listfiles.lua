@@ -2,25 +2,24 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-08
+  Last mod.: 2026-09-24
 ]]
 
--- Imports:
 local normalize = request('!.concepts.path_name.normalize')
 local ShellCommand = request('!.concepts.ShellCommand')
 
--- Export:
 return
   function(dir_name)
+    -- "find" starts talking shit if you place "type" before "maxdepth"
     local Command =
       {
         'find',
         {
           normalize(dir_name),
-          '-type',
-          'f',
           '-maxdepth',
           '1',
+          '-type',
+          'f',
         },
       }
 
