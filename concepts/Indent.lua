@@ -56,14 +56,28 @@ local create
 do
   local RangePointClass = request('!.concepts.RangePoint')
   local default_indent_chunk = '  '
+  local default_min_indent = 0
   local default_max_indent = 60
   local attach_methods = request('!.table.attach_methods')
   create =
-    function()
+    function(OptArg)
+      --[[
+        Optional settings
+          [t]
+            ? min [i] min indent level
+            ? max [i] max indent level
+      ]]
+      local min_indent = default_min_indent
+      local max_indent = default_max_indent
+      if OptArg then
+        min_indent = OptArg.min or min_indent
+        max_indent = OptArg.max or max_indent
+      end
+
       local RangePoint = RangePointClass.create()
-      RangePoint:SetMinValue(0)
-      RangePoint:SetMaxValue(default_max_indent)
-      RangePoint:SetValue(0)
+      RangePoint:SetMinValue(min_indent)
+      RangePoint:SetMaxValue(max_indent)
+      RangePoint:SetValue(min_indent)
 
       local Core = { default_indent_chunk, RangePoint }
       attach_methods(Core, Interface)
