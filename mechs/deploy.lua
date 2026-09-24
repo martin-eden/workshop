@@ -2,15 +2,15 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-13
+  Last mod.: 2026-09-24
 ]]
 
 --[[
-  Copy given modules with their dependencies to deploy directory
+  Copy files given by pathnamesto deploy directory
 
   Input
-    [t] Modules -- list of Lua module names
-    [t] Config -- deploy configuration
+    [t] PathsList -- list of file pathnames
+    [?t] Config -- deploy configuration
       [?s] deploy_dir -- deploy directory
       [?b] include_docs -- also locate and copy documentation files
 
@@ -18,21 +18,20 @@
     None. Performs file operations immediately.
 ]]
 
--- Imports:
 local DefaultConfig = request('get_deploy_plan.DefaultConfig')
 local get_deploy_plan = request('!.mechs.get_deploy_plan')
 local delete_dir = request('!.file_system.directory.remove')
 local copy_file = request('!.file_system.file.copy')
 
-local deploy =
-  function(Modules, ArgConfig)
+return
+  function(PathsList, ArgConfig)
     local Config = new(DefaultConfig, ArgConfig)
 
     local deploy_dir = Config.deploy_dir
 
     assert_string(deploy_dir)
 
-    local FilesToCopy = get_deploy_plan(Modules, Config)
+    local FilesToCopy = get_deploy_plan(PathsList, Config)
 
     delete_dir(deploy_dir)
 
@@ -48,9 +47,7 @@ local deploy =
     end
   end
 
--- Export:
-return deploy
-
 --[[
   2026-08-13
+  2026-09-24
 ]]
