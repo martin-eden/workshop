@@ -17,12 +17,12 @@ return
         'find',
         {
           normalize(dir_name),
-          '-type',
-          'd',
           '-mindepth',
           '1',
           '-maxdepth',
           '1',
+          '-type',
+          'd',
         },
       }
 
