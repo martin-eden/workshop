@@ -2,34 +2,32 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-13
+  Last mod.: 2026-09-24
 ]]
 
 --[[
-  Return string with shell script to copy given modules with
-  their dependencies.
+  Return string with shell script to copy given files.
 
   Input
-    [t] Modules -- list of Lua module names
+    [t] PathsList -- list of files pathnames
     [t] Config -- deploy configuration
       [?s] deploy_dir -- deploy directory
       [?b] include_docs -- also locate and copy documentation files
 ]]
 
--- Imports:
 local get_deploy_plan = request('!.mechs.get_deploy_plan')
 local BashScriptWriter = request('!.concepts.BashScriptWriter.Interface')
 local DefaultConfig = request('get_deploy_plan.DefaultConfig')
 
-local get_script =
-  function(Modules, ArgConfig)
+return
+  function(PathsList, ArgConfig)
     local Config = new(DefaultConfig, ArgConfig)
 
     local deploy_dir = Config.deploy_dir
 
     assert_string(deploy_dir)
 
-    local FilesToCopy = get_deploy_plan(Modules, Config)
+    local FilesToCopy = get_deploy_plan(PathsList, Config)
 
     local ScriptWriter = new(BashScriptWriter)
 
@@ -41,9 +39,6 @@ local get_script =
 
     return ScriptWriter:GetScript()
   end
-
--- Export:
-return get_script
 
 --[[
   2016
