@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-23
+  Last mod.: 2026-09-24
 ]]
 
 --[[
@@ -250,32 +250,29 @@ local request =
     return tbl_unpack(Results)
   end
 
--- Main
+-- Setup and export globals
 do
-  -- Setup and export globals
-  if (_G.request == nil) then
-    -- First element is invocation module name
-    local our_require_name = (...)
+  -- First element is invocation module name
+  local our_require_name = (...)
 
-    set_base_prefix(split_name(our_require_name))
-    init_dependencies()
+  set_base_prefix(split_name(our_require_name))
+  init_dependencies()
 
-    _G.request = request
-    _G.get_require_name = get_require_name
-    _G.get_base_prefix = get_base_prefix
-    _G.get_dependencies = get_dependencies
+  _G.request = request
+  _G.get_require_name = get_require_name
+  _G.get_base_prefix = get_base_prefix
+  _G.get_dependencies = get_dependencies
 
-    -- We can now use request() but need to add our name to call stack
+  -- We can now use request() but need to add our name to call stack
 
-    stack_init()
-    stack_add(empty, our_require_name)
+  stack_init()
+  stack_add(empty, our_require_name)
 
-    request('!.system.install_is_functions')()
-    request('!.system.install_assert_functions')()
-    _G.new = request('!.table.new')
+  request('!.system.install_is_functions')()
+  request('!.system.install_assert_functions')()
+  _G.new = request('!.table.new')
 
-    stack_remove()
-  end
+  stack_remove()
 end
 
 --[[
@@ -285,4 +282,5 @@ end
   2024 #
   2026 # # #
   2026-08-23
+  2026-09-24
 ]]
