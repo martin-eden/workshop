@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-05
+  Last mod.: 2026-09-24
 ]]
 
 -- Imports:
@@ -14,7 +14,7 @@ local Init =
 
     local Indent = Indent.create()
     Indent:SetIndentChunk(self.indent_chunk)
-    Indent:GetRangePoint():SetValue(self.next_line_indent)
+    Indent:SetIndentLevel(self.next_line_indent)
     self.Indent = Indent
 
     self.line_with_text:init(self.Indent:ToString())
