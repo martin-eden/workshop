@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-19
+  Last mod.: 2026-09-24
 ]]
 
 --[[
@@ -10,6 +10,8 @@
 
     1 [t] -- dimensions. List of natural numbers
 ]]
+
+-- Coordinates must be 1-based
 
 local Interface
 
@@ -34,8 +36,7 @@ do
     function(Dims)
       check_dims(Dims)
 
-      Core = Dims
-
+      local Core = new(Dims)
       attach_methods(Core, Interface)
 
       return Core
