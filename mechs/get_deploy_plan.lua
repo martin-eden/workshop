@@ -2,22 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-13
+  Last mod.: 2026-09-24
 ]]
 
 --[[
-  Given root modules list and deploy config, resolve full module
-  dependencies and (optionally) documentation files sitting next
-  to them.
+  For list of pathnames and deploy directory, return list of records
+  "from-to" with pathnames.
 
-  Side effect: requires() all given modules, populating global
-  modules dependency table used for dependency resolution.
-
-  Return flat list of "where file is now" / "where it should end up"
-  pairs.
+  Optionally can add to this list documentation files from
+  related directories.
 
   Input
-    [t] Modules -- list of Lua root module names
+    [t] PathsList -- list of file names
     [t] Config -- deploy configuration
       [?s] deploy_dir -- deploy directory
       [?b] include_docs -- also locate and copy documentation files
@@ -28,47 +24,14 @@
       2 [s] destination pathname
 ]]
 
-local get_modules_filelist = request('get_deploy_plan.get_modules_filelist')
 local get_docs_filelist = request('get_deploy_plan.get_docs_filelist')
 local DefaultConfig = request('get_deploy_plan.DefaultConfig')
 local add_separator = request('!.concepts.path_name.add_separator')
 local add_to_list = request('!.concepts.list.add_item')
 local rebase_to = request('!.concepts.path_name.rebase_to')
 
-local get_module_lua_pathname, get_module_bin_pathname
-do
-  local get_module_base_pathname
-  do
-    local quote_regexp = request('!.lua.regexp.quote')
-
-    local names_sep = quote_regexp('.')
-
-    local dirs_sep
-    do
-      local get_package_config = request('!.system.get_package_config')
-
-      dirs_sep = quote_regexp(get_package_config().dirs_sep)
-    end
-
-    get_module_base_pathname =
-      function(module_name)
-        return string.gsub(module_name, names_sep, dirs_sep)
-      end
-  end
-
-  get_module_lua_pathname =
-    function(module_name)
-      return get_module_base_pathname(module_name) .. '.lua'
-    end
-
-  get_module_bin_pathname =
-    function(module_name)
-      return get_module_base_pathname(module_name) .. '.so'
-    end
-end
-
 local get_deploy_plan =
-  function(Modules, ArgConfig)
+  function(PathsList, ArgConfig)
     local Config = new(DefaultConfig, ArgConfig)
 
     local deploy_dir = Config.deploy_dir
@@ -78,37 +41,15 @@ local get_deploy_plan =
 
     deploy_dir = add_separator(deploy_dir)
 
-    -- Load all modules. This will populate global dependencies table
-    for _, module_name in ipairs(Modules) do
-      request(module_name)
-    end
-
-    local CodeFiles = get_modules_filelist(Modules)
-
     local DocFiles = { }
-
     if include_docs then
-      local CodeFilesList = { }
-      for _, Rec in ipairs(CodeFiles) do
-        add_to_list(CodeFilesList, Rec.file)
-      end
-      DocFiles = get_docs_filelist(CodeFilesList)
+      DocFiles = get_docs_filelist(PathsList)
     end
 
     local Result = { }
 
-    for _, Rec in ipairs(CodeFiles) do
-      local module_name = Rec.module
-      local src_pathname = Rec.file
-      local dest_pathname = deploy_dir
-
-      if Rec.is_binary then
-        dest_pathname =
-          dest_pathname .. get_module_bin_pathname(module_name)
-      else
-        dest_pathname =
-          dest_pathname .. get_module_lua_pathname(module_name)
-      end
+    for _, src_pathname in ipairs(PathsList) do
+      local dest_pathname = rebase_to(deploy_dir, src_pathname)
 
       add_to_list(Result, { src_pathname, dest_pathname })
     end
@@ -131,4 +72,5 @@ return get_deploy_plan
   2018 # # # #
   2026 # # # # #
   2026-08-13
+  2026-09-24
 ]]
