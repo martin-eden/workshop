@@ -2,74 +2,96 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-27
+  Last mod.: 2026-09-24
 ]]
-
--- Imports:
-local create_instance = request('!.table.create_instance')
-local RangePoint = request('!.concepts.RangePoint')
-local str_rep = string.rep
-
-local RangePoint = RangePoint.create()
-RangePoint:SetMinValue(0)
-RangePoint:SetMaxValue(60)
-RangePoint:SetValue(RangePoint:GetMinValue())
 
 --[[
   Data storage format
 
     1 [s] Indent chunk
-    2 [t] Range point of current indent level
+    2 [t] Range point with current indent level
 ]]
-local Core =
-  {
-    '  ',
-    RangePoint,
-  }
+
+local get_indent_chunk =
+  function(Me)
+    return Me[1]
+  end
+
+local set_indent_chunk =
+  function(Me, str)
+    Me[1] = str
+  end
+
+local get_indent_level =
+  function(Me)
+    return Me[2]:GetValue()
+  end
+
+local set_indent_level =
+  function(Me, level)
+    Me[2]:SetValue(level)
+  end
+
+local to_string
+do
+  local str_rep = string.rep
+  to_string =
+    function(Me)
+      return str_rep(Me[1], Me[2]:GetValue())
+    end
+end
+
+local inc =
+  function(Me)
+    set_indent_level(Me, get_indent_level(Me) + 1)
+  end
+
+local dec =
+  function(Me)
+    set_indent_level(Me, get_indent_level(Me) - 1)
+  end
 
 local Interface
+local create
+do
+  local RangePointClass = request('!.concepts.RangePoint')
+  local default_indent_chunk = '  '
+  local default_max_indent = 60
+  local attach_methods = request('!.table.attach_methods')
+  create =
+    function()
+      local RangePoint = RangePointClass.create()
+      RangePoint:SetMinValue(0)
+      RangePoint:SetMaxValue(default_max_indent)
+      RangePoint:SetValue(0)
+
+      local Core = { default_indent_chunk, RangePoint }
+      attach_methods(Core, Interface)
+
+      return Core
+    end
+end
+
 Interface =
   {
-    GetIndentChunk = function(Me) return Me[1] end,
-    SetIndentChunk =
-      function(Me, str)
-        assert_string(str)
+    create = create,
 
-        Me[1] = str
-      end,
+    GetIndentChunk = get_indent_chunk,
+    SetIndentChunk = set_indent_chunk,
 
-    GetRangePoint = function(Me) return Me[2] end,
+    GetIndentLevel = get_indent_level,
+    SetIndentLevel = set_indent_level,
 
-    ToString =
-      function(Me)
-        local indent_level = Me:GetRangePoint():GetValue()
+    ToString = to_string,
 
-        if (indent_level == 0) then return '' end
-
-        local indent_chunk = Me:GetIndentChunk()
-
-        return str_rep(indent_chunk, indent_level)
-      end,
-
-    Inc =
-      function(Me)
-        Me:GetRangePoint():Inc()
-      end,
-    Dec =
-      function(Me)
-        Me:GetRangePoint():Dec()
-      end,
-
-    create =
-      function(OptCore)
-        return create_instance(OptCore or Core, Interface)
-      end,
+    Inc = inc,
+    Dec = dec,
   }
 
 -- Export:
 return Interface
 
 --[[
-  2026-05-11
-  2026-07-05
+  2026 # #
+  2026-09-24
 ]]
