@@ -2,15 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-23
+  Last mod.: 2026-09-24
 ]]
 
+local add_separator = request('!.concepts.path_name.add_separator')
 local remove_prefix = request('!.string.remove_prefix')
 local add_to_list = request('!.concepts.list.add_item')
 local sort = table.sort
 
 return
   function(PathNames, base_dir)
+    base_dir = add_separator(base_dir)
+
     local Result = { }
 
     for idx, file_name in ipairs(PathNames) do
