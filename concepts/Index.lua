@@ -13,8 +13,27 @@
 
 -- Coordinates must be 1-based
 
-local Interface
+local get_dim =
+  function(Me, dim_index)
+    return Me[dim_index]
+  end
 
+local get_index =
+  function(Me, Coords)
+    local Dims = Me
+
+    local index = 0
+
+    local dim_index = 1
+    for dims_i = 1, #Dims do
+      index = dim_index + Coords[dims_i] - 1
+      dim_index = dim_index * Dims[dims_i]
+    end
+
+    return index
+  end
+
+local Interface
 local create
 do
   local check_dims
@@ -43,24 +62,10 @@ do
     end
 end
 
-local get_index =
-  function(Core, Coords)
-    local Dims = Core
-
-    local index = 0
-
-    local dim_index = 1
-    for dims_i = 1, #Dims do
-      index = dim_index + Coords[dims_i] - 1
-      dim_index = dim_index * Dims[dims_i]
-    end
-
-    return index
-  end
-
 Interface =
   {
     create = create,
+    GetDim = get_dim,
     GetIndex = get_index,
   }
 
@@ -69,4 +74,5 @@ return Interface
 
 --[[
   2026-09-19
+  2026-09-25
 ]]
