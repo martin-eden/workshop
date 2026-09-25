@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-24
+  Last mod.: 2026-09-25
 ]]
 
 --[[
@@ -22,12 +22,11 @@ local get_index =
   function(Me, Coords)
     local Dims = Me
 
-    local index = 0
-
-    local dim_index = 1
+    local index = 1
+    local stride = 1
     for dims_i = 1, #Dims do
-      index = dim_index + Coords[dims_i] - 1
-      dim_index = dim_index * Dims[dims_i]
+      index = index + (Coords[dims_i] - 1) * stride
+      stride = stride * Dims[dims_i]
     end
 
     return index
