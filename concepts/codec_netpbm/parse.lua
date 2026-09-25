@@ -1,113 +1,109 @@
--- Parse image from PBM format
+-- Parse image from PBM, PGM or PPM format
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-05
+  Last mod.: 2026-09-26
 ]]
 
---[[
-  Example:
+local load_header
+local load_data
+do
+  local get_next_item = request('parse.get_next_item')
 
-    'P3 1 2 255 0 128 255 128 255 0'
-                  ->
-    {
-      Settings =
+  do
+    local ExtToInt_Map
+    do
+      local Syntels = request('^.Syntels')
+
+      ExtToInt_Map =
         {
-          Width = 1,
-          Height = 2,
-          ColorFormat = 'rgb',
-        },
-      Data =
-        {
-          [1] = { [1] = { 0.0, 0.5, 1.0 } },
-          [2] = { [1] = { 0.5, 1.0, 0.0 } },
-        },
-    }
-]]
+          [Syntels.monochrome_label] = 1,
+          [Syntels.grayscale_label] = 2,
+          [Syntels.color_label] = 3,
+        }
+    end
 
--- ( Imports
-local get_next_item = request('parse.get_next_item')
-local get_image_settings = request('parse.get_image_settings')
+    local is_natural = request('!.number.is_natural')
 
-local number_in_range = request('!.number.in_range')
-local create_color = request('!.concepts.Image.Color.SpawnColor')
-local normalize_color = request('!.concepts.Image.Color.Normalize')
-local ImageClass = request('!.concepts.Image.Interface')
--- )
+    load_header =
+      function(Input)
+        local format = ExtToInt_Map[get_next_item(Input)]
+        assert(format, 'Unknown format label.')
 
-local get_color_component =
-  function(item_str, max_color_value)
-    local value = tonumber(item_str)
+        local width = tonumber(get_next_item(Input))
+        assert(is_natural(width))
 
-    assert_integer(value)
-    assert(number_in_range(value, 0, max_color_value))
+        local height = tonumber(get_next_item(Input))
+        assert(is_natural(height))
 
-    return value
-  end
+        --[[
+          P2 and P3 formats has "max channel value" value in header
 
-local load_image =
-  function(Image, ImageSettings, Input)
-    local width = ImageSettings.width
-    local height = ImageSettings.height
-    local num_channels = ImageSettings.num_channels
-    local max_color_value = ImageSettings.num_channel_values - 1
-
-    local color_format = Image.Settings.ColorFormat
-
-    for y = 1, height do
-      for x = 1, width do
-        local ImageColor = create_color(color_format)
-
-        for channel = 1, num_channels do
-          local item_str = get_next_item(Input)
-          local channel_value = get_color_component(item_str, max_color_value)
-          ImageColor[channel] = channel_value
+          We're not using it but should consume.
+        ]]
+        if (format == 2) or (format == 3) then
+          get_next_item(Input)
         end
 
-        normalize_color(ImageColor)
-
-        Image:SetPixel({ y, x }, ImageColor)
+        return format, width, height
       end
-    end
   end
+  do
+    local read_color
+    do
+      local normalize_color = request('!.concepts.Image.Color.Normalize')
+      read_color =
+        function(Input, num_channels)
+          local Color = { }
+          for channel = 1, num_channels do
+            local value = tonumber(get_next_item(Input))
+            assert_integer(value)
+            assert(value >= 0)
+            Color[channel] = value
+          end
+          normalize_color(Color)
 
-local get_color_format =
-  function(num_channels, num_channel_values)
-    if (num_channels == 1) then
-      if (num_channel_values == 2) then
-        return 'bw'
+          return Color
+        end
+    end
+
+    load_data =
+      function(Pam, Input)
+        local format = Pam:GetFormat()
+        local Image = Pam:GetImage()
+
+        local width = Image:GetWidth()
+        local height = Image:GetHeight()
+
+        local num_channels
+        if (format == 1) or (format == 2) then
+          num_channels = 1
+        elseif (format == 3) then
+          num_channels = 3
+        end
+
+        for y = 1, height do
+          for x = 1, width do
+            Me:SetColor(read_color(Input, num_channels), x, y)
+          end
+        end
       end
-      return 'gs'
-    elseif (num_channels == 3) then
-      return 'rgb'
-    end
-    error('Failed to determine internal image format.')
   end
+end
 
-local parse =
-  function(Input)
-    local Image = new(ImageClass)
-
-    local ImageSettings = get_image_settings(Input)
-
-    Image.Settings.Width = ImageSettings.width
-    Image.Settings.Height = ImageSettings.height
-    Image.Settings.ColorFormat =
-      get_color_format(
-        ImageSettings.num_channels,
-        ImageSettings.num_channel_values
-      )
-
-    load_image(Image, ImageSettings, Input)
-
-    return Image
-  end
+local PamClass = request('Pam')
 
 -- Export:
-return parse
+return
+  function(Input)
+    local Pam = PamClass.create(load_header(Input))
+    load_data(Pam, Input)
+
+    return Pam
+  end
 
 --[[
-  2024
-  2026-05-31
-  2026-06-05
+  2024 #
+  2026 # #
+  2026-09-25
 ]]

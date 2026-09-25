@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-09-26
 ]]
 
 --[[
@@ -13,14 +13,19 @@
     [f] is_newline
 ]]
 
--- Imports:
-local Syntels = request('^.^.Syntels')
-
-local space = Syntels.space
-local tab = Syntels.tab
-local newline = Syntels.newline
-local carriage_return = Syntels.carriage_return
-local comment_char = Syntels.comment_char
+local space
+local tab
+local newline
+local carriage_return
+local comment_char
+do
+  local Syntels = request('^.^.Syntels')
+  space = Syntels.space
+  tab = Syntels.tab
+  newline = Syntels.newline
+  carriage_return = Syntels.carriage_return
+  comment_char = Syntels.comment_char
+end
 
 local is_space =
   function(char)
@@ -42,15 +47,13 @@ local is_delimiter =
     return is_space(char) or is_newline(char) or is_comment(char)
   end
 
-local Interface =
+-- Export:
+return
   {
     is_delimiter = is_delimiter,
     is_comment = is_comment,
     is_newline = is_newline,
   }
-
--- Export:
-return Interface
 
 --[[
   2025-03-28

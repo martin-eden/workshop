@@ -1,163 +1,166 @@
--- Compile image to PBM format
+-- Serialize
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-15
+  Last mod.: 2026-09-26
 ]]
 
---[[
-  Example:
-
-    {
-      Settings =
-        {
-          Width = 1,
-          Height = 2,
-          ColorFormat = 'rgb',
-        },
-      Data =
-        {
-          [1] = { [1] = { 0.0, 0.5, 1.0 } },
-          [2] = { [1] = { 0.5, 1.0, 0.0 } },
-        },
-    }
-                  ->
-    P3  # Color, text
-    1 2 255  # Width, Height, MaxValue
-
-    # Line 1
-    000 128 255
-
-    # Line 2
-    128 255 000
-]]
-
--- ( Imports
-local get_image_settings = request('compile.get_image_settings')
 local Serializer = request('compile.Serializer')
-local get_format_comment = request('compile.get_format_comment')
 
-local get_format_label = request('Settings.get_format_label')
+local write_header
+do
+  local get_format_label
+  local get_format_comment
+  do
+    local Syntels = request('Syntels')
+    local ExtToInt_Map =
+      {
+        [1] = Syntels.monochrome_label,
+        [2] = Syntels.grayscale_label,
+        [3] = Syntels.color_label,
+      }
+    local FormatComments =
+      {
+        [1] = 'Monochrome image, text format',
+        [2] = 'Grayscale image, text format',
+        [3] = 'Color image, text format',
+      }
 
-local create_color = request('!.concepts.Image.Color.SpawnColor')
-local denormalize_color = request('!.concepts.Image.Color.Denormalize')
-local number_in_range = request('!.number.in_range')
-local add_to_list = request('!.concepts.list.add_item')
-local list_to_string = request('!.concepts.list.to_string')
--- )
-
-local write_header =
-  function(ImageSettings, Serializer)
-    local format_label = get_format_label(ImageSettings)
-    local format_comment = get_format_comment(format_label)
-
-    Serializer:WriteData(format_label)
-    Serializer:WriteComment(format_comment)
-
-    local width = ImageSettings.width
-    local height = ImageSettings.height
-    local max_channel_value = ImageSettings.max_channel_value
-
-    local dims_comment = 'Width Height MaxValue'
-
-    Serializer:WriteData(width)
-    Serializer:WriteData(height)
-    Serializer:WriteData(max_channel_value)
-    Serializer:WriteComment(dims_comment)
-  end
-
-local convert_color =
-  function(Color, max_channel_value)
-    denormalize_color(Color)
-
-    for _, color_component in ipairs(Color) do
-      assert(number_in_range(color_component, 0, max_channel_value))
-    end
-  end
-
-local write_data =
-  function(ImageSettings, Image, Serializer)
-    local width = ImageSettings.width
-    local height = ImageSettings.height
-    local num_channels = ImageSettings.num_channels
-    local max_channel_value = ImageSettings.max_channel_value
-
-    local color_format = Image.Settings.ColorFormat
-
-    local num_colors_per_data_line
-
-    if (num_channels == 1) then
-      num_colors_per_data_line = 12
-    elseif (num_channels == 3) then
-      num_colors_per_data_line = 4
-    else
-      error('Unsupported number of color channels.')
-    end
-
-    local line_comment_fmt = 'Line %d'
-    local columns_delim = '  '
-    local color_component_fmt = '%03d'
-
-    for y = 1, height do
-      Serializer:WriteNewline()
-
-      local line_comment = string.format(line_comment_fmt, y)
-      Serializer:WriteComment(line_comment)
-
-      local is_first_item_in_line = true
-
-      for x = 1, width do
-        if not is_first_item_in_line then
-          Serializer:WriteRaw(columns_delim)
-        end
-
-        local ImageColor = Image:GetPixel({ y, x })
-        if is_nil(ImageColor) then
-          ImageColor = create_color(color_format)
-        end
-
-        local PbmColor = new(ImageColor)
-        convert_color(PbmColor, max_channel_value)
-
-        for channel = 1, num_channels do
-          local color_component_str =
-            string.format(color_component_fmt, PbmColor[channel])
-          Serializer:WriteData(color_component_str)
-        end
-
-        is_first_item_in_line = false
-
-        if (x % num_colors_per_data_line == 0) then
-          Serializer:WriteNewline()
-          is_first_item_in_line = true
-        end
+    get_format_label =
+      function(format)
+        local label = ExtToInt_Map[format]
+        assert(label, 'Unknown internal format.')
+        return label
       end
 
-      if (width % num_colors_per_data_line ~= 0) then
+    get_format_comment =
+      function(format)
+        local comment = FormatComments[format]
+        assert(comment, 'Unknown internal format.')
+        return comment
+      end
+  end
+
+  write_header =
+    function(Pbm, Serializer)
+      local format = Pbm:GetFormat()
+      local Image = Pbm:GetImage()
+
+      local width = Image:GetWidth()
+      local height = Image:GetHeight()
+
+      local format_label = get_format_label(format)
+      local format_comment = get_format_comment(format)
+
+      Serializer:WriteData(format_label)
+      Serializer:WriteComment(format_comment)
+
+      if (format == 1) then
+        local dims_comment = 'Width Height'
+        Serializer:WriteData(width)
+        Serializer:WriteData(height)
+        Serializer:WriteComment(dims_comment)
+      elseif (format == 2) or (format == 3) then
+        local max_channel_value = 255
+        local dims_comment = 'Width Height MaxValue'
+        Serializer:WriteData(width)
+        Serializer:WriteData(height)
+        Serializer:WriteData(max_channel_value)
+        Serializer:WriteComment(dims_comment)
+      end
+    end
+end
+
+local write_data
+do
+  local denormalize_color = request('!.concepts.Image.Color.Denormalize')
+  local str_format = string.format
+
+  write_data =
+    function(Pbm, Serializer)
+      local format = Pbm:GetFormat()
+      local Image = Pbm:GetImage()
+
+      local width = Image:GetWidth()
+      local height = Image:GetHeight()
+
+      local num_channels
+      local num_colors_per_data_line
+      if (format == 1) or (format == 2) then
+        num_channels = 1
+        num_colors_per_data_line = 12
+      elseif (format == 3) then
+        num_channels = 3
+        num_colors_per_data_line = 4
+      end
+
+      local color_component_fmt
+      if (format == 1) then
+        color_component_fmt = '%d'
+      elseif (format == 2) or (format == 3) then
+        color_component_fmt = '%03d'
+      end
+
+      local line_comment_fmt = 'Line %d'
+      local columns_delim = '  '
+
+      for y = 1, height do
         Serializer:WriteNewline()
+
+        local line_comment = str_format(line_comment_fmt, y)
+        Serializer:WriteComment(line_comment)
+
+        local is_first_item_in_line = true
+
+        for x = 1, width do
+          if not is_first_item_in_line then
+            Serializer:WriteRaw(columns_delim)
+          end
+
+          local Color = Image:GetColor(x, y)
+          denormalize_color(Color)
+
+          -- For bitmap max value is 1, not 255. Also white is 0
+          if (format == 1) then
+            for channel = 1, num_channels do
+              Color[channel] = 1 - ((Color[channel] / 256 * 2) // 1)
+            end
+          end
+
+          for channel = 1, num_channels do
+            local color_component_str =
+              str_format(color_component_fmt, Color[channel])
+            Serializer:WriteData(color_component_str)
+          end
+
+          is_first_item_in_line = false
+
+          if (x % num_colors_per_data_line == 0) then
+            Serializer:WriteNewline()
+            is_first_item_in_line = true
+          end
+        end
+
+        if (width % num_colors_per_data_line ~= 0) then
+          Serializer:WriteNewline()
+        end
       end
     end
-  end
+end
 
-local compile =
-  function(Image, Output)
-    local EncoderImageSettings = get_image_settings(Image)
-
+-- Export:
+return
+  function(Pbm, Output)
     local Serializer = new(Serializer)
     Serializer.Output = Output
 
-    write_header(EncoderImageSettings, Serializer)
-    write_data(EncoderImageSettings, Image, Serializer)
+    write_header(Pbm, Serializer)
+    write_data(Pbm, Serializer)
   end
-
--- Exports:
-return compile
 
 --[[
   2024 # # # #
   2025 # #
-  2026-01 #
-  2026-05 #
-  2026-06-04
-  2026-06-15
+  2026 # # # #
+  2026-09-25
 ]]

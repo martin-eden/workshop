@@ -2,10 +2,9 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-09-25
 ]]
 
--- Imports:
 local Syntels = request('^.Syntels')
 
 local newline = Syntels.newline
@@ -16,7 +15,7 @@ local comment_prefix = Syntels.comment_char .. Syntels.space
 local Interface =
   {
     -- Config:
-    Output = {},
+    Output = { },
 
     -- Main:
     WriteRaw =
