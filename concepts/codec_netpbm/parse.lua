@@ -84,7 +84,7 @@ do
 
         for y = 1, height do
           for x = 1, width do
-            Me:SetColor(read_color(Input, num_channels), x, y)
+            Image:SetColor(read_color(Input, num_channels), x, y)
           end
         end
       end
