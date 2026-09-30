@@ -1,0 +1,8 @@
+Streams and iterators are same at core
+
+Both have internal state that stores object and position.
+
+Streams wrap this state with methods. Iterators export state
+and expect it as argument.
+
+-- Martin, 2026-09-30
