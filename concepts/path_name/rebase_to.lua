@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-02
+  Last mod.: 2026-10-03
 ]]
 
 --[[
@@ -15,29 +15,26 @@
 
   Output is a string:
 
-    * All ".." segments are dropped from <pathname>.
-    * Leading "" (absolute marker) is dropped from <pathname>,
-      since after rebasing it's no longer absolute on its own.
-    * Trailing "" (directory marker) of <dest_dir> is
-      dropped, since it becomes a middle segment.
-    * Trailing "" (directory marker) of <pathname>, if any,
-      is kept at the end of result.
-    * Remaining segments of <dest_dir> and <pathname>
+    * ".." segments in <pathname> move the write position back
+      one segment (overwriting it), clamped at the start, so
+      nothing escapes <dest_dir>.
+    * Absolute <pathname> is treated like local.
+    * Processed segments of <dest_dir> and <pathname>
       are concatenated and serialized back to a pathname string.
 ]]
 
 --[[
   Examples (Itness format)
 
-    ( deploy  /abc ) -> deploy/abc
     ( deploy/ sub/dir/ ) -> deploy/sub/dir/
-    ( deploy ../../docs/readme.md ) -> deploy/docs/readme.md
+    ( deploy a/../b ) -> deploy/b
+    ( deploy a/../../b ) -> deploy/b
+    ( deploy /abc ) -> deploy/abc
 ]]
 
 local pathname_from_str = request('pathname_from_str')
-local is_directory = request('is_directory')
-local is_absolute = request('is_absolute')
 local tbl_remove = table.remove
+local RangePoint = request('!.concepts.RangePoint')
 local upper_dir = request('Syntels').upper_dir
 local add_list = request('!.concepts.list.add_list')
 local pathname_to_str = request('pathname_to_str')
@@ -51,22 +48,34 @@ return
     local DestNames = pathname_from_str(dest_dir)
     local MovedNames = pathname_from_str(pathname)
 
-    if is_directory(DestNames) then
+    -- Remove directory marker
+    if (DestNames[#DestNames] == '') then
       tbl_remove(DestNames, #DestNames)
     end
 
-    if is_absolute(MovedNames) then
+    -- Remove absolute marker
+    if (MovedNames[1] == '') then
       tbl_remove(MovedNames, 1)
     end
 
     do
-      local index = 1
-      while (index <= #MovedNames) do
-        if (MovedNames[index] == upper_dir) then
-          tbl_remove(MovedNames, index)
+      local Cursor = RangePoint.create()
+      Cursor:SetMinValue(1)
+      Cursor:SetMaxValue(#MovedNames + 1)
+      Cursor:SetValue(1)
+
+      for name_index = 1, #MovedNames do
+        local cursor_pos = Cursor:GetValue()
+        if (MovedNames[name_index] == upper_dir) then
+          Cursor:SetValue(cursor_pos - 1)
         else
-          index = index + 1
+          MovedNames[cursor_pos] = MovedNames[name_index]
+          Cursor:SetValue(cursor_pos + 1)
         end
+      end
+
+      for name_index = Cursor:GetValue(), #MovedNames do
+        MovedNames[name_index] = nil
       end
     end
 
@@ -79,4 +88,5 @@ return
 
 --[[
   2026 #
+  2026-10-03
 ]]
