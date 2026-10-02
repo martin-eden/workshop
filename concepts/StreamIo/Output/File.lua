@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-26
+  Last mod.: 2026-10-02
 ]]
 
 --[[
@@ -14,9 +14,11 @@
 
 local open
 do
+  local create_file = request('!.file_system.file.create')
   local open_for_writing = request('!.file_system.file.open_for_writing')
   open =
     function(Me)
+      create_file(Me[1], '')
       Me[2] = open_for_writing(Me[1])
     end
 end
@@ -68,6 +70,6 @@ return Interface
 
 --[[
   2024 # # # # #
-  2026 # #
-  2026-09-26
+  2026 # # #
+  2026-10-02
 ]]
