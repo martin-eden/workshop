@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-29
+  Last mod.: 2026-10-02
 ]]
 
 --[[
@@ -11,18 +11,18 @@
   Input is two pathname strings:
 
     1 [s] dest_dir -- base directory to rebase onto
-    2 [s] dir_to_rebase -- pathname to rebase
+    2 [s] pathname -- pathname to rebase
 
   Output is a string:
 
-    * All ".." segments are dropped from <dir_to_rebase>.
-    * Leading "" (absolute marker) is dropped from <dir_to_rebase>,
+    * All ".." segments are dropped from <pathname>.
+    * Leading "" (absolute marker) is dropped from <pathname>,
       since after rebasing it's no longer absolute on its own.
     * Trailing "" (directory marker) of <dest_dir> is
       dropped, since it becomes a middle segment.
-    * Trailing "" (directory marker) of <dir_to_rebase>, if any,
+    * Trailing "" (directory marker) of <pathname>, if any,
       is kept at the end of result.
-    * Remaining segments of <dest_dir> and <dir_to_rebase>
+    * Remaining segments of <dest_dir> and <pathname>
       are concatenated and serialized back to a pathname string.
 ]]
 
@@ -44,12 +44,12 @@ local pathname_to_str = request('pathname_to_str')
 
 -- Export:
 return
-  function(dest_dir, dir_to_rebase)
+  function(dest_dir, pathname)
     assert_string(dest_dir)
-    assert_string(dir_to_rebase)
+    assert_string(pathname)
 
     local DestNames = pathname_from_str(dest_dir)
-    local MovedNames = pathname_from_str(dir_to_rebase)
+    local MovedNames = pathname_from_str(pathname)
 
     if is_directory(DestNames) then
       tbl_remove(DestNames, #DestNames)
