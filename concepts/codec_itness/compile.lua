@@ -2,11 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-23
+  Last mod.: 2026-10-14
 ]]
 
 local DataWriter = request('compile.DataWriter.Interface')
-local DelimitersWriter = request('compile.DelimitersWriter.Interface')
+local DelimitersWriter = request('compile.DelimitersWriter')
 local Syntax = request('common.Syntax')
 
 return
@@ -35,10 +35,12 @@ return
     DataWriter.Syntax = Syntax
     DataWriter:Init()
 
-    DelimitersWriter.Output = Output
-    DelimitersWriter.space_char = Syntax.delimiters_space_char
-    DelimitersWriter.newline_char = Syntax.delimiters_newline_char
-    DelimitersWriter:Init()
+    DelimitersWriter =
+      DelimitersWriter.create(
+        Syntax.delimiters_space_char,
+        Syntax.delimiters_newline_char,
+        Output
+      )
 
     compile(Node)
 
