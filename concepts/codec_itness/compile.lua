@@ -5,14 +5,35 @@
   Last mod.: 2026-10-14
 ]]
 
-local DataWriter = request('compile.DataWriter.Interface')
-local DelimitersWriter = request('compile.DelimitersWriter')
 local Syntax = request('common.Syntax')
+local DelimitersWriterClass = request('compile.DelimitersWriter')
+local DataWriterClass = request('compile.DataWriter')
 
 return
   function(Node, Output)
-    local DataWriter = new(DataWriter)
-    local DelimitersWriter = new(DelimitersWriter)
+    local DelimitersWriter =
+      DelimitersWriterClass.create(
+        Syntax.delimiters_space_char,
+        Syntax.delimiters_newline_char,
+        Output
+      )
+
+    local DataWriter =
+      DataWriterClass.create(
+        {
+          [1] = Syntax.delimiters_space_char,
+          [2] = Syntax.delimiters_newline_char,
+          [3] = Syntax.group_open_char,
+          [4] = Syntax.group_close_char,
+          [5] = Syntax.quote_open_char,
+          [6] = Syntax.quote_close_char,
+        },
+        3,
+        4,
+        5,
+        6,
+        Output
+      )
 
     local compile
     compile =
@@ -30,17 +51,6 @@ return
           DataWriter:EndList()
         end
       end
-
-    DataWriter.Output = Output
-    DataWriter.Syntax = Syntax
-    DataWriter:Init()
-
-    DelimitersWriter =
-      DelimitersWriter.create(
-        Syntax.delimiters_space_char,
-        Syntax.delimiters_newline_char,
-        Output
-      )
 
     compile(Node)
 
