@@ -1,31 +1,26 @@
---[[
-  Quote all special regexp symbols in regexp-string.
-  Returns regexp-string.
+-- Regexp-quote all special regexp symbols in given string
 
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-14
+]]
+
+--[[
   Useful when you wish to pass to gsub() string with special
   characters with their literal meaning.
 
-  Usually you don't want to apply it more than once.
-
   Example:
 
-    /*
-      Regexp meaning:
-        '.' - any char
-        '%.' - "."
-        '%%%.' - "%."
-    */
     quote('.') -> '%.'
     quote('%.') -> '%%%.'
 ]]
 
--- Last mod.: 2024-10-20
-
 local magic_char_pattern = request('magic_char_pattern')
+local str_gsub = string.gsub
 
 return
-  function(s)
-    return s:gsub(magic_char_pattern, '%%%0')
+  function(str)
+    return str_gsub(str, magic_char_pattern, '%%%0')
   end
 
 --[[
