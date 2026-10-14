@@ -2,19 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-19
+  Last mod.: 2026-10-14
 ]]
 
 --[[
   Data storage format
 
-    1 [s] -- zero-padding format string
+    [s] -- zero-padding format string
 ]]
 
 local to_string
 do
   local str_format = string.format
-
   to_string =
     function(Me, index)
       return str_format(Me[1], index)
@@ -28,7 +27,7 @@ do
   local is_natural = request('!.number.is_natural')
   local get_num_dec_digits = request('!.number.get_num_dec_digits')
   local int_to_str = tostring
-  local create_instance = request('!.table.create_instance')
+  local attach_methods = request('!.table.attach_methods')
   create =
     function(max_index)
       assert(is_natural(max_index))
@@ -36,7 +35,10 @@ do
       local zeroes_padding_format =
         '%0' .. int_to_str(get_num_dec_digits(max_index)) .. 'd'
 
-      return create_instance({ zeroes_padding_format }, Interface)
+      local Me = { zeroes_padding_format }
+      attach_methods(Me, Interface)
+
+      return Me
     end
 end
 
