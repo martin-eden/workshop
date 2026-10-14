@@ -2,8 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-10
-]]
+  Last mod.: 2026-10-14
 
 --[[
   Data format
@@ -11,10 +10,6 @@
     1 [s] -- command
     2 [t] -- list of arguments
       0+ [s] argument
-]]
-
---[[
-  F.e. "ls -l ~" is represented as ( ls ( -l ~ ) ) (Itness format)
 ]]
 
 --[[
@@ -28,32 +23,25 @@
 --[[
   Examples
 
-    Serializing to "ls -l ~"
+    Creating instance for "ls -l ~"
 
-      * Short way
+      local Command = ShellCommand.create({ 'ls', { '-l', '~' } })
 
-        s = ShellCommand.create({ 'ls', { '-l', '~' } }):ToString()
+    Serializing
 
-      * Longer way
+      s = Command:ToString()
 
-        local Command = { 'ls', { '-l', '~' } }
-        Command = ShellCommand.create(Command)
-        s = Command:ToString()
+    Executing
 
-    Executing "ls -l ~"
-
-      *
-        local Command = { 'ls', { '-l', '~' } }
-        Command = ShellCommand.create(Command)
-        Command:Execute()
+      Command:Execute()
 ]]
 
-local ToString
+local to_string
 do
   local quote = request('!.concepts.shell.quote')
   local add_to_list = request('!.concepts.list.add_item')
   local glue_words = request('!.concepts.words.to_string')
-  ToString =
+  to_string =
     function(Me)
       local command = Me[1]
       local Args = Me[2]
@@ -68,12 +56,12 @@ do
     end
 end
 
-local Execute
+local execute
 do
   local execute_shell_command = request('!.concepts.shell.execute')
-  Execute =
+  execute =
     function(Me)
-      return execute_shell_command(Me:ToString())
+      return execute_shell_command(to_string(Me))
     end
 end
 
@@ -81,7 +69,7 @@ local Interface
 do
   local create
   do
-    local create_instance = request('!.table.create_instance')
+    local attach_methods = request('!.table.attach_methods')
     create =
       function(Core)
         -- Check core
@@ -99,15 +87,17 @@ do
           end
         end
 
-        return create_instance(Core, Interface)
+        attach_methods(Core, Interface)
+
+        return Core
       end
   end
 
   Interface =
     {
       create = create,
-      ToString = ToString,
-      Execute = Execute,
+      ToString = to_string,
+      Execute = execute,
     }
 end
 
