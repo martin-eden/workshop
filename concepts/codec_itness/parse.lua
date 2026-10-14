@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-24
+  Last mod.: 2026-10-14
 ]]
 
 local Syntax = request('common.Syntax')
@@ -13,33 +13,35 @@ do
   local quote_close_char = Syntax.quote_close_char
   local space_char = Syntax.delimiters_space_char
   local newline_char = Syntax.delimiters_newline_char
+  local StringStreamClass = request('!.concepts.StreamIo.Output.String')
   read_token =
     function(Input)
-      local token = ''
+      local StringStream = new(StringStreamClass)
       local in_quotes = false
 
       while true do
         local char = Input:Read(1)
 
         if (char == '') then
-          return token
+          return StringStream:GetString()
         end
 
         if in_quotes then
           if (char == quote_close_char) then
             in_quotes = false
           else
-            token = token .. char
+            StringStream:Write(char)
           end
         else
           if (char == space_char) or (char == newline_char) then
+            local token = StringStream:GetString()
             if (token ~= '') then
               return token
             end
           elseif (char == quote_open_char) then
             in_quotes = true
           else
-            token = token .. char
+            StringStream:Write(char)
           end
         end
       end
@@ -84,4 +86,5 @@ return parse
 --[[
   2024 # # # #
   2026 # # # #
+  2026-10-14
 ]]
