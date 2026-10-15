@@ -6,7 +6,7 @@
 ]]
 
 --[[
-  Copy files given by pathnamesto deploy directory
+  Copy files given by pathnames to deploy directory
 
   Input
     [t] PathsList -- list of file pathnames
