@@ -2,20 +2,14 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-10-15
 ]]
 
 --[[
   Actually it's wrapper over provided base stream.
 ]]
 
-local newline
-do
-  local AsciiChars = request('!.concepts.Ascii.Chars')
-  newline = AsciiChars.newline
-end
-
-local Init =
+local init =
   function(Me, BaseStream)
     Me.BaseStream = BaseStream
   end
@@ -25,42 +19,50 @@ local Init =
 
   Base Read():
 
-    * Receives number of items to read
-    * Returns empty string if stream is over
+    * Uses one argument (number of bytes to read)
+    * If stream is over
+      * Returns empty string
+    * Returns string with given bytes
 
   This Read():
 
-    * Reads one line per call
-    * Returns "false" when stream is over, else returns "true" and string
+    * Uses no arguments (reads one line per call)
+    * If stream is over
+      * Returns "false"
+    * Returns "true" and string with line
 ]]
-local Read =
-  function(Me)
-    -- Naive implementation for first time
+local read
+do
+  local newline = request('!.concepts.Ascii.Chars').newline
+  read =
+    function(Me)
+      -- Naive implementation for first time
 
-    local BaseStream = Me.BaseStream
+      local BaseStream = Me.BaseStream
 
-    local char = BaseStream:Read(1)
+      local char = BaseStream:Read(1)
 
-    if (char == '') then return false end
+      if (char == '') then return false end
 
-    local line = ''
+      local line = ''
 
-    while true do
-      if (char == '') then break end
-      if (char == newline) then break end
+      while true do
+        if (char == '') then break end
+        if (char == newline) then break end
 
-      line = line .. char
+        line = line .. char
 
-      char = BaseStream:Read(1)
+        char = BaseStream:Read(1)
+      end
+
+      return true, line
     end
-
-    return true, line
-  end
+end
 
 local Interface =
   {
-    Init = Init,
-    Read = Read,
+    Init = init,
+    Read = read,
 
     -- Internals:
     BaseStream = { },
