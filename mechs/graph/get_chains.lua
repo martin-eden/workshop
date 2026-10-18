@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-15
+  Last mod.: 2026-10-18
 ]]
 
 -- Originally written in "Lua-Callgraph" project
@@ -15,19 +15,16 @@
         0+ [i] adjacent node index
 ]]
 
+local get_num_entries = request('!.table.get_num_entries')
+local ordered_pass = request('!.table.ordered_pass')
 local add_to_list = request('!.concepts.list.add_item')
 
 -- Export:
 return
   function(Links)
-    local num_nodes = #Links
-
     local Chains = { }
 
     local VisitedNodes_Map = { }
-    for i = 1, num_nodes do
-      VisitedNodes_Map[i] = false
-    end
 
     local walk_chain
     walk_chain =
@@ -42,22 +39,24 @@ return
         VisitedNodes_Map[start_node] = true
 
         local NextOnes = Links[start_node]
-        local num_next_ones = #NextOnes
 
-        if (num_next_ones == 0) then
+        if not NextOnes or (get_num_entries(NextOnes) == 0) then
           add_to_list(Chains, Chain)
           return
         end
 
-        walk_chain(NextOnes[1], Chain)
-
-        for next_one_index = 2, num_next_ones do
-          local InnerChain = { start_node }
-          walk_chain(NextOnes[next_one_index], InnerChain)
+        local is_first_rec = true
+        for _, next_one_index in ordered_pass(NextOnes) do
+          if is_first_rec then
+            walk_chain(next_one_index, Chain)
+            is_first_rec = false
+          else
+            walk_chain(next_one_index, { start_node })
+          end
         end
       end
 
-    for start_node = 1, num_nodes do
+    for start_node in ordered_pass(Links) do
       if not VisitedNodes_Map[start_node] then
         walk_chain(start_node, { })
       end
@@ -67,5 +66,6 @@ return
   end
 
 --[[
-  2026-09-13
+  2026 #
+  2026-10-18
 ]]
