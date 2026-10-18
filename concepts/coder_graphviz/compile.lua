@@ -49,10 +49,18 @@ return
       Writer:Node(index, label)
     end
 
-    Writer:EmptyLine()
+    do
+      local Chains = get_chains(Links)
 
-    for _, Chain in ipairs(get_chains(Links)) do
-      Writer:Chain(Chain)
+      if (#Chains == 0) then goto next end
+
+      Writer:EmptyLine()
+
+      for _, Chain in ipairs(Chains) do
+        Writer:Chain(Chain)
+      end
+
+      :: next ::
     end
 
     Writer:EndGraph()
