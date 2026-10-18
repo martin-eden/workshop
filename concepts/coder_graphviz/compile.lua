@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-15
+  Last mod.: 2026-10-18
 ]]
 
 --[[
@@ -32,18 +32,20 @@
     3 [t] output stream instance
 ]]
 
+local get_num_entries = request('!.table.get_num_entries')
 local Writer = request('Writer')
+local ordered_pass = request('!.table.ordered_pass')
 local get_chains = request('!.mechs.graph.get_chains')
 
 -- Export:
 return
   function(Labels, Links, OutputStream)
-    local num_nodes = #Labels
+    local num_nodes = get_num_entries(Labels)
     local Writer = Writer.create(OutputStream, num_nodes)
 
     Writer:StartGraph()
 
-    for index, label in ipairs(Labels) do
+    for index, label in ordered_pass(Labels) do
       Writer:Node(index, label)
     end
 
@@ -57,6 +59,6 @@ return
   end
 
 --[[
-  2026 # # # # # # # #
-  2026-10-15
+  2026 # # # # # # # # #
+  2026-10-18
 ]]
