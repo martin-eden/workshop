@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-18
+  Last mod.: 2026-10-19
 ]]
 
 -- Experimental module
@@ -13,7 +13,7 @@
 
     { ['a.b'] = { ['c.d'] = true, ['e'] = true } ... }
 
-  We want to convert it to some graph. We need format like
+  We want to convert it to graph in format like this:
 
     {
       [1] = { [1] = 'a.b', [2] = 'c.d', [3] = 'e' ... },
@@ -36,33 +36,25 @@ return
     do
       local UsedLabels_Map = { }
 
-      local labels_population_process =
+      local add_label =
         function(label)
-          if not UsedLabels_Map[label] then
-            add_to_list(Labels, label)
-            UsedLabels_Map[label] = true
-          end
+          if UsedLabels_Map[label] then return end
+          add_to_list(Labels, label)
+          UsedLabels_Map[label] = true
         end
 
       for src_module, ModuleDeps in pairs(Deps) do
-        labels_population_process(src_module)
+        add_label(src_module)
         for dest_module in pairs(ModuleDeps) do
-          labels_population_process(dest_module)
+          add_label(dest_module)
         end
       end
     end
 
     local IdFromLabel_Map = invert(Labels)
 
-    for idx, label in ipairs(Labels) do
-      Labels[idx] = str_gsub(label, '%.', '\\n')
-    end
-
     local Links = { }
     do
-      for i = 1, #Labels do
-        Links[i] = { }
-      end
       for src_module, ModuleDeps in pairs(Deps) do
         local NodeLinks = { }
         for dest_module in pairs(ModuleDeps) do
@@ -70,6 +62,11 @@ return
         end
         Links[IdFromLabel_Map[src_module]] = NodeLinks
       end
+    end
+
+    -- Make labels multiline: ( "a.b" ) -> ( "a" newline "b" )
+    for idx, label in ipairs(Labels) do
+      Labels[idx] = str_gsub(label, '%.', '\\n')
     end
 
     return { Labels, Links }
