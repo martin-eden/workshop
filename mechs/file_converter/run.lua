@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-09
+  Last mod.: 2026-10-19
 ]]
 
 -- Imports:
@@ -45,7 +45,7 @@ local execute_conversion =
         represent_size(#compile_result)
       )
     )
-    self.save(compile_result, self.f_out_name)
+    self.save(self.f_out_name, compile_result)
 
     self:say('')
   end
@@ -58,4 +58,5 @@ return execute_conversion
   2018 # # # #
   2026-05-05
   2026-08-09
+  2026-10-19
 ]]
