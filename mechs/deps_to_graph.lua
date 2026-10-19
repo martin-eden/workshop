@@ -22,6 +22,7 @@
 ]]
 
 local add_to_list = request('!.concepts.list.add_item')
+local tbl_sort = table.sort
 local invert = request('!.table.invert')
 
 return
@@ -43,6 +44,8 @@ return
           add_label(dest_module)
         end
       end
+
+      tbl_sort(Labels)
     end
 
     local IdFromLabel_Map = invert(Labels)
