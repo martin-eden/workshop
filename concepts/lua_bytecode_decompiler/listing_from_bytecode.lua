@@ -2,39 +2,34 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-10-19
 ]]
 
 --[[
   Basically it's wrapper over text output from "luac" program.
 ]]
 
--- Imports:
 local get_listing = request('listing_from_bytecode.get_listing')
-local StringStream = request('!.concepts.StreamIo.Input.String')
-local LinesStream = request('!.concepts.StreamIo.Input.Lines')
+local InputStringStream = request('!.concepts.StreamIo.Input.String')
+local InputLinesStream = request('!.concepts.StreamIo.Input.Lines')
 local parse_listing = request('listing_from_bytecode.parse_listing')
 
-local listing_from_bytecode =
+return
   function(bytecode_str)
-    assert_string(bytecode_str)
-
     local listing_str = get_listing(bytecode_str)
 
-    local StringStream = new(StringStream)
-    StringStream:Init(listing_str)
+    local InputLines
+    do
+      local InputString = new(InputStringStream)
+      InputString:Init(listing_str)
 
-    local LinesStream = new(LinesStream)
-    LinesStream:Init(StringStream)
+      InputLines = new(InputLinesStream)
+      InputLines:Init(InputString)
+    end
 
-    return parse_listing(LinesStream)
+    return parse_listing(InputLines)
   end
 
--- Export:
-return listing_from_bytecode
-
 --[[
-  2026-07-12
-  2026-07-13
-  2026-07-14
+  2026 # # #
 ]]
