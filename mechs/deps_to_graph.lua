@@ -26,14 +26,12 @@
   (We need proper C quoting function for this but there is no any yet.)
 ]]
 
-
 local add_to_list = request('!.concepts.list.add_item')
 local invert = request('!.table.invert')
 local str_gsub = string.gsub
-local compile = request('!.concepts.coder_graphviz.compile')
 
 return
-  function(Deps, OutputStream)
+  function(Deps)
     local Labels = { }
     do
       local UsedLabels_Map = { }
@@ -74,9 +72,10 @@ return
       end
     end
 
-    compile(Labels, Links, OutputStream)
+    return { Labels, Links }
   end
 
 --[[
   2026-10-15
+  2026-10-19
 ]]
