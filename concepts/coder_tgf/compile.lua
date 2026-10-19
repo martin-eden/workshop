@@ -30,11 +30,6 @@ do
     end
 end
 
-local write_empty_line =
-  function()
-    write_rec({ })
-  end
-
 local write_label =
   function(name, label)
     write_rec({ name, label })
@@ -59,11 +54,6 @@ local get_node_name =
     return IndexSerializer:ToString(index)
   end
 
---[[
-  Implementation surrounds branching nodes with empty lines.
-  We can't do much more for niceness.
-]]
-
 -- Export:
 return
   function(Graph, Arg_OutputStream)
@@ -78,21 +68,20 @@ return
       write_label(get_node_name(index), label)
     end
 
-    write_empty_line()
     write_sections_delimiter()
-    write_empty_line()
 
-    for src_instruction_index, NextOnes in ipairs(Links) do
+    for src_instruction_index = 1, #Labels do
+      local NextOnes = Links[src_instruction_index]
+
+      if not NextOnes then goto next end
+
       local src_name = get_node_name(src_instruction_index)
-      local is_forking_node = (#NextOnes > 1)
-
-      if is_forking_node then write_empty_line() end
 
       for _, dest_instruction_index in ipairs(NextOnes) do
         write_link(src_name, get_node_name(dest_instruction_index))
       end
 
-      if is_forking_node then write_empty_line() end
+      :: next ::
     end
   end
 
