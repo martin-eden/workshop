@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-24
+  Last mod.: 2026-10-20
 ]]
 
 --[[
@@ -31,6 +31,39 @@
 
   This module handles this.
 ]=]
+
+--[[
+  Original idea was to make interface same as for output stream
+
+  So just Write() method.
+
+  Small caveat is that you have to pass to Write() strings that
+  are tokens: no spaces. That was natural.
+
+  Problem arouse with indentation. We want to indent key-values as
+
+    a =
+      { },
+
+  and just values (implicit key) as
+
+    { },
+
+  So indentation increases for "value" part only for key-value case.
+
+  This can't be naturally coded. So we're exposing indentation methods.
+  And thinking about abandoning that "jsut like output stream" idea.
+]]
+
+local inc_indent =
+  function(Me)
+    Me.Indent:Inc()
+  end
+
+local dec_indent =
+  function(Me)
+    Me.Indent:Dec()
+  end
 
 local empty = ''
 local Syntels = request('Syntels')
@@ -117,16 +150,11 @@ do
               (prev_token == syntel_item_separator) or
               (prev_token == syntel_return)
             action_emit_newline =
-              action_emit_newline or
               (prev_token == syntel_statement_separator)
           elseif (style == 'readable_long') then
             action_inc_indent =
-              action_inc_indent or
-              (prev_token == syntel_start_table) or
-              (next_token == syntel_start_table)
+              (prev_token == syntel_start_table)
             action_dec_indent =
-              action_dec_indent or
-              (prev_token == syntel_end_table) or
               (next_token == syntel_end_table)
             local is_empty_table =
               (prev_token == syntel_start_table) and
@@ -162,10 +190,10 @@ do
           Output:Write(space)
         end
         if action_inc_indent then
-          Indent:Inc()
+          inc_indent(Me)
         end
         if action_dec_indent then
-          Indent:Dec()
+          dec_indent(Me)
         end
         if action_emit_newline then
           Output:Write(newline)
@@ -210,6 +238,8 @@ do
     {
       create = create,
       Write = write,
+      IncIndent = inc_indent,
+      DecIndent = dec_indent,
     }
 end
 
@@ -217,6 +247,6 @@ end
 return Interface
 
 --[[
-  2026 # # #
-  2026-09-24
+  2026 # # # #
+  2026-10-20
 ]]

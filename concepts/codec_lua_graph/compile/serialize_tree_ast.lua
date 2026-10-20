@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-29
+  Last mod.: 2026-10-20
 ]]
 
 local type_name
@@ -122,12 +122,14 @@ do
 
           if skip_key_serialization then
             next_integer_key = key_value + 1
+            serialize_value(Settings, Value)
           else
             serialize_index(Settings, Key)
             Output:Write(assign)
+            Output:IncIndent()
+            serialize_value(Settings, Value)
+            Output:DecIndent()
           end
-
-          serialize_value(Settings, Value)
 
           wrote_something = true
 
@@ -148,4 +150,5 @@ return serialize_value
 
 --[[
   2026 # # # # # # # #
+  2026-10-20
 ]]

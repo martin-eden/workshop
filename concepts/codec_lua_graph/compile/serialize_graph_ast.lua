@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-27
+  Last mod.: 2026-10-20
 ]]
 
 local Syntels = request('Syntels')
@@ -75,7 +75,9 @@ do
           Output:Write(kw_local)
           Output:Write(name)
           Output:Write(assign)
+          Output:IncIndent()
           serialize_value(Settings, Value)
+          Output:DecIndent()
         elseif (rec_type == type_assignment) then
           local dest_name = Rec[2]
           local Index = Rec[3]
@@ -84,12 +86,16 @@ do
           Output:Write(dest_name)
           serialize_index(Settings, Index)
           Output:Write(assign)
+          Output:IncIndent()
           Output:Write(src_name)
+          Output:DecIndent()
         elseif (rec_type == type_return) then
           local Value = Rec[2]
 
           Output:Write(kw_return)
+          Output:IncIndent()
           serialize_value(Settings, Value)
+          Output:DecIndent()
         end
 
         Output:Write(statement_separator)
