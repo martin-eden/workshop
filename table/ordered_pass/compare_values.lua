@@ -2,20 +2,29 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-28
+  Last mod.: 2026-10-20
+]]
+
+--[[
+  Contract
+
+    * Compares two values of any Lua types
+    * Strings have highest priority
+    * Values are ordered
+      * String and number values are sorted by ascending
 ]]
 
 local TypeRank_Map =
   {
-    ['number'] = 1,
-    ['string'] = 2,
+    ['string'] = 1,
+    ['number'] = 2,
     other = 3,
   }
 
 local ComparableTypes_Map =
   {
-    ['number'] = true,
     ['string'] = true,
+    ['number'] = true,
   }
 
 -- Export:
@@ -39,5 +48,8 @@ return
   end
 
 --[[
+  2016 #
+  2017 #
   2026-05-23
+  2026-10-20
 ]]
