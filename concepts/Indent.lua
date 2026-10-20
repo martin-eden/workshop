@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-24
+  Last mod.: 2026-10-20
 ]]
 
 --[[
@@ -10,6 +10,30 @@
 
     1 [s] Indent chunk
     2 [t] Range point with current indent level
+]]
+
+--[[
+  That's amazing how verbose seemingly simple things are
+  becoming in practice.
+]]
+
+--[[
+  Concept
+
+  Imagine it as "Tab" key which emits <Cur> chunks:
+
+     Min     Cur                                     Max
+    |---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+  Design
+
+  We're exporting many methods because it needs to be customizable.
+  And each field is two methods ("get" and "set").
+
+  Implementation
+
+  For ( min cur max ) we're using [RangePoint].
+  String with indent chunk is ours.
 ]]
 
 local get_indent_chunk =
@@ -30,6 +54,16 @@ local get_indent_level =
 local set_indent_level =
   function(Me, level)
     Me[2]:SetValue(level)
+  end
+
+local get_max_indent_level =
+  function(Me)
+    return Me[2]:GetMaxValue()
+  end
+
+local set_max_indent_level =
+  function(Me, level)
+    Me[2]:SetMaxValue(level)
   end
 
 local to_string
@@ -55,31 +89,18 @@ local Interface
 local create
 do
   local RangePointClass = request('!.concepts.RangePoint')
-  local default_indent_chunk = '  '
-  local default_min_indent = 0
-  local default_max_indent = 60
+  local min_indent = 0
+  local max_indent = 60
+  local indent_chunk = '  '
   local attach_methods = request('!.table.attach_methods')
   create =
-    function(OptArg)
-      --[[
-        Optional settings
-          [t]
-            ? min [i] min indent level
-            ? max [i] max indent level
-      ]]
-      local min_indent = default_min_indent
-      local max_indent = default_max_indent
-      if OptArg then
-        min_indent = OptArg.min or min_indent
-        max_indent = OptArg.max or max_indent
-      end
-
+    function()
       local RangePoint = RangePointClass.create()
       RangePoint:SetMinValue(min_indent)
       RangePoint:SetMaxValue(max_indent)
       RangePoint:SetValue(min_indent)
 
-      local Core = { default_indent_chunk, RangePoint }
+      local Core = { indent_chunk, RangePoint }
       attach_methods(Core, Interface)
 
       return Core
@@ -95,6 +116,9 @@ Interface =
 
     GetIndentLevel = get_indent_level,
     SetIndentLevel = set_indent_level,
+
+    GetMaxIndentLevel = get_max_indent_level,
+    SetMaxIndentLevel = set_max_indent_level,
 
     ToString = to_string,
 
