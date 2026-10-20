@@ -1,66 +1,79 @@
+-- Serialize table
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
 local oneliner =
-  function(self, node)
-    local printer = self.printer
-    printer:add_curline('{')
-    for i = 1, #node do
-      if (i > 1) then
-        printer:add_curline(', ')
+  function(Me, Node)
+    local Printer = Me.printer
+    Printer:AddToCurline('{ ')
+    for idx, KeyVal in ipairs(Node) do
+      if (idx > 1) then
+        Printer:AddToCurline(', ')
       end
-      local key, value = node[i].key, node[i].value
+      local key = KeyVal.key
       if key then
-        if not self:process_node(key) then
+        if not Me:process_node(key) then
           return
         end
-        printer:add_curline(' = ')
+        Printer:AddToCurline(' = ')
       end
-      if not self:process_node(value) then
+      if not Me:process_node(KeyVal.value) then
         return
       end
     end
-    printer:add_curline('}')
+    Printer:AddToCurline(' }')
     return true
   end
 
 local multiliner =
-  function(self, node)
-    local printer = self.printer
+  function(Me, Node)
+    local printer = Me.printer
 
-    printer:request_clean_line()
-    printer:add_curline('{')
+    printer:RequestCleanLine()
+    printer:AddToCurline('{')
 
-    printer:inc_indent()
-    for i = 1, #node do
-      printer:request_clean_line()
-      local key, value = node[i].key, node[i].value
+    printer:IncIndent()
+    for _, KeyVal in ipairs(Node) do
+      printer:RequestCleanLine()
+      local key, value = KeyVal.key, KeyVal.value
       if key then
-        if not self:process_node(key) then
+        if not Me:process_node(key) then
           return
         end
-        printer:add_curline(' = ')
-        if not self:process_block(value) then
+        printer:AddToCurline(' = ')
+        if not Me:process_block(value) then
           return
         end
-        printer:add_textline(',')
+        printer:AddToTextline(',')
       else
-        if not self:process_node(value) then
+        if not Me:process_node(value) then
           return
         end
-        printer:add_textline(',')
+        printer:AddToTextline(',')
       end
     end
-    printer:dec_indent()
+    printer:DecIndent()
 
-    printer:request_clean_line()
-    printer:add_curline('}')
+    printer:RequestCleanLine()
+    printer:AddToCurline('}')
     return true
   end
 
 return
-  function(self, node)
-    if (#node == 0) then
-      self.printer:add_curline('{}')
+  function(Me, Node)
+    if (#Node == 0) then
+      Me.printer:AddToCurline('{ }')
       return true
     else
-      return self:variate(node, oneliner, multiliner)
+      return Me:variate(Node, oneliner, multiliner)
     end
   end
+
+--[[
+  2016 #
+  2017 # # #
+  2018 #
+]]

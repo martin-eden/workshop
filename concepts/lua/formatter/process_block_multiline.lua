@@ -1,18 +1,29 @@
+-- Serialize block as multiline with prefix and postfix
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
 return
-  function(self, prefix, node, postfix, alternate_handler)
-    local printer = self.printer
+  function(Me, prefix, Node, postfix, opt_handler)
+    local Printer = Me.printer
 
     if prefix then
-      printer:add_curline(prefix)
+      Printer:AddToCurline(prefix)
     end
 
-    printer:request_clean_line()
-    local result = self:process_block(node, alternate_handler)
+    Printer:RequestCleanLine()
+    local result = Me:process_block(Node, opt_handler)
 
     if postfix then
-      printer:request_clean_line()
-      printer:add_curline(postfix)
+      Printer:RequestCleanLine()
+      Printer:AddToCurline(postfix)
     end
 
     return result
   end
+
+--[[
+  2017 # #
+]]

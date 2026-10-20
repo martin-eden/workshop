@@ -1,13 +1,23 @@
-return
-  function(self, node)
-    assert_table(node)
+-- Apply transformation handlers to syntax tree
 
-    for i = 1, #node do
-      self:restruc_nodes(node[i])
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-25
+]]
+
+return
+  function(Me, Node)
+    for _, Subnode in ipairs(Node) do
+      Me:restruc_nodes(Subnode)
     end
 
-    local handler = self.handlers[node.type]
+    local handler = Me.handlers[Node.type]
     if handler then
-      handler(self, node)
+      handler(Me, Node)
     end
   end
+
+--[[
+  2018 #
+  2026-10-25
+]]

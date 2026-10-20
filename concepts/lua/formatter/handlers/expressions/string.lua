@@ -1,21 +1,33 @@
-return
-  function(self, node)
-    --[=[
-       Quite ugly handling indexing [[[s]]] case: convert to [ [[s]]].
+-- Serialize string node
 
-       Pasted from [lua_table.save.install_node_handlers.minimal.
-       Should remove this doubling.
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
+local str_sub = string.sub
+
+return
+  function(Me, Node)
+    --[=[
+      Quite ugly handling indexing [[[s]]] case: convert to [ [[s]]].
     ]=]
-    if not self.printer:on_clean_line() then
-      local text_line = self.printer.line_with_text:get_line()
+    if not Me.printer:OnCleanLine() then
+      local text_line = Me.printer[1]
       if
-        (text_line:sub(-1) == '[') and
-        (node.value:sub(1, 1) == '[')
+        (str_sub(text_line, -1) == '[') and
+        (str_sub(Node.value, 1, 1) == '[')
       then
-        self.printer:add_curline(' ')
+        Me.printer:AddToCurline(' ')
       end
     end
 
-    self.printer:add_curline(node.value)
+    Me.printer:AddToCurline(Node.value)
     return true
   end
+
+--[[
+  2016 #
+  2017 # #
+  2018 #
+]]

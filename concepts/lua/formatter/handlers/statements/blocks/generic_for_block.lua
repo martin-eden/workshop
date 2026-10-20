@@ -1,20 +1,27 @@
+-- Serialize "generic for" statement
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
 --[[
   Layout:
 
     for <names> in <expr_list> do
 ]]
 local header_oneline =
-  function(self, node)
-    local printer = self.printer
-    printer:add_curline('for ')
-    if not self:process_node(node.names) then
+  function(Me, Node)
+    local Printer = Me.printer
+    Printer:AddToCurline('for ')
+    if not Me:process_node(Node.names) then
       return
     end
-    printer:add_curline(' in ')
-    if not self:process_node(node.expr_list) then
+    Printer:AddToCurline(' in ')
+    if not Me:process_node(Node.expr_list) then
       return
     end
-    printer:add_curline(' do')
+    Printer:AddToCurline(' do')
     return true
   end
 
@@ -24,9 +31,9 @@ local header_oneline =
     [...] in <expr_list>
 ]]
 local in_part_oneline =
-  function(self, node)
-    self.printer:add_curline(' in ')
-    return self:process_node(node.expr_list)
+  function(Me, Node)
+    Me.printer:AddToCurline(' in ')
+    return Me:process_node(Node.expr_list)
   end
 
 --[[
@@ -36,11 +43,13 @@ local in_part_oneline =
       <expr_list>
 ]]
 local in_part_multiline =
-  function(self, node)
-    self.printer:add_textline(' in')
+  function(Me, Node)
+    local Printer = Me.printer
 
-    self.printer:request_clean_line()
-    return self:process_block(node.expr_list)
+    Printer:AddToTextline(' in')
+    Printer:RequestCleanLine()
+
+    return Me:process_block(Node.expr_list)
   end
 
 --[[
@@ -51,22 +60,24 @@ local in_part_multiline =
     do
 ]]
 local header_multiline =
-  function(self, node)
-    local printer = self.printer
-    printer:add_curline('for')
+  function(Me, Node)
+    local Printer = Me.printer
 
-    printer:request_clean_line()
-    printer:inc_indent()
-    if not self:process_node(node.names) then
+    Printer:AddToCurline('for')
+
+    Printer:RequestCleanLine()
+    Printer:IncIndent()
+    if not Me:process_node(Node.names) then
       return
     end
-    if not self:variate(node, in_part_oneline, in_part_multiline) then
+    if not Me:variate(Node, in_part_oneline, in_part_multiline) then
       return
     end
-    printer:dec_indent()
+    Printer:DecIndent()
 
-    printer:request_clean_line()
-    printer:add_curline('do')
+    Printer:RequestCleanLine()
+    Printer:AddToCurline('do')
+
     return true
   end
 
@@ -78,26 +89,31 @@ local header_multiline =
     end
 ]]
 local multiliner =
-  function(self, node)
-    local printer = self.printer
+  function(Me, Node)
+    local Printer = Me.printer
 
-    printer:request_clean_line()
-    if not self:variate(node, header_oneline, header_multiline) then
+    Printer:RequestCleanLine()
+    if not Me:variate(Node, header_oneline, header_multiline) then
       return
     end
 
-    printer:request_clean_line()
-    if not self:process_block(node.body) then
+    Printer:RequestCleanLine()
+    if not Me:process_block(Node.body) then
       return
     end
 
-    printer:request_clean_line()
-    printer:add_curline('end')
+    Printer:RequestCleanLine()
+    Printer:AddToCurline('end')
 
     return true
   end
 
 return
-  function(self, node)
-    return self:variate(node, nil, multiliner)
+  function(Me, Node)
+    return Me:variate(Node, nil, multiliner)
   end
+
+--[[
+  2016 #
+  2017 # # #
+]]

@@ -1,16 +1,19 @@
-local transform_ast = request('!.concepts.lua.transform_ast')
+-- Run formatter
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-24
+]]
 
 return
-  function(self)
-    self.data_struc =
-      transform_ast(
-        self.data_struc,
-        {
-          keep_comments = self.keep_comments,
-          keep_unparsed_tail = self.keep_unparsed_tail,
-        }
-      )
-    self.is_ok = self:process_node(self.data_struc)
+  function(Me)
+    Me.is_ok = Me:process_node(Me.data_struc)
 
-    return self:get_result()
+    return Me:get_result()
   end
+
+--[[
+  2018 #
+  2026 #
+  2026-10-24
+]]

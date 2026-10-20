@@ -1,18 +1,30 @@
-local multiliner =
-  function(self, node)
-    local printer = self.printer
+-- Serialize function
 
-    printer:request_clean_line()
-    printer:add_curline('function')
-    if not self:process_node(node.params) then
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
+local multiliner =
+  function(Me, Node)
+    local Printer = Me.printer
+
+    Printer:RequestCleanLine()
+    Printer:AddToCurline('function')
+    if not Me:process_node(Node.params) then
       return
     end
 
-    printer:request_clean_line()
-    return self:process_block_multiline(nil, node.body, 'end')
+    Printer:RequestCleanLine()
+    return Me:process_block_multiline(nil, Node.body, 'end')
   end
 
 return
-  function(self, node)
-    return self:variate(node, nil, multiliner)
+  function(Me, Node)
+    return Me:variate(Node, nil, multiliner)
   end
+
+--[[
+  2016 #
+  2017 # # #
+]]

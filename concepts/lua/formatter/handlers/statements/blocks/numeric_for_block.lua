@@ -1,23 +1,37 @@
+-- Serialize "numeric for" statement
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-24
+]]
+
 return
-  function(self, node)
-    self.printer:add_curline('for ')
-    if not self:process_node(node.index) then
+  function(Me, Node)
+    local Printer = Me.printer
+
+    Printer:AddToCurline('for ')
+    if not Me:process_node(Node.index) then
       return
     end
-    self.printer:add_curline(' = ')
-    if not self:process_node(node.start_val) then
+    Printer:AddToCurline(' = ')
+    if not Me:process_node(Node.start_val) then
       return
     end
-    self.printer:add_curline(', ')
-    if not self:process_node(node.end_val) then
+    Printer:AddToCurline(', ')
+    if not Me:process_node(Node.end_val) then
       return
     end
-    if node.increment then
-      self.printer:add_curline(', ')
-      if not self:process_node(node.increment) then
+    if Node.increment then
+      Printer:AddToCurline(', ')
+      if not Me:process_node(Node.increment) then
         return
       end
     end
-    self.printer:add_curline(' ')
-    return self:process_block_multiline('do', node.body, 'end')
+    Printer:AddToCurline(' ')
+    return Me:process_block_multiline('do', Node.body, 'end')
   end
+
+--[[
+  2016 #
+  2017 # #
+]]

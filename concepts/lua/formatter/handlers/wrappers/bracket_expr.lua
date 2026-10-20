@@ -1,29 +1,42 @@
+-- Serialize bracketed index
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
 local oneliner =
-  function(self, node)
-    self.printer:add_curline('[')
-    if not self:process_node(node[1]) then
+  function(Me, Node)
+    Me.printer:AddToCurline('[')
+    if not Me:process_node(Node[1]) then
       return
     end
-    self.printer:add_curline(']')
+    Me.printer:AddToCurline(']')
     return true
   end
 
 local multiliner =
-  function(self, node)
-    self.printer:add_curline('[')
+  function(Me, Node)
+    Me.printer:AddToCurline('[')
 
-    self.printer:request_clean_line()
-    if not self:process_block(node[1]) then
+    Me.printer:RequestCleanLine()
+    if not Me:process_block(Node[1]) then
       return
     end
 
-    self.printer:request_clean_line()
-    self.printer:add_curline(']')
+    Me.printer:RequestCleanLine()
+    Me.printer:AddToCurline(']')
 
     return true
   end
 
 return
-  function(self, node)
-    return self:variate(node, oneliner, multiliner)
+  function(Me, Node)
+    return Me:variate(Node, oneliner, multiliner)
   end
+
+--[[
+  2016 #
+  2017 # #
+  2018 #
+]]

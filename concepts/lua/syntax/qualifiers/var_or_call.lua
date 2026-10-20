@@ -1,15 +1,20 @@
+-- Variable reference or function call grammar
+
 --[[
-  Variable reference or function call grammar.
+  Author: Martin Eden
+  Last mod.: 2026-10-20
+]]
 
-  <var_or_call>:
+--[[
+  <var_or_call>
 
-    -+- <name> ---------+-+----------------------------------------+-
-     +- "(" <expr> ")" -+ | -------------------------------------- |
-                          | V                                    | |
-                          +---+- "[" <expr> "]" ---------------+-+-+
-                              +- "." <name> -------------------+
-                              +-+--------------+- <func_args> -+
-                                +- ":" <name> -+
+    ─┬─── name ───┬─┬──────────────────────────────────┬─
+     └─ ( expr ) ─┘ │ ┌──────────────────────────────┐ │
+                    │ ▼                              │ │
+                    └───┬── [ expr ] ──────────────┬─┴─┘
+                        ├── . name ────────────────┤
+                        └─┬──────────┬─ func_args ─┘
+                          └─ : name ─┘
 
   Examples:
 
@@ -50,7 +55,11 @@ return
       cho(
         bracket_expr,
         dot_name,
-        {opt(colon_name), func_args}
+        { opt(colon_name), func_args }
       )
     ),
   }
+
+--[[
+  2018 # #
+]]

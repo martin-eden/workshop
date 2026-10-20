@@ -1,5 +1,18 @@
+-- Serialize method name
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
 return
-  function(self, node)
-    self.printer:add_curline(':')
-    return self:process_node(node[1])
+  function(Me, Node)
+    Me.printer:AddToCurline(':')
+    return Me:process_node(Node[1])
   end
+
+--[[
+  2016 #
+  2017 #
+  2018 #
+]]

@@ -1,23 +1,30 @@
+-- Lua statements grammar
+
 --[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
 
-  <statements>:
+--[[
+  <statements>
 
-    -+-------------------------------+---+----------------------+---+-------------+-
-     | ----------------------------- |   +- <return_statement> -+   +- <opt_spc> -+
-     | V                           / |
-     +---+- <assign_or_call> ----+---+
-         +- <named_function> ----+
-         +- <empty_statement> ---+
-         +- <label_statement> ---+
-         +- <goto_statement> ----+
-         +- <local_statement> ---+
-         +- <break_statement> ---+
-         +- <do_block> ----------+
-         +- <if_block> ----------+
-         +- <while_block> -------+
-         +- <repreat_block> -----+
-         +- <generic_for_block> -+
-         +- <numeric_for_block> -+
+    ─┬─────────────────────────────┬─┬────────────────────┬─
+     │ ┌─────────────────────────┐ │ └─ return_statement ─┘
+     │ ▼                         │ │
+     └───┬─────────────────────┬─┴─┘
+         ├─ assign_or_call ────┤
+         ├─ named_function ────┤
+         ├─ empty_statement ───┤
+         ├─ label_statement ───┤
+         ├─ goto_statement ────┤
+         ├─ local_statement ───┤
+         ├─ break_statement ───┤
+         ├─ do_block ──────────┤
+         ├─ if_block ──────────┤
+         ├─ while_block ───────┤
+         ├─ repeat_block ──────┤
+         ├─ generic_for_block ─┤
+         └─ numeric_for_block ─┘
 ]]
 
 local handy = request('!.mechs.processor.handy')
@@ -49,6 +56,7 @@ return
     name = 'statements',
     inner_name = 'statements',
     opt_rep(
+      opt_spc,
       cho(
         assign_or_call,
         named_function,
@@ -67,24 +75,16 @@ return
         numeric_for_block
       )
     ),
+    opt_spc,
     opt(return_statement),
     opt_spc,
   }
 
 --[[
-2013-07-08
-2013-07-09
-2013-07-10
-2013-07-15
-2013-12-23
-2016-07-26
-2016-07-27
-2016-08-03
-2016-08-04
-2016-08-16
-2016-09-21
-2017-08-28
-2018-01-23
-2018-02-07
-2018-05-23
+  2013 # # # # #
+  2016 # # # # # #
+  2017 #
+  2018 # # #
+  2026-10-22
+  2026-10-23
 ]]

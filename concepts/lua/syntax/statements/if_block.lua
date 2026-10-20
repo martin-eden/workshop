@@ -1,8 +1,16 @@
+-- "if" statement syntax
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
+local opt_spc = request('^.words.opt_spc')
+local word = request('^.words.word')
+
 local handy = request('!.mechs.processor.handy')
 local opt = handy.opt
 local opt_rep = handy.opt_rep
-
-local word = request('^.words.word')
 
 return
   {
@@ -11,24 +19,30 @@ return
       name = 'if_part',
       word('if'),
       '>expression',
-      word('then'),
+      opt_spc, word('then'),
       '>statements',
     },
     opt_rep(
       {
         name = 'elseif_part',
-        word('elseif'),
+        opt_spc, word('elseif'),
         '>expression',
-        word('then'),
+        opt_spc, word('then'),
         '>statements',
       }
     ),
     opt(
       {
         name = 'else_part',
-        word('else'),
+        opt_spc, word('else'),
         '>statements',
       }
     ),
-    word('end'),
+    opt_spc, word('end'),
   }
+
+--[[
+  2016 #
+  2018 # #
+  2026-10-23
+]]

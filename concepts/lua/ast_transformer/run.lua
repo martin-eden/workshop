@@ -1,17 +1,24 @@
+-- Transform syntax tree for forecoming formatting routines
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-25
+]]
+
 return
-  function(self)
-    assert_table(self.data_struc)
+  function(Me, SyntaxTree)
+    local Result = SyntaxTree
 
-    local result = self.data_struc
-
-    if self.keep_comments then
-      self:move_comments()
+    for subnode_index in ipairs(Result) do
+      Me:align_nodes(Result, subnode_index)
     end
-    self:align_nodes(result)
-    self:restruc_nodes(result)
-    if not self.keep_unparsed_tail then
-      result.unparsed_tail = nil
-    end
+    Me:restruc_nodes(Result)
 
-    return result
+    return Result
   end
+
+--[[
+  2018 # #
+  2026 # #
+  2026-10-25
+]]

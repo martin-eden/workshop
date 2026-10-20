@@ -1,23 +1,27 @@
+-- Expression grammar
+
 --[[
-  Expression grammar.
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
 
-  <expression>:
+--[[
+  <expression>
 
-    -+---------------+---+- ... -----------+---+-----------------------------+-
-     | ------------- |   +- <nil> ---------+   | --------------------------- |
-     | V           / |   +- <boolean>------+   | V                         / |
-     +--- <un_op> ---+   +- <number> ------+   +--- <bin_op> <expression> ---+
-                         +- <string> ------+
-                         +- <table> -------+
-                         +- <function> ----+
-                         +- <var_or_call> -+
+    ─┬─────────────┬─┬─ ... ─────────┬─┬───────────────────────────┬─
+     │ ┌─────────┐ │ ├─ nil ─────────┤ │ ┌───────────────────────┐ │
+     │ ▼         │ │ ├─ boolean ─────┤ │ ▼                       │ │
+     └─── un_op ─┴─┘ ├─ number ──────┤ └─── bin_op ─ expression ─┴─┘
+                     ├─ string ──────┤
+                     ├─ table ───────┤
+                     ├─ function ────┤
+                     └─ var_or_call ─┘
 ]]
 
 local handy = request('!.mechs.processor.handy')
 local opt_rep = handy.opt_rep
 local cho = handy.cho
 
-local un_op = request('expression.un_op')
 local vararg = request('words.vararg')
 local type_nil = request('type_nil')
 local type_boolean = request('type_boolean')
@@ -26,13 +30,46 @@ local type_string = request('type_string')
 local type_table = request('type_table')
 local type_function = request('type_function')
 local var_or_call = request('qualifiers.var_or_call')
-local bin_op = request('expression.bin_op')
+
+local opt_spc = request('words.opt_spc')
+
+local match_regexp = request('!.mechs.parser.handy').match_regexp
+local word = request('words.word')
+
+local UnaryOperator =
+  {
+    name = 'un_op',
+    cho(
+      match_regexp('[%-%#%~]'),
+      word('not')
+    ),
+  }
+
+-- Longer items should come before shorter items with same prefix
+local BinaryOperator =
+  {
+    name = 'bin_op',
+    cho(
+      '//',
+      '==',
+      '~=',
+      '<<',
+      '<=',
+      '>>',
+      '>=',
+      '..',
+      match_regexp('[%+%-%*%/%^%%%&%~%|%<%>]'),
+      word('and'),
+      word('or')
+    ),
+  }
 
 return
   {
     name = 'expression',
     inner_name = 'expression',
-    opt_rep(un_op),
+    opt_rep(opt_spc, UnaryOperator),
+    opt_spc,
     cho(
       vararg,
       type_nil,
@@ -43,8 +80,13 @@ return
       type_function,
       var_or_call
     ),
-    opt_rep(
-      bin_op,
-      '>expression'
-    )
+    opt_rep(opt_spc, BinaryOperator, '>expression')
   }
+
+--[[
+  2016 #
+  2017 # #
+  2018 # # # # #
+  2026-10-22
+  2026-10-23
+]]

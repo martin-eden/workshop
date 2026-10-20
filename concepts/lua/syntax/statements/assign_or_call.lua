@@ -1,3 +1,10 @@
+-- Grammar for "assign or call"
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-25
+]]
+
 local handy = request('!.mechs.processor.handy')
 local opt = handy.opt
 local opt_rep = handy.opt_rep
@@ -16,3 +23,8 @@ return
       expr_list
     ),
   }
+
+--[[
+  2018 #
+  2026-10-25
+]]

@@ -1,40 +1,38 @@
+-- Serialize global function
+
 --[[
-  Represent global gunction defined like
-
-    function somename.bla.bla:bla(args)
-
-  Layout ("--" means empty line):
-
-    --
-    function <dotted_name><colon_name><params>
-      <body>
-    end
-    --
+  Author: Martin Eden
+  Last mod.: 2026-10-25
 ]]
 
 return
-  function(self, node)
-    local printer = self.printer
+  function(Me, Node)
+    local Printer = Me.printer
 
-    printer:request_empty_line()
-    printer:add_curline('function ')
-    if not self:process_node(node.dotted_name) then
+    Printer:RequestEmptyLine()
+    Printer:AddToCurline('function ')
+    if not Me:process_node(Node.dotted_name) then
       return
     end
-    if node.colon_name then
-      if not self:process_node(node.colon_name) then
+    if Node.colon_name then
+      if not Me:process_node(Node.colon_name) then
         return
       end
     end
-    if not self:process_node(node.params) then
+    if not Me:process_node(Node.params) then
       return
     end
 
-    printer:request_clean_line()
-    if not self:process_block_multiline(nil, node.body, 'end') then
+    Printer:RequestCleanLine()
+    if not Me:process_block_multiline(nil, Node.body, 'end') then
       return
     end
 
-    printer:request_empty_line()
+    Printer:RequestEmptyLine()
     return true
   end
+
+--[[
+  2016 #
+  2017 # # # #
+]]

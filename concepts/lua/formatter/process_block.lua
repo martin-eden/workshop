@@ -1,12 +1,23 @@
+-- Serialize node as block (in indent)
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
 return
-  function(self, node, alternate_handler)
+  function(Me, Node, handler)
     local result
-    self.printer:inc_indent()
-    if alternate_handler then
-      result = alternate_handler(self, node)
+    Me.printer:IncIndent()
+    if handler then
+      result = handler(Me, Node)
     else
-      result = self:process_node(node)
+      result = Me:process_node(Node)
     end
-    self.printer:dec_indent()
+    Me.printer:DecIndent()
     return result
   end
+
+--[[
+  2017 #
+]]

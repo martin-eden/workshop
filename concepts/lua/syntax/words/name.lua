@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-18
+  Last mod.: 2026-10-22
 ]]
 
 --[[
@@ -19,48 +19,45 @@
   but this is less effective in practical sense.
 ]]
 
--- Imports:
-local match_regexp = request('!.mechs.parser.handy').match_regexp
 local opt_spc = request('opt_spc')
 
-local name_pattern = '^[_A-Za-z][_A-Za-z0-9]*'
-
-local Keywords_Map
+local is_name
 do
-  -- Imports:
-  local Keywords = request('!.concepts.lua.Keywords')
-  local map_values = request('!.table.map_values')
+  local name_pattern = '^[_A-Za-z][_A-Za-z0-9]*'
 
-  Keywords_Map = map_values(Keywords)
-end
-
-local is_name =
-  function(StreamIn, StreamOut)
-    local init_pos = StreamIn:get_position()
-
-    if StreamIn:match_regexp(name_pattern) then
-      local capture =
-        StreamIn:get_segment(
-          init_pos,
-          StreamIn:get_position() - init_pos
-        )
-
-      if not Keywords_Map[capture] then
-        return true
-      else
-        StreamIn:set_position(init_pos)
-        return false
-      end
-    end
+  local Keywords_Map
+  do
+    local Keywords = request('!.concepts.lua.Keywords')
+    local map_values = request('!.table.map_values')
+    Keywords_Map = map_values(Keywords)
   end
 
-local Name_Grammar = { name = 'name', opt_spc, is_name }
+  is_name =
+    function(StreamIn, StreamOut)
+      local init_pos = StreamIn:get_position()
+
+      if StreamIn:match_regexp(name_pattern) then
+        local capture =
+          StreamIn:get_segment(
+            init_pos,
+            StreamIn:get_position() - init_pos
+          )
+
+        if not Keywords_Map[capture] then
+          return true
+        else
+          StreamIn:set_position(init_pos)
+          return false
+        end
+      end
+    end
+end
 
 -- Export:
-return Name_Grammar
+return { opt_spc, { name = 'name', is_name } }
 
 --[[
-  2017
-  2018
+  2017 #
+  2018 #
   2026-06-18
 ]]
