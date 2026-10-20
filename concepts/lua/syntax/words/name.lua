@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-18
+  Last mod.: 2026-10-20
 ]]
 
 --[[
@@ -54,7 +54,7 @@ local is_name =
     end
   end
 
-local Name_Grammar = { name = 'name', opt_spc, is_name }
+local Name_Grammar = { opt_spc, { name = 'name', is_name } }
 
 -- Export:
 return Name_Grammar
