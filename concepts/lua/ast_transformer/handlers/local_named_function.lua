@@ -1,17 +1,29 @@
+-- Resturcture "local_named_function"
+
 --[[
-      <dot_list>
-      <function_params>
-  opt <statements>
+  Author: Martin Eden
+  Last mod.: 2026-10-21
+]]
+
+--[[
+  "local_named_function" type is generated in align_nodes()
+
+  It's "named_function" lifted from "local_statement".
 ]]
 
 return
-  function(self, node)
-    node.dotted_name = node[1]
-    node[1] = nil
+  function(Me, Node)
+    Node.dotted_name = Node[1]
+    Node[1] = nil
 
-    node.params = node[2]
-    node[2] = nil
+    Node.params = Node[2]
+    Node[2] = nil
 
-    node.body = node[3]
-    node[3] = nil
+    Node.body = Node[3]
+    Node[3] = nil
   end
+
+--[[
+  2018 #
+  2026-10-21
+]]
