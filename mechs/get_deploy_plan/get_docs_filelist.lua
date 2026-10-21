@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-23
+  Last mod.: 2026-10-21
 ]]
 
 --[[
@@ -48,9 +48,10 @@ return
     local ProcessedDirectories_Map = { }
 
     for _, module_pathname in ipairs(FilesList) do
+      local module_dirname = get_host_dir(module_pathname)
+
       if ProcessedDirectories_Map[module_dirname] then goto next end
 
-      local module_dirname = get_host_dir(module_pathname)
       local Files = get_files_list(module_dirname)
 
       for _, filename in ipairs(Files) do
@@ -70,6 +71,6 @@ return
 --[[
   2018 #
   2024 # #
-  2026 # #
-  2026-09-23
+  2026 # # #
+  2026-10-21
 ]]
