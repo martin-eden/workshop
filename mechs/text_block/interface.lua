@@ -2,7 +2,25 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-07-05
+  Last mod.: 2026-10-21
+]]
+
+--[[
+  Architecture defect
+
+  [line] indent is set at initialization time, not when we need text.
+
+  So in bad scenario we're setting indent (low), then increasing it
+  (it increases indent in this module, not in line instance),
+  then adding text to line and getting line text back.
+
+  Line text will be with initial (low) indent.
+
+  I think we should just remove indent concept from line, track it here.
+  And prepend final result with our current indent.
+
+  Discovered in process of relinking Lua code formatter to
+  this module.
 ]]
 
 local Interface =
