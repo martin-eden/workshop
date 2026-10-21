@@ -1,3 +1,10 @@
+-- Run formatter
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-21
+]]
+
 local transform_ast = request('!.concepts.lua.transform_ast')
 
 return
@@ -6,7 +13,6 @@ return
       transform_ast(
         self.data_struc,
         {
-          keep_comments = self.keep_comments,
           keep_unparsed_tail = self.keep_unparsed_tail,
         }
       )
@@ -14,3 +20,8 @@ return
 
     return self:get_result()
   end
+
+--[[
+  2018 #
+  2026-10-21
+]]

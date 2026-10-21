@@ -1,10 +1,16 @@
+-- AST formatter
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-21
+]]
+
 return
   {
     right_margin = 80,
     max_text_width = 68,
     indent_chunk = '  ',
 
-    keep_comments = true,
     keep_unparsed_tail = true,
 
     data_struc = nil,
@@ -39,4 +45,11 @@ return
     viewing in editor.
   <right_margin> limits length of line with indent. Setting it
     makes sense for printring.
+]]
+
+--[[
+  2016 #
+  2017 # # #
+  2018 #
+  2026-10-21
 ]]

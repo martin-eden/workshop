@@ -11,9 +11,6 @@ return
 
     local Result = Me.data_struc
 
-    if Me.keep_comments then
-      Me:move_comments()
-    end
     for subnode_index in ipairs(Result) do
       Me:align_nodes(Result, subnode_index)
     end
