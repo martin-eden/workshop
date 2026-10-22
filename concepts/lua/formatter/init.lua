@@ -1,8 +1,22 @@
-return
-  function(self)
-    self.printer.indent_chunk = self.indent_chunk
-    self.printer:init()
-    self.state_keeper:init()
+-- Initialize formatter
 
-    assert_table(self.data_struc)
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-22
+]]
+
+local TextBlock = request('!.mechs.TextBlock')
+
+return
+  function(Me)
+    Me.printer = TextBlock.create(Me.indent_chunk)
+    Me.state_keeper:init()
+
+    assert_table(Me.data_struc)
   end
+
+--[[
+  2016 #
+  2017 # # #
+  2018 #
+]]
