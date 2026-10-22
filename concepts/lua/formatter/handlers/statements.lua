@@ -1,24 +1,36 @@
---[[
-  Handle sequence of statements.
+-- Serialize sequence of statements
 
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-22
+]]
+
+--[[
   Each statement starts with new line, except <empty_statement> ";".
 ]]
 
 local multiliner =
-  function(self, node)
-    local printer = self.printer
-    for i = 1, #node do
-      if (node[i].type ~= 'empty_statement') then
-        self.printer:request_clean_line()
+  function(Me, Node)
+    local Printer = Me.printer
+
+    for _, Subnode in ipairs(Node) do
+      if (Subnode.type ~= 'empty_statement') then
+        Printer:RequestCleanLine()
       end
-      if not self:process_node(node[i]) then
+      if not Me:process_node(Node[i]) then
         return
       end
     end
+
     return true
   end
 
 return
-  function(self, node)
-    return self:variate(node, nil, multiliner)
+  function(Me, Node)
+    return Me:variate(Node, nil, multiliner)
   end
+
+--[[
+  2016 #
+  2017 # # # #
+]]
