@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-21
+  Last mod.: 2026-10-22
 ]]
 
 return
@@ -20,7 +20,7 @@ return
     run = request('run'),
     get_result = request('get_result'),
 
-    printer = request('!.mechs.text_block.interface'),
+    printer = { },
     state_keeper = request('state_keeper.interface'),
 
     handlers = request('handlers.interface'),
