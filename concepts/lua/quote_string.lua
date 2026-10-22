@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-29
+  Last mod.: 2026-10-22
 ]]
 
 --[[
@@ -13,8 +13,6 @@
   we're using directed fancy quotes "[===[" and "]===]" with
   amount of "="'s determined in situ.
 ]]
-
-local newline_code = request('!.concepts.Ascii.Codes').newline
 
 local BinaryEntitiesLengths_Map =
   { [1] = true, [2] = true, [4] = true, [8] = true }
@@ -42,7 +40,7 @@ do
   has_messy_control_chars =
     function(UsedChars)
       for code in pairs(UsedChars) do
-        if is_control_code(code) and (code ~= newline_code) then
+        if is_control_code(code) then
           return true
         end
       end
@@ -75,7 +73,6 @@ return
       has_messy_control_chars(UsedChars_Map)
 
     local str_has_messy_printable_chars =
-      UsedChars_Map[newline_code] or
       UsedChars_Map[backslash_code] or
       (
         UsedChars_Map[single_quote_code] and
@@ -121,4 +118,5 @@ return
   2017 #
   2024 #
   2026 # # #
+  2026-10-22
 ]]
