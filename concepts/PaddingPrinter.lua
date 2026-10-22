@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-20
+  Last mod.: 2026-10-22
 ]]
 
 --[[
@@ -31,21 +31,10 @@ do
     end
 end
 
-local write
-do
-  local it_lines = request('!.string.lines')
-  write =
-    function(Me, str)
-      local is_first_line = true
-      for _, line in it_lines(str) do
-        if not is_first_line then
-          newline(Me)
-        end
-        Me[2]:Write(line)
-        is_first_line = false
-      end
-    end
-end
+local write =
+  function(Me, str)
+    Me[2]:Write(str)
+  end
 
 local Interface
 local create
@@ -73,4 +62,5 @@ return Interface
 
 --[[
   2026-10-20
+  2026-10-22
 ]]
