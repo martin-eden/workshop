@@ -1,15 +1,23 @@
-local default_state = {is_multiline_allowed = true, is_last_hope = true}
+-- Looking for good representation
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-22
+]]
+
+local DefaultState = { is_multiline_allowed = true, is_last_hope = true }
 
 return
-  function(self, node, oneliner, multiliner)
-    self.state_keeper:enter_level()
-    local our_state = self.state_keeper:get_state() or default_state
-    local is_multiline_allowed = our_state.is_multiline_allowed
-    local is_last_hope = our_state.is_last_hope
+  function(Me, Node, oneliner, multiliner)
+    Me.state_keeper:enter_level()
+    local OurState = Me.state_keeper:get_state() or DefaultState
+    local is_multiline_allowed = OurState.is_multiline_allowed
+    local is_last_hope = OurState.is_last_hope
+
     --[[
     print(
       'variate',
-      node.type,
+      Node.type,
       oneliner and '1' or '.',
       multiliner and 'M' or '.',
       is_last_hope and 'H' or '.',
@@ -24,59 +32,54 @@ return
       last_hope_handler = oneliner
     end
 
-    local result_representation
-    local has_succeeded = false
-
     local do_represent =
       function(representer, is_multiline)
         local representer_is_last_hope =
-          is_last_hope and
-          (representer == last_hope_handler)
+          is_last_hope and (representer == last_hope_handler)
 
-        self.state_keeper:set_child_state(
+        Me.state_keeper:set_child_state(
           {
             is_multiline_allowed = is_multiline,
             is_last_hope = representer_is_last_hope,
           }
         )
 
-        local trial_representation, has_failed =
-          self:represent(representer, node)
+        local TrialRepresentation, has_failed = Me:represent(representer, Node)
+
         if
           representer_is_last_hope or
           (
             not has_failed and
-            self:representation_is_allowed(trial_representation)
+            Me:representation_is_allowed(TrialRepresentation)
           )
         then
-          result_representation = trial_representation
-          has_succeeded = true
+          return TrialRepresentation
         end
       end
 
+    local FinalRepresentation
+
     if oneliner then
-      do_represent(oneliner, false)
+      FinalRepresentation = do_represent(oneliner, false)
     end
     if
-      not result_representation and
+      not FinalRepresentation and
       multiliner and
       is_multiline_allowed
     then
-      do_represent(multiliner, true)
+      FinalRepresentation = do_represent(multiliner, true)
     end
 
-    if result_representation then
-      if not self.printer:on_clean_line() then
-        --[[
-          Current line is already in result as it was added
-          in represent(). So remove it before concat with result.
-        ]]
-        self.printer.line_with_text.text = ''
-      end
-      self.printer:include(result_representation, true)
+    if FinalRepresentation then
+      Me.printer:AddInstance(FinalRepresentation)
     end
 
-    self.state_keeper:leave_level()
+    Me.state_keeper:leave_level()
 
-    return has_succeeded
+    return not is_nil(FinalRepresentation)
   end
+
+--[[
+  2017 # # # #
+  2026-10-22
+]]
