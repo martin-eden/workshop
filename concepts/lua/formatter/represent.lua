@@ -1,25 +1,35 @@
-local printer_class = request('!.mechs.text_block.interface')
+-- Print node to our virtual printer
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-22
+]]
+
+--[[
+  We're creating new virtual printer with current settings
+  but without previous text (except "last line with text").
+
+  Then we're calling serializer with that printer.
+
+  We're returning printer's instance. If it's result is accepted
+  it can me merged to higher-level result.
+]]
+
+local TextBlock = request('!.mechs.TextBlock')
 
 return
-  function(self, representer, node)
-    local original = self.printer
+  function(Me, representer, Node)
+    local Original = Me.printer
+    local Trial = Original:SpawnContinuation()
 
-    local trial = new(printer_class)
+    Me.printer = Trial
+    local has_failed = not representer(Me, Node)
+    Me.printer = Original
 
-    trial.indent_chunk = original.indent_chunk
-    trial:init()
-
-    trial.line_with_text.indent = original.line_with_text.indent
-    if not original:on_clean_line() then
-      trial.line_with_text.text = original.line_with_text.text
-    end
-
-    trial.next_line_indent = original.next_line_indent
-
-    self.printer = trial
-    local has_failed = not representer(self, node)
-    self.printer = original
-
-    return trial, has_failed
+    return Trial, has_failed
   end
 
+--[[
+  2017 # #
+  2026-10-22
+]]
