@@ -8,7 +8,7 @@
 local oneliner =
   function(Me, Node)
     local Printer = Me.printer
-    Printer:AddToCurline('{')
+    Printer:AddToCurline('{ ')
     for idx, KeyVal in ipairs(Node) do
       if (idx > 1) then
         Printer:AddToCurline(', ')
@@ -24,7 +24,7 @@ local oneliner =
         return
       end
     end
-    Printer:AddToCurline('}')
+    Printer:AddToCurline(' }')
     return true
   end
 
