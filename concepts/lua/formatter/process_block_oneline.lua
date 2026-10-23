@@ -1,12 +1,23 @@
+-- Serialize block as oneliner with prefix and postfix
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
 return
-  function(self, prefix, node, postfix, alternate_handler)
-    local printer = self.printer
+  function(Me, prefix, Node, postfix, opt_handler)
+    local Printer = Me.printer
     if prefix then
-      printer:add_curline(prefix)
+      Printer:AddToCurline(prefix)
     end
-    local result = self:process_block(node, alternate_handler)
+    local result = Me:process_block(Node, opt_handler)
     if postfix then
-      printer:add_curline(postfix)
+      Printer:AddToCurline(postfix)
     end
     return result
   end
+
+--[[
+  2017 # #
+]]
