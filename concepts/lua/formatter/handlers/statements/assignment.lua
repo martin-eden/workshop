@@ -1,11 +1,23 @@
+-- Serialize assignment
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
 return
-  function(self, node)
-    if not self:process_node(node.dest_list) then
+  function(Me, Node)
+    if not Me:process_node(Node.dest_list) then
       return
     end
-    if node.val_list then
-      self.printer:add_textline(' = ')
-      return self:process_block(node.val_list)
+    if Node.val_list then
+      Me.printer:AddToTextline(' = ')
+      return Me:process_block(Node.val_list)
     end
     return true
   end
+
+--[[
+  2016 #
+  2017 # #
+]]
