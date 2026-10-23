@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-22
+  Last mod.: 2026-10-23
 ]]
 
 return
@@ -34,8 +34,7 @@ return
       return handler(Me, Node)
     else
       local node_value = Node.value
-      assert_string(node_value)
-      Me.printer:add_curline(node_value)
+      Me.printer:AddToCurline(node_value)
       return true
     end
   end
