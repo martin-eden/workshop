@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-22
+  Last mod.: 2026-10-23
 ]]
 
 local DefaultState = { is_multiline_allowed = true, is_last_hope = true }
@@ -13,17 +13,6 @@ return
     local OurState = Me.state_keeper:get_state() or DefaultState
     local is_multiline_allowed = OurState.is_multiline_allowed
     local is_last_hope = OurState.is_last_hope
-
-    --[[
-    print(
-      'variate',
-      Node.type,
-      oneliner and '1' or '.',
-      multiliner and 'M' or '.',
-      is_last_hope and 'H' or '.',
-      is_multiline_allowed
-    )
-    --]]
 
     local last_hope_handler
     if multiliner and is_multiline_allowed then
