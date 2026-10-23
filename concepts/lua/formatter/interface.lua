@@ -8,7 +8,6 @@
 return
   {
     right_margin = 80,
-    max_text_width = 68,
     indent_chunk = '  ',
 
     data_struc = nil,
