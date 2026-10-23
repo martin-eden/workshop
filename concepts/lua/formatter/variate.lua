@@ -60,7 +60,7 @@ return
     end
 
     if FinalRepresentation then
-      Me.printer:AddInstance(FinalRepresentation)
+      Me.printer:Graft(FinalRepresentation)
     end
 
     Me.state_keeper:leave_level()

@@ -20,7 +20,7 @@ local TextBlock = request('!.mechs.TextBlock')
 return
   function(Me, representer, Node)
     local Original = Me.printer
-    local Trial = Original:SpawnContinuation()
+    local Trial = Original:Seed()
 
     Me.printer = Trial
     local has_failed = not representer(Me, Node)
