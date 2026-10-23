@@ -5,7 +5,7 @@
   Last mod.: 2026-10-21
 ]]
 
-local transform_ast = request('!.concepts.lua.transform_ast')
+local transform_ast = request('^.transform_ast')
 
 return
   function(self)
@@ -13,7 +13,6 @@ return
       transform_ast(
         self.data_struc,
         {
-          keep_unparsed_tail = self.keep_unparsed_tail,
         }
       )
     self.is_ok = self:process_node(self.data_struc)

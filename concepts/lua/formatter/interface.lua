@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-22
+  Last mod.: 2026-10-23
 ]]
 
 return
@@ -10,8 +10,6 @@ return
     right_margin = 80,
     max_text_width = 68,
     indent_chunk = '  ',
-
-    keep_unparsed_tail = true,
 
     data_struc = nil,
     is_ok = true,
@@ -40,16 +38,9 @@ return
   }
 
 --[[
-  <max_text_width> limits length of line without indent, i.e.
-    length of text in line. Setting it makes sense for windowed
-    viewing in editor.
-  <right_margin> limits length of line with indent. Setting it
-    makes sense for printring.
-]]
-
---[[
   2016 #
   2017 # # #
   2018 #
   2026-10-21
+  2026-10-23
 ]]

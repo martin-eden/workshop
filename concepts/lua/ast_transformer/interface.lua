@@ -2,13 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-21
+  Last mod.: 2026-10-23
 ]]
 
 return
   {
-    keep_unparsed_tail = true,
-
     data_struc = nil,
     run = request('run'),
 
@@ -20,4 +18,5 @@ return
 --[[
   2018 # # #
   2026-10-21
+  2026-10-23
 ]]
