@@ -1,9 +1,25 @@
+-- Serialize "label" statement
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
 return
-  function(self, node)
-    self.printer:add_curline('::')
-    if not self:process_node(node[1]) then
+  function(Me, Node)
+    local Printer = Me.printer
+
+    Printer:AddToCurline('::')
+    if not Me:process_node(Node[1]) then
       return
     end
-    self.printer:add_curline('::')
+    Printer:AddToCurline('::')
+
     return true
   end
+
+--[[
+  2016
+  2017
+  2018
+]]
