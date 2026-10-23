@@ -1,33 +1,40 @@
+-- Expression serialization
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
 local represent_operand_oneline =
-  function(self, node)
-    local printer = self.printer
-    if node.un_ops then
+  function(Me, Node)
+    local printer = Me.printer
+    if Node.un_ops then
       local cur_un_op, prev_un_op
-      for i = 1, #node.un_ops do
-        cur_un_op = node.un_ops[i]
+      for _, cur_un_op in ipairs(Node.un_ops) do
         if (prev_un_op == '-') and (cur_un_op == '-') then
-          printer:add_curline(' -')
+          -- Avoiding "-" "-" clash to comment "--"
+          printer:AddToCurline(' -')
         elseif (cur_un_op == 'not') then
-          printer:add_curline('not ')
+          printer:AddToCurline('not ')
         else
-          printer:add_curline(cur_un_op)
+          printer:AddToCurline(cur_un_op)
         end
         prev_un_op = cur_un_op
       end
     end
-    if not self:process_node(node.operand) then
+    if not Me:process_node(Node.operand) then
       return
     end
-    if node.bin_op then
-      printer:add_curline(' ' .. node.bin_op .. ' ')
+    if Node.bin_op then
+      printer:AddToCurline(' ' .. Node.bin_op .. ' ')
     end
     return true
   end
 
 local oneliner =
-  function(self, node)
-    for term_idx = 1, #node do
-      if not represent_operand_oneline(self, node[term_idx]) then
+  function(Me, Node)
+    for _, Term in ipairs(Node) do
+      if not represent_operand_oneline(Me, Term) then
         return
       end
     end
@@ -47,22 +54,21 @@ local line_wrap_ops =
   }
 
 local represent_operand_multiline =
-  function(self, node)
-    if not represent_operand_oneline(self, node) then
+  function(Me, Node)
+    if not represent_operand_oneline(Me, Node) then
       return
     end
-    if line_wrap_ops[node.bin_op] then
-      self.printer:request_clean_line()
+    if line_wrap_ops[Node.bin_op] then
+      Me.printer:RequestCleanLine()
     end
     return true
   end
 
 local multiliner =
-  function(self, node)
-    local printer = self.printer
-    printer:request_clean_line()
-    for term_idx = 1, #node do
-      if not represent_operand_multiline(self, node[term_idx]) then
+  function(Me, Node)
+    Me.printer:RequestCleanLine()
+    for _, Term in ipairs(Node) do
+      if not represent_operand_multiline(Me, Term) then
         return
       end
     end
@@ -70,6 +76,12 @@ local multiliner =
   end
 
 return
-  function(self, node)
-    return self:variate(node, oneliner, multiliner)
+  function(Me, Node)
+    return Me:variate(Node, oneliner, multiliner)
   end
+
+--[[
+  2016 #
+  2017 #
+  2026-10-23
+]]
