@@ -6,11 +6,11 @@
 ]]
 
 return
-  function(Me, Node, alternate_handler)
+  function(Me, Node, handler)
     local result
     Me.printer:IncIndent()
-    if alternate_handler then
-      result = alternate_handler(Me, Node)
+    if handler then
+      result = handler(Me, Node)
     else
       result = Me:process_node(Node)
     end
