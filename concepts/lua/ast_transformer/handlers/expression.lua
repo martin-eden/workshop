@@ -1,63 +1,92 @@
+-- Transform expression Node
+
 --[[
-  rep
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
 
-    opt_rep <un_op>
+--[[
+  Sample input ("-42 + -42")
 
-    cho     <vararg>
-            <type_nil>
-            <type_boolean>
-            <type_number>
-            <type_string>
-            <type_table>
-            <type_function>
-            <var_ref>
+    {
+      type = 'expression',
+      { type = 'un_op', '-' },
+      { type = 'number', value = '42' },
+      { type = 'bin_op', value = '+' },
+      {
+        type = 'expression',
+        { type = 'un_op', '-' },
+        { type = 'number', '42' },
+      },
+    }
 
-    opt     <bin_op>
+  Sample output
+
+    {
+      type = 'expression',
+      {
+        operand = { type = 'number', value = '42' },
+        bin_op = '+',
+        un_ops = { '-' },
+      },
+      {
+        operand = { type = 'number', value = '42' },
+        un_ops = { '-' },
+      },
+    }
+
 ]]
 
 local replace = request('!.table.replace')
+local add_to_list = request('!.concepts.list.add_item')
 
 return
-  function(self, node)
-    local result = {}
+  function(Me, Node)
+    local Result = { }
 
     local i = 1
 
-    local n = #node
+    local num_items = #Node
 
-    local term = {}
+    local Term = { }
 
-    if (node[i].type == 'un_op') then
-      local un_ops = {}
-      while (node[i].type == 'un_op') and (i <= n) do
-        un_ops[#un_ops + 1] = node[i].value
-        node[i] = nil
+    if (Node[i].type == 'un_op') then
+      local UnOps = { }
+      while (Node[i].type == 'un_op') and (i <= num_items) do
+        add_to_list(UnOps, Node[i].value)
         i = i + 1
       end
-      term.un_ops = un_ops
+      Term.un_ops = UnOps
     end
 
-    term.operand = node[i]
-    node[i] = nil
+    Term.operand = Node[i]
+    Node[i] = nil
     i = i + 1
 
-    if (i < n) and (node[i].type == 'bin_op') then
-      term.bin_op = node[i].value
-      node[i] = nil
+    if (i < num_items) and (Node[i].type == 'bin_op') then
+      Term.bin_op = Node[i].value
       i = i + 1
     end
 
-    result[#result + 1] = term
+    add_to_list(Result, Term)
 
-    if (i == n) and (node[i].type == 'expression') then
-      -- Last node is already processed record. Due align_nodes() construction.
-      for j = 1, #node[i] do
-        result[#result + 1] = node[i][j]
+    if (i == num_items) then
+      local LastNode = Node[i]
+      if (LastNode.type == 'expression') then
+        -- Child node is already processed record. Due to align_nodes().
+        for _, LastNodeItem in ipairs(LastNode) do
+          add_to_list(Result, LastNodeItem)
+        end
       end
-      node[i] = nil
     end
 
-    result.type = node.type
+    Result.type = Node.type
 
-    replace(node, result)
+    replace(Node, Result)
   end
+
+--[[
+  2016 #
+  2018 # #
+  2026-10-23
+]]
