@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-22
+  Last mod.: 2026-10-23
 ]]
 
 --[[
@@ -17,7 +17,7 @@ local multiliner =
       if (Subnode.type ~= 'empty_statement') then
         Printer:RequestCleanLine()
       end
-      if not Me:process_node(Node[i]) then
+      if not Me:process_node(Subnode) then
         return
       end
     end
