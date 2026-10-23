@@ -1,44 +1,56 @@
+-- Serialize function params (names/vararg list inside "()")
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
 local oneline_delimiter = ', '
 
 local oneliner =
-  function(self, node)
-    self.printer:add_curline('(')
-    if not self:process_list(node, oneline_delimiter) then
+  function(Me, Node)
+    Me.printer:AddToCurline('(')
+    if not Me:process_list(Node, oneline_delimiter) then
       return
     end
-    self.printer:add_curline(')')
+    Me.printer:AddToCurline(')')
     return true
   end
 
 local multiline_delimiter =
-  function(self)
-    self.printer:add_textline(',')
-    self.printer:request_clean_line()
+  function(Me)
+    Me.printer:AddToTextline(',')
+    Me.printer:RequestCleanLine()
   end
 
 local multiline_block_processor =
-  function(self, node)
-    return self:process_list_variative(node, oneline_delimiter, multiline_delimiter)
+  function(Me, Node)
+    return Me:process_list_variative(Node, oneline_delimiter, multiline_delimiter)
   end
 
 local multiliner =
-  function(self, node)
-    self.printer:add_curline('(')
-    self.printer:request_clean_line()
-    if not self:process_block(node, multiline_block_processor) then
+  function(Me, Node)
+    Me.printer:AddToCurline('(')
+    Me.printer:RequestCleanLine()
+    if not Me:process_block(Node, multiline_block_processor) then
       return
     end
-    self.printer:request_clean_line()
-    self.printer:add_curline(')')
+    Me.printer:RequestCleanLine()
+    Me.printer:AddToCurline(')')
     return true
   end
 
 return
-  function(self, node)
-    if (#node == 0) then
-      self.printer:add_curline('()')
+  function(Me, Node)
+    if (#Node == 0) then
+      Me.printer:AddToCurline('()')
       return true
     else
-      return self:variate(node, oneliner, multiliner)
+      return Me:variate(Node, oneliner, multiliner)
     end
   end
+
+--[[
+  2016 #
+  2017 #
+]]
