@@ -1,23 +1,35 @@
+-- Serialize expressions list
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
 local oneline_delimiter = ', '
 
 local oneliner =
-  function(self, node)
-    return self:process_list(node, oneline_delimiter)
+  function(Me, Node)
+    return Me:process_list(Node, oneline_delimiter)
   end
 
 local multiline_delimiter =
-  function(self)
-    self.printer:add_textline(',')
-    self.printer:request_clean_line()
+  function(Me)
+    Me.printer:AddToTextline(',')
+    Me.printer:RequestCleanLine()
   end
 
 local multiliner =
-  function(self, node)
-    self.printer:request_clean_line()
-    return self:process_list_variative(node, oneline_delimiter, multiline_delimiter)
+  function(Me, Node)
+    Me.printer:RequestCleanLine()
+    return Me:process_list_variative(Node, oneline_delimiter, multiline_delimiter)
   end
 
 return
-  function(self, node)
-    return self:variate(node, oneliner, multiliner)
+  function(Me, Node)
+    return Me:variate(Node, oneliner, multiliner)
   end
+
+--[[
+  2016 #
+  2017 #
+]]
