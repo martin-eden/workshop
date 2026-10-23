@@ -1,6 +1,11 @@
---[[
-  Expression grammar.
+-- Expression grammar
 
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-23
+]]
+
+--[[
   <expression>:
 
     -+---------------+---+- ... -----------+---+-----------------------------+-
@@ -28,11 +33,14 @@ local type_function = request('type_function')
 local var_or_call = request('qualifiers.var_or_call')
 local bin_op = request('expression.bin_op')
 
+local opt_spc = request('words.opt_spc')
+
 return
   {
     name = 'expression',
     inner_name = 'expression',
-    opt_rep(un_op),
+    opt_rep(opt_spc, un_op),
+    opt_spc,
     cho(
       vararg,
       type_nil,
@@ -43,10 +51,7 @@ return
       type_function,
       var_or_call
     ),
-    opt_rep(
-      bin_op,
-      '>expression'
-    )
+    opt_rep(opt_spc, bin_op, '>expression')
   }
 
 --[[
