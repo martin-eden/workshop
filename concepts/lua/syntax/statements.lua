@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-22
+  Last mod.: 2026-10-23
 ]]
 
 --[[
@@ -77,6 +77,7 @@ return
     ),
     opt_spc,
     opt(return_statement),
+    opt_spc,
   }
 
 --[[
@@ -85,4 +86,5 @@ return
   2017 #
   2018 # # #
   2026-10-22
+  2026-10-23
 ]]
