@@ -2,25 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-21
+  Last mod.: 2026-10-24
 ]]
 
-local transform_ast = request('^.transform_ast')
-
 return
-  function(self)
-    self.data_struc =
-      transform_ast(
-        self.data_struc,
-        {
-        }
-      )
-    self.is_ok = self:process_node(self.data_struc)
+  function(Me)
+    Me.is_ok = Me:process_node(Me.data_struc)
 
-    return self:get_result()
+    return Me:get_result()
   end
 
 --[[
   2018 #
-  2026-10-21
+  2026 #
+  2026-10-24
 ]]
