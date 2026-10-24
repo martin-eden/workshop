@@ -1,18 +1,26 @@
+-- Serialize Lua code AST to string with actual Lua code.
+
 --[[
-  Serialize Lua code AST to string with actual Lua code.
-
-  It receives table with parsed syntax and returns string with
-  formatted code.
-
-  table -> str
+  Author: Martin Eden
+  Last mod.: 2026-10-24
 ]]
 
-local c_formatter = request('formatter.interface')
+--[[
+  It receives table with formatter's AST and returns string with
+  formatted code.
+]]
+
+local FormatterClass = request('formatter.interface')
 
 return
-  function(data_struc, options)
-    local formatter = new(c_formatter, options)
-    formatter.data_struc = data_struc
-    formatter:init()
-    return formatter:run()
+  function(FormatterAst, Options)
+    local Formatter = new(FormatterClass, Options)
+    Formatter.data_struc = FormatterAst
+    Formatter:init()
+    return Formatter:run()
   end
+
+--[[
+  2018 #
+  2026-10-24
+]]
