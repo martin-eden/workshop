@@ -2,27 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-10-23
 ]]
 
--- Imports:
 local split_shebang = request('!.concepts.shell.split_shebang')
-local get_ast = request('get_ast')
-local ast_as_code = request('ast_as_code')
+local get_formatter_ast = request('get_formatter_ast')
+local serialize_ast = request('!.concepts.lua.run_formatter')
+local newline = request('!.concepts.Ascii.Chars').newline
 
-local newline
-do
-  local AsciiChars = request('!.concepts.Ascii.Chars')
-  newline = AsciiChars.newline
-end
+return
+  function(shell_code_str)
+    local shebang_str, lua_code_str = split_shebang(shell_code_str)
 
-local reformat =
-  function(lua_code_str)
-    assert_string(lua_code_str)
-
-    local shebang_str, code_str = split_shebang(lua_code_str)
-
-    local result_str = ast_as_code(get_ast(code_str))
+    local result_str = serialize_ast(get_formatter_ast(lua_code_str))
 
     if shebang_str then
       result_str = shebang_str .. newline .. result_str
@@ -31,11 +23,8 @@ local reformat =
     return result_str
   end
 
--- Export:
-return reformat
-
 --[[
-  2018
-  2026-07-17
-  2026-08-08
+  2018 #
+  2026 # # #
+  2026-10-24
 ]]
