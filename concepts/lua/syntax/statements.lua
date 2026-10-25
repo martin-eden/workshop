@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-23
+  Last mod.: 2026-10-25
 ]]
 
 --[[
@@ -32,52 +32,125 @@ local opt = handy.opt
 local opt_rep = handy.opt_rep
 local cho = handy.cho
 
-local assign_or_call = request('statements.assign_or_call')
-local named_function = request('statements.named_function')
+local AssignOrCall
+do
+  local RefOrCall = request('qualifiers.var_or_call')
+  local expr_list = request('wrappers.expr_list')
 
-local empty_statement = request('statements.empty_statement')
-local label_statement = request('statements.label_statement')
-local goto_statement = request('statements.goto_statement')
-local local_statement = request('statements.local_statement')
-local break_statement = request('statements.break_statement')
+  AssignOrCall =
+    {
+      name = 'assign_or_call',
+      RefOrCall,
+      opt(
+        opt_rep(',', RefOrCall),
+        '=',
+        expr_list
+      ),
+    }
+end
 
-local do_block = request('statements.do_block')
-local if_block = request('statements.if_block')
-local while_block = request('statements.while_block')
-local repeat_block = request('statements.repeat_block')
-local generic_for_block = request('statements.generic_for_block')
-local numeric_for_block = request('statements.numeric_for_block')
+local NamedFunction = request('statements.named_function')
 
-local return_statement = request('statements.return_statement')
-local opt_spc = request('words.opt_spc')
+local name = request('words.name')
+
+local EmptyStatement = { name = 'empty_statement', ';' }
+local LabelStatement = { name = 'label_statement', '::', name, '::' }
+local GotoStatement = { name = 'goto_statement', 'goto', name }
+
+local name_list = request('wrappers.name_list')
+local expr_list = request('wrappers.expr_list')
+
+local LocalStatement =
+  {
+    name = 'local_statement',
+    'local',
+    cho(
+      { name = 'local_assignment', name_list, opt('=', expr_list) },
+      NamedFunction
+    ),
+  }
+
+local BreakStatement = { name = 'break_statement', 'break' }
+
+local DoBlock = { name = 'do_block', 'do', '>statements', 'end' }
+
+local IfBlock =
+  {
+    name = 'if_block',
+    { name = 'if_part', 'if', '>expression', 'then', '>statements' },
+    opt_rep(
+      {
+        name = 'elseif_part',
+        'elseif', '>expression', 'then', '>statements'
+      }
+    ),
+    opt({ name = 'else_part', 'else', '>statements' }),
+    'end',
+  }
+
+local WhileBlock =
+  {
+    name = 'while_block',
+    'while', '>expression', 'do', '>statements', 'end'
+  }
+
+local RepeatBlock =
+  {
+    name = 'repeat_block',
+    'repeat', '>statements', 'until', '>expression'
+  }
+
+local GenericForBlock =
+  {
+    name = 'generic_for_block',
+    'for', name_list, 'in', expr_list, 'do', '>statements', 'end'
+  }
+
+local NumericForBlock =
+  {
+    name = 'numeric_for_block',
+    'for',
+    name,
+    '=',
+    '>expression',
+    ',',
+    '>expression',
+    opt(',', '>expression'),
+    'do',
+    '>statements',
+    'end',
+  }
+
+local ReturnStatement =
+  {
+    name = 'return_statement',
+    'return', opt(expr_list), opt(EmptyStatement)
+  }
 
 return
   {
     name = 'statements',
     inner_name = 'statements',
     opt_rep(
-      opt_spc,
       cho(
-        assign_or_call,
-        named_function,
+        AssignOrCall,
+        NamedFunction,
 
-        empty_statement,
-        label_statement,
-        goto_statement,
-        local_statement,
-        break_statement,
+        EmptyStatement,
+        LabelStatement,
+        GotoStatement,
+        LocalStatement,
+        BreakStatement,
 
-        do_block,
-        if_block,
-        while_block,
-        repeat_block,
-        generic_for_block,
-        numeric_for_block
+        DoBlock,
+        IfBlock,
+        WhileBlock,
+        RepeatBlock,
+        GenericForBlock,
+        NumericForBlock
       )
     ),
-    opt_spc,
-    opt(return_statement),
-    opt_spc,
+    opt(ReturnStatement),
   }
 
 --[[
@@ -85,6 +158,6 @@ return
   2016 # # # # # #
   2017 #
   2018 # # #
-  2026-10-22
-  2026-10-23
+  2026 #
+  2026-10-25
 ]]

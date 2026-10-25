@@ -1,9 +1,13 @@
-local syntel = request('^.words.syntel')
+-- Index expression in brackets grammar
 
-return
-  {
-    name = 'bracket_expr',
-    syntel('['),
-    '>expression',
-    syntel(']'),
-  }
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-26
+]]
+
+return { name = 'bracket_expr', '[', '>expression', ']' }
+
+--[[
+  2016 #
+  2018 #
+]]

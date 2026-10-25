@@ -1,10 +1,16 @@
-local handy = request('!.mechs.processor.handy')
-local list = handy.list
+-- Expressions list grammar
 
-local syntel = request('^.words.syntel')
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-25
+]]
 
-return
-  {
-    name = 'expr_list',
-    list('>expression', syntel(',')),
-  }
+local list = request('!.mechs.processor.handy').list
+
+return { name = 'expr_list', list('>expression', ',') }
+
+--[[
+  2016 #
+  2018 #
+  2026-10-25
+]]

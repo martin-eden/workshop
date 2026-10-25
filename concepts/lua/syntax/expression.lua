@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-23
+  Last mod.: 2026-10-27
 ]]
 
 --[[
@@ -15,78 +15,82 @@
                      ├─ string ──────┤
                      ├─ table ───────┤
                      ├─ function ────┤
-                     └─ var_or_call ─┘
+                     └─ ref_or_call ─┘
 ]]
 
 local handy = request('!.mechs.processor.handy')
 local opt_rep = handy.opt_rep
 local cho = handy.cho
 
-local vararg = request('words.vararg')
-local type_nil = request('type_nil')
-local type_boolean = request('type_boolean')
-local type_number = request('type_number')
-local type_string = request('type_string')
-local type_table = request('type_table')
-local type_function = request('type_function')
-local var_or_call = request('qualifiers.var_or_call')
-
-local opt_spc = request('words.opt_spc')
-
-local match_regexp = request('!.mechs.parser.handy').match_regexp
-local word = request('words.word')
+local Vararg = request('words.vararg')
+local Type_Table = request('type_table')
+local Type_Function
+do
+  local function_body = request('statements.function_body')
+  Type_Function = { name = 'type_function', 'function', function_body }
+end
+local RefOrCall = request('qualifiers.var_or_call')
 
 local UnaryOperator =
-  {
-    name = 'un_op',
-    cho(
-      match_regexp('[%-%#%~]'),
-      word('not')
-    ),
-  }
+  { name = 'un_op', cho('-', '#', '~', 'not') }
 
--- Longer items should come before shorter items with same prefix
 local BinaryOperator =
   {
     name = 'bin_op',
     cho(
-      '//',
       '==',
       '~=',
-      '<<',
       '<=',
-      '>>',
+      '<<',
+      '<',
       '>=',
+      '>>',
+      '>',
+      'and',
+      'or',
       '..',
-      match_regexp('[%+%-%*%/%^%%%&%~%|%<%>]'),
-      word('and'),
-      word('or')
+      '+',
+      '-',
+      '*',
+      '//',
+      '/',
+      '%',
+      '^',
+      '&',
+      '~',
+      '|'
     ),
   }
+
+local TokensAccessor = request('!.concepts.lua.TokensAccessor')
+
+local Type_Nil = { name = 'nil', 'nil' }
+local Type_Boolean = { name = 'boolean', cho('false', 'true') }
+local Type_Number = { name = 'number', TokensAccessor.IsNumber }
+local Type_String = request('type_string')
 
 return
   {
     name = 'expression',
     inner_name = 'expression',
-    opt_rep(opt_spc, UnaryOperator),
-    opt_spc,
+    opt_rep(UnaryOperator),
     cho(
-      vararg,
-      type_nil,
-      type_boolean,
-      type_number,
-      type_string,
-      type_table,
-      type_function,
-      var_or_call
+      RefOrCall,
+      Vararg,
+      Type_Nil,
+      Type_Boolean,
+      Type_Number,
+      Type_String,
+      Type_Table,
+      Type_Function
     ),
-    opt_rep(opt_spc, BinaryOperator, '>expression')
+    opt_rep(BinaryOperator, '>expression')
   }
 
 --[[
   2016 #
   2017 # #
   2018 # # # # #
-  2026-10-22
-  2026-10-23
+  2026 #
+  2026-10-25
 ]]

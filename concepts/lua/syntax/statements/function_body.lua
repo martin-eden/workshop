@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-23
+  Last mod.: 2026-10-25
 ]]
 
 --[[
@@ -20,27 +20,26 @@ local cho = handy.cho
 
 local vararg = request('^.words.vararg')
 local name_list = request('^.wrappers.name_list')
-local syntel = request('^.words.syntel')
-local word = request('^.words.word')
 
 return
   {
     {
       name = 'function_params',
-      syntel('('),
+      '(',
       opt(
         cho(
           vararg,
-          { name_list, opt(syntel(','), vararg) }
+          { name_list, opt(',', vararg) }
         )
       ),
-      syntel(')'),
+      ')',
     },
     '>statements',
-    word('end'),
+    'end',
   }
 
 --[[
   2016 # #
   2018 #
+  2026-10-25
 ]]

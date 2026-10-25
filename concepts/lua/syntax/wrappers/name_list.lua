@@ -2,16 +2,16 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-23
+  Last mod.: 2026-10-25
 ]]
 
 local name = request('^.words.name')
-local syntel = request('^.words.syntel')
 local list = request('!.mechs.processor.handy').list
 
-return { name = 'name_list', list(name, syntel(',')) }
+return { name = 'name_list', list(name, ',') }
 
 --[[
   2016 #
   2018 #
+  2026-10-25
 ]]
