@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-23
+  Last mod.: 2026-10-27
 ]]
 
 return
@@ -16,8 +16,8 @@ return
     Printer:RequestCleanLine()
     local result = Me:process_block(Node, opt_handler)
 
+    Printer:RequestCleanLine()
     if postfix then
-      Printer:RequestCleanLine()
       Printer:AddToCurline(postfix)
     end
 
@@ -26,4 +26,5 @@ return
 
 --[[
   2017 # #
+  2026-10-27
 ]]
