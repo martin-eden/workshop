@@ -2,19 +2,29 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-24
+  Last mod.: 2026-10-28
 ]]
 
-local Syntax = request('!.concepts.lua.syntax')
-local parse = request('!.mechs.generic_loader')
+local TokensSyntax = request('!.concepts.lua.TokensSyntax')
+local generic_parse = request('!.mechs.generic_loader')
+local TokensAccessorClass = request('!.concepts.lua.TokensAccessor')
+local StructsSyntax = request('!.concepts.lua.syntax')
+local parse = request('!.mechs.parser.parse')
 
 return
   function(code_str)
-    return ( parse(code_str, Syntax) )
+    local ParserAst = { }
+    do
+      local TokensList = generic_parse(code_str, TokensSyntax)
+      local TokensAccessor = TokensAccessorClass.create(TokensList)
+      local is_parsed
+      is_parsed, ParserAst = parse(TokensAccessor, StructsSyntax)
+    end
+    return ParserAst
   end
 
 --[[
   2018 #
-  2026 # # #
-  2026-10-24
+  2026 # # # #
+  2026-10-28
 ]]
