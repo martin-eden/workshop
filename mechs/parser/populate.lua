@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-20
+  Last mod.: 2026-10-27
 ]]
 
 --[[
@@ -15,29 +15,18 @@
       not just annotate it
 ]]
 
-local subtract_seg = request('!.mechs.geometry.1d.segments.subtract_inner')
-local add_item = request('!.concepts.list.add_item')
-local tbl_insert = table.insert
-
 return
-  function(Node, InputStream)
-    local get_segment =
-      function(Node)
-        return InputStream:get_segment(Node.start, Node.len)
-      end
-
+  function(Node, Input)
     local populate_leaves
     populate_leaves =
       function(Node)
-        if not is_table(Node) then
-          return
-        end
+        if not is_table(Node) then return end
 
         if (#Node == 0) then
-          add_item(Node, get_segment(Node))
+          Node[1] = Input:get_segment(Node.start, Node.len)
         else
-          for i = 1, #Node do
-            populate_leaves(Node[i])
+          for _, Subnode in ipairs(Node) do
+            populate_leaves(Subnode)
           end
         end
       end
@@ -46,8 +35,10 @@ return
     strip_segments =
       function(Node)
         if not is_table(Node) then return end
+
         Node.start = nil
         Node.len = nil
+
         for _, Subnode in ipairs(Node) do
           strip_segments(Subnode)
         end
