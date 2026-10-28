@@ -9,7 +9,7 @@ return
   function(Me, Node)
     local Printer = Me.printer
 
-    Printer:RequestEmptyLine()
+    Printer:RequestCleanLine()
     Printer:AddToCurline('function ')
     if not Me:process_node(Node.dotted_name) then
       return
@@ -28,11 +28,12 @@ return
       return
     end
 
-    Printer:RequestEmptyLine()
+    Printer:RequestCleanLine()
     return true
   end
 
 --[[
   2016 #
   2017 # # # #
+  2026-10-28
 ]]
