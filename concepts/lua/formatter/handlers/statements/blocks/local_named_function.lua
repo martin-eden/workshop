@@ -2,14 +2,14 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-25
+  Last mod.: 2026-10-28
 ]]
 
 return
   function(Me, Node)
     local Printer = Me.printer
 
-    Printer:RequestEmptyLine()
+    Printer:RequestCleanLine()
     Printer:AddToCurline('local function ')
     if not Me:process_node(Node.dotted_name) then
       return
@@ -23,11 +23,12 @@ return
       return
     end
 
-    Printer:RequestEmptyLine()
+    Printer:RequestCleanLine()
     return true
   end
 
 --[[
   2016 #
   2017 # # # #
+  2026-10-28
 ]]
