@@ -2,25 +2,22 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-15
+  Last mod.: 2026-10-30
 ]]
 
-local AsciiChars = request('!.concepts.Ascii.Chars')
-
--- Export:
 return
   {
     kw_flowchart = 'flowchart',
     topdown = 'TD',
     arrow = '-->',
 
-    quote = AsciiChars.double_quote,
-    end_statement = AsciiChars.newline,
+    quote = '"',
 
-    start_attr = AsciiChars.opening_bracket,
-    end_attr = AsciiChars.closing_bracket,
+    start_attr = '[',
+    end_attr = ']',
   }
 
 --[[
   2026-09-15
+  2026-10-30
 ]]

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-15
+  Last mod.: 2026-10-30
 ]]
 
 --[[
@@ -47,7 +47,6 @@ do
   local ends_with = request('!.string.ends_with')
   local wrapping_len = 53
   local arrow = Syntels.arrow
-  local end_statement = Syntels.end_statement
   local kw_flowchart = Syntels.kw_flowchart
   write =
     function(Me, token)
