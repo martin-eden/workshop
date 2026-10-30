@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-25
+  Last mod.: 2026-10-30
 ]]
 
 --[[
@@ -18,6 +18,7 @@
          ├─ label_statement ───┤
          ├─ goto_statement ────┤
          ├─ local_statement ───┤
+         ├─ global_statement ──┤
          ├─ break_statement ───┤
          ├─ do_block ──────────┤
          ├─ if_block ──────────┤
@@ -51,26 +52,51 @@ end
 
 local NamedFunction = request('statements.named_function')
 
-local name = request('words.name')
+local Name = request('words.name')
 
 local EmptyStatement = { name = 'empty_statement', ';' }
-local LabelStatement = { name = 'label_statement', '::', name, '::' }
-local GotoStatement = { name = 'goto_statement', 'goto', name }
+local LabelStatement = { name = 'label_statement', '::', Name, '::' }
+local GotoStatement = { name = 'goto_statement', 'goto', Name }
+local BreakStatement = { name = 'break_statement', 'break' }
 
 local name_list = request('wrappers.name_list')
 local expr_list = request('wrappers.expr_list')
+
+local attribute = { name = 'attribute', '<', Name, '>' }
+
+local attr_name_list
+do
+  local attr_name = { name = 'attr_name', Name, opt(attribute) }
+  local list = request('!.mechs.processor.handy').list
+
+  attr_name_list =
+    {
+      name = 'attr_name_list',
+      opt(attribute),
+      list(attr_name, ','),
+    }
+end
 
 local LocalStatement =
   {
     name = 'local_statement',
     'local',
     cho(
-      { name = 'local_assignment', name_list, opt('=', expr_list) },
+      { name = 'local_assignment', attr_name_list, opt('=', expr_list) },
       NamedFunction
     ),
   }
 
-local BreakStatement = { name = 'break_statement', 'break' }
+local GlobalStatement =
+  {
+    name = 'global_statement',
+    'global',
+    cho(
+      { attr_name_list, opt('=', expr_list) },
+      NamedFunction,
+      { name = 'global_all', opt(attribute), '*' }
+    ),
+  }
 
 local DoBlock = { name = 'do_block', 'do', '>statements', 'end' }
 
@@ -110,7 +136,7 @@ local NumericForBlock =
   {
     name = 'numeric_for_block',
     'for',
-    name,
+    Name,
     '=',
     '>expression',
     ',',
@@ -139,8 +165,10 @@ return
         EmptyStatement,
         LabelStatement,
         GotoStatement,
-        LocalStatement,
         BreakStatement,
+
+        LocalStatement,
+        GlobalStatement,
 
         DoBlock,
         IfBlock,
@@ -158,6 +186,6 @@ return
   2016 # # # # # #
   2017 #
   2018 # # #
-  2026 #
-  2026-10-25
+  2026 # #
+  2026-10-28
 ]]
