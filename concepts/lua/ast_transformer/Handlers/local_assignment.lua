@@ -1,4 +1,4 @@
--- Change "local_assignment" record
+-- Transform "local_assignment"
 
 --[[
   Author: Martin Eden
@@ -48,7 +48,7 @@
 ]]
 
 return
-  function(Me, Node)
+  function(Node)
     Node.name_list = Node[1]
     Node[1] = nil
 

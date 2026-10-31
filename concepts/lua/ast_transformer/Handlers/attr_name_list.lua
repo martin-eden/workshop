@@ -1,8 +1,8 @@
--- Attributed name list transformation
+-- Transform attributed name list
 
 --[[
   Author: Martin Eden
-  Last mod.: 206-10-28
+  Last mod.: 2026-10-31
 ]]
 
 --[[
@@ -17,7 +17,7 @@
 local tbl_remove = table.remove
 
 return
-  function(Me, Node)
+  function(Node)
     if (Node[1].type == 'attribute') then
       Node.list_attr = Node[1]
       tbl_remove(Node, 1)

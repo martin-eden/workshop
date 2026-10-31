@@ -1,3 +1,10 @@
+-- Transform "function_call"
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-31
+]]
+
 --[[
   function_call:
 
@@ -24,40 +31,41 @@
       func_args
 ]]
 
+local add_to_list = request('!.concepts.list.add_item')
 local replace = request('!.table.replace')
 
 return
-  function(self, node)
-    local result
-    local name_part
+  function(Node)
+    local Result
+    local NamePart
     local seek_pos = 0
 
     while true do
-      if (seek_pos < #node) then
-        name_part = {result}
+      if (seek_pos < #Node) then
+        NamePart = { Result }
         seek_pos = seek_pos + 1
       else
         break
       end
 
-      name_part.type = 'name_parts'
-      while (node[seek_pos].type ~= 'func_args') do
-        name_part[#name_part + 1] = node[seek_pos]
+      NamePart.type = 'name_parts'
+      while (Node[seek_pos].type ~= 'func_args') do
+        add_to_list(NamePart, Node[seek_pos])
         seek_pos = seek_pos + 1
       end
 
-      local args = node[seek_pos]
-
-      result =
+      Result =
         {
           type = 'function_call',
-          name_part = name_part,
-          args = args,
+          name_part = NamePart,
+          args = Node[seek_pos],
         }
     end
 
-    -- print('node\n', t2s(node))
-    -- print('result\n', t2s(result))
-
-    replace(node, result)
+    replace(Node, Result)
   end
+
+--[[
+  2018 #
+  2026-10-31
+]]

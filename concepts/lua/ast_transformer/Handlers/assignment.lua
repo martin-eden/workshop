@@ -15,7 +15,7 @@ local add_to_list = request('!.concepts.list.add_item')
 local replace = request('!.table.replace')
 
 return
-  function(Me, Node)
+  function(Node)
     local DestList = { type = 'ref_list' }
     for i = 1, (#Node - 1) do
       add_to_list(DestList, Node[i])

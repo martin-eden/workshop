@@ -1,8 +1,8 @@
--- Resturcture "local_named_function"
+-- Transform "local_named_function"
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-21
+  Last mod.: 2026-10-31
 ]]
 
 --[[
@@ -12,7 +12,7 @@
 ]]
 
 return
-  function(Me, Node)
+  function(Node)
     Node.dotted_name = Node[1]
     Node[1] = nil
 

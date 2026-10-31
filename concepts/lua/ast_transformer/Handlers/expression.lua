@@ -1,8 +1,8 @@
--- Transform expression Node
+-- Transform expression
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-23
+  Last mod.: 2026-10-31
 ]]
 
 --[[
@@ -41,7 +41,7 @@ local replace = request('!.table.replace')
 local add_to_list = request('!.concepts.list.add_item')
 
 return
-  function(Me, Node)
+  function(Node)
     local Result = { }
 
     local i = 1
@@ -86,7 +86,6 @@ return
   end
 
 --[[
-  2016 #
   2018 # #
   2026-10-23
 ]]

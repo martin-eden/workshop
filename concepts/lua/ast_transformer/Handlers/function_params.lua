@@ -1,8 +1,8 @@
--- Transformation of "function_params" record
+-- Transform "function_params"
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-24
+  Last mod.: 2026-10-31
 ]]
 
 --[[
@@ -43,7 +43,7 @@ local add_to_list = request('!.concepts.list.add_item')
 local replace = request('!.table.replace')
 
 return
-  function(Me, Node)
+  function(Node)
     local Result = { type = Node.type }
 
     if Node[1] then

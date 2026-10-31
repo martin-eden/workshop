@@ -1,3 +1,10 @@
+-- Transform "var_ref"
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-10-31
+]]
+
 --[[
   var_ref:
 
@@ -14,7 +21,7 @@
 
   In my opinion, this is the most complex code in preprocessor facility.
 
-  result:
+  Result:
 
     name | par_expr
     (opt) inner_part
@@ -28,49 +35,52 @@
     func_args
 ]]
 
+local add_to_list = request('!.concepts.list.add_item')
 local replace = request('!.table.replace')
 
 return
-  function(self, node)
-    local result
-    local name_part
+  function(Node)
+    local Result
+    local NamePart
     local seek_pos = 0
 
     while true do
-      if (seek_pos < #node) then
-        name_part = {result}
+      if (seek_pos < #Node) then
+        NamePart = { Result }
         seek_pos = seek_pos + 1
       else
         break
       end
 
       while
-        (seek_pos <= #node) and
-        (node[seek_pos].type ~= 'func_args')
+        (seek_pos <= #Node) and
+        (Node[seek_pos].type ~= 'func_args')
       do
-        name_part[#name_part + 1] = node[seek_pos]
+        add_to_list(NamePart, Node[seek_pos])
         seek_pos = seek_pos + 1
       end
-      name_part.type = 'name_parts'
+      NamePart.type = 'name_parts'
 
-      local args
-      if node[seek_pos] then
-        args = node[seek_pos]
+      local Args
+      if Node[seek_pos] then
+        Args = Node[seek_pos]
       end
-      result =
+      Result =
         {
-          name_part = name_part,
-          args = args,
+          name_part = NamePart,
+          args = Args,
         }
-      if args then
-        result.type = 'function_call'
+      if Args then
+        Result.type = 'function_call'
       else
-        result.type = 'var_ref'
+        Result.type = 'var_ref'
       end
     end
 
-    -- print('node\n', t2s(node))
-    -- print('result\n', t2s(result))
-
-    replace(node, result)
+    replace(Node, Result)
   end
+
+--[[
+  2018 #
+  2026-10-31
+]]
