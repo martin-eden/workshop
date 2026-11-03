@@ -2,12 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-28
+  Last mod.: 2026-11-04
 ]]
 
 local encode_bool =
   function(val)
-    if (val == false) then return 'false' else return 'true' end
+    if val then return 'true' end
+    return 'false'
   end
 
 local encode_number
@@ -15,6 +16,7 @@ do
   local is_nan = request('!.number.is_nan')
   local is_pos_inf = request('!.number.is_pos_inf')
   local is_neg_inf = request('!.number.is_neg_inf')
+  local to_string = tostring
 
   encode_number =
     function(val)
@@ -26,7 +28,7 @@ do
         return '-1/0'
       end
 
-      return _G.tostring(val)
+      return to_string(val)
     end
 end
 
@@ -54,5 +56,5 @@ return
   end
 
 --[[
-  2026-06-20
+  2026 #
 ]]
