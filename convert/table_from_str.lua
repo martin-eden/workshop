@@ -2,16 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-20
+  Last mod.: 2026-11-04
 ]]
 
--- Imports:
-local graph_from_str = request('!.concepts.codec_lua_graph.parse')
-
--- Export:
-return graph_from_str
+return request('!.concepts.codec_lua_graph.parse')
 
 --[[
-  2026-05-05
-  2026-06-20
+  2026 # #
 ]]
