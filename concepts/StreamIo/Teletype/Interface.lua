@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-27
+  Last mod.: 2026-11-04
 ]]
 
 --[[
@@ -14,30 +14,46 @@
   than just opening file. So this specie.
 ]]
 
--- Imports:
+--[[
+  Storage format
+
+    1 [s] -- device file name
+    2 [b] -- is opened
+    3 [s] -- original port parameters
+    4 [u] -- file handle
+]]
+
 local InputInterface = new(request('!.concepts.StreamIo.Input.File'))
 local OutputInterface = new(request('!.concepts.StreamIo.Output.File'))
 
--- Export:
-return
-  {
-    -- [Carnage]
-    Open = request('Open'),
-    Close = request('Close'),
+local Interface
+local create
+do
+  local attach_methods = request('!.table.attach_methods')
+  create =
+    function(device_file_name)
+      local Me = { device_file_name }
+      attach_methods(Me, Interface)
+      return Me
+    end
+end
 
-    -- [Exports]
+Interface =
+  {
+    create = create,
+
+    Open = request('open'),
+    Close = request('close'),
+
     Input = InputInterface,
     Output = OutputInterface,
-
-    -- [Internals]
-    File = nil,
-    is_connected = false,
-    port_name = '',
-    original_port_params = '',
   }
+
+-- Export:
+return Interface
 
 --[[
   2024 # #
-  2026-04-15
-  2026-05-27
+  2026 # #
+  2026-11-04
 ]]
