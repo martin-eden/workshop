@@ -40,7 +40,7 @@ do
   local read_timeout_sec = 0.1
   local warmup_delay_sec = 4.2
 
-  local exists = request('!.file_system.file.exists')
+  local exists = request('!.file_system.file.is_byte_stream_device')
   local tty_get_raw_params = request('!.mechs.tty.get_raw_params')
   local tty_set_params = request('!.mechs.tty.set_params')
   local sleep_sec = request('!.system.sleep')
