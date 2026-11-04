@@ -37,6 +37,14 @@ do
       * Wait some time after opening
   ]]
 
+  --[[
+    We are providing input and output streams
+
+    However internally we use input/output file stream classes.
+    They work with file handle to do the job.
+    We have to patch them with our specially opened file handle.
+  ]]
+
   local read_timeout_sec = 0.1
   local warmup_delay_sec = 4.2
 
@@ -44,6 +52,8 @@ do
   local tty_get_raw_params = request('!.mechs.tty.get_raw_params')
   local tty_set_params = request('!.mechs.tty.set_params')
   local sleep_sec = request('!.system.sleep')
+  local InputInterface = request('!.concepts.StreamIo.Input.File')
+  local OutputInterface = request('!.concepts.StreamIo.Output.File')
 
   open =
     function(Me, speed_bps)
@@ -63,8 +73,11 @@ do
 
       sleep_sec(warmup_delay_sec)
 
-      Me.Input.File = Me[4]
-      Me.Output.File = Me[4]
+      Me.Input = InputInterface.create(Me[1])
+      Me.Input[2] = Me[4]
+
+      Me.Output = OutputInterface.create(Me[1])
+      Me.Output[2] = Me[4]
 
       Me[2] = true
 
@@ -104,8 +117,8 @@ do
       -- io.close(Me[4])
       Me[4] = nil
 
-      Me.Input.File = Me[4]
-      Me.Output.File = Me[4]
+      Me.Input[2] = Me[4]
+      Me.Output[2] = Me[4]
 
       tty_set_raw_params(Me[1], Me[3])
       Me[3] = nil
@@ -115,9 +128,6 @@ do
       Me[2] = false
     end
 end
-
-local InputInterface = new(request('!.concepts.StreamIo.Input.File'))
-local OutputInterface = new(request('!.concepts.StreamIo.Output.File'))
 
 local Interface
 local create
@@ -138,8 +148,8 @@ Interface =
     Open = open,
     Close = close,
 
-    Input = InputInterface,
-    Output = OutputInterface,
+    Input = nil,
+    Output = nil,
   }
 
 -- Export:
