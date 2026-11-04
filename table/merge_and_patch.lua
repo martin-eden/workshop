@@ -2,24 +2,21 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-16
+  Last mod.: 2026-11-04
 ]]
 
--- Imports:
 local merge = request('merge')
 local patch = request('patch')
 
-local merge_and_patch =
-  function(Dest, Source)
-    merge(Dest, Source)
-    patch(Dest, Source)
+return
+  function(Dest, Additions)
+    if not Additions then return end
+    merge(Dest, Additions)
+    patch(Dest, Additions)
   end
-
--- Exports:
-return merge_and_patch
 
 --[[
   2024 #
-  2026-04-30
-  2026-06-16
+  2026 # #
+  2026-11-04
 ]]
