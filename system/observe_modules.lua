@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-24
+  Last mod.: 2026-11-04
 ]]
 
 --[[
@@ -19,6 +19,12 @@
         <value> [t] destination modules map
           <key> [s] destination module name
           <value> [b] true
+]]
+
+--[[
+  It requires Lua 5.4
+
+  Since Lua 5.4 require() returns module pathname in 2nd result.
 ]]
 
 --[[
