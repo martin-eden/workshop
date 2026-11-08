@@ -1,19 +1,28 @@
+-- Serialize to JSON via callbacks
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-11-08
+]]
+
 local prepare = request('prepare')
 local verify = request('verify')
-
 local compile = request('!.mechs.generic_saver')
-local c_structor = request('generic_compiler.readable.interface')
 
-local lua_to_struc =
-  function(data)
-    prepare(data)
-    verify(data)
-    local structor = new(c_structor)
-    structor:init()
-    return structor:get_struc(data)
-  end
+local default_serializer = request('generic_compiler.readable.interface')
 
 return
-  function(data)
-    return compile(data, lua_to_struc)
+  function(Data, Options)
+    Options = Options or { }
+    local Serializer = Options[1] or default_serializer
+    Serializer:init()
+
+    prepare(Data)
+    verify(Data)
+    return compile(Data, Serializer:create_stateless_handler())
   end
+
+--[[
+  2017 #
+  2026-11-08
+]]

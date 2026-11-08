@@ -1,4 +1,16 @@
+-- Return data handler function
+
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-11-08
+]]
+
 return
-  function(self, data)
-    return self.handlers[type(data)](self, data)
+  function(Me)
+    return
   end
+
+--[[
+  2017 #
+  2026-11-08
+]]
