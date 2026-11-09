@@ -8,29 +8,29 @@
 --[[
   Data storage format
 
-    1 [i] -- current value
-    2 [i] -- minimum value
-    3 [i] -- maximum value
+    1 [i] -- minimum value
+    2 [i] -- maximum value
+    3 [i] -- current value
 ]]
 
 local get_min_value =
   function(me)
-    return me[2]
+    return me[1]
   end
 
 local set_min_value =
   function(me, val)
-    me[2] = val
+    me[1] = val
   end
 
 local get_max_value =
   function(me)
-    return me[3]
+    return me[2]
   end
 
 local set_max_value =
   function(me, val)
-    me[3] = val
+    me[2] = val
   end
 
 local get_value
@@ -41,12 +41,12 @@ do
 
   get_value =
     function(me)
-      return min(max(me[1], me[2]), me[3])
+      return min(max(me[3], me[1]), me[2])
     end
 
   set_value =
     function(me, value)
-      me[1] = min(max(value, me[2]), me[3])
+      me[3] = min(max(value, me[1]), me[2])
     end
 end
 
@@ -56,10 +56,9 @@ local create
 do
   local attach_methods = request('!.table.attach_methods')
   create =
-    function()
-      local me = { 0, 0, 1 }
+    function(min_value, max_value)
+      local me = { min_value, max_value, min_value }
       attach_methods(me, interface)
-
       return me
     end
 end
