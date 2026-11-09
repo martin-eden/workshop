@@ -2,29 +2,31 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-06
+  Last mod.: 2026-11-09
 ]]
 
 --[[
   Contract
 
-    A group tried to be rendered three ways:
+    Group is list. Item is string or group.
 
-      * One-line at current line:
+    String item tried to be rendered two ways:
 
-        current_line «(» « » item [« » item]... « » «)»
-
-      * One-line at clean line:
-
+      * current_line « » item
+      *
         current_line
-        «(» « » item [« » item]... « » «)»
+        item
 
-      * Wrapped multi-line at clean line:
+    Group item tried to be rendered three ways:
 
+      * current_line « » «(» « » render(item) « » «)»
+      *
+        current_line
+        «(» « » render(item) « » «)»
+      *
         current_line
         «(»
-          item [« » item]...
-          [item [« » item]...]...
+        « » « » render(item)
         «)»
 
     Fallback is the last way.
@@ -42,34 +44,16 @@ local prefix = '('
 local postfix = ')'
 local separator = ' '
 
-local render_list_ghost_inline
-local render_list_shell_inline
-do
-  render_list_ghost_inline =
-    function(List, Printer)
-      for _, item in ipairs(List) do
-        if is_string(item) then
-          if not Printer:OnCleanLine() then
-            Printer:AddToCurline(separator)
-          end
-          Printer:AddToCurline(item)
-        elseif is_table(item) then
-          render_list_shell_inline(item, Printer)
-        end
-      end
-    end
+local margin
 
-  render_list_shell_inline =
-    function(List, Printer)
-      if not Printer:OnCleanLine() then
-        Printer:AddToCurline(separator)
-      end
-      Printer:AddToCurline(prefix)
-      render_list_ghost_inline(List, Printer)
-      Printer:AddToCurline(separator)
-      Printer:AddToCurline(postfix)
-    end
-end
+local try =
+  function(render_fn, item, Printer)
+    local Trial = Printer:Seed()
+    render_fn(item, Trial)
+    if (Trial:GetWidth() > margin) then return end
+    Printer:Graft(Trial)
+    return true
+  end
 
 local render_string =
   function(str, Printer)
@@ -79,52 +63,68 @@ local render_string =
     Printer:AddToCurline(str)
   end
 
+local render_shell_oneline
+do
+  local render_ghost_oneline =
+    function(List, Printer)
+      for _, item in ipairs(List) do
+        if is_string(item) then
+          render_string(item, Printer)
+        elseif is_table(item) then
+          render_shell_oneline(item, Printer)
+        end
+      end
+    end
+  render_shell_oneline =
+    function(List, Printer)
+      render_string(prefix, Printer)
+      render_ghost_oneline(List, Printer)
+      render_string(postfix, Printer)
+    end
+end
+
+local render_ghost_variative
+do
+  local render_shell_multiliine =
+    function(List, Printer)
+      render_string(prefix, Printer)
+      Printer:IncIndent()
+      Printer:RequestCleanLine()
+      render_ghost_variative(List, Printer)
+      Printer:DecIndent()
+      Printer:RequestCleanLine()
+      render_string(postfix, Printer)
+    end
+  render_ghost_variative =
+    function(List, Printer)
+      for _, item in ipairs(List) do
+        if is_string(item) then
+          if not try(render_string, item, Printer) then
+            Printer:RequestCleanLine()
+            render_string(item, Printer)
+          end
+        elseif is_table(item) then
+          if not try(render_shell_oneline, item, Printer) then
+            Printer:RequestCleanLine()
+            if not try(render_shell_oneline, item, Printer) then
+              render_shell_multiliine(item, Printer)
+            end
+          end
+        end
+      end
+    end
+end
+
 local default_margin = 64
 local TextBlock = request('!.mechs.TextBlock')
 
 return
   function(Tree, Options)
     Options = Options or { }
-    local margin = Options.margin or default_margin
-
+    margin = Options.margin or default_margin
     local Printer = TextBlock.create('  ')
 
-    local try =
-      function(render_fn, item)
-        local Trial = Printer:Seed()
-        render_fn(item, Trial)
-        if (Trial:GetWidth() > margin) then return end
-        Printer:Graft(Trial)
-        return true
-      end
-
-    local render_list
-    render_list =
-      function(List)
-        for _, item in ipairs(List) do
-          if is_string(item) then
-            if not try(render_string, item) then
-              Printer:RequestCleanLine()
-              Printer:AddToCurline(item)
-            end
-          elseif is_table(item) then
-            if not try(render_list_shell_inline, item) then
-              Printer:RequestCleanLine()
-              if not try(render_list_shell_inline, item) then
-                Printer:AddToCurline(prefix)
-                Printer:IncIndent()
-                Printer:RequestCleanLine()
-                render_list(item)
-                Printer:DecIndent()
-                Printer:RequestCleanLine()
-                Printer:AddToCurline(postfix)
-              end
-            end
-          end
-        end
-      end
-
-    render_list(Tree)
+    render_ghost_variative(Tree, Printer)
 
     Printer:RequestCleanLine()
 
@@ -133,4 +133,5 @@ return
 
 --[[
   2026-11-06
+  2026-11-09
 ]]
