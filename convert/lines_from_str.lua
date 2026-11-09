@@ -2,13 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-29
+  Last mod.: 2026-11-09
 ]]
 
-local newline = request('!.concepts.Ascii.Chars').newline
+local newline = request('!.concepts.ascii.chars').newline
 local split_string = request('!.string.split')
 
--- Export:
 return
   function(str)
     return split_string(str, newline)

@@ -5,8 +5,8 @@
   Last mod.: 2026-11-09
 ]]
 
-local ascii_codes = request('!.concepts.Ascii.Codes')
-local ascii_chars = request('!.concepts.Ascii.Chars')
+local ascii_codes = request('!.concepts.ascii.codes')
+local ascii_chars = request('!.concepts.ascii.chars')
 
 return
   {

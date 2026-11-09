@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-19
+  Last mod.: 2026-11-09
 ]]
 
 --[[
@@ -56,10 +56,10 @@ do
   local tab
   local comment_char
   do
-    local AsciiChars = request('!.concepts.Ascii.Chars')
-    space = AsciiChars.space
-    tab = AsciiChars.tab
-    comment_char = AsciiChars.semicolon
+    local ascii_chars = request('!.concepts.ascii.chars')
+    space = ascii_chars.space
+    tab = ascii_chars.tab
+    comment_char = ascii_chars.semicolon
   end
 
   local cleanup_spaces
@@ -85,47 +85,47 @@ do
       if comment_pos then
         str = str_sub(str, 1, comment_pos - 1)
       end
-      local Instruction = str_split(cleanup_spaces(str), space)
-      tbl_remove(Instruction, 1)
-      tbl_remove(Instruction, 1)
-      return Instruction
+      local instruction = str_split(cleanup_spaces(str), space)
+      tbl_remove(instruction, 1)
+      tbl_remove(instruction, 1)
+      return instruction
     end
 end
 
 local add_to_list = request('!.concepts.list.add_item')
 
 local parse_closure =
-  function(InputLines)
-    InputLines:Read()
-    InputLines:Read()
+  function(input_lines)
+    input_lines:Read()
+    input_lines:Read()
 
-    local is_ok, opcode_line = InputLines:Read()
+    local is_ok, opcode_line = input_lines:Read()
     if not is_ok then return false end
 
-    local Instructions = { }
+    local instructions = { }
     while true do
       if (opcode_line == '') then break end
 
-      add_to_list(Instructions, parse_line(opcode_line))
+      add_to_list(instructions, parse_line(opcode_line))
 
-      is_ok, opcode_line = InputLines:Read()
+      is_ok, opcode_line = input_lines:Read()
       if not is_ok then break end
     end
 
-    return true, Instructions
+    return true, instructions
   end
 
 -- Export:
 return
-  function(InputLines)
-    local Closures = { }
-    InputLines:Read()
+  function(input_lines)
+    local closures = { }
+    input_lines:Read()
     while true do
-      local is_ok, Closure = parse_closure(InputLines)
+      local is_ok, closure = parse_closure(input_lines)
       if not is_ok then break end
-      add_to_list(Closures, Closure)
+      add_to_list(closures, closure)
     end
-    return Closures
+    return closures
   end
 
 --[[

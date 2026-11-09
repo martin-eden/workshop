@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-13
+  Last mod.: 2026-11-09
 ]]
 
 --[[
@@ -22,18 +22,13 @@
   module.
 ]]
 
-local SpaceChars
-do
-  local Ascii = request('!.concepts.Ascii.Chars')
-  SpaceChars =
-    {
-      Ascii.tab,
-      Ascii.space,
-      Ascii.newline,
-    }
-end
-
-return SpaceChars
+local ascii_chars = request('!.concepts.ascii.chars')
+return
+  {
+    ascii_chars.tab,
+    ascii_chars.space,
+    ascii_chars.newline,
+  }
 
 --[[
   2026-06-09

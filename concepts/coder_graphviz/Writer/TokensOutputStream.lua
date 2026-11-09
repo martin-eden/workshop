@@ -41,7 +41,7 @@ local write
 do
   local item_separator = spaces.space
   local sep_len = #item_separator
-  local is_alnum = request('!.concepts.Ascii.is_alnum')
+  local is_alnum = request('!.concepts.ascii.is_alnum')
   local str_sub = string.sub
   local str_byte = string.byte
   local ends_with = request('!.string.ends_with')

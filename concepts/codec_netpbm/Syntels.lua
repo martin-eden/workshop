@@ -2,27 +2,23 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-11-09
 ]]
 
--- Imports:
-local AsciiChars = request('!.concepts.Ascii.Chars')
+local ascii_chars = request('!.concepts.ascii.chars')
 
-local Syntels =
+return
   {
-    space = AsciiChars.space,
-    tab = AsciiChars.tab,
-    newline = AsciiChars.newline,
-    carriage_return = AsciiChars.carriage_return,
-    comment_char = AsciiChars.number_sign,
+    space = ascii_chars.space,
+    tab = ascii_chars.tab,
+    newline = ascii_chars.newline,
+    carriage_return = ascii_chars.carriage_return,
+    comment_char = ascii_chars.number_sign,
 
     monochrome_label = 'P1',
     grayscale_label = 'P2',
     color_label = 'P3',
   }
-
--- Export:
-return Syntels
 
 --[[
   2026-08-08

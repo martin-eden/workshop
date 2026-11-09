@@ -31,7 +31,7 @@ local filler_char
 local newline_char
 local return_char
 do
-  local ascii_chars = request('!.concepts.Ascii.Chars')
+  local ascii_chars = request('!.concepts.ascii.chars')
   opening_bracket = ascii_chars.opening_bracket
   closing_bracket = ascii_chars.closing_bracket
   filler_char = ascii_chars.equals

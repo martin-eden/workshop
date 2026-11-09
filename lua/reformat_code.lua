@@ -46,7 +46,7 @@ end
 
 local split_shebang = request('!.concepts.shell.split_shebang')
 local serialize_ast = request('!.concepts.lua.run_formatter')
-local newline = request('!.concepts.Ascii.Chars').newline
+local newline = request('!.concepts.ascii.chars').newline
 
 -- Export:
 return

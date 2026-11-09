@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-15
+  Last mod.: 2026-11-09
 ]]
 
 --[[
@@ -10,8 +10,8 @@
 ]]
 
 local init =
-  function(Me, BaseStream)
-    Me.BaseStream = BaseStream
+  function(me, base_stream)
+    me.base_stream = base_stream
   end
 
 --[[
@@ -33,14 +33,14 @@ local init =
 ]]
 local read
 do
-  local newline = request('!.concepts.Ascii.Chars').newline
+  local newline = request('!.concepts.ascii.chars').newline
   read =
-    function(Me)
+    function(me)
       -- Naive implementation for first time
 
-      local BaseStream = Me.BaseStream
+      local base_stream = me.base_stream
 
-      local char = BaseStream:Read(1)
+      local char = base_stream:Read(1)
 
       if (char == '') then return false end
 
@@ -52,24 +52,24 @@ do
 
         line = line .. char
 
-        char = BaseStream:Read(1)
+        char = base_stream:Read(1)
       end
 
       return true, line
     end
 end
 
-local Interface =
+local interface =
   {
     Init = init,
     Read = read,
 
     -- Internals:
-    BaseStream = { },
+    base_stream = { },
   }
 
 -- Export:
-return Interface
+return interface
 
 --[[
   2026-07-13

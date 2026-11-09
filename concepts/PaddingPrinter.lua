@@ -24,7 +24,7 @@ local dec_indent =
 
 local newline
 do
-  local newline_char = request('!.concepts.Ascii.Chars').newline
+  local newline_char = request('!.concepts.ascii.chars').newline
   newline =
     function(me)
       me[2]:Write(newline_char)

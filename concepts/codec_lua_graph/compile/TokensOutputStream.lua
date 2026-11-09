@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-20
+  Last mod.: 2026-11-09
 ]]
 
 --[[
@@ -53,26 +53,26 @@
 ]]
 
 local inc_indent =
-  function(Me)
-    Me[3]:IncIndent()
+  function(me)
+    me[3]:IncIndent()
   end
 
 local dec_indent =
-  function(Me)
-    Me[3]:DecIndent()
+  function(me)
+    me[3]:DecIndent()
   end
 
-local Syntels = request('Syntels')
+local syntels = request('Syntels')
 
 local write
 do
   local is_syntax_clash
   do
-    local syntel_start_index = Syntels.start_index
+    local syntel_start_index = syntels.start_index
     local starts_with = request('!.string.starts_with')
     local str_sub = string.sub
     local str_byte = string.byte
-    local is_alnum = request('!.concepts.Ascii.is_alnum')
+    local is_alnum = request('!.concepts.ascii.is_alnum')
 
     is_syntax_clash =
       function(prev_token, next_token)
@@ -102,26 +102,26 @@ do
       end
   end
 
-  local syntel_start_table = Syntels.start_table
-  local syntel_end_table = Syntels.end_table
-  local syntel_assign = Syntels.assign
-  local syntel_item_separator = Syntels.item_separator
-  local syntel_statement_separator = Syntels.statement_separator
-  local syntel_return = Syntels.kw_return
+  local syntel_start_table = syntels.start_table
+  local syntel_end_table = syntels.end_table
+  local syntel_assign = syntels.assign
+  local syntel_item_separator = syntels.item_separator
+  local syntel_statement_separator = syntels.statement_separator
+  local syntel_return = syntels.kw_return
 
   local space
   local newline
   do
-    local AsciiChars = request('!.concepts.Ascii.Chars')
-    space = AsciiChars.space
-    newline = AsciiChars.newline
+    local ascii_chars = request('!.concepts.ascii.chars')
+    space = ascii_chars.space
+    newline = ascii_chars.newline
   end
 
   write =
-    function(Me, next_token)
-      local style = Me[1]
-      local prev_token = Me[2]
-      local Printer = Me[3]
+    function(me, next_token)
+      local style = me[1]
+      local prev_token = me[2]
+      local printer = me[3]
 
       -- Write whitespaces
       do
@@ -180,27 +180,27 @@ do
         end
 
         if action_inc_indent then
-          inc_indent(Me)
+          inc_indent(me)
         end
         if action_dec_indent then
-          dec_indent(Me)
+          dec_indent(me)
         end
         if action_emit_space then
-          Printer:Write(space)
+          printer:Write(space)
         end
         if action_emit_newline then
-          Printer:Newline()
+          printer:Newline()
         end
       end
 
       -- Write token
-      Printer:Write(next_token)
+      printer:Write(next_token)
 
-      Me[2] = next_token
+      me[2] = next_token
     end
 end
 
-local Interface
+local interface
 do
   local create
   do
@@ -208,23 +208,23 @@ do
     local attach_methods = request('!.table.attach_methods')
 
     create =
-      function(BaseOutputStream, style)
-        assert_table(BaseOutputStream)
+      function(base_output, style)
+        assert_table(base_output)
         assert_string(style)
 
-        local Me =
+        local me =
           {
             style,
             '',
-            PaddingPrinter.create(BaseOutputStream),
+            PaddingPrinter.create(base_output),
           }
-        attach_methods(Me, Interface)
+        attach_methods(me, interface)
 
-        return Me
+        return me
       end
   end
 
-  Interface =
+  interface =
     {
       create = create,
       Write = write,
@@ -234,7 +234,7 @@ do
 end
 
 -- Export:
-return Interface
+return interface
 
 --[[
   2026 # # # #

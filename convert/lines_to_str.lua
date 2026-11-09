@@ -2,25 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-11-09
 ]]
 
-local list_to_string
-local newline
-do
-  list_to_string = request('!.concepts.list.to_string')
-  local AsciiChars = request('!.concepts.Ascii.Chars')
-  newline = AsciiChars.newline
-end
+local list_to_string = request('!.concepts.list.to_string')
+local newline = request('!.concepts.ascii.chars').newline
 
 -- Concatenate strings list using newline separator. Tailing newline.
-local lines_to_str =
-  function(Lines)
-    return list_to_string(Lines, newline) .. newline
+return
+  function(lines)
+    return list_to_string(lines, newline) .. newline
   end
-
--- Export:
-return lines_to_str
 
 --[[
   2024 #

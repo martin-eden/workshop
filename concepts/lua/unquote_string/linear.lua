@@ -5,7 +5,7 @@
   Last mod.: 2026-11-09
 ]]
 
-local ascii_chars = request('!.concepts.Ascii.Chars')
+local ascii_chars = request('!.concepts.ascii.chars')
 local separator = ascii_chars.backslash
 
 local str_to_int = tonumber
@@ -21,7 +21,7 @@ local state
 
 do
   -- Handling simple one-char substitutions like "\n"
-  local FixedSubsts_Map =
+  local fixed_substs_map =
     {
       ['a'] = ascii_chars.bell,
       ['b'] = ascii_chars.backspace,
@@ -81,7 +81,7 @@ do
         local fmt
 
         -- One-char substs: \n \t etc
-        for key, val in pairs(FixedSubsts_Map) do
+        for key, val in pairs(fixed_substs_map) do
           fmt = start_of_string_fmt .. key
           if str_find(str, fmt) then
             str = val .. str_sub(str, 2)

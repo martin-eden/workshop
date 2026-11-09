@@ -2,17 +2,16 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-15
+  Last mod.: 2026-11-09
 ]]
 
-local AsciiChars = request('!.concepts.Ascii.Chars')
+local ascii_chars = request('!.concepts.ascii.chars')
 
--- Export:
 return
   {
-    space = AsciiChars.space,
-    tab = AsciiChars.tab,
-    newline = AsciiChars.newline,
+    space = ascii_chars.space,
+    tab = ascii_chars.tab,
+    newline = ascii_chars.newline,
   }
 
 --[[

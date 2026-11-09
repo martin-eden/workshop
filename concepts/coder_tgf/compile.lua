@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-19
+  Last mod.: 2026-11-09
 ]]
 
 --[[
@@ -13,19 +13,19 @@
     https://en.wikipedia.org/wiki/Trivial_Graph_Format
 ]]
 
-local AsciiChars = request('!.concepts.Ascii.Chars')
-local IndexSerializer = request('!.concepts.PaddedIndex')
-local OutputStream
+local ascii_chars = request('!.concepts.ascii.chars')
+local index_serializer = request('!.concepts.PaddedIndex')
+local output
 
 local write_rec
 do
-  local field_separator = AsciiChars.space
-  local record_separator = AsciiChars.newline
+  local field_separator = ascii_chars.space
+  local record_separator = ascii_chars.newline
   local list_to_str = request('!.concepts.list.to_string')
   write_rec =
-    function(Rec)
-      OutputStream:Write(
-        list_to_str(Rec, field_separator) .. record_separator
+    function(rec)
+      output:Write(
+        list_to_str(rec, field_separator) .. record_separator
       )
     end
 end
@@ -37,7 +37,7 @@ local write_label =
 
 local write_sections_delimiter
 do
-  local parts_delim = AsciiChars.number_sign
+  local parts_delim = ascii_chars.number_sign
   write_sections_delimiter =
     function()
       write_rec({ parts_delim })
@@ -51,33 +51,33 @@ local write_link =
 
 local get_node_name =
   function(index)
-    return IndexSerializer:ToString(index)
+    return index_serializer:ToString(index)
   end
 
 -- Export:
 return
-  function(Graph, Arg_OutputStream)
-    local Labels = Graph[1]
-    local Links = Graph[2]
+  function(graph, arg_output)
+    local labels = graph[1]
+    local links = graph[2]
 
-    local num_nodes = #Labels
-    IndexSerializer = IndexSerializer.create(num_nodes)
-    OutputStream = Arg_OutputStream
+    local num_nodes = #labels
+    index_serializer = index_serializer.create(num_nodes)
+    output = arg_output
 
-    for index, label in ipairs(Labels) do
+    for index, label in ipairs(labels) do
       write_label(get_node_name(index), label)
     end
 
     write_sections_delimiter()
 
-    for src_instruction_index = 1, #Labels do
-      local NextOnes = Links[src_instruction_index]
+    for src_instruction_index = 1, #labels do
+      local next_ones = links[src_instruction_index]
 
-      if not NextOnes then goto next end
+      if not next_ones then goto next end
 
       local src_name = get_node_name(src_instruction_index)
 
-      for _, dest_instruction_index in ipairs(NextOnes) do
+      for _, dest_instruction_index in ipairs(next_ones) do
         write_link(src_name, get_node_name(dest_instruction_index))
       end
 

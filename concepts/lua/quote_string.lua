@@ -35,7 +35,7 @@ end
 
 local has_messy_control_chars
 do
-  local is_control_code = request('!.concepts.Ascii.is_control_code')
+  local is_control_code = request('!.concepts.ascii.is_control_code')
 
   has_messy_control_chars =
     function(used_chars)
