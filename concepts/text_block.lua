@@ -22,14 +22,14 @@ do
   local add_to_list = request('!.concepts.list.add_item')
 
   flush =
-    function(Me)
-      add_to_list(Me[5], trim(Me[1]))
-      for _ = 2, Me[2] do
-        add_to_list(Me[5], '')
+    function(me)
+      add_to_list(me[5], trim(me[1]))
+      for _ = 2, me[2] do
+        add_to_list(me[5], '')
       end
-      Me[2] = 0
+      me[2] = 0
 
-      Me[1] = ''
+      me[1] = ''
     end
 end
 
@@ -39,73 +39,73 @@ do
   local str_len = string.len
   local max = math.max
   add_to_textline =
-    function(Me, str)
-      if (Me[1] == '') then
-        Me[1] = Me[3]:ToString()
+    function(me, str)
+      if (me[1] == '') then
+        me[1] = me[3]:to_string()
       end
-      Me[1] = Me[1] .. str
-      local len = utf8_len(Me[1]) or str_len(Me[1])
-      Me[4] = max(Me[4], len)
+      me[1] = me[1] .. str
+      local len = utf8_len(me[1]) or str_len(me[1])
+      me[4] = max(me[4], len)
     end
 end
 
 local add_to_curline =
-  function(Me, str)
+  function(me, str)
     if (str == '') then return end
-    if (Me[2] > 0) then
-      flush(Me)
+    if (me[2] > 0) then
+      flush(me)
     end
-    add_to_textline(Me, str)
+    add_to_textline(me, str)
   end
 
 local newline =
-  function(Me)
-    Me[2] = Me[2] + 1
+  function(me)
+    me[2] = me[2] + 1
   end
 
 local on_clean_line =
-  function(Me)
-    return (Me[1] == '') or (Me[2] > 0)
+  function(me)
+    return (me[1] == '') or (me[2] > 0)
   end
 
 local request_clean_line =
-  function(Me)
-    if not on_clean_line(Me) then
-      newline(Me)
+  function(me)
+    if not on_clean_line(me) then
+      newline(me)
     end
   end
 
 local request_empty_line =
-  function(Me)
-    request_clean_line(Me)
-    if (Me[2] == 1) then
-      newline(Me)
+  function(me)
+    request_clean_line(me)
+    if (me[2] == 1) then
+      newline(me)
     end
   end
 
 local inc_indent =
-  function(Me)
-    Me[3]:Inc()
+  function(me)
+    me[3]:inc()
   end
 
 local dec_indent =
-  function(Me)
-    Me[3]:Dec()
+  function(me)
+    me[3]:dec()
   end
 
 local get_text
 do
   local lines_to_str = request('!.convert.lines_to_str')
   get_text =
-    function(Me)
-      flush(Me)
-      return lines_to_str(Me[5])
+    function(me)
+      flush(me)
+      return lines_to_str(me[5])
     end
 end
 
 local get_width =
-  function(Me)
-    return Me[4]
+  function(me)
+    return me[4]
   end
 
 local seed
@@ -124,17 +124,17 @@ do
   ]]
   local utf8_len = utf8.len
   seed =
-    function(Me)
-      local AnotherMe =
+    function(me)
+      local another_me =
         {
-          [1] = Me[1],
-          [2] = Me[2],
-          [3] = new(Me[3]),
+          [1] = me[1],
+          [2] = me[2],
+          [3] = new(me[3]),
           [4] = 0,
           [5] = { },
         }
-      setmetatable(AnotherMe, getmetatable(Me))
-      return AnotherMe
+      setmetatable(another_me, getmetatable(me))
+      return another_me
     end
 end
 
@@ -147,59 +147,59 @@ do
   local max = math.max
 
   graft =
-    function(Me, AnotherMe)
-      Me[1] = AnotherMe[1]
-      Me[2] = AnotherMe[2]
-      Me[4] = max(Me[4], AnotherMe[4])
-      add_list(Me[5], AnotherMe[5])
+    function(me, another_me)
+      me[1] = another_me[1]
+      me[2] = another_me[2]
+      me[4] = max(me[4], another_me[4])
+      add_list(me[5], another_me[5])
     end
 end
 
-local Interface
+local interface
 local create
 do
-  local Indent = request('!.concepts.Indent')
+  local indent = request('!.concepts.indent')
   local max_indent = 100
   local attach_methods = request('!.table.attach_methods')
   create =
     function(indent_chunk)
-      local Indent = Indent.create()
-      Indent:SetIndentChunk(indent_chunk)
-      Indent:SetMaxIndentLevel(max_indent)
+      local indent = indent.create()
+      indent:set_indent_chunk(indent_chunk)
+      indent:set_max_indent_level(max_indent)
 
-      local Me =
+      local me =
         {
           [1] = '',
           [2] = 0,
-          [3] = Indent,
+          [3] = indent,
           [4] = 0,
           [5] = { },
         }
-      attach_methods(Me, Interface)
+      attach_methods(me, interface)
 
-      return Me
+      return me
     end
 end
 
-Interface =
+interface =
   {
     create = create,
-    AddToTextline = add_to_textline,
-    AddToCurline = add_to_curline,
-    Newline = newline,
-    OnCleanLine = on_clean_line,
-    RequestCleanLine = request_clean_line,
-    RequestEmptyLine = request_empty_line,
-    IncIndent = inc_indent,
-    DecIndent = dec_indent,
-    GetText = get_text,
-    GetWidth = get_width,
-    Seed = seed,
-    Graft = graft,
+    add_to_textline = add_to_textline,
+    add_to_curline = add_to_curline,
+    newline = newline,
+    on_clean_line = on_clean_line,
+    request_clean_line = request_clean_line,
+    request_empty_line = request_empty_line,
+    inc_indent = inc_indent,
+    dec_indent = dec_indent,
+    get_text = get_text,
+    get_width = get_width,
+    seed = seed,
+    graft = graft,
   }
 
 -- Export:
-return Interface
+return interface
 
 --[[
   2017 # # #
