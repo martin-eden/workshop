@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-27
+  Last mod.: 2026-11-09
 ]]
 
 local write_header
@@ -67,7 +67,7 @@ end
 local write_data
 do
   local denormalize_color = request('!.concepts.Image.Color.Denormalize')
-  local PaddedIndexClass = request('!.concepts.PaddedIndex')
+  local padded_index_class = request('!.concepts.padded_index')
 
   write_data =
     function(Pam, Write)
@@ -77,7 +77,7 @@ do
       local width = Image:GetWidth()
       local height = Image:GetHeight()
 
-      local LineIndex = PaddedIndexClass.create(height)
+      local LineIndex = padded_index_class.create(height)
 
       local num_channels
       local num_colors_per_data_line
@@ -101,7 +101,7 @@ do
       for y = 1, height do
         Write:Newline()
 
-        Write:Comment('Line ' .. LineIndex:ToString(y))
+        Write:Comment('Line ' .. LineIndex:to_string(y))
 
         local is_first_item_in_line = true
 

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-15
+  Last mod.: 2026-11-09
 ]]
 
 --[[
@@ -62,7 +62,7 @@ do
   local name_prefix = '_'
   get_node_name =
     function(Me, index)
-      return name_prefix .. Me[2]:ToString(index)
+      return name_prefix .. Me[2]:to_string(index)
     end
 end
 
@@ -114,7 +114,7 @@ do
   do
     local attach_methods = request('!.table.attach_methods')
     local TokensWriter = request('Writer.TokensOutputStream')
-    local IndexSerializer = request('!.concepts.PaddedIndex')
+    local IndexSerializer = request('!.concepts.padded_index')
     create =
       function(OutputStream, num_nodes)
         local Core =

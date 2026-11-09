@@ -14,7 +14,7 @@
 ]]
 
 local ascii_chars = request('!.concepts.ascii.chars')
-local index_serializer = request('!.concepts.PaddedIndex')
+local index_serializer = request('!.concepts.padded_index')
 local output
 
 local write_rec
@@ -51,7 +51,7 @@ local write_link =
 
 local get_node_name =
   function(index)
-    return index_serializer:ToString(index)
+    return index_serializer:to_string(index)
   end
 
 -- Export:

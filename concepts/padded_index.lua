@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-14
+  Last mod.: 2026-11-09
 ]]
 
 --[[
@@ -15,12 +15,12 @@ local to_string
 do
   local str_format = string.format
   to_string =
-    function(Me, index)
-      return str_format(Me[1], index)
+    function(me, index)
+      return str_format(me[1], index)
     end
 end
 
-local Interface
+local interface
 
 local create
 do
@@ -35,21 +35,21 @@ do
       local zeroes_padding_format =
         '%0' .. int_to_str(get_num_dec_digits(max_index)) .. 'd'
 
-      local Me = { zeroes_padding_format }
-      attach_methods(Me, Interface)
+      local me = { zeroes_padding_format }
+      attach_methods(me, interface)
 
-      return Me
+      return me
     end
 end
 
-Interface =
+interface =
   {
     create = create,
-    ToString = to_string,
+    to_string = to_string,
   }
 
 -- Export:
-return Interface
+return interface
 
 --[[
   2026-07-31
