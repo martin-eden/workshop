@@ -2,37 +2,35 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-07
+  Last mod.: 2026-11-09
 ]]
 
--- Imports:
 local ds3231_values_to_bits = request('compile.ds3231_values_to_bits')
-local StringValue = request('!.concepts.RangesTree.StringValue.Interface')
-local default_bit_char = request('!.concepts.BitChars').BitToChar_Map[false]
+local string_value =
+  request('!.concepts.RangesTree.StringValue.Interface')
+local default_bit_char =
+  request('!.concepts.bit_chars').bit_to_char_map[false]
 local get_bitfields = request('common.get_bitfields')
 local fold_tree = request('!.concepts.RangesTree.fold_tree')
 local bits_to_bytes = request('!.convert.bits_to_bytes')
 local bytes_to_str = request('!.convert.bytes_to_str')
 
-local compile =
-  function(Ds3231_Data)
-    assert_table(Ds3231_Data)
+return
+  function(ds3231_data)
+    assert_table(ds3231_data)
 
-    local BitsDataTree = ds3231_values_to_bits(Ds3231_Data)
+    local bits_data_tree = ds3231_values_to_bits(ds3231_data)
 
-    local OutputStr = StringValue.create()
-    OutputStr:SetDefaultItemValue(default_bit_char)
+    local output_str = string_value.create()
+    output_str:SetDefaultItemValue(default_bit_char)
 
-    local Bitfields = get_bitfields()
+    local bitfields = get_bitfields()
 
     local data_bits =
-      fold_tree(BitsDataTree, Bitfields, OutputStr)
+      fold_tree(bits_data_tree, bitfields, output_str)
 
     return bytes_to_str(bits_to_bytes(data_bits))
   end
-
--- Export:
-return compile
 
 --[[
   2026-05 #

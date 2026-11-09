@@ -2,37 +2,35 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-17
+  Last mod.: 2026-11-09
 ]]
 
--- Imports:
-local CharToBit_Map = request('!.concepts.BitChars').CharToBit_Map
+local str_sub = string.sub
+local char_to_bit_map = request('!.concepts.bit_chars').char_to_bit_map
+local str_format = string.format
 local set_bit = request('!.number.set_bit')
 
-local byte_from_bits =
+return
   function(bits_str)
     assert_string(bits_str)
 
-    local limit = string.len(bits_str)
+    local limit = #bits_str
 
     if (limit > 8) then limit = 8 end
 
     local result = 0
 
     for pos = 1, limit do
-      local bit_char = string.sub(bits_str, pos, pos)
-      local bit = CharToBit_Map[bit_char]
+      local bit_char = str_sub(bits_str, pos, pos)
+      local bit = char_to_bit_map[bit_char]
       if not is_boolean(bit) then
-        error(string.format('Invalid bit char %q.', bit_char))
+        error(str_format('Invalid bit char %q.', bit_char))
       end
       result = set_bit(result, pos - 1, bit)
     end
 
     return result
   end
-
--- Export:
-return byte_from_bits
 
 --[[
   2026-05-07

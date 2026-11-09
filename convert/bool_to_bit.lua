@@ -2,24 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-17
+  Last mod.: 2026-11-09
 ]]
 
--- Imports:
-local BitChars = request('!.concepts.BitChars')
+local bit_to_char_map = request('!.concepts.bit_chars').bit_to_char_map
 
-local bit_0_char = BitChars.BitToChar_Map[false]
-local bit_1_char = BitChars.BitToChar_Map[true]
-
-local bool_to_bit =
+return
   function(bit_value)
-    assert_boolean(bit_value)
-    if bit_value then return bit_1_char else return bit_0_char end
+    local bit_char = bit_to_char_map[bit_value]
+    assert(bit_char)
+    return bit_char
   end
-
--- Export:
-return bool_to_bit
 
 --[[
   2026-05-07
+  2026-11-09
 ]]
