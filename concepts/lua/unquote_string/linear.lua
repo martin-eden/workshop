@@ -2,12 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-08
+  Last mod.: 2026-11-09
 ]]
 
--- Imports:
-local AsciiChars = request('!.concepts.Ascii.Chars')
-local separator = AsciiChars.backslash
+local ascii_chars = request('!.concepts.Ascii.Chars')
+local separator = ascii_chars.backslash
 
 local str_to_int = tonumber
 local str_char = string.char
@@ -24,16 +23,16 @@ do
   -- Handling simple one-char substitutions like "\n"
   local FixedSubsts_Map =
     {
-      ['a'] = AsciiChars.bell,
-      ['b'] = AsciiChars.backspace,
-      ['f'] = AsciiChars.form_feed,
-      ['n'] = AsciiChars.newline,
-      ['r'] = AsciiChars.carriage_return,
-      ['t'] = AsciiChars.tab,
-      ['v'] = AsciiChars.vertical_tab,
-      [AsciiChars.double_quote] = AsciiChars.double_quote,
-      [AsciiChars.single_quote] = AsciiChars.single_quote,
-      [AsciiChars.newline] = AsciiChars.newline,
+      ['a'] = ascii_chars.bell,
+      ['b'] = ascii_chars.backspace,
+      ['f'] = ascii_chars.form_feed,
+      ['n'] = ascii_chars.newline,
+      ['r'] = ascii_chars.carriage_return,
+      ['t'] = ascii_chars.tab,
+      ['v'] = ascii_chars.vertical_tab,
+      [ascii_chars.double_quote] = ascii_chars.double_quote,
+      [ascii_chars.single_quote] = ascii_chars.single_quote,
+      [ascii_chars.newline] = ascii_chars.newline,
     }
 
   -- Handling "\z"
@@ -178,8 +177,5 @@ return unquote_string
 
 --[[
   2017 # #
-  2026-04 # #
-  2026-08-01
-  2026-08-07
-  2026-08-08
+  2026 # # # # #
 ]]

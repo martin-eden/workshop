@@ -2,50 +2,44 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-01
+  Last mod.: 2026-11-09
 ]]
 
--- Imports:
 local unquote_linear = request('unquote_string.linear')
 
-local long_quote_start = '^%[=*%['
-local long_quote_finish = '%]=*%]$'
-local get_long_quote_len =
-  function(s)
-    local start_chunk = s:match(long_quote_start)
-    local finish_chunk = s:match(long_quote_finish)
-    local result
-    if start_chunk and (#start_chunk == #finish_chunk) then
-      result = #start_chunk
+local get_long_quote_len
+do
+  local long_quote_start = '^%[=*%['
+  local str_match = string.match
+  get_long_quote_len =
+    function(str)
+      return #str_match(str, long_quote_start)
     end
-    return result
-  end
+end
 
-local unquote_string =
-  function(s)
+local str_sub = string.sub
+
+return
+  function(str)
     local result
 
-    local first_char = s:sub(1, 1)
+    local first_char = str_sub(str, 1, 1)
     if (first_char == "'") or (first_char == '"') then
-      result = s:sub(2, -2)
+      result = str_sub(str, 2, -2)
       result = unquote_linear(result)
     elseif (first_char == '[') then
-      local quote_len = get_long_quote_len(s)
-      if not quote_len then return end
-      result = s:sub(quote_len + 1, -(quote_len + 1))
+      local quote_len = get_long_quote_len(str)
+      result = str_sub(str, quote_len + 1, -(quote_len + 1))
       -- Special case with long quotes. Heading newline is dropped.
-      if (result:sub(1, 2) == '\x0d\x0a') then
-        result = result:sub(3)
-      elseif (result:sub(1, 1) == '\x0a') then
-        result = result:sub(2)
+      if (str_sub(result, 1, 2) == '\x0d\x0a') then
+        result = str_sub(result, 3)
+      elseif (str_sub(result, 1, 1) == '\x0a') then
+        result = str_sub(result, 2)
       end
     end
 
     return result
   end
-
--- Export:
-return unquote_string
 
 --[[
   2018

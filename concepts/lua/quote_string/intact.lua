@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-13
+  Last mod.: 2026-11-09
 ]]
 
 --[==[
@@ -31,12 +31,12 @@ local filler_char
 local newline_char
 local return_char
 do
-  local AsciiChars = request('!.concepts.Ascii.Chars')
-  opening_bracket = AsciiChars.opening_bracket
-  closing_bracket = AsciiChars.closing_bracket
-  filler_char = AsciiChars.equals
-  newline_char = AsciiChars.newline
-  return_char = AsciiChars.carriage_return
+  local ascii_chars = request('!.concepts.Ascii.Chars')
+  opening_bracket = ascii_chars.opening_bracket
+  closing_bracket = ascii_chars.closing_bracket
+  filler_char = ascii_chars.equals
+  newline_char = ascii_chars.newline
+  return_char = ascii_chars.carriage_return
 end
 
 local str_find = string.find

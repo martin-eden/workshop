@@ -14,7 +14,7 @@
   amount of "="'s determined in situ.
 ]]
 
-local BinaryEntitiesLengths_Map =
+local bin_entities_lengths_map =
   { [1] = true, [2] = true, [4] = true, [8] = true }
 
 local single_quote_code
@@ -24,13 +24,13 @@ local single_quote
 local double_quote
 local backslash
 do
-  local QuoteChars = request('QuoteChars')
-  single_quote_code = QuoteChars.single_quote_code
-  double_quote_code = QuoteChars.double_quote_code
-  backslash_code = QuoteChars.backslash_code
-  single_quote = QuoteChars.single_quote
-  double_quote = QuoteChars.double_quote
-  backslash = QuoteChars.backslash
+  local quote_chars = request('quote_chars')
+  single_quote_code = quote_chars.single_quote_code
+  double_quote_code = quote_chars.double_quote_code
+  backslash_code = quote_chars.backslash_code
+  single_quote = quote_chars.single_quote
+  double_quote = quote_chars.double_quote
+  backslash = quote_chars.backslash
 end
 
 local has_messy_control_chars
@@ -38,8 +38,8 @@ do
   local is_control_code = request('!.concepts.Ascii.is_control_code')
 
   has_messy_control_chars =
-    function(UsedChars)
-      for code in pairs(UsedChars) do
+    function(used_chars)
+      for code in pairs(used_chars) do
         if is_control_code(code) then
           return true
         end
@@ -49,9 +49,9 @@ do
 end
 
 local determine_fixed_quote_char =
-  function(UsedChars)
-    local num_single_quotes = UsedChars[single_quote_code] or 0
-    local num_double_quotes = UsedChars[double_quote_code] or 0
+  function(used_chars)
+    local num_single_quotes = used_chars[single_quote_code] or 0
+    local num_double_quotes = used_chars[double_quote_code] or 0
 
     if (num_single_quotes <= num_double_quotes) then
       return single_quote
@@ -67,16 +67,16 @@ local str_gsub = string.gsub
 
 return
   function(str)
-    local UsedChars_Map = get_chars_count(str)
+    local used_chars_map = get_chars_count(str)
 
     local str_has_messy_control_chars =
-      has_messy_control_chars(UsedChars_Map)
+      has_messy_control_chars(used_chars_map)
 
     local str_has_messy_printable_chars =
-      UsedChars_Map[backslash_code] or
+      used_chars_map[backslash_code] or
       (
-        UsedChars_Map[single_quote_code] and
-        UsedChars_Map[double_quote_code]
+        used_chars_map[single_quote_code] and
+        used_chars_map[double_quote_code]
       )
 
     local use_variable_quotes =
@@ -85,13 +85,13 @@ return
     if use_variable_quotes then
       return quote_variable(str)
     else
-      local quote_char = determine_fixed_quote_char(UsedChars_Map)
+      local quote_char = determine_fixed_quote_char(used_chars_map)
 
       local quote_all = false
       local quote_control = false
 
       if str_has_messy_control_chars then
-        if BinaryEntitiesLengths_Map[#str] then
+        if bin_entities_lengths_map[#str] then
           quote_all = true
         else
           quote_control = true

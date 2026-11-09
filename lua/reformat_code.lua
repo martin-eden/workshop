@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-03
+  Last mod.: 2026-11-09
 ]]
 
 --[[
@@ -18,20 +18,20 @@
 
 local get_ast
 do
-  local TokensSyntax = request('!.concepts.lua.TokensSyntax')
+  local tokens_syntax = request('!.concepts.lua.tokens_syntax')
   local generic_parse = request('!.mechs.generic_loader')
-  local TokensAccessorClass = request('!.concepts.lua.TokensAccessor')
-  local StructsSyntax = request('!.concepts.lua.syntax')
+  local tokens_accessor = request('!.concepts.lua.tokens_accessor')
+  local syntax = request('!.concepts.lua.syntax')
   local parse = request('!.mechs.parser.parse')
 
   get_ast =
     function(code_str)
       local ParserAst = { }
       do
-        local TokensList = generic_parse(code_str, TokensSyntax)
-        local TokensAccessor = TokensAccessorClass.create(TokensList)
+        local tokens = generic_parse(code_str, tokens_syntax)
+        local tokens_accessor = tokens_accessor.create(tokens)
         local is_parsed
-        is_parsed, ParserAst = parse(TokensAccessor, StructsSyntax)
+        is_parsed, ParserAst = parse(tokens_accessor, syntax)
       end
       return ParserAst
     end

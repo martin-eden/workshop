@@ -2,18 +2,16 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-28
+  Last mod.: 2026-11-09
 ]]
 
 local identifier_pattern = '^[%a_][%w_]*$'
 
-local Keywords_Map
+local keywords_map
 do
-  -- Imports:
-  local Keywords = request('Keywords')
+  local keywords = request('keywords')
   local map_values = request('!.table.map_values')
-
-  Keywords_Map = map_values(Keywords)
+  keywords_map = map_values(keywords)
 end
 
 local str_match = string.match
@@ -25,7 +23,7 @@ return
 
     return
       str_match(str, identifier_pattern) and
-      not Keywords_Map[str]
+      not keywords_map[str]
   end
 
 --[[
