@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-03
+  Last mod.: 2026-11-09
 ]]
 
 --[[
@@ -34,56 +34,55 @@
 
 local pathname_from_str = request('pathname_from_str')
 local tbl_remove = table.remove
-local RangePoint = request('!.concepts.RangePoint')
+local range_point = request('!.concepts.range_point')
 local upper_dir = request('Syntels').upper_dir
 local add_list = request('!.concepts.list.add_list')
 local pathname_to_str = request('pathname_to_str')
 
--- Export:
 return
   function(dest_dir, pathname)
     assert_string(dest_dir)
     assert_string(pathname)
 
-    local DestNames = pathname_from_str(dest_dir)
-    local MovedNames = pathname_from_str(pathname)
+    local dest_names = pathname_from_str(dest_dir)
+    local moved_names = pathname_from_str(pathname)
 
     -- Remove directory marker
-    if (DestNames[#DestNames] == '') then
-      tbl_remove(DestNames, #DestNames)
+    if (dest_names[#dest_names] == '') then
+      tbl_remove(dest_names, #dest_names)
     end
 
     -- Remove absolute marker
-    if (MovedNames[1] == '') then
-      tbl_remove(MovedNames, 1)
+    if (moved_names[1] == '') then
+      tbl_remove(moved_names, 1)
     end
 
     do
-      local Cursor = RangePoint.create()
-      Cursor:SetMinValue(1)
-      Cursor:SetMaxValue(#MovedNames + 1)
-      Cursor:SetValue(1)
+      local cursor = range_point.create()
+      cursor:set_min_value(1)
+      cursor:set_max_value(#moved_names + 1)
+      cursor:set_value(1)
 
-      for name_index = 1, #MovedNames do
-        local cursor_pos = Cursor:GetValue()
-        if (MovedNames[name_index] == upper_dir) then
-          Cursor:SetValue(cursor_pos - 1)
+      for name_index = 1, #moved_names do
+        local cursor_pos = cursor:GetValue()
+        if (moved_names[name_index] == upper_dir) then
+          cursor:set_value(cursor_pos - 1)
         else
-          MovedNames[cursor_pos] = MovedNames[name_index]
-          Cursor:SetValue(cursor_pos + 1)
+          moved_names[cursor_pos] = moved_names[name_index]
+          cursor:set_value(cursor_pos + 1)
         end
       end
 
-      for name_index = Cursor:GetValue(), #MovedNames do
-        MovedNames[name_index] = nil
+      for name_index = cursor:GetValue(), #moved_names do
+        moved_names[name_index] = nil
       end
     end
 
-    local Result = { }
-    add_list(Result, DestNames)
-    add_list(Result, MovedNames)
+    local result = { }
+    add_list(result, dest_names)
+    add_list(result, moved_names)
 
-    return pathname_to_str(Result)
+    return pathname_to_str(result)
   end
 
 --[[
