@@ -58,13 +58,10 @@ return
     end
 
     do
-      local cursor = range_point.create()
-      cursor:set_min_value(1)
-      cursor:set_max_value(#moved_names + 1)
-      cursor:set_value(1)
+      local cursor = range_point.create(1, #moved_names + 1)
 
       for name_index = 1, #moved_names do
-        local cursor_pos = cursor:GetValue()
+        local cursor_pos = cursor:get_value()
         if (moved_names[name_index] == upper_dir) then
           cursor:set_value(cursor_pos - 1)
         else
@@ -73,7 +70,7 @@ return
         end
       end
 
-      for name_index = cursor:GetValue(), #moved_names do
+      for name_index = cursor:get_value(), #moved_names do
         moved_names[name_index] = nil
       end
     end

@@ -95,10 +95,8 @@ do
   local attach_methods = request('!.table.attach_methods')
   create =
     function()
-      local range_point = range_point_class.create()
-      range_point:set_min_value(min_indent)
-      range_point:set_max_value(max_indent)
-      range_point:set_value(min_indent)
+      local range_point =
+        range_point_class.create(min_indent, max_indent)
 
       local me = { indent_chunk, range_point }
       attach_methods(me, interface)
