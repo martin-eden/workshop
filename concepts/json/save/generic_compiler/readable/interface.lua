@@ -2,49 +2,49 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-09
+  Last mod.: 2026-11-09
 ]]
 
-local Interface
+local interface
 do
   do
-    local BaseInterface = request('^.minimal.interface')
-    Interface = new(BaseInterface)
+    local base_interface = request('^.minimal.interface')
+    interface = new(base_interface)
   end
 
   local init
   do
-    local Indent = request('!.concepts.Indent')
+    local indent = request('!.concepts.indent')
     init =
-      function(Me)
-        local Indent = Indent.create()
-        Indent:SetIndentChunk(Me.indent_chunk)
-        Me.Indent = Indent
+      function(me)
+        local indent = indent.create()
+        indent:set_indent_chunk(me.indent_chunk)
+        me.indent = indent
       end
   end
 
   local inc_indent =
-    function(Me)
-      Me.Indent:Inc()
+    function(me)
+      me.indent:inc()
     end
 
   local dec_indent =
-    function(Me)
-      Me.Indent:Dec()
+    function(me)
+      me.indent:dec()
     end
 
   local get_indent_str =
-    function(Me)
-      return Me.Indent:ToString()
+    function(me)
+      return me.indent:to_string()
     end
 
   local merge_and_patch = request('!.table.merge_and_patch')
 
   merge_and_patch(
-    Interface,
+    interface,
     {
       indent_chunk = '  ',
-      Indent = { },
+      indent = { },
       dec_indent = dec_indent,
       inc_indent = inc_indent,
       get_indent_str = get_indent_str,
@@ -55,7 +55,7 @@ do
   )
 end
 
-return Interface
+return interface
 
 --[[
   2016

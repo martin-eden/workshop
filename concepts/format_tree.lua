@@ -47,67 +47,68 @@ local separator = ' '
 local margin
 
 local try =
-  function(render_fn, item, Printer)
-    local Trial = Printer:Seed()
-    render_fn(item, Trial)
-    if (Trial:GetWidth() > margin) then return end
-    Printer:Graft(Trial)
+  function(render_fn, item, printer)
+    local trial = printer:seed()
+    render_fn(item, trial)
+    if (trial:get_width() > margin) then return end
+    printer:graft(trial)
     return true
   end
 
 local render_string =
-  function(str, Printer)
-    if not Printer:OnCleanLine() then
-      Printer:AddToCurline(separator)
+  function(str, printer)
+    if not printer:on_clean_line() then
+      printer:add_to_curline(separator)
     end
-    Printer:AddToCurline(str)
+    printer:add_to_curline(str)
   end
 
 local render_shell_oneline
 do
   local render_ghost_oneline =
-    function(List, Printer)
-      for _, item in ipairs(List) do
+    function(list, printer)
+      for _, item in ipairs(list) do
         if is_string(item) then
-          render_string(item, Printer)
+          render_string(item, printer)
         elseif is_table(item) then
-          render_shell_oneline(item, Printer)
+          render_shell_oneline(item, printer)
         end
       end
     end
   render_shell_oneline =
-    function(List, Printer)
-      render_string(prefix, Printer)
-      render_ghost_oneline(List, Printer)
-      render_string(postfix, Printer)
+    function(list, printer)
+      render_string(prefix, printer)
+      render_ghost_oneline(list, printer)
+      render_string(postfix, printer)
     end
 end
 
 local render_ghost_variative
 do
   local render_shell_multiliine =
-    function(List, Printer)
-      render_string(prefix, Printer)
-      Printer:IncIndent()
-      Printer:RequestCleanLine()
-      render_ghost_variative(List, Printer)
-      Printer:DecIndent()
-      Printer:RequestCleanLine()
-      render_string(postfix, Printer)
+    function(list, printer)
+      render_string(prefix, printer)
+      printer:inc_indent()
+      printer:request_clean_line()
+      render_ghost_variative(list, printer)
+      printer:dec_indent()
+      printer:request_clean_line()
+      render_string(postfix, printer)
     end
+
   render_ghost_variative =
-    function(List, Printer)
-      for _, item in ipairs(List) do
+    function(list, printer)
+      for _, item in ipairs(list) do
         if is_string(item) then
-          if not try(render_string, item, Printer) then
-            Printer:RequestCleanLine()
-            render_string(item, Printer)
+          if not try(render_string, item, printer) then
+            printer:request_clean_line()
+            render_string(item, printer)
           end
         elseif is_table(item) then
-          if not try(render_shell_oneline, item, Printer) then
-            Printer:RequestCleanLine()
-            if not try(render_shell_oneline, item, Printer) then
-              render_shell_multiliine(item, Printer)
+          if not try(render_shell_oneline, item, printer) then
+            printer:request_clean_line()
+            if not try(render_shell_oneline, item, printer) then
+              render_shell_multiliine(item, printer)
             end
           end
         end
@@ -116,19 +117,19 @@ do
 end
 
 local default_margin = 64
-local TextBlock = request('!.mechs.TextBlock')
+local text_block = request('!.concepts.text_block')
 
 return
-  function(Tree, Options)
-    Options = Options or { }
-    margin = Options.margin or default_margin
-    local Printer = TextBlock.create('  ')
+  function(tree, options)
+    options = options or { }
+    margin = options.margin or default_margin
+    local printer = text_block.create('  ')
 
-    render_ghost_variative(Tree, Printer)
+    render_ghost_variative(tree, printer)
 
-    Printer:RequestCleanLine()
+    printer:request_clean_line()
 
-    return Printer:GetText()
+    return printer:get_text()
   end
 
 --[[

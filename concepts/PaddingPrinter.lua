@@ -2,54 +2,55 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-22
+  Last mod.: 2026-11-09
 ]]
 
 --[[
   Storage format
-    1 [t] indent instance
-    2 [t] output stream
+
+    1 [t] -- indent instance
+    2 [t] -- output stream
 ]]
 
 local inc_indent =
-  function(Me)
-    Me[1]:Inc()
+  function(me)
+    me[1]:inc()
   end
 
 local dec_indent =
-  function(Me)
-    Me[1]:Dec()
+  function(me)
+    me[1]:dec()
   end
 
 local newline
 do
   local newline_char = request('!.concepts.Ascii.Chars').newline
   newline =
-    function(Me)
-      Me[2]:Write(newline_char)
-      Me[2]:Write(Me[1]:ToString())
+    function(me)
+      me[2]:Write(newline_char)
+      me[2]:Write(me[1]:to_string())
     end
 end
 
 local write =
-  function(Me, str)
-    Me[2]:Write(str)
+  function(me, str)
+    me[2]:Write(str)
   end
 
-local Interface
+local interface
 local create
 do
-  local IndentClass = request('!.concepts.Indent')
+  local indent_class = request('!.concepts.indent')
   local attach_methods = request('!.table.attach_methods')
   create =
-    function(Output)
-      local Me = { IndentClass.create(), Output }
-      attach_methods(Me, Interface)
-      return Me
+    function(output)
+      local me = { indent_class.create(), output }
+      attach_methods(me, interface)
+      return me
     end
 end
 
-Interface =
+interface =
   {
     create = create,
     IncIndent = inc_indent,
@@ -58,7 +59,7 @@ Interface =
     Write = write,
   }
 
-return Interface
+return interface
 
 --[[
   2026-10-20

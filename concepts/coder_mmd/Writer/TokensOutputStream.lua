@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-30
+  Last mod.: 2026-11-09
 ]]
 
 --[[
@@ -14,49 +14,49 @@
     4 [t] -- indent instance
 ]]
 
-local Spaces = request('Spaces')
-local Syntels = request('Syntels')
+local spaces = request('Spaces')
+local syntels = request('Syntels')
 
 local end_line
 local empty_line
 do
-  local line_separator = Spaces.newline
+  local line_separator = spaces.newline
   end_line =
-    function(Me)
-      if (Me[2] == 0) then return end
+    function(me)
+      if (me[2] == 0) then return end
 
-      Me[1]:Write(line_separator)
-      Me[2] = 0
-      Me[3] = ''
+      me[1]:Write(line_separator)
+      me[2] = 0
+      me[3] = ''
     end
 
   empty_line =
-    function(Me)
-      end_line(Me)
-      Me[1]:Write(line_separator)
+    function(me)
+      end_line(me)
+      me[1]:Write(line_separator)
     end
 end
 
 local write
 do
-  local item_separator = Spaces.space
+  local item_separator = spaces.space
   local sep_len = #item_separator
   local is_alnum = request('!.concepts.Ascii.is_alnum')
   local str_sub = string.sub
   local str_byte = string.byte
   local ends_with = request('!.string.ends_with')
   local wrapping_len = 53
-  local arrow = Syntels.arrow
-  local kw_flowchart = Syntels.kw_flowchart
+  local arrow = syntels.arrow
+  local kw_flowchart = syntels.kw_flowchart
   write =
-    function(Me, token)
-      local OutputStream = Me[1]
-      local line_len = Me[2]
-      local prev_token = Me[3]
-      local Indent = Me[4]
+    function(me, token)
+      local output_stream = me[1]
+      local line_len = me[2]
+      local prev_token = me[3]
+      local indent = me[4]
 
       if (line_len == 0) then
-        OutputStream:Write(Indent:ToString())
+        output_stream:Write(indent:to_string())
       end
 
       if (line_len > wrapping_len) and (token == arrow) then
@@ -70,9 +70,9 @@ do
             a --> b
             b --> c
         ]]
-        end_line(Me)
-        OutputStream:Write(Indent:ToString())
-        OutputStream:Write(prev_token)
+        end_line(me)
+        output_stream:Write(indent:to_string())
+        output_stream:Write(prev_token)
       end
 
       do
@@ -89,63 +89,61 @@ do
         end
 
         if write_sep then
-          OutputStream:Write(item_separator)
-          Me[2] = Me[2] + sep_len
+          output_stream:Write(item_separator)
+          me[2] = me[2] + sep_len
         end
       end
 
-      OutputStream:Write(token)
+      output_stream:Write(token)
 
       -- We can only increase indent at this level as format is not braced
       if (token == kw_flowchart) then
-        Indent:Inc()
+        indent:inc()
       end
 
-      Me[2] = Me[2] + #token
-      Me[3] = token
+      me[2] = me[2] + #token
+      me[3] = token
     end
 end
 
-local Interface
+local interface
+local create
 do
-  local create
-  do
-    local IndentClass = request('!.concepts.Indent')
-    local indent_chunk = '  '
-    local attach_methods = request('!.table.attach_methods')
+  local indent_class = request('!.concepts.indent')
+  local indent_chunk = '  '
+  local attach_methods = request('!.table.attach_methods')
 
-    create =
-      function(BaseOutputStream)
-        assert_table(BaseOutputStream)
+  create =
+    function(base_output_stream)
+      assert_table(base_output_stream)
 
-        local Indent = IndentClass.create()
-        Indent:SetIndentChunk(indent_chunk)
+      local indent = indent_class.create()
+      indent:set_indent_chunk(indent_chunk)
 
-        local Core =
-          {
-            [1] = BaseOutputStream,
-            [2] = 0,
-            [3] = '',
-            [4] = Indent,
-          }
+      local me =
+        {
+          [1] = base_output_stream,
+          [2] = 0,
+          [3] = '',
+          [4] = indent,
+        }
 
-        attach_methods(Core, Interface)
+      attach_methods(me, interface)
 
-        return Core
-      end
-  end
-
-  Interface =
-    {
-      create = create,
-      EndLine = end_line,
-      EmptyLine = empty_line,
-      Write = write,
-    }
+      return me
+    end
 end
 
+interface =
+  {
+    create = create,
+    EndLine = end_line,
+    EmptyLine = empty_line,
+    Write = write,
+  }
+
 -- Export:
-return Interface
+return interface
 
 --[[
   2026-09-15

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-15
+  Last mod.: 2026-11-09
 ]]
 
 --[[
@@ -14,55 +14,55 @@
     4 [t] -- indent instance
 ]]
 
-local Spaces = request('Spaces')
-local Syntels = request('Syntels')
+local spaces = request('Spaces')
+local syntels = request('Syntels')
 
 local end_line
 local empty_line
 do
-  local line_separator = Spaces.newline
+  local line_separator = spaces.newline
   end_line =
-    function(Me)
-      if (Me[2] == 0) then return end
+    function(me)
+      if (me[2] == 0) then return end
 
-      Me[1]:Write(line_separator)
-      Me[2] = 0
-      Me[3] = ''
+      me[1]:Write(line_separator)
+      me[2] = 0
+      me[3] = ''
     end
 
   empty_line =
-    function(Me)
-      end_line(Me)
-      Me[1]:Write(line_separator)
+    function(me)
+      end_line(me)
+      me[1]:Write(line_separator)
     end
 end
 
 local write
 do
-  local item_separator = Spaces.space
+  local item_separator = spaces.space
   local sep_len = #item_separator
   local is_alnum = request('!.concepts.Ascii.is_alnum')
   local str_sub = string.sub
   local str_byte = string.byte
   local ends_with = request('!.string.ends_with')
   local wrapping_len = 53
-  local arrow = Syntels.arrow
-  local end_statement = Syntels.end_statement
-  local start_graph = Syntels.start_graph
-  local end_graph = Syntels.end_graph
+  local arrow = syntels.arrow
+  local end_statement = syntels.end_statement
+  local start_graph = syntels.start_graph
+  local end_graph = syntels.end_graph
   write =
-    function(Me, token)
-      local OutputStream = Me[1]
-      local line_len = Me[2]
-      local prev_token = Me[3]
-      local Indent = Me[4]
+    function(me, token)
+      local output = me[1]
+      local line_len = me[2]
+      local prev_token = me[3]
+      local indent = me[4]
 
       if (token == end_graph) then
-        Indent:Dec()
+        indent:dec()
       end
 
       if (line_len == 0) then
-        OutputStream:Write(Indent:ToString())
+        output:Write(indent:to_string())
       end
 
       if
@@ -73,9 +73,9 @@ do
         )
       then
         -- Wrap lines on "->" or ";"
-        end_line(Me)
-        OutputStream:Write(Indent:ToString())
-        OutputStream:Write(Indent:GetIndentChunk())
+        end_line(me)
+        output:Write(indent:to_string())
+        output:Write(indent:get_indent_chunk())
       else
         local write_sep = false
 
@@ -93,52 +93,52 @@ do
         end
 
         if write_sep then
-          OutputStream:Write(item_separator)
-          Me[2] = Me[2] + sep_len
+          output:Write(item_separator)
+          me[2] = me[2] + sep_len
         end
       end
 
-      OutputStream:Write(token)
+      output:Write(token)
 
       if (token == start_graph) then
-        Indent:Inc()
+        indent:inc()
       end
 
-      Me[2] = Me[2] + #token
-      Me[3] = token
+      me[2] = me[2] + #token
+      me[3] = token
     end
 end
 
-local Interface
+local interface
 do
   local create
   do
-    local IndentClass = request('!.concepts.Indent')
+    local indent_class = request('!.concepts.indent')
     local indent_chunk = '   '
     local attach_methods = request('!.table.attach_methods')
 
     create =
-      function(BaseOutputStream)
-        assert_table(BaseOutputStream)
+      function(base_output)
+        assert_table(base_output)
 
-        local Indent = IndentClass.create()
-        Indent:SetIndentChunk(indent_chunk)
+        local indent = indent_class.create()
+        indent:set_indent_chunk(indent_chunk)
 
-        local Core =
+        local me =
           {
-            [1] = BaseOutputStream,
+            [1] = base_output,
             [2] = 0,
             [3] = '',
-            [4] = Indent,
+            [4] = indent,
           }
 
-        attach_methods(Core, Interface)
+        attach_methods(me, interface)
 
-        return Core
+        return me
       end
   end
 
-  Interface =
+  interface =
     {
       create = create,
       EndLine = end_line,
@@ -148,7 +148,7 @@ do
 end
 
 -- Export:
-return Interface
+return interface
 
 --[[
   2026-09-15
