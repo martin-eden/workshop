@@ -1,4 +1,4 @@
--- Apply values from another table to our table
+-- Apply values to table A from table B following list of rules
 
 --[[
   Author: Martin Eden
@@ -24,22 +24,22 @@ local keep_str = 'keep'
 local replace_str = 'replace'
 local remove_str = 'remove'
 
---[[
-  Return action name considering given inputs and set of rules
+local assert_rule =
+  function(rule)
+    local has_a = is_boolean(rule.has_a)
+    local has_b = is_boolean(rule.has_b)
 
-  If there is no rule for given condition then keep current value.
---]]
-local get_action =
-  function(has_a, has_b, rules)
-    for _, rule in ipairs(rules) do
-      if (rule.has_a == has_a) and (rule.has_b == has_b) then
-        return rule.action
-      end
-    end
-    return keep_str
+    local action = rule.action
+    local is_known_action =
+      (action == keep_str) or
+      (action == replace_str) or
+      (action == remove_str)
+
+    if has_a and has_b and is_known_action then return end
+
+    error('Unsupported rule.')
   end
 
--- Apply values to table A from table B following list of rules
 local apply_table
 apply_table =
   function(a, b, rules)
@@ -63,7 +63,12 @@ apply_table =
         local has_a = not is_nil(a_key)
         local has_b = not is_nil(b_key)
 
-        local action = get_action(has_a, has_b, rules)
+        local action = keep_str
+        for _, rule in ipairs(rules) do
+          if (rule.has_a == has_a) and (rule.has_b == has_b) then
+            action = rule.action
+          end
+        end
 
         if (action == keep_str) then
           ;
@@ -76,20 +81,6 @@ apply_table =
     end
   end
 
-local check_rule =
-  function(rule)
-    local has_a = is_boolean(rule.has_a)
-    local has_b = is_boolean(rule.has_b)
-
-    local action = rule.action
-    local is_known_action =
-      (action == keep_str) or
-      (action == replace_str) or
-      (action == remove_str)
-
-    return has_a and has_b and is_known_action
-  end
-
 -- Export:
 return
   function(a, b, rules)
@@ -97,13 +88,8 @@ return
     assert_table(b)
     assert_table(rules)
 
-    assert(a ~= b)
-
-    -- Assert rules
-    for index, rule in ipairs(rules) do
-      if not check_rule(rule) then
-        error('Unsupported rule.')
-      end
+    for _, rule in ipairs(rules) do
+      assert_rule(rule)
     end
 
     apply_table(a, b, rules)
@@ -111,4 +97,5 @@ return
 
 --[[
   2026 # # #
+  2026-11-10
 ]]
