@@ -5,16 +5,12 @@
   Last mod.: 2026-11-10
 ]]
 
-local rules =
-  {
-    { has_a = true, has_b = true, action = 'remove' },
-  }
-
+local rule = { true, true, 'remove' }
 local apply_table = request('apply_table')
 
 return
   function(a, b)
-    apply_table(a, b, rules)
+    apply_table(a, b, rule)
   end
 
 --[[

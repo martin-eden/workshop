@@ -13,16 +13,12 @@
     { a = 'A'}, { b = 'B' } -> { a = 'A', b = 'B' }
 ]]
 
-local rules =
-  {
-    { has_a = false, has_b = true, action = 'replace' },
-  }
-
+local rule = { false, true, 'replace' }
 local apply_table = request('apply_table')
 
 return
   function(result, additions)
-    apply_table(result, additions, rules)
+    apply_table(result, additions, rule)
   end
 
 --[[
