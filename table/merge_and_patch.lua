@@ -2,17 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-04
+  Last mod.: 2026-11-10
 ]]
 
 local merge = request('merge')
 local patch = request('patch')
 
 return
-  function(Dest, Additions)
-    if not Additions then return end
-    merge(Dest, Additions)
-    patch(Dest, Additions)
+  function(dest, additions)
+    if not additions then return end
+    merge(dest, additions)
+    patch(dest, additions)
   end
 
 --[[

@@ -2,10 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-22
+  Last mod.: 2026-11-10
 ]]
 
-local Rules =
+-- May produce wrong result if replacement contains links to origin
+
+local rules =
   {
     { has_a = true, has_b = true, action = 'replace' },
     { has_a = false, has_b = true, action = 'replace' },
@@ -15,8 +17,8 @@ local Rules =
 local apply_table = request('apply_table')
 
 return
-  function(Dest, Src)
-    apply_table(Dest, Src, Rules)
+  function(origin, replacement)
+    apply_table(origin, replacement, rules)
   end
 
 --[[

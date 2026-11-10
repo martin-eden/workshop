@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-22
+  Last mod.: 2026-11-10
 ]]
 
 --[[
@@ -13,7 +13,7 @@
     { a = 'A'}, { b = 'B' } -> { a = 'A', b = 'B' }
 ]]
 
-local Rules =
+local rules =
   {
     { has_a = false, has_b = true, action = 'replace' },
   }
@@ -21,8 +21,8 @@ local Rules =
 local apply_table = request('apply_table')
 
 return
-  function(Result, Additions)
-    apply_table(Result, Additions, Rules)
+  function(result, additions)
+    apply_table(result, additions, rules)
   end
 
 --[[

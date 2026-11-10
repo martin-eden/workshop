@@ -2,10 +2,10 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-22
+  Last mod.: 2026-11-10
 ]]
 
-local Rules =
+local rules =
   {
     { has_a = true, has_b = true, action = 'remove' },
   }
@@ -13,8 +13,8 @@ local Rules =
 local apply_table = request('apply_table')
 
 return
-  function(A, B)
-    apply_table(A, B, Rules)
+  function(a, b)
+    apply_table(a, b, rules)
   end
 
 --[[
