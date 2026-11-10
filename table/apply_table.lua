@@ -11,38 +11,38 @@
     List of records with following structure
 
     {
-      has_a [b] -- value A is present
-      has_b [b] -- value B is present
-      action [s] -- action to apply for item in A
-        keep -- keep value in A
+      1 [b] -- value A is present
+      2 [b] -- value B is present
+      3 [s] -- action to apply for item in A
         replace -- replace value in A
         remove -- remove value in A
     }
 ]]
 
-local keep_str = 'keep'
 local replace_str = 'replace'
 local remove_str = 'remove'
 
 local assert_rule =
   function(rule)
-    local has_a = is_boolean(rule.has_a)
-    local has_b = is_boolean(rule.has_b)
+    local action = rule[3]
 
-    local action = rule.action
-    local is_known_action =
-      (action == keep_str) or
-      (action == replace_str) or
-      (action == remove_str)
-
-    if has_a and has_b and is_known_action then return end
+    if
+      is_boolean(rule[1]) and
+      is_boolean(rule[2]) and
+      (
+        (action == replace_str) or
+        (action == remove_str)
+      )
+    then
+      return
+    end
 
     error('Unsupported rule.')
   end
 
 local apply_table
 apply_table =
-  function(a, b, rules)
+  function(a, b, rule)
     local keys = { }
     do
       for a_key in pairs(a) do
@@ -58,21 +58,17 @@ apply_table =
       local b_key = b[key]
 
       if is_table(a_key) and is_table(b_key) then
-        apply_table(a_key, b_key, rules)
+        apply_table(a_key, b_key, rule)
       else
         local has_a = not is_nil(a_key)
         local has_b = not is_nil(b_key)
 
-        local action = keep_str
-        for _, rule in ipairs(rules) do
-          if (rule.has_a == has_a) and (rule.has_b == has_b) then
-            action = rule.action
-          end
+        local action
+        if (rule[1] == has_a) and (rule[2] == has_b) then
+          action = rule[3]
         end
 
-        if (action == keep_str) then
-          ;
-        elseif (action == replace_str) then
+        if (action == replace_str) then
           a[key] = b[key]
         elseif (action == remove_str) then
           a[key] = nil
@@ -83,16 +79,13 @@ apply_table =
 
 -- Export:
 return
-  function(a, b, rules)
+  function(a, b, rule)
     assert_table(a)
     assert_table(b)
-    assert_table(rules)
+    assert_table(rule)
+    assert_rule(rule)
 
-    for _, rule in ipairs(rules) do
-      assert_rule(rule)
-    end
-
-    apply_table(a, b, rules)
+    apply_table(a, b, rule)
   end
 
 --[[
