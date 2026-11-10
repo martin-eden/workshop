@@ -1,76 +1,64 @@
--- Return list of documentation files for given list of ".lua" files
+-- Return list of documentation files given list of file pathnames
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-21
+  Last mod.: 2026-11-10
 ]]
 
 --[[
   Input
 
-    [t] FilesList -- Strings list. Each entry is pathname.
+    [t] -- pathnames string list
 
   Output
 
-    [t] -- documentation files pathnames list
-
-      Each entry is pathname to documentation file.
-      We guarantee there will be no duplicate entries.
-      Only files that really exists are included.
+    [t] -- doc files pathnames list
+      i [s] -- pathname to doc file
 ]]
 
-local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
 local get_host_dir = request('!.concepts.path_name.get_host_dir_str')
 local get_files_list = request('!.file_system.directory.get_files_list')
-local add_to_list = request('!.concepts.list.add_item')
-
-local is_documentation_name
+local is_doc
 do
-  local DocNameEndings = { '.txt', '.md', '.is' }
-  local ends_with = request('!.string.ends_with')
-
-  is_documentation_name =
-    function(filename)
-      for _, doc_ending in ipairs(DocNameEndings) do
-        if ends_with(filename, doc_ending) then
-          return true
-        end
-      end
-      return false
+  local is_doc_extension
+  do
+    local doc_extensions = { 'txt', 'md' }
+    local map_values = request('!.table.map_values')
+    is_doc_extension = map_values(doc_extensions)
+  end
+  local get_extension = request('!.concepts.path_name.get_extension')
+  is_doc =
+    function(pathname)
+      return is_doc_extension[get_extension(pathname)]
     end
 end
+local add_to_list = request('!.concepts.list.add_item')
 
 -- Export:
 return
-  function(FilesList)
-    local Result = { }
+  function(files)
+    local result = { }
 
-    local ProcessedDirectories_Map = { }
-
-    for _, module_pathname in ipairs(FilesList) do
-      local module_dirname = get_host_dir(module_pathname)
-
-      if ProcessedDirectories_Map[module_dirname] then goto next end
-
-      local Files = get_files_list(module_dirname)
-
-      for _, filename in ipairs(Files) do
-        if is_documentation_name(filename) then
-          add_to_list(Result, module_dirname .. filename)
-        end
-      end
-
-      ProcessedDirectories_Map[module_dirname] = true
-
-      ::next::
+    local dirs = { }
+    for _, pathname in ipairs(files) do
+      dirs[get_host_dir(pathname)] = true
     end
 
-    return Result
+    for dirname in pairs(dirs) do
+      local dir_files = get_files_list(dirname)
+      for _, filename in ipairs(dir_files) do
+        if is_doc(filename) then
+          add_to_list(result, dirname .. filename)
+        end
+      end
+    end
+
+    return result
   end
 
 --[[
   2018 #
   2024 # #
-  2026 # # #
-  2026-10-21
+  2026 # # # #
+  2026-11-10
 ]]
