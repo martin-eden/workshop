@@ -2,38 +2,26 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-04-24
+  Last mod.: 2026-11-10
 ]]
 
--- Imports:
+local str_byte = string.byte
+local str_format = string.format
+local str_gsub = string.gsub
 local trim_tail = request('!.string.trim_tail')
 
--- Serialize string data as ASCII hex line
-local get_hex_dump =
-  function(raw_bytes)
-    assert_string(raw_bytes)
-
-    local result
-
-    result =
-      string.gsub(
-        raw_bytes,
-        '.',
-        function(char)
-          return ('%02X '):format(char:byte())
-        end
-      )
-
-    result = trim_tail(result)
-
-    return result
+local replace_char =
+  function(char)
+    return str_format('%02X ', str_byte(char, 1, 1))
   end
 
--- Export:
-return get_hex_dump
+return
+  function(raw_str)
+    return trim_tail(str_gsub(raw_str, '.', replace_char))
+  end
 
 --[[
-  2018-02
-  2020-01
-  2026-04
+  2018 #
+  2020 #
+  2026 # #
 ]]
