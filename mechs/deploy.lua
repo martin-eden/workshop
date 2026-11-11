@@ -17,30 +17,51 @@
       include_docs [?b] -- also locate and copy documentation files
 ]]
 
-local default_config = request('get_deploy_plan.default_config')
-local get_deploy_plan = request('!.mechs.get_deploy_plan')
-local delete_dir = request('!.file_system.directory.remove')
-local copy_file = request('!.file_system.file.copy')
+local default_config =
+  {
+    deploy_dir = 'deploy',
+    include_docs = true,
+  }
+local get_copyrecs = request('deploy.get_copyrecs')
+local bash_script_writer =
+  request('!.concepts.BashScriptWriter.Interface')
+local os_tmpname = os.tmpname
+local file_from_str = request('!.convert.file_from_str')
+local make_file_executable =
+  request('!.file_system.file.make_executable')
+local execute_file = request('!.concepts.shell.execute')
+local remove_file = request('!.file_system.file.remove')
 
 return
   function(paths, arg_config)
     local config = new(default_config, arg_config)
 
     local deploy_dir = config.deploy_dir
-    assert_string(deploy_dir)
+    local include_docs = config.include_docs
 
-    local copyrecs = get_deploy_plan(paths, config)
+    local script_writer = new(bash_script_writer)
 
-    delete_dir(deploy_dir)
+    script_writer:DeleteDir(deploy_dir)
+
+    local copyrecs = get_copyrecs(paths, deploy_dir, include_docs)
 
     for _, rec in ipairs(copyrecs) do
-      local is_ok, result = copy_file(rec[1], rec[2])
-      if not is_ok then
-        error(result.error)
-      end
+      script_writer:CopyFile(rec[1], rec[2])
     end
+
+    local script_str = script_writer:GetScript()
+
+    local script_name = os_tmpname()
+    file_from_str(script_name, script_str)
+    make_file_executable(script_name)
+    execute_file(script_name)
+    remove_file(script_name)
   end
 
 --[[
-  2026 # #
+  2016
+  2017 # #
+  2018 # # # #
+  2026 # # # # #
+  2026-11-11
 ]]

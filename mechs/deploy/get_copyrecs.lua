@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-24
+  Last mod.: 2026-11-11
 ]]
 
 --[[
@@ -14,10 +14,9 @@
 
   Input
 
-    [t] -- list of file names
-    [t] -- deploy configuration
-      deploy_dir [?s] -- deploy directory
-      include_docs [?b] -- also locate and copy documentation files
+    1 [t] -- list of file names
+    2 [s] -- deploy directory
+    3 [b] -- also locate and copy documentation files
 
   Output
 
@@ -26,35 +25,27 @@
       2 [s] destination pathname
 ]]
 
-local get_docs_filelist = request('get_deploy_plan.get_docs_filelist')
-local default_config = request('get_deploy_plan.default_config')
+local get_docs_filelist = request('get_docs_filelist')
 local add_separator = request('!.concepts.path_name.add_separator')
 local add_to_list = request('!.concepts.list.add_item')
 local rebase_to = request('!.concepts.path_name.rebase_to')
 
 return
-  function(pathnames, arg_config)
-    local config = new(default_config, arg_config)
-
-    local deploy_dir = config.deploy_dir
-    assert_string(deploy_dir)
+  function(pathnames, deploy_dir, include_docs)
     deploy_dir = add_separator(deploy_dir)
 
-    local include_docs = config.include_docs
-
-    local docs = { }
-    if include_docs then
-      docs = get_docs_filelist(pathnames)
-    end
-
     local result = { }
-    for _, src_pathname in ipairs(pathnames) do
-      add_to_list(
-        result,
-        { src_pathname, rebase_to(deploy_dir, src_pathname) }
-      )
+
+    if include_docs then
+      for _, src_pathname in ipairs(get_docs_filelist(pathnames)) do
+        add_to_list(
+          result,
+          { src_pathname, rebase_to(deploy_dir, src_pathname) }
+        )
+      end
     end
-    for _, src_pathname in ipairs(docs) do
+
+    for _, src_pathname in ipairs(pathnames) do
       add_to_list(
         result,
         { src_pathname, rebase_to(deploy_dir, src_pathname) }
