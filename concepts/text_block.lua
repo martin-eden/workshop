@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-04
+  Last mod.: 2026-11-11
 ]]
 
 --[[
@@ -159,14 +159,12 @@ local interface
 local create
 do
   local indent = request('!.concepts.indent')
+  local min_indent = 0
   local max_indent = 100
   local attach_methods = request('!.table.attach_methods')
   create =
     function(indent_chunk)
-      local indent = indent.create()
-      indent:set_indent_chunk(indent_chunk)
-      indent:set_max_indent_level(max_indent)
-
+      local indent = indent.create(indent_chunk, min_indent, max_indent)
       local me =
         {
           [1] = '',
@@ -176,7 +174,6 @@ do
           [5] = { },
         }
       attach_methods(me, interface)
-
       return me
     end
 end
