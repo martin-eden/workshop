@@ -1,16 +1,17 @@
 -- Constrain number to unit interval [0.0, 1.0]
 
--- Last mod.: 2025-04-16
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-11-11
+]]
 
--- Imports:
-local constrain = request('!.number.constrain')
+local constrain = request('constrain')
 
--- Exports:
 return
-  function(n)
-    return constrain(n, 0.0, 1.0)
+  function(num)
+    return constrain(num, 0.0, 1.0)
   end
 
 --[[
-  2025-04-16
+  2025 #
 ]]

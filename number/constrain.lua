@@ -1,6 +1,9 @@
 -- Constrain given number between min and max values
 
--- Last mod.: 2024-11-24
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-11-11
+]]
 
 return
   function(num, min, max)
@@ -16,5 +19,5 @@ return
   end
 
 --[[
-  2020-09
+  2020 #
 ]]
