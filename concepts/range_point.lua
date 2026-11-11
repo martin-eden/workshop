@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
 --[[
@@ -26,17 +26,14 @@ local get_max_value =
 local get_value
 local set_value
 do
-  local min = math.min
-  local max = math.max
-
+  local constrain = request('!.number.constrain')
   get_value =
     function(me)
-      return min(max(me[3], me[1]), me[2])
+      return constrain(me[3], me[1], me[2])
     end
-
   set_value =
     function(me, value)
-      me[3] = min(max(value, me[1]), me[2])
+      me[3] = constrain(value, me[1], me[2])
     end
 end
 
@@ -58,9 +55,7 @@ interface =
     create = create,
 
     get_min_value = get_min_value,
-
     get_max_value = get_max_value,
-
     get_value = get_value,
     set_value = set_value,
   }
