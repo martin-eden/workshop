@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
 --[[
@@ -36,16 +36,6 @@
   String with indent chunk is ours.
 ]]
 
-local get_indent_chunk =
-  function(me)
-    return me[1]
-  end
-
-local set_indent_chunk =
-  function(me, str)
-    me[1] = str
-  end
-
 local get_indent_level =
   function(me)
     return me[2]:get_value()
@@ -54,16 +44,6 @@ local get_indent_level =
 local set_indent_level =
   function(me, level)
     me[2]:set_value(level)
-  end
-
-local get_max_indent_level =
-  function(me)
-    return me[2]:get_max_value()
-  end
-
-local set_max_indent_level =
-  function(me, level)
-    me[2]:set_max_value(level)
   end
 
 local to_string
@@ -89,12 +69,9 @@ local interface
 local create
 do
   local range_point_class = request('!.concepts.range_point')
-  local min_indent = 0
-  local max_indent = 60
-  local indent_chunk = '  '
   local attach_methods = request('!.table.attach_methods')
   create =
-    function()
+    function(indent_chunk, min_indent, max_indent)
       local range_point =
         range_point_class.create(min_indent, max_indent)
 
@@ -109,14 +86,8 @@ interface =
   {
     create = create,
 
-    get_indent_chunk = get_indent_chunk,
-    set_indent_chunk = set_indent_chunk,
-
     get_indent_level = get_indent_level,
     set_indent_level = set_indent_level,
-
-    get_max_indent_level = get_max_indent_level,
-    set_max_indent_level = set_max_indent_level,
 
     to_string = to_string,
 
@@ -128,6 +99,6 @@ interface =
 return interface
 
 --[[
-  2026 # #
-  2026-09-24
+  2026 # # #
+  2026-11-11
 ]]
