@@ -2,12 +2,15 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-13
+  Last mod.: 2026-11-11
 ]]
 
--- Export:
 return
   {
     deploy_dir = 'deploy',
     include_docs = true,
   }
+
+--[[
+  2026 #
+]]

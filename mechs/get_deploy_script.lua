@@ -2,42 +2,44 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-24
+  Last mod.: 2026-11-11
 ]]
 
 --[[
-  Return string with shell script to copy given files.
+  Return string with shell script to copy given files
 
   Input
-    [t] PathsList -- list of files pathnames
-    [t] Config -- deploy configuration
-      [?s] deploy_dir -- deploy directory
-      [?b] include_docs -- also locate and copy documentation files
+
+    1 [t] -- list of file pathnames
+      0+ [s] -- pathname
+    2 [?t] -- deploy configuration
+      deploy_dir [?s] -- deploy directory
+      include_docs [?b] -- also locate and copy documentation files
 ]]
 
 local get_deploy_plan = request('!.mechs.get_deploy_plan')
-local BashScriptWriter = request('!.concepts.BashScriptWriter.Interface')
-local DefaultConfig = request('get_deploy_plan.DefaultConfig')
+local bash_script_writer =
+  request('!.concepts.BashScriptWriter.Interface')
+local default_config = request('get_deploy_plan.default_config')
 
 return
-  function(PathsList, ArgConfig)
-    local Config = new(DefaultConfig, ArgConfig)
+  function(pathnames, arg_config)
+    local config = new(default_config, arg_config)
 
-    local deploy_dir = Config.deploy_dir
-
+    local deploy_dir = config.deploy_dir
     assert_string(deploy_dir)
 
-    local FilesToCopy = get_deploy_plan(PathsList, Config)
+    local script_writer = new(bash_script_writer)
 
-    local ScriptWriter = new(BashScriptWriter)
+    script_writer:DeleteDir(deploy_dir)
 
-    ScriptWriter:DeleteDir(deploy_dir)
+    local copyrecs = get_deploy_plan(pathnames, config)
 
-    for _, Rec in ipairs(FilesToCopy) do
-      ScriptWriter:CopyFile(Rec[1], Rec[2])
+    for _, rec in ipairs(copyrecs) do
+      script_writer:CopyFile(rec[1], rec[2])
     end
 
-    return ScriptWriter:GetScript()
+    return script_writer:GetScript()
   end
 
 --[[
