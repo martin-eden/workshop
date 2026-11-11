@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
 --[[
@@ -39,10 +39,9 @@ local process_expr_list = request('expr_list')
 
 return
   function(me, node)
-    local printer = me[2]
     if node.list_attr then
       me:process_node(node.list_attr)
-      printer:add_to_curline(' ')
+      me[2]:add_to_curline(' ')
     end
     return process_expr_list(me, node)
   end

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
 ]]
 
 --[[
@@ -71,10 +71,10 @@ return
     add_to_list(result, term)
 
     if (i == num_items) then
-      local LastNode = node[i]
-      if (LastNode.type == 'expression') then
+      local last_node = node[i]
+      if (last_node.type == 'expression') then
         -- Child node is already processed record. Due to align_nodes().
-        for _, last_node_item in ipairs(LastNode) do
+        for _, last_node_item in ipairs(last_node) do
           add_to_list(result, last_node_item)
         end
       end

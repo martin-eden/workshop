@@ -2,20 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
 return
   function(me, node, handler)
-    local printer = me[2]
     local result
-    printer:inc_indent()
+    me[2]:inc_indent()
     if handler then
       result = handler(me, node)
     else
       result = me:process_node(node)
     end
-    printer:dec_indent()
+    me[2]:dec_indent()
     return result
   end
 

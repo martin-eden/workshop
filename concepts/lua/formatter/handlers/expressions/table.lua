@@ -2,25 +2,25 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
 local oneliner =
   function(me, node)
     local printer = me[2]
     printer:add_to_curline('{ ')
-    for idx, KeyVal in ipairs(node) do
+    for idx, key_val in ipairs(node) do
       if (idx > 1) then
         printer:add_to_curline(', ')
       end
-      local key = KeyVal.key
+      local key = key_val.key
       if key then
         if not me:process_node(key) then
           return
         end
         printer:add_to_curline(' = ')
       end
-      if not me:process_node(KeyVal.value) then
+      if not me:process_node(key_val.value) then
         return
       end
     end
@@ -36,9 +36,9 @@ local multiliner =
     printer:add_to_curline('{')
 
     printer:inc_indent()
-    for _, KeyVal in ipairs(node) do
+    for _, key_val in ipairs(node) do
       printer:request_clean_line()
-      local key, value = KeyVal.key, KeyVal.value
+      local key, value = key_val.key, key_val.value
       if key then
         if not me:process_node(key) then
           return

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
 local represent_operand_oneline =
@@ -43,10 +43,10 @@ local oneliner =
 
 local represent_operand_multiline
 do
-  local LineWrapOps
+  local line_wrap_op
   do
     local map_values = request('!.table.map_values')
-    LineWrapOps =
+    line_wrap_op =
       map_values({ 'and', 'or', '+', '-', '*', '/', '//', '..' })
   end
   represent_operand_multiline =
@@ -54,7 +54,7 @@ do
       if not represent_operand_oneline(me, node) then
         return
       end
-      if LineWrapOps[node.bin_op] then
+      if line_wrap_op[node.bin_op] then
         me[2]:request_clean_line()
       end
       return true
@@ -64,8 +64,8 @@ end
 local multiliner =
   function(me, node)
     me[2]:request_clean_line()
-    for _, Term in ipairs(node) do
-      if not represent_operand_multiline(me, Term) then
+    for _, term in ipairs(node) do
+      if not represent_operand_multiline(me, term) then
         return
       end
     end

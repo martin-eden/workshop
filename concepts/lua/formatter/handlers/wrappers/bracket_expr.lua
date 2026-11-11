@@ -2,17 +2,14 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
 local oneliner =
   function(me, node)
-    local printer = me[2]
-    printer:add_to_curline('[')
-    if not me:process_node(node[1]) then
-      return
-    end
-    printer:add_to_curline(']')
+    me[2]:add_to_curline('[')
+    if not me:process_node(node[1]) then return end
+    me[2]:add_to_curline(']')
     return true
   end
 
@@ -21,11 +18,9 @@ local multiliner =
     local printer = me[2]
 
     printer:add_to_curline('[')
-
     printer:request_clean_line()
-    if not me:process_block(node[1]) then
-      return
-    end
+
+    if not me:process_block(node[1]) then return end
 
     printer:request_clean_line()
     printer:add_to_curline(']')

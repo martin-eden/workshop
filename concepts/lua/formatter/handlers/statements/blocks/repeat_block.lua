@@ -2,15 +2,15 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
-local oneline_condition =
+local oneliner =
   function(me, node)
     return me:process_block_oneline(' ', node)
   end
 
-local multiline_condition =
+local multiliner =
   function(me, node)
     return me:process_block_multiline(nil, node)
   end
@@ -21,7 +21,7 @@ return
       return
     end
 
-    if not me:variate(node.condition, oneline_condition, multiline_condition) then
+    if not me:variate(node.condition, oneliner, multiliner) then
       return
     end
 

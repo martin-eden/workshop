@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
 local oneline_delimiter = ', '
@@ -14,9 +14,8 @@ local oneliner =
 
 local multiline_delimiter =
   function(me)
-    local printer = me[2]
-    printer:add_to_textline(',')
-    printer:request_clean_line()
+    me[2]:add_to_textline(',')
+    me[2]:request_clean_line()
   end
 
 local multiliner =

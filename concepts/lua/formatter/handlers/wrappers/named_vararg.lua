@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
 --[[
@@ -15,14 +15,12 @@
 
 return
   function(me, node)
-    local printer = me[2]
-
     if node[1] then
-      printer:add_to_curline('... ')
+      me[2]:add_to_curline('... ')
       return me:process_node(node[1])
     end
 
-    printer:add_to_curline(node.value)
+    me[2]:add_to_curline(node.value)
     return true
   end
 

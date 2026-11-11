@@ -1,8 +1,8 @@
--- node transformers
+-- Node transformers
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
 -- Map of node type to function

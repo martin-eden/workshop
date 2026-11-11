@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
 --[[
@@ -25,7 +25,7 @@
 
 local align_nodes = request('ast_transformer.align_nodes')
 local restruc_nodes = request('ast_transformer.restruc_nodes')
-local handlers = request('ast_transformer.handlers.Interface')
+local handlers = request('ast_transformer.handlers.interface')
 
 return
   function(syntax_tree)

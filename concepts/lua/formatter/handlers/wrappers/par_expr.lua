@@ -2,17 +2,16 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
 local oneliner =
   function(me, node)
-    local printer = me[2]
-    printer:add_to_curline('(')
+    me[2]:add_to_curline('(')
     if not me:process_node(node[1]) then
       return
     end
-    printer:add_to_curline(')')
+    me[2]:add_to_curline(')')
     return true
   end
 
