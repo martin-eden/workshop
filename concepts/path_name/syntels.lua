@@ -2,10 +2,9 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-29
+  Last mod.: 2026-11-11
 ]]
 
--- Export:
 return
   {
     separator = '/',

@@ -2,16 +2,15 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-29
+  Last mod.: 2026-11-11
 ]]
 
-local sep = request('Syntels').separator
+local sep = request('syntels').separator
 local ends_with = request('!.string.ends_with')
 
 return
   function(str)
     if ends_with(str, sep) then return str end
-
     return str .. sep
   end
 

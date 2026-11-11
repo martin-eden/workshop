@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-11
 ]]
 
 --[[
@@ -35,7 +35,7 @@
 local pathname_from_str = request('pathname_from_str')
 local tbl_remove = table.remove
 local range_point = request('!.concepts.range_point')
-local upper_dir = request('Syntels').upper_dir
+local upper_dir = request('syntels').upper_dir
 local add_list = request('!.concepts.list.add_list')
 local pathname_to_str = request('pathname_to_str')
 
