@@ -18,19 +18,9 @@ local get_min_value =
     return me[1]
   end
 
-local set_min_value =
-  function(me, val)
-    me[1] = val
-  end
-
 local get_max_value =
   function(me)
     return me[2]
-  end
-
-local set_max_value =
-  function(me, val)
-    me[2] = val
   end
 
 local get_value
@@ -68,10 +58,8 @@ interface =
     create = create,
 
     get_min_value = get_min_value,
-    set_min_value = set_min_value,
 
     get_max_value = get_max_value,
-    set_max_value = set_max_value,
 
     get_value = get_value,
     set_value = set_value,
