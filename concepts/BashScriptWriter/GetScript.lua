@@ -90,7 +90,7 @@ return
     tbl_sort(Me.DirsToDelete)
 
     for _, pathname in ipairs(Me.DirsToDelete) do
-      add_line(get_cmd_rmdir(pathname):ToString())
+      add_line(get_cmd_rmdir(pathname):to_string())
     end
     -- )
 
@@ -114,12 +114,12 @@ return
       end
 
       if not DirectoriesCreated_Map[dest_dir] then
-        add_line(get_cmd_mkdir(dest_dir):ToString())
+        add_line(get_cmd_mkdir(dest_dir):to_string())
 
         mark_directories_created(dest_dir, DirectoriesCreated_Map)
       end
 
-      add_line(get_cmd_copyfile(src_name, dest_name):ToString())
+      add_line(get_cmd_copyfile(src_name, dest_name):to_string())
     end
     -- )
 

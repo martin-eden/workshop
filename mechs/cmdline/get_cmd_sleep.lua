@@ -2,21 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-11-11
 ]]
 
--- Imports:
 local str_format = string.format
-local ShellCommand = request('!.concepts.ShellCommand')
+local shell_command = request('!.concepts.shell_command')
 
--- Export:
 return
   function(seconds)
     -- Seconds may be fractional number
-    local Command =
-      { 'sleep', { str_format('%.2f', seconds) } }
+    local command = { 'sleep', str_format('%.2f', seconds) }
 
-    return ShellCommand.create(Command)
+    return shell_command.create(command)
   end
 
 --[[

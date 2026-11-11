@@ -2,15 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-08
+  Last mod.: 2026-11-11
 ]]
 
--- Imports:
 local add_separator = request('!.concepts.path_name.add_separator')
 local normalize = request('!.concepts.path_name.normalize')
-local ShellCommand = request('!.concepts.ShellCommand')
+local shell_command = request('!.concepts.shell_command')
 
--- Export:
 return
   function(url, dest_dir)
     assert_string(url)
@@ -20,10 +18,10 @@ return
 
     dest_dir = normalize(add_separator(dest_dir))
 
-    local Command =
-      { 'git', { 'clone', url, dest_dir, '--quiet' } }
+    local command =
+      { 'git', 'clone', url, dest_dir, '--quiet' }
 
-    return ShellCommand.create(Command)
+    return shell_command.create(command)
   end
 
 --[[

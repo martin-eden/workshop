@@ -2,24 +2,23 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-14
+  Last mod.: 2026-11-11
 ]]
 
 local file_exists = request('exists')
 local get_rmfile_command = request('!.mechs.cmdline.get_cmd_rmfile')
 
 --[[
-  Returns true if file does not exist before or after execution.
+  Returns true if file does not exist before or after execution
 ]]
 
--- Export:
 return
   function(pathname)
     assert_string(pathname)
 
     if not file_exists(pathname) then return true end
 
-    get_rmfile_command(pathname):Execute()
+    get_rmfile_command(pathname):execute()
 
     if not file_exists(pathname) then return true end
 

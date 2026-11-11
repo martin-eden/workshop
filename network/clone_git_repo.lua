@@ -2,33 +2,29 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-11-11
 ]]
 
--- Imports:
 local get_cmd_clone_repo = request('!.mechs.cmdline.get_cmd_clone_repo')
 
-local clone_git_repo =
+return
   function(url, dest_dir)
-    local Command = get_cmd_clone_repo(url, dest_dir)
+    local command = get_cmd_clone_repo(url, dest_dir)
 
-    local is_ok, ExecResult = Command:Execute()
+    local is_ok, exec_result = command:execute()
 
     if not is_ok then
       return
         false,
         {
-          command = Command:ToString(),
-          Result = ExecResult,
+          command = command:to_string(),
+          result = exec_result,
         }
     end
 
     return true
   end
 
--- Export:
-return clone_git_repo
-
 --[[
-  2026-06-18
+  2026 #
 ]]

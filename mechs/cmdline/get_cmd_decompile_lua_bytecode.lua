@@ -2,30 +2,24 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-11-11
 ]]
 
--- Imports:
 local normalize = request('!.concepts.path_name.normalize')
-local ShellCommand = request('!.concepts.ShellCommand')
+local shell_command = request('!.concepts.shell_command')
 
-local get_cmd_decompile_lua_bytecode =
+return
   function(bytecode_file_name)
-    local Command =
+    local command =
       {
         'luac',
-        {
-          '-l',
-          '-p',
-          normalize(bytecode_file_name),
-        },
+        '-l',
+        '-p',
+        normalize(bytecode_file_name),
       }
 
-    return ShellCommand.create(Command)
+    return shell_command.create(command)
   end
-
--- Export:
-return get_cmd_decompile_lua_bytecode
 
 --[[
   2026 # #

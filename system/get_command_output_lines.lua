@@ -2,21 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-11-11
 ]]
 
--- Imports:
 local lines_from_str = request('!.convert.lines_from_str')
 
-local get_command_output_lines =
-  function(Command)
-    local is_ok, ExecResult = Command:Execute()
+return
+  function(command)
+    local is_ok, exec_result = command:execute()
 
-    return lines_from_str(ExecResult.output)
+    return lines_from_str(exec_result.output)
   end
-
--- Export:
-return get_command_output_lines
 
 --[[
   2017 #

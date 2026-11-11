@@ -2,31 +2,27 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-08
+  Last mod.: 2026-11-11
 ]]
 
--- Imports:
 local normalize = request('!.concepts.path_name.normalize')
-local ShellCommand = request('!.concepts.ShellCommand')
+local shell_command = request('!.concepts.shell_command')
 
--- Export:
 return
   function(dir_name)
-    local Command =
+    local command =
       {
         'find',
-        {
-          normalize(dir_name),
-          '-mindepth',
-          '1',
-          '-maxdepth',
-          '1',
-          '-type',
-          'd',
-        },
+        normalize(dir_name),
+        '-mindepth',
+        '1',
+        '-maxdepth',
+        '1',
+        '-type',
+        'd',
       }
 
-    return ShellCommand.create(Command)
+    return shell_command.create(command)
   end
 
 --[[

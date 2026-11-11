@@ -2,46 +2,36 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-10
+  Last mod.: 2026-11-11
 ]]
 
 local pathname_from_str = request('!.concepts.path_name.pathname_from_str')
 local get_file_name = request('!.concepts.path_name.get_name')
 local get_host_dir = request('!.concepts.path_name.get_host_dir_str')
 local normalize = request('!.concepts.path_name.normalize')
-local ShellCommand = request('!.concepts.ShellCommand')
+local shell_command = request('!.concepts.shell_command')
 
--- Export:
 return
   function(src_pathname, dest_pathname)
     --[[
-      Implementation smartness details:
+      Implementation smartness details
 
-        When called to copy file to same name but in another directory
-        ( call like ( one_dir/file_a another_dir/file_a ) ) --
-        file name is not mentioned in destination
-        ( returned command is like "cp one_dir/file_a another_dir/" )
+      When called to copy file to same name but in another directory
+      file name is not mentioned in destination,
+      returned command is like "cp src_dir/file_a dest_dir/".
     ]]
 
     local src_filename = get_file_name(pathname_from_str(src_pathname))
-
-    local DestPathname = pathname_from_str(dest_pathname)
-    local dest_filename = get_file_name(DestPathname)
+    local dest_filename = get_file_name(pathname_from_str(dest_pathname))
 
     if (src_filename == dest_filename) then
       dest_pathname = get_host_dir(dest_pathname)
     end
 
-    local Command =
-      {
-        'cp',
-        {
-          normalize(src_pathname),
-          normalize(dest_pathname),
-        },
-      }
+    local command =
+      { 'cp', normalize(src_pathname), normalize(dest_pathname) }
 
-    return ShellCommand.create(Command)
+    return shell_command.create(command)
   end
 
 --[[

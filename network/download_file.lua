@@ -2,34 +2,30 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-11-11
 ]]
 
--- Imports:
-local get_cmd_download_file = request('!.mechs.cmdline.get_cmd_download_file')
+local get_cmd_download_file =
+  request('!.mechs.cmdline.get_cmd_download_file')
 
-local download_file =
+return
   function(url, pathname)
-    local Command = get_cmd_download_file(url, pathname)
+    local command = get_cmd_download_file(url, pathname)
 
-    local is_ok, ExecResult = Command:Execute()
+    local is_ok, exec_result = command:execute()
 
     if not is_ok then
       return
         false,
         {
-          command = Command:ToString(),
-          Result = ExecResult,
+          command = command:ToString(),
+          result = exec_result,
         }
     end
 
     return true
   end
 
--- Export:
-return download_file
-
 --[[
-  2026-06-17
-  2026-06-18
+  2026 # #
 ]]

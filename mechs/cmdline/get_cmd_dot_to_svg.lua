@@ -2,29 +2,26 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-08
+  Last mod.: 2026-11-11
 ]]
 
 local normalize = request('!.concepts.path_name.normalize')
-local ShellCommand = request('!.concepts.ShellCommand')
+local shell_command = request('!.concepts.shell_command')
 
--- Export:
 return
   function(dot_pathname, svg_pathname)
-    local Command =
+    local command =
       {
         'dot',
-        {
-          '-Tsvg',
-          normalize(dot_pathname),
-          '-o',
-          normalize(svg_pathname),
-        },
+        '-tsvg',
+        normalize(dot_pathname),
+        '-o',
+        normalize(svg_pathname),
       }
 
-    return ShellCommand.create(Command)
+    return shell_command.create(command)
   end
 
 --[[
-  2026-09-08
+  2026 #
 ]]

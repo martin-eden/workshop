@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-04
+  Last mod.: 2026-11-11
 ]]
 
 local is_byte_stream =
@@ -10,9 +10,9 @@ local is_byte_stream =
 
 return
   function(pathname)
-    return (is_byte_stream(pathname):Execute())
+    return (is_byte_stream(pathname):execute())
   end
 
 --[[
-  2026 11-04
+  2026 #
 ]]

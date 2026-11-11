@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-04
+  Last mod.: 2026-11-11
 ]]
 
 --[[
@@ -11,15 +11,15 @@
 ]]
 
 local normalize = request('!.concepts.path_name.normalize')
-local ShellCommand = request('!.concepts.ShellCommand')
+local shell_command = request('!.concepts.shell_command')
 
 return
   function(pathname)
-    local Command = { 'test', { '-c', normalize(pathname) } }
+    local command = { 'test', '-c', normalize(pathname) }
 
-    return ShellCommand.create(Command)
+    return shell_command.create(command)
   end
 
 --[[
-  2026-11-04
+  2026 #
 ]]

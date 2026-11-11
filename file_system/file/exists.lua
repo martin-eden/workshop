@@ -2,15 +2,14 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-10
+  Last mod.: 2026-11-11
 ]]
 
 local get_cmd_file_exists = request('!.mechs.cmdline.get_cmd_file_exists')
 
--- Export:
 return
   function(file_name)
-    return (get_cmd_file_exists(file_name):Execute())
+    return (get_cmd_file_exists(file_name):execute())
   end
 
 --[[

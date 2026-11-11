@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-19
+  Last mod.: 2026-11-11
 ]]
 
 local os_tmpname = os.tmpname
@@ -17,14 +17,14 @@ return
 
     file_from_str(bytecode_file_name, bytecode_str)
 
-    local Command = get_cmd_decompile(bytecode_file_name)
-    local is_ok, Results = Command:Execute()
+    local command = get_cmd_decompile(bytecode_file_name)
+    local is_ok, results = command:execute()
 
     remove_file(bytecode_file_name)
 
     if not is_ok then return '' end
 
-    return Results.output
+    return results.output
   end
 
 --[[

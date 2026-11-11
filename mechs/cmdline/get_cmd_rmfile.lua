@@ -2,19 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-12
+  Last mod.: 2026-11-11
 ]]
 
--- Imports:
 local normalize = request('!.concepts.path_name.normalize')
-local ShellCommand = request('!.concepts.ShellCommand')
+local shell_command = request('!.concepts.shell_command')
 
--- Export:
 return
   function(file_name)
-    local Command = { 'rm', { normalize(file_name) } }
+    local command = { 'rm', normalize(file_name) }
 
-    return ShellCommand.create(Command)
+    return shell_command.create(command)
   end
 
 --[[

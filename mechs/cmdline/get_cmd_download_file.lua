@@ -2,14 +2,13 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-24
+  Last mod.: 2026-11-11
 ]]
 
--- Imports:
 local normalize = request('!.concepts.path_name.normalize')
-local ShellCommand = request('!.concepts.ShellCommand')
+local shell_command = request('!.concepts.shell_command')
 
-local get_cmd_download_file =
+return
   function(url_str, pathname)
     assert_string(url_str)
     assert_string(pathname)
@@ -18,24 +17,19 @@ local get_cmd_download_file =
       We prefer "curl" because in case of error it does not create
       zero-sized output file.
     ]]
-    local Command =
+    local command =
       {
         'curl',
-        {
-          '--output',
-          normalize(pathname),
-          url_str,
-          '--location',
-          '--silent',
-          '--show-error',
-        },
+        url_str,
+        '--output',
+        normalize(pathname),
+        '--location',
+        '--silent',
+        '--show-error',
       }
 
-    return ShellCommand.create(Command)
+    return shell_command.create(command)
   end
-
--- Export:
-return get_cmd_download_file
 
 --[[
   2026 # # #
