@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-28
+  Last mod.: 2026-11-12
 ]]
 
 -- Interface is a map of node type to function
@@ -45,14 +45,14 @@ return
     ['dot_name'] = request('wrappers.dot_name'),
     ['dot_list'] = request('wrappers.dot_list'),
     ['expr_list'] = request('wrappers.expr_list'),
-    ['func_args'] = request('wrappers.func_args'),
+    ['func_args'] = request('wrappers.function_params'),
     ['function_params'] = request('wrappers.function_params'),
     ['global_all'] = request('wrappers.global_all'),
-    ['name_list'] = request('wrappers.name_list'),
+    ['name_list'] = request('wrappers.expr_list'),
     ['name_parts'] = request('wrappers.name_parts'),
     ['named_vararg'] = request('wrappers.named_vararg'),
     ['par_expr'] = request('wrappers.par_expr'),
-    ['ref_list'] = request('wrappers.ref_list'),
+    ['ref_list'] = request('wrappers.expr_list'),
   }
 
 --[[
