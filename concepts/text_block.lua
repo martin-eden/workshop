@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-11
+  Last mod.: 2026-11-12
 ]]
 
 --[[
@@ -12,7 +12,8 @@
     2 [i] number of newlines after line with text
     3 [t] indent instance
     4 [i] block width (maximum line length in stored list)
-    5 [t] lines list
+    5 [i] right margin
+    6 [t] lines list
       0+ [s] line
 ]]
 
@@ -23,9 +24,9 @@ do
 
   flush =
     function(me)
-      add_to_list(me[5], trim(me[1]))
+      add_to_list(me[6], trim(me[1]))
       for _ = 2, me[2] do
-        add_to_list(me[5], '')
+        add_to_list(me[6], '')
       end
       me[2] = 0
 
@@ -99,13 +100,13 @@ do
   get_text =
     function(me)
       flush(me)
-      return lines_to_str(me[5])
+      return lines_to_str(me[6])
     end
 end
 
-local get_width =
+local exceeds_margin =
   function(me)
-    return me[4]
+    return (me[4] > me[5])
   end
 
 local seed
@@ -119,8 +120,8 @@ do
   ]]
   --[[
     Setting text width (slot 4) to 0 in seed looks wrong.
-    But in deed it updates after AddToTextline() or AddToCurline().
-    If none happened, that zero will be wiped by max() in graft().
+    But in deed it updates in add_to_textline().
+    If that isn't called, that zero will be wiped by max() in graft().
   ]]
   local utf8_len = utf8.len
   seed =
@@ -131,7 +132,8 @@ do
           [2] = me[2],
           [3] = new(me[3]),
           [4] = 0,
-          [5] = { },
+          [5] = me[5],
+          [6] = { },
         }
       setmetatable(another_me, getmetatable(me))
       return another_me
@@ -151,7 +153,7 @@ do
       me[1] = another_me[1]
       me[2] = another_me[2]
       me[4] = max(me[4], another_me[4])
-      add_list(me[5], another_me[5])
+      add_list(me[6], another_me[6])
     end
 end
 
@@ -163,7 +165,9 @@ do
   local max_indent = 100
   local attach_methods = request('!.table.attach_methods')
   create =
-    function(indent_chunk)
+    function(indent_chunk, margin)
+      assert_string(indent_chunk)
+      assert_number(margin)
       local indent = indent.create(indent_chunk, min_indent, max_indent)
       local me =
         {
@@ -171,7 +175,8 @@ do
           [2] = 0,
           [3] = indent,
           [4] = 0,
-          [5] = { },
+          [5] = margin,
+          [6] = { },
         }
       attach_methods(me, interface)
       return me
@@ -190,7 +195,7 @@ interface =
     inc_indent = inc_indent,
     dec_indent = dec_indent,
     get_text = get_text,
-    get_width = get_width,
+    exceeds_margin = exceeds_margin,
     seed = seed,
     graft = graft,
   }
@@ -201,6 +206,6 @@ return interface
 --[[
   2017 # # #
   2024 #
-  2026 # # # #
-  2026-11-04
+  2026 # # # # #
+  2026-11-12
 ]]
