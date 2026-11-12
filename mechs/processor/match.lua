@@ -1,28 +1,33 @@
---[[
-  Grammar matching routine.
+-- Grammar matching routine
 
-  It matches current position of <self.input_stream> with <rule> and
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-11-12
+]]
+
+--[[
+  It matches current position of <me.input_stream> with <rule> and
   returns boolean result.
 
   Behavior depends of <rule> type:
 
     string - simple string matching
 
-    function - calls that function and pass it <self.input_stream>,
-      <self.output_stream>
+    function - calls that function and pass it <me.input_stream>,
+      <me.output_stream>
 
     table - sequence of rules plus processing flags:
-      opt <.op> - string - "neg" - negate result, "opt" - optional
-        rule (result is always true but try to match)
-      opt <.f_rep> - bool - flag to repeat processing until fail
-      opt <.mode_choice> - bool - flag to handle sequence as
-        "choice first matching rule". Else sequence is handled as
-        "match following sequence of rules".
-      opt <.name> - string - name of rule. Passed to handler of
-        "match" event.
+      op [?s] -- "neg" or "opt"
+        "neg" - negate (invert) result,
+        "opt" - optional rule (result is always true but try to match)
+      f_rep [?b] -- repeat flag - flag to repeat processing until fail
+      mode_choice [?b] - flag to handle sequence as choice
+        true - choice first matching rule
+        false - match following sequence of rules
+      name [?s] - name of rule. Passed to handler of "match" event.
 
       In case of positive result and when <.name> is present,
-      <self.on_match> function called with arguments of input stream,
+      <me.on_match> function called with arguments of input stream,
       output stream, rule name, initial input stream position.
 
   In case of negative result read positions in input and output
@@ -30,12 +35,12 @@
 ]]
 
 return
-  function(self, rule)
+  function(me, rule)
     local rule_type = type(rule)
     if (rule_type == 'string') then
-      return self.input_stream:match_string(rule)
+      return me[1]:match_string(rule)
     elseif (rule_type == 'function') then
-      return rule(self.input_stream, self.output_stream)
+      return rule(me[1], me[2])
     elseif (rule_type == 'table') then
       local op_neg = (rule.op == 'neg')
       local op_opt = (rule.op == 'opt')
@@ -51,8 +56,8 @@ return
       local mode_choice = rule.mode_choice
       local mode_seq = not mode_choice
 
-      local input_stream = self.input_stream
-      local output_stream = self.output_stream
+      local input_stream = me[1]
+      local output_stream = me[2]
 
       ::restart::
       local round_in_stream_pos = input_stream:get_position()
@@ -61,7 +66,7 @@ return
       if mode_seq then
         result = true
         for i = 1, #rule do
-          if not self:match(rule[i]) then
+          if not me:match(rule[i]) then
             result = false
             break
           end
@@ -70,7 +75,7 @@ return
         -- mode_choice
         result = false
         for i = 1, #rule do
-          if self:match(rule[i]) then
+          if me:match(rule[i]) then
             result = true
             break
           end
@@ -81,7 +86,7 @@ return
         input_stream:set_position(round_in_stream_pos)
         output_stream:set_position(round_out_stream_pos)
       elseif rule_name then
-        self.on_match(
+        me[3](
           input_stream, output_stream, rule_name, round_in_stream_pos
         )
       end
@@ -103,3 +108,7 @@ return
       return result
     end
   end
+
+--[[
+  2018
+]]

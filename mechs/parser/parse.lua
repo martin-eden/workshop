@@ -6,7 +6,7 @@
 ]]
 
 local output_seq = request('!.mechs.streams.sequence.interface')
-local data_processor = request('!.mechs.processor.core.interface')
+local data_processor = request('!.mechs.processor')
 
 local on_match =
   function(input, output, name, init_pos)
@@ -26,13 +26,10 @@ return
     local output = new(output_seq)
     output:init({ })
 
-    local processor = new(data_processor)
-    processor.input_stream = input
-    processor.output_stream = output
-    processor.on_match = on_match
+    local processor = data_processor.create(input, output, on_match)
 
-    processor:init()
     local is_parsed = processor:match(grammar)
+
     local data = fold(output.seq)
     populate(data, input)
 
