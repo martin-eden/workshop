@@ -2,23 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-28
+  Last mod.: 2026-11-12
 ]]
 
 local add_to_list = request('!.concepts.list.add_item')
 
--- Export:
 return
-  function(List)
-    assert_table(List)
-
-    local Values = { }
-
-    for _, value in pairs(List) do
-      add_to_list(Values, value)
+  function(table)
+    assert_table(table)
+    local values = { }
+    for _, value in pairs(table) do
+      add_to_list(values, value)
     end
-
-    return Values
+    return values
   end
 
 --[[
