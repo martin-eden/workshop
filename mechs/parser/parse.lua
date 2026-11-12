@@ -2,41 +2,41 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-27
+  Last mod.: 2026-11-12
 ]]
 
-local OutputSequence = request('!.mechs.streams.sequence.interface')
-local DataProcessor = request('!.mechs.processor.core.interface')
+local output_seq = request('!.mechs.streams.sequence.interface')
+local data_processor = request('!.mechs.processor.core.interface')
 
 local on_match =
-  function(Input, Output, name, init_pos)
-    local length = Input:get_position() - init_pos
+  function(input, output, name, init_pos)
+    local length = input:get_position() - init_pos
     if (length == 0) then return end
-    Output:write({ type = name, start = init_pos, len = length })
+    output:write({ type = name, start = init_pos, len = length })
   end
 
-local get_struc = request('get_struc')
+local fold = request('fold')
 local populate = request('populate')
 
 return
-  function(Input, Grammar)
-    assert_table(Input)
-    assert(is_table(Grammar) or is_string(Grammar) or is_function(Grammar))
+  function(input, grammar)
+    assert_table(input)
+    assert(is_table(grammar) or is_string(grammar) or is_function(grammar))
 
-    local Output = new(OutputSequence)
-    Output:init({ })
+    local output = new(output_seq)
+    output:init({ })
 
-    local Processor = new(DataProcessor)
-    Processor.input_stream = Input
-    Processor.output_stream = Output
-    Processor.on_match = on_match
+    local processor = new(data_processor)
+    processor.input_stream = input
+    processor.output_stream = output
+    processor.on_match = on_match
 
-    Processor:init()
-    local is_parsed = Processor:match(Grammar)
-    local Data = get_struc(Output.seq)
-    populate(Data, Input)
+    processor:init()
+    local is_parsed = processor:match(grammar)
+    local data = fold(output.seq)
+    populate(data, input)
 
-    return is_parsed, Data
+    return is_parsed, data
   end
 
 --[[
