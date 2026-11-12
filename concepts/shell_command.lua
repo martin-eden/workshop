@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-11
+  Last mod.: 2026-11-12
 
 --[[
   Storage format
@@ -47,7 +47,6 @@ do
       for _, token in ipairs(me) do
         add_to_list(words, quote(token))
       end
-
       return glue_words(words)
     end
 end
@@ -62,30 +61,26 @@ do
 end
 
 local interface
+local create
 do
-  local create
-  do
-    local attach_methods = request('!.table.attach_methods')
-    create =
-      function(me)
-        assert_table(me)
-        for _, token in ipairs(me) do
-          assert_string(token)
-        end
-
-        attach_methods(me, interface)
-
-        return me
+  local attach_methods = request('!.table.attach_methods')
+  create =
+    function(me)
+      assert_table(me)
+      for _, token in ipairs(me) do
+        assert_string(token)
       end
-  end
-
-  interface =
-    {
-      create = create,
-      to_string = to_string,
-      execute = execute,
-    }
+      attach_methods(me, interface)
+      return me
+    end
 end
+
+interface =
+  {
+    create = create,
+    to_string = to_string,
+    execute = execute,
+  }
 
 -- Export:
 return interface
