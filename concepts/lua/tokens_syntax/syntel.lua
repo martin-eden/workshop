@@ -2,34 +2,26 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
 ]]
 
 --[[
   Syntax elements are that punctuation chars (and tuples) and keywords
 ]]
 
-local name_pattern = '^[_A-Za-z][_A-Za-z0-9]*'
-
-local keywords_map
-do
-  local keywords = request('!.concepts.lua.keywords')
-  local map_values = request('!.table.map_values')
-  keywords_map = map_values(keywords)
-end
+local match_name = request('particles.match_name')
+local keywords_map = request('!.concepts.lua.keywords_map')
 
 local is_keyword =
   function(input)
     local init_pos = input:get_position()
-
-    if input:match_regexp(name_pattern) then
-      local capture =
+    if match_name(input) then
+      local token =
         input:get_segment(
           init_pos,
           input:get_position() - init_pos
         )
-
-      if keywords_map[capture] then
+      if keywords_map[token] then
         return true
       else
         input:set_position(init_pos)
