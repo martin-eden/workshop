@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
 ]]
 
 return
@@ -31,7 +31,7 @@ return
       return handler(me, node)
     else
       local node_value = node.value
-      me[2]:add_to_curline(node_value)
+      me[1]:add_to_curline(node_value)
       return true
     end
   end

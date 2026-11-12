@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
 ]]
 
 local oneliner =
   function(me, node)
-    me[2]:add_to_curline('return ')
+    me[1]:add_to_curline('return ')
     return me:process_node(node[1])
   end
 
@@ -19,7 +19,7 @@ local multiliner =
 return
   function(me, node)
     if not node[1] then
-      me[2]:add_to_curline('return')
+      me[1]:add_to_curline('return')
       return true
     else
       return me:variate(node, oneliner, multiliner)

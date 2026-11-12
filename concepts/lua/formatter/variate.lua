@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
 ]]
 
 local default_state =
@@ -10,8 +10,8 @@ local default_state =
 
 return
   function(me, node, oneliner, multiliner)
-    local printer = me[2]
-    local state_keeper = me[3]
+    local printer = me[1]
+    local state_keeper = me[2]
 
     state_keeper:next_level()
     local our_state = state_keeper:get_state() or default_state
@@ -43,7 +43,7 @@ return
           representer_is_last_hope or
           (
             not has_failed and
-            (trial:get_width() <= me[1])
+            not trial:exceeds_margin()
           )
         then
           return trial

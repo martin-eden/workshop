@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-11
+  Last mod.: 2026-11-12
 ]]
 
 local represent_operand_oneline =
   function(me, node)
-    local printer = me[2]
+    local printer = me[1]
     if node.un_ops then
       local cur_un_op, prev_un_op
       for _, cur_un_op in ipairs(node.un_ops) do
@@ -55,7 +55,7 @@ do
         return
       end
       if line_wrap_op[node.bin_op] then
-        me[2]:request_clean_line()
+        me[1]:request_clean_line()
       end
       return true
     end
@@ -63,7 +63,7 @@ end
 
 local multiliner =
   function(me, node)
-    me[2]:request_clean_line()
+    me[1]:request_clean_line()
     for _, term in ipairs(node) do
       if not represent_operand_multiline(me, term) then
         return

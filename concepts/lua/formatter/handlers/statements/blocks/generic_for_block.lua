@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-11
+  Last mod.: 2026-11-12
 ]]
 
 --[[
@@ -12,15 +12,15 @@
 ]]
 local header_oneline =
   function(me, node)
-    me[2]:add_to_curline('for ')
+    me[1]:add_to_curline('for ')
     if not me:process_node(node.names) then
       return
     end
-    me[2]:add_to_curline(' in ')
+    me[1]:add_to_curline(' in ')
     if not me:process_node(node.expr_list) then
       return
     end
-    me[2]:add_to_curline(' do')
+    me[1]:add_to_curline(' do')
     return true
   end
 
@@ -31,7 +31,7 @@ local header_oneline =
 ]]
 local in_part_oneline =
   function(me, node)
-    me[2]:add_to_curline(' in ')
+    me[1]:add_to_curline(' in ')
     return me:process_node(node.expr_list)
   end
 
@@ -43,8 +43,8 @@ local in_part_oneline =
 ]]
 local in_part_multiline =
   function(me, node)
-    me[2]:add_to_textline(' in')
-    me[2]:request_clean_line()
+    me[1]:add_to_textline(' in')
+    me[1]:request_clean_line()
 
     return me:process_block(node.expr_list)
   end
@@ -58,7 +58,7 @@ local in_part_multiline =
 ]]
 local header_multiline =
   function(me, node)
-    local printer = me[2]
+    local printer = me[1]
     printer:add_to_curline('for')
 
     printer:request_clean_line()
@@ -86,18 +86,18 @@ local header_multiline =
 ]]
 local multiliner =
   function(me, node)
-    me[2]:request_clean_line()
+    me[1]:request_clean_line()
     if not me:variate(node, header_oneline, header_multiline) then
       return
     end
 
-    me[2]:request_clean_line()
+    me[1]:request_clean_line()
     if not me:process_block(node.body) then
       return
     end
 
-    me[2]:request_clean_line()
-    me[2]:add_to_curline('end')
+    me[1]:request_clean_line()
+    me[1]:add_to_curline('end')
 
     return true
   end

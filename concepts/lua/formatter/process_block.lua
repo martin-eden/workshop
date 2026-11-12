@@ -2,19 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-11
+  Last mod.: 2026-11-12
 ]]
 
 return
   function(me, node, handler)
     local result
-    me[2]:inc_indent()
+    me[1]:inc_indent()
     if handler then
       result = handler(me, node)
     else
       result = me:process_node(node)
     end
-    me[2]:dec_indent()
+    me[1]:dec_indent()
     return result
   end
 

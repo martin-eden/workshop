@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-11
+  Last mod.: 2026-11-12
 ]]
 
 --[[
@@ -16,11 +16,11 @@
 return
   function(me, node)
     if node[1] then
-      me[2]:add_to_curline('... ')
+      me[1]:add_to_curline('... ')
       return me:process_node(node[1])
     end
 
-    me[2]:add_to_curline(node.value)
+    me[1]:add_to_curline(node.value)
     return true
   end
 

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
 ]]
 
 return
@@ -11,7 +11,7 @@ return
       return
     end
     if node.val_list then
-      me[2]:add_to_textline(' = ')
+      me[1]:add_to_textline(' = ')
       return me:process_block(node.val_list)
     end
     return true

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-11
+  Last mod.: 2026-11-12
 ]]
 
 --[[
@@ -41,7 +41,7 @@ return
   function(me, node)
     if node.list_attr then
       me:process_node(node.list_attr)
-      me[2]:add_to_curline(' ')
+      me[1]:add_to_curline(' ')
     end
     return process_expr_list(me, node)
   end

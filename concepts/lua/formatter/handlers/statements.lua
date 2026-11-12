@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-11
+  Last mod.: 2026-11-12
 ]]
 
 --[[
@@ -13,7 +13,7 @@ local multiliner =
   function(me, node)
     for _, subnode in ipairs(node) do
       if (subnode.type ~= 'empty_statement') then
-        me[2]:request_clean_line()
+        me[1]:request_clean_line()
       end
       if not me:process_node(subnode) then
         return

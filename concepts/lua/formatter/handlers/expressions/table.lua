@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-11
+  Last mod.: 2026-11-12
 ]]
 
 local oneliner =
   function(me, node)
-    local printer = me[2]
+    local printer = me[1]
     printer:add_to_curline('{ ')
     for idx, key_val in ipairs(node) do
       if (idx > 1) then
@@ -30,7 +30,7 @@ local oneliner =
 
 local multiliner =
   function(me, node)
-    local printer = me[2]
+    local printer = me[1]
 
     printer:request_clean_line()
     printer:add_to_curline('{')
@@ -65,7 +65,7 @@ local multiliner =
 return
   function(me, node)
     if (#node == 0) then
-      me[2]:add_to_curline('{ }')
+      me[1]:add_to_curline('{ }')
       return true
     else
       return me:variate(node, oneliner, multiliner)

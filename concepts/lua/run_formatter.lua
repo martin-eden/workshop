@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
 ]]
 
 --[[
@@ -16,7 +16,7 @@ return
   function(ast, options)
     local formatter = formatter_class.create(options)
     formatter:process_node(ast)
-    return formatter[2]:get_text()
+    return formatter[1]:get_text()
   end
 
 --[[

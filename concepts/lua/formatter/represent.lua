@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-31
+  Last mod.: 2026-11-12
 ]]
 
 --[[
@@ -17,12 +17,12 @@
 
 return
   function(me, represent, node)
-    local original_printer = me[2]
+    local original_printer = me[1]
     local trial_printer = original_printer:seed()
 
-    me[2] = trial_printer
+    me[1] = trial_printer
     local has_failed = not represent(me, node)
-    me[2] = original_printer
+    me[1] = original_printer
 
     return trial_printer, has_failed
   end

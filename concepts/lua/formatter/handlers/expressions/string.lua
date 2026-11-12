@@ -2,14 +2,14 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
 ]]
 
 local str_sub = string.sub
 
 return
   function(me, node)
-    local printer = me[2]
+    local printer = me[1]
 
     --[=[
       Quite ugly handling indexing [[[s]]] case: convert to [ [[s]]].

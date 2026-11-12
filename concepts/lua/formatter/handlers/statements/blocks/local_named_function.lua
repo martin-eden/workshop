@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
 ]]
 
 return
   function(me, node)
-    local printer = me[2]
+    local printer = me[1]
 
     printer:request_clean_line()
     printer:add_to_curline('local function ')

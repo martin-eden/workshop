@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
 ]]
 
 return
   function(me)
-    me[2]:add_to_curline('break')
+    me[1]:add_to_curline('break')
     return true
   end
 

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
 ]]
 
 local apply_delimiter =
@@ -11,7 +11,7 @@ local apply_delimiter =
       if is_function(delimiter) then
         delimiter(me)
       else
-        me[2]:add_to_curline(delimiter)
+        me[1]:add_to_curline(delimiter)
       end
     end
   end

@@ -2,12 +2,12 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
 ]]
 
 return
   function(me, node)
-    me[2]:request_clean_line()
+    me[1]:request_clean_line()
     return me:process_block_multiline('do', node[1], 'end')
   end
 
