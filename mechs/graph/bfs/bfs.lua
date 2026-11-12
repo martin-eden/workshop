@@ -1,20 +1,25 @@
 -- BFS-pass of given graph
 
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-11-12
+]]
+
 return
-  function(self, root)
+  function(me, root)
     assert_table(root)
 
-    self.nodes_status = {}
+    me.nodes_status = { }
 
-    local also_visit_keys = self.also_visit_keys
-    local nodes_status = self.nodes_status
-    local table_iterator = self.table_iterator
-    local inform_add = self.inform_add
-    local inform_extract = self.inform_extract
+    local also_visit_keys = me.also_visit_keys
+    local nodes_status = me.nodes_status
+    local table_iterator = me.table_iterator
+    local inform_add = me.inform_add
+    local inform_extract = me.inform_extract
 
     local queue_head = 1
     local queue_tail = 0
-    local storage = {}
+    local storage = { }
     local time = 0
 
     local add_right =
@@ -68,7 +73,7 @@ return
           nodes_status[node] = node_rec
           add_right(node)
         else
-          node_rec.refs[parent] = node_rec.refs[parent] or {}
+          node_rec.refs[parent] = node_rec.refs[parent] or { }
           node_rec.refs[parent][parent_key] = true
         end
       end
@@ -88,3 +93,7 @@ return
       end
     end
   end
+
+--[[
+  2016
+]]
