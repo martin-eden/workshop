@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2025-08-19
+  Last mod.: 2025-11-12
 ]]
 
 --[[
@@ -13,18 +13,13 @@
     { [1] = 'a', [2] = 'b' } -> { ['a'] = 1, ['b'] = 2 }
 ]]
 
--- Export:
 return
-  function(Table)
-    assert_table(Table)
-
-    local Result = { }
-
-    for Key, Value in pairs(Table) do
-      Result[Value] = Key
+  function(table)
+    local result = { }
+    for key, val in pairs(table) do
+      result[val] = key
     end
-
-    return Result
+    return result
   end
 
 --[[
