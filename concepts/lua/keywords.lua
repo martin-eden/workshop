@@ -2,10 +2,9 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
 ]]
 
--- Export:
 return
   {
     'nil',
