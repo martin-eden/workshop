@@ -2,13 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-12
+]]
+
+--[[
+  Punctuation chars that are not considered special in this scope:
+
+    # % + - . , / : = ? @ _ ~
 ]]
 
 local special_chars
 do
   local ascii_chars = request('!.concepts.ascii.chars')
-  local space_chars = request('SpaceChars')
+  local space_chars = request('space_chars')
   local add_list = request('!.concepts.list.add_list')
 
   special_chars =
@@ -33,12 +39,6 @@ do
       ascii_chars.opening_brace,
       ascii_chars.closing_brace,
     }
-
-  --[[
-    Punctuation chars that are not considered special in this scope:
-
-      # % + - . , / : = ? @ _ ~
-  ]]
 
   add_list(special_chars, space_chars)
 end
