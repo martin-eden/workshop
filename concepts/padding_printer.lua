@@ -9,7 +9,8 @@
   Storage format
 
     1 [t] -- indent instance
-    2 [t] -- output stream
+    2 [b] -- emit indent
+    3 [t] -- output stream
 ]]
 
 local inc_indent =
@@ -27,14 +28,19 @@ do
   local newline_char = request('!.concepts.ascii.chars').newline
   newline =
     function(me)
-      me[2]:Write(newline_char)
-      me[2]:Write(me[1]:to_string())
+      me[3]:write(newline_char)
+      me[2] = true
     end
 end
 
 local write =
   function(me, str)
-    me[2]:Write(str)
+    if (str == '') then return end
+    if me[2] then
+      me[2] = false
+      me[3]:write(me[1]:to_string())
+    end
+    me[3]:write(str)
   end
 
 local interface
@@ -48,7 +54,8 @@ do
         {
           [1] =
             indent_class.create(indent_chunk, min_indent, max_indent),
-          [2] = output,
+          [2] = true,
+          [3] = output,
         }
       attach_methods(me, interface)
       return me
