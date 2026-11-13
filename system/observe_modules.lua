@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-04
+  Last mod.: 2026-11-13
 ]]
 
 --[[
@@ -41,13 +41,13 @@
   Locations are very neat addition. Processing package.path "manually"
   is not fun.
 
-  Dependencies can be used to build nice graphs.
+  dependencies can be used to build nice graphs.
   (Yes, it's not crucial, currently not used, and occupies most of
   code. Still, we consider this as important.)
 ]]
 
-local ModulePaths = { }
-local Dependencies = { }
+local module_paths
+local dependencies
 
 local observe_require
 local unobserve_require
@@ -63,17 +63,17 @@ do
       local dive
       local raise
       do
-        local CallChain = { '' }
+        local call_chain = { '' }
         local pos = 1
 
         set =
           function(dest)
-            CallChain[pos] = dest
+            call_chain[pos] = dest
           end
 
         get =
           function()
-            return CallChain[pos]
+            return call_chain[pos]
           end
 
         dive =
@@ -90,14 +90,14 @@ do
       do
         local add_dependency =
           function(from, to)
-            Dependencies[from] = Dependencies[from] or { }
-            Dependencies[from][to] = true
+            dependencies[from] = dependencies[from] or { }
+            dependencies[from][to] = true
           end
 
         before =
-          function(Args)
+          function(args)
             local src = get()
-            local dest = Args[1]
+            local dest = args[1]
 
             dive()
             set(dest)
@@ -109,12 +109,12 @@ do
       do
         local set_module_path =
           function(name, path)
-            ModulePaths[#ModulePaths + 1] = { name, path }
+            module_paths[#module_paths + 1] = { name, path }
           end
 
         after =
-          function(Args)
-            local module_path = Args[2]
+          function(args)
+            local module_path = args[2]
             if module_path then
               local module_name = get()
               set_module_path(module_name, module_path)
@@ -133,9 +133,9 @@ do
         return
           function(...)
             before(tbl_pack(...))
-            local Results = tbl_pack(main(...))
-            after(Results)
-            return tbl_unpack(Results)
+            local results = tbl_pack(main(...))
+            after(results)
+            return tbl_unpack(results)
           end
       end
   end
@@ -154,21 +154,23 @@ end
 
 -- Export:
 return
-  function(Modules)
+  function(modules)
+    module_paths = { }
+    dependencies = { }
+
     observe_require()
 
-    for _, module_name in ipairs(Modules) do
+    for _, module_name in ipairs(modules) do
       require(module_name)
     end
 
     unobserve_require()
 
-    for _, ModuleLoc in ipairs(ModulePaths) do
-      local module_name = ModuleLoc[1]
-      package.loaded[module_name] = nil
+    for _, module_loc in ipairs(module_paths) do
+      package.loaded[module_loc[1]] = nil
     end
 
-    return ModulePaths, Dependencies
+    return module_paths, dependencies
   end
 
 --[[
