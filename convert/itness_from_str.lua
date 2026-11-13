@@ -2,18 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-23
+  Last mod.: 2026-11-13
 ]]
 
-local StringInputStream = request('!.concepts.StreamIo.Input.String')
+local string_input_stream = request('!.concepts.streams.input.string')
 local itness_parse = request('!.concepts.codec_itness.parse')
 
 return
   function(str)
-    local StringInputStream = new(StringInputStream)
-    StringInputStream:Init(str)
+    local string_input_stream = string_input_stream.create(str)
 
-    return itness_parse(StringInputStream)
+    return itness_parse(string_input_stream)
   end
 
 --[[

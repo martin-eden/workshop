@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-19
+  Last mod.: 2026-11-13
 ]]
 
 --[[
@@ -10,24 +10,21 @@
 ]]
 
 local get_listing = request('listing_from_bytecode.get_listing')
-local InputStringStream = request('!.concepts.StreamIo.Input.String')
-local InputLinesStream = request('!.concepts.StreamIo.Input.Lines')
+local input_string_stream = request('!.concepts.streams.input.string')
+local input_lines_stream = request('!.concepts.streams.input.lines')
 local parse_listing = request('listing_from_bytecode.parse_listing')
 
 return
   function(bytecode_str)
     local listing_str = get_listing(bytecode_str)
 
-    local InputLines
+    local input_lines
     do
-      local InputString = new(InputStringStream)
-      InputString:Init(listing_str)
-
-      InputLines = new(InputLinesStream)
-      InputLines:Init(InputString)
+      local input = input_string_stream.create(listing_str)
+      input_lines = input_lines_stream.create(input)
     end
 
-    return parse_listing(InputLines)
+    return parse_listing(input_lines)
   end
 
 --[[

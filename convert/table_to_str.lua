@@ -2,17 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-04
+  Last mod.: 2026-11-13
 ]]
 
-local StringOutputStream = request('!.concepts.StreamIo.Output.String')
+local string_output_stream = request('!.concepts.streams.output.string')
 local compile_graph = request('!.concepts.codec_lua_graph.compile_graph')
 
 return
-  function(Graph, Options)
-    local ResultString = StringOutputStream.create()
-    compile_graph(Graph, ResultString, Options)
-    return ResultString:GetString()
+  function(graph, options)
+    local output = string_output_stream.create()
+    compile_graph(graph, output, options)
+    return output:get_string()
   end
 
 --[[

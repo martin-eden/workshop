@@ -2,19 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-23
+  Last mod.: 2026-11-13
 ]]
 
-local StringOutputStream = request('!.concepts.StreamIo.Output.String')
+local string_output_stream = request('!.concepts.streams.output.string')
 local itness_compile = request('!.concepts.codec_itness.compile')
 
 return
-  function(ItnessNode)
-    local StringOutputStream = new(StringOutputStream)
+  function(itness_node)
+    local string_output_stream = string_output_stream.create()
 
-    itness_compile(ItnessNode, StringOutputStream)
+    itness_compile(itness_node, string_output_stream)
 
-    return StringOutputStream:GetString()
+    return string_output_stream:get_string()
   end
 
 --[[
