@@ -9,7 +9,8 @@
   Internal storage format
 
     1 [t] -- printer
-    2 [t] -- state keeper
+    2 [i] -- right margin
+    3 [t] -- state keeper
 ]]
 
 local interface
@@ -27,13 +28,12 @@ do
       local printer
       do
         local indent_chunk = options.indent_chunk or default_indent_chunk
-        local right_margin = options.right_margin or default_right_margin
-        printer = text_block.create(indent_chunk, right_margin)
+        printer = text_block.create(indent_chunk)
       end
-
+      local right_margin = options.right_margin or default_right_margin
       local state_keeper = state_keeper_class.create()
 
-      local me = { printer, state_keeper }
+      local me = { printer, right_margin, state_keeper }
       attach_methods(me, interface)
 
       return me
