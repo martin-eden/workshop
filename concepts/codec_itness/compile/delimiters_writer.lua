@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-13
 ]]
 
 --[[
@@ -18,39 +18,40 @@
 --[[
   Storage format
 
-    1 [s] -- space char
-    2 [s] -- newline char
+    1 [s] -- previous event
+    2 [b] -- is on empty line?
     3 [t] -- indent instance
-    4 [s] -- previous event
-    5 [b] -- is on empty line?
-    6 [t] -- output stream
+    4 [t] -- output stream
 ]]
-
--- Write string. Update "is on empty line" flag
-local emit =
-  function(me, str)
-    if (str == '') then return end
-    me[6]:Write(str)
-    me[5] = false
-  end
-
--- Delimiting functions:
 
 local empty_func = function(me) end
 
-local emit_space = function(me) emit(me, me[1]) end
+local syntax = request('^.syntax')
+local space = syntax.delimiters_space_char
+local newline = syntax.delimiters_newline_char
 
-local emit_indent =
-  -- Write newline and indentation
-  function(me)
-    -- Assure that next string will be written on new line
-    if not me[5] then
-      emit(me, me[2])
-      me[5] = true
+local emit_space
+local emit_indent
+do
+  local emit =
+    function(me, str)
+      if (str == '') then return end
+      me[4]:write(str)
+      me[2] = false
     end
-
-    emit(me, me[3]:to_string())
-  end
+  emit_space =
+    function(me)
+      emit(me, space)
+    end
+  emit_indent =
+    function(me)
+      if not me[2] then
+        emit(me, newline)
+        me[2] = true
+      end
+      emit(me, me[3]:to_string())
+    end
+end
 
 --[[
   Decision matrix
@@ -94,11 +95,11 @@ local events_map =
 
   Delimiter depends of previous and current item types.
 ]]
-local handle_event =
+local event =
   function(me, cur_event)
+    local prev_event = me[1]
     local indent = me[3]
-    local prev_event = me[4]
-    local is_on_empty_line = me[5]
+    local is_on_empty_line = me[2]
 
     if (prev_event ~= 'nothing') then
       is_on_empty_line = false
@@ -112,31 +113,29 @@ local handle_event =
 
     prev_event = cur_event
 
-    me[4] = prev_event
-    me[5] = is_on_empty_line
+    me[1] = prev_event
+    me[2] = is_on_empty_line
   end
 
 local create
 local interface
 do
+  local indent_chunk = '  '
+  local min_indent = 0
+  local max_indent = 60
   local indent_class = request('!.concepts.indent')
-  local spaces_per_indent = 2
-  local str_rep = string.rep
   local attach_methods = request('!.table.attach_methods')
   create =
-    function(space_char, newline_char, OutputStream)
-      local indent = indent_class.create()
-      local indent_chunk = str_rep(space_char, spaces_per_indent)
-      indent:set_indent_chunk(indent_chunk)
+    function(output)
+      local indent =
+        indent_class.create(indent_chunk, min_indent, max_indent)
 
       local me =
         {
-          [1] = space_char,
-          [2] = newline_char,
+          [1] = 'nothing',
+          [2] = true,
           [3] = indent,
-          [4] = 'nothing',
-          [5] = true,
-          [6] = OutputStream,
+          [4] = output,
         }
 
       attach_methods(me, interface)
@@ -148,7 +147,7 @@ end
 interface =
   {
     create = create,
-    HandleEvent = handle_event,
+    event = event,
   }
 
 -- Export:
@@ -157,6 +156,6 @@ return interface
 --[[
   2024 # # # # #
   2025 #
-  2026 # #
-  2026-10-14
+  2026 # # # #
+  2026-11-13
 ]]

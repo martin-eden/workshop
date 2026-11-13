@@ -2,63 +2,41 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-14
+  Last mod.: 2026-11-13
 ]]
 
-local Syntax = request('common.Syntax')
-local DelimitersWriterClass = request('compile.DelimitersWriter')
-local DataWriterClass = request('compile.DataWriter')
+local delimiters_writer = request('compile.delimiters_writer')
+local data_writer = request('compile.data_writer')
 
 return
-  function(Node, Output)
-    local DelimitersWriter =
-      DelimitersWriterClass.create(
-        Syntax.delimiters_space_char,
-        Syntax.delimiters_newline_char,
-        Output
-      )
-
-    local DataWriter =
-      DataWriterClass.create(
-        {
-          [1] = Syntax.delimiters_space_char,
-          [2] = Syntax.delimiters_newline_char,
-          [3] = Syntax.group_open_char,
-          [4] = Syntax.group_close_char,
-          [5] = Syntax.quote_open_char,
-          [6] = Syntax.quote_close_char,
-        },
-        3,
-        4,
-        5,
-        6,
-        Output
-      )
+  function(node, output)
+    local delimiters_writer = delimiters_writer.create(output)
+    local data_writer = data_writer.create(output)
 
     local compile
     compile =
-      function(Node)
-        if is_string(Node) then
-          DelimitersWriter:HandleEvent('write_string')
-          DataWriter:WriteLeaf(Node)
-        elseif is_table(Node) then
-          DelimitersWriter:HandleEvent('start_list')
-          DataWriter:StartList()
-          for _, Node in ipairs(Node) do
-            compile(Node)
+      function(node)
+        if is_string(node) then
+          delimiters_writer:event('write_string')
+          data_writer:write_leaf(node)
+        elseif is_table(node) then
+          delimiters_writer:event('start_list')
+          data_writer:start_list()
+          for _, node in ipairs(node) do
+            compile(node)
           end
-          DelimitersWriter:HandleEvent('end_list')
-          DataWriter:EndList()
+          delimiters_writer:event('end_list')
+          data_writer:end_list()
         end
       end
 
-    compile(Node)
+    compile(node)
 
-    DelimitersWriter:HandleEvent('nothing')
+    delimiters_writer:event('nothing')
   end
 
 --[[
   2024 # # #
-  2026 # #
-  2026-09-23
+  2026 # # #
+  2026-11-13
 ]]
