@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-13
 ]]
 
 --[[
@@ -49,17 +49,17 @@
   So indentation increases for "value" part only for key-value case.
 
   This can't be naturally coded. So we're exposing indentation methods.
-  And thinking about abandoning that "jsut like output stream" idea.
+  And thinking about abandoning that "just like output stream" idea.
 ]]
 
 local inc_indent =
   function(me)
-    me[3]:IncIndent()
+    me[3]:inc_indent()
   end
 
 local dec_indent =
   function(me)
-    me[3]:DecIndent()
+    me[3]:dec_indent()
   end
 
 local syntels = request('Syntels')
@@ -186,15 +186,15 @@ do
           dec_indent(me)
         end
         if action_emit_space then
-          printer:Write(space)
+          printer:write(space)
         end
         if action_emit_newline then
-          printer:Newline()
+          printer:newline()
         end
       end
 
       -- Write token
-      printer:Write(next_token)
+      printer:write(next_token)
 
       me[2] = next_token
     end
@@ -204,7 +204,10 @@ local interface
 do
   local create
   do
-    local PaddingPrinter = request('!.concepts.PaddingPrinter')
+    local indent_chunk = '  '
+    local min_indent = 0
+    local max_indent = 60
+    local padding_printer = request('!.concepts.padding_printer')
     local attach_methods = request('!.table.attach_methods')
 
     create =
@@ -214,9 +217,15 @@ do
 
         local me =
           {
-            style,
-            '',
-            PaddingPrinter.create(base_output),
+            [1] = style,
+            [2] = '',
+            [3] =
+              padding_printer.create(
+                base_output,
+                indent_chunk,
+                min_indent,
+                max_indent
+              ),
           }
         attach_methods(me, interface)
 
