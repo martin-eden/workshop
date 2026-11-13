@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-12
+  Last mod.: 2026-11-13
 ]]
 
 --[[
@@ -12,8 +12,7 @@
     2 [i] number of newlines after line with text
     3 [t] indent instance
     4 [i] block width (maximum line length in stored list)
-    5 [i] right margin
-    6 [t] lines list
+    5 [t] lines list
       0+ [s] line
 ]]
 
@@ -24,9 +23,9 @@ do
 
   flush =
     function(me)
-      add_to_list(me[6], trim(me[1]))
+      add_to_list(me[5], trim(me[1]))
       for _ = 2, me[2] do
-        add_to_list(me[6], '')
+        add_to_list(me[5], '')
       end
       me[2] = 0
 
@@ -41,6 +40,7 @@ do
   local max = math.max
   add_to_textline =
     function(me, str)
+      if (str == '') then return end
       if (me[1] == '') then
         me[1] = me[3]:to_string()
       end
@@ -100,13 +100,13 @@ do
   get_text =
     function(me)
       flush(me)
-      return lines_to_str(me[6])
+      return lines_to_str(me[5])
     end
 end
 
-local exceeds_margin =
+local get_width =
   function(me)
-    return (me[4] > me[5])
+    return me[4]
   end
 
 local seed
@@ -132,8 +132,7 @@ do
           [2] = me[2],
           [3] = new(me[3]),
           [4] = 0,
-          [5] = me[5],
-          [6] = { },
+          [5] = { },
         }
       setmetatable(another_me, getmetatable(me))
       return another_me
@@ -153,7 +152,7 @@ do
       me[1] = another_me[1]
       me[2] = another_me[2]
       me[4] = max(me[4], another_me[4])
-      add_list(me[6], another_me[6])
+      add_list(me[5], another_me[5])
     end
 end
 
@@ -165,9 +164,8 @@ do
   local max_indent = 100
   local attach_methods = request('!.table.attach_methods')
   create =
-    function(indent_chunk, margin)
+    function(indent_chunk)
       assert_string(indent_chunk)
-      assert_number(margin)
       local indent = indent.create(indent_chunk, min_indent, max_indent)
       local me =
         {
@@ -175,8 +173,7 @@ do
           [2] = 0,
           [3] = indent,
           [4] = 0,
-          [5] = margin,
-          [6] = { },
+          [5] = { },
         }
       attach_methods(me, interface)
       return me
@@ -195,7 +192,7 @@ interface =
     inc_indent = inc_indent,
     dec_indent = dec_indent,
     get_text = get_text,
-    exceeds_margin = exceeds_margin,
+    get_width = get_width,
     seed = seed,
     graft = graft,
   }
