@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-13
 ]]
 
 --[[
@@ -53,15 +53,15 @@ end
 interface =
   {
     create = create,
-    IncIndent = inc_indent,
-    DecIndent = dec_indent,
-    Newline = newline,
-    Write = write,
+    inc_indent = inc_indent,
+    dec_indent = dec_indent,
+    newline = newline,
+    write = write,
   }
 
 return interface
 
 --[[
-  2026-10-20
-  2026-10-22
+  2026 # #
+  2026-11-13
 ]]
