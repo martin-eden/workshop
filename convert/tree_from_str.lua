@@ -2,31 +2,27 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-08-11
+  Last mod.: 2026-11-13
 ]]
 
--- Imports:
 local parse = request('!.concepts.codec_lua_graph.parse')
 local is_tree = request('!.table.is_tree')
 
-local tree_from_str =
+return
   function(str)
-    local Tree = parse(str)
+    local tree = parse(str)
 
-    if not is_table(Tree) then
+    if not is_table(tree) then
       error('Failed to parse.')
     end
 
-    if not is_tree(Tree) then
+    if not is_tree(tree) then
       error('Is not tree.')
     end
 
-    return Tree
+    return tree
   end
 
--- Export:
-return tree_from_str
-
 --[[
-  2026-08-11
+  2026 #
 ]]

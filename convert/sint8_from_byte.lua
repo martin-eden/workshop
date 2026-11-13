@@ -2,23 +2,20 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-05
+  Last mod.: 2026-11-13
 ]]
 
--- Imports:
 local assert_byte = request('!.number.assert_byte')
+local str_pack = string.pack
+local str_unpack = string.unpack
 
-local sint8_from_byte =
+return
   function(byte)
     assert_byte(byte)
-
-    return string.unpack('b', string.pack('B', byte))
+    return str_unpack('b', str_pack('B', byte))
   end
-
--- Export:
-return sint8_from_byte
 
 --[[
   2019
-  2025-05-05
+  2025 #
 ]]

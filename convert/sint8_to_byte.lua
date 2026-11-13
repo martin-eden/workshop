@@ -2,22 +2,22 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-10
+  Last mod.: 2026-11-13
 ]]
 
-local sint8_to_byte =
+local in_range = request('!.number.in_range')
+local str_pack = string.pack
+local str_unpack = string.unpack
+
+return
   function(sint8_byte)
     assert_integer(sint8_byte)
-    assert((sint8_byte >= -128) and (sint8_byte <= 127))
+    assert(in_range(sint8_byte, -128, 127))
 
-    return string.unpack('B', string.pack('b', sint8_byte))
+    return str_unpack('B', str_pack('b', sint8_byte))
   end
-
--- Export:
-return sint8_to_byte
 
 --[[
   2019
-  2026-05-05
-  2026-05-10
+  2026 # #
 ]]

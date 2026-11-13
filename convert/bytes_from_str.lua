@@ -2,21 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-11-13
 ]]
 
-local bytes_from_str =
+-- This implementation is not designed for long strings
+
+local str_byte = string.byte
+
+return
   function(str)
-    -- This implementation is not designed for long strings
-
-    assert_string(str)
-
-    return { string.byte(str, 1, string.len(str)) }
+    return { str_byte(str, 1, #str) }
   end
 
--- Export:
-return bytes_from_str
-
 --[[
-  2026-05-04
+  2026 #
 ]]

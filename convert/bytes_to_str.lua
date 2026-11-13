@@ -2,21 +2,19 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-04
+  Last mod.: 2026-11-13
 ]]
 
-local bytes_to_str =
-  function(Bytes)
-    -- This implementation is not designed for long lists
+-- This implementation is not designed for long lists
 
-    assert_table(Bytes)
+local tbl_unpack = table.unpack
+local str_char = string.char
 
-    return string.char(table.unpack(Bytes))
+return
+  function(bytes)
+    return str_char(tbl_unpack(bytes))
   end
 
--- Export:
-return bytes_to_str
-
 --[[
-  2026-05-04
+  2026 #
 ]]

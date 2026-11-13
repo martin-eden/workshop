@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-13
 ]]
 
 local str_sub = string.sub
@@ -33,7 +33,5 @@ return
   end
 
 --[[
-  2026-05-07
-  2026-05-08
-  2026-05-09
+  2026 # # #
 ]]

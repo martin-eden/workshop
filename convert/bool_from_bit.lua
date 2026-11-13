@@ -8,7 +8,7 @@
 --[[
   It's frontend code
 
-  We're aiming for cleaner code and not binding table values.
+  We're aiming for cleaner code and not binding bitchar values.
 ]]
 
 local char_to_bit_map = request('!.concepts.bit_chars').char_to_bit_map
@@ -24,6 +24,5 @@ return
   end
 
 --[[
-  2026-05-07
-  2026-11-09
+  2026 # #
 ]]

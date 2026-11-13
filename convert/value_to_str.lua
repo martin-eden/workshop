@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-06-20
+  Last mod.: 2026-11-13
 ]]
 
 --[[
@@ -30,8 +30,8 @@
       must return string in case of success.
 ]]
 
--- Imports:
-local serialize_terminal_value = request('!.concepts.lua.serialize_terminal_value')
+local serialize_terminal_value =
+  request('!.concepts.lua.serialize_terminal_value')
 local table_to_str = request('table_to_str')
 
 local represent_unserializable =
@@ -39,7 +39,7 @@ local represent_unserializable =
     return serialize_terminal_value(_G.tostring(val))
   end
 
-local DefaultEncoders =
+local default_encoders =
   {
     ['nil'] = serialize_terminal_value,
     ['boolean'] = serialize_terminal_value,
@@ -51,24 +51,20 @@ local DefaultEncoders =
     ['thread'] = represent_unserializable,
   }
 
-local value_to_str =
-  function(Value, ArgEncoders)
-    local Encoders = new(DefaultEncoders, ArgEncoders)
-
-    local encoder = Encoders[type(Value)]
-
+-- Export:
+return
+  function(val, arg_encoders)
+    local encoders = default_encoders
+    if arg_encoders then
+      encoders = new(encoders, arg_encoders)
+    end
+    local encoder = encoders[type(val)]
     if not encoder then
       error('No encoder for given type of value.')
     end
-
-    return encoder(Value)
+    return encoder(val)
   end
 
--- Export:
-return value_to_str
-
 --[[
-  2026-06-17
-  2026-06-18
-  2026-06-20
+  2026 # # #
 ]]

@@ -1,21 +1,19 @@
--- Convert lines to string
+-- Convert lines to string. Tailing newline.
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-13
 ]]
 
-local list_to_string = request('!.concepts.list.to_string')
+local list_to_str = request('!.concepts.list.to_string')
 local newline = request('!.concepts.ascii.chars').newline
 
--- Concatenate strings list using newline separator. Tailing newline.
 return
   function(lines)
-    return list_to_string(lines, newline) .. newline
+    return list_to_str(lines, newline) .. newline
   end
 
 --[[
   2024 #
-  2026-04 #
-  2026-05-04
+  2026 # #
 ]]

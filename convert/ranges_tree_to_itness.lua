@@ -2,19 +2,18 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-05
+  Last mod.: 2026-11-13
 ]]
 
--- Imports:
 local ordered_pass = request('!.table.ordered_pass')
 local add_to_list = request('!.concepts.list.add_item')
 
 local ranges_comparator =
-  function(RangeA, RangeB)
-    local a_start = RangeA:GetStart()
-    local a_len = RangeA:GetLength()
-    local b_start = RangeB:GetStart()
-    local b_len = RangeB:GetLength()
+  function(range_a, range_b)
+    local a_start = range_a:GetStart()
+    local a_len = range_a:GetLength()
+    local b_start = range_b:GetStart()
+    local b_len = range_b:GetLength()
 
     if (a_start < b_start) then return true end
     if (a_start > b_start) then return false end
@@ -26,11 +25,11 @@ local ranges_comparator =
   end
 
 local ranges_tree_comparator =
-  function(RecA, RecB)
-    local a_key = RecA.key
-    local a_val = RecA.value
-    local b_key = RecB.key
-    local b_val = RecB.value
+  function(a_rec, b_rec)
+    local a_key = a_rec.key
+    local b_key = b_rec.key
+    local a_val = a_rec.value
+    local b_val = b_rec.value
 
     if not is_integer(a_key) and is_integer(b_key) then return false end
     if is_integer(a_key) and not is_integer(b_key) then return true end
@@ -40,55 +39,40 @@ local ranges_tree_comparator =
     end
 
     if not is_integer(a_key) and not is_integer(b_key) then
-      assert_table(a_val)
-      assert_table(b_val)
-
-      local A_Range = a_val[1]
-      local B_Range = b_val[1]
-
-      return ranges_comparator(A_Range, B_Range)
+      return ranges_comparator(a_val[1], b_val[1])
     end
 
     return false
   end
 
 local serialize_range =
-  function(Range)
+  function(range)
     return
-      {
-        tostring(Range:GetStart()),
-        tostring(Range:GetLength()),
-      }
+      { tostring(range:GetStart()), tostring(range:GetLength()) }
   end
 
 local ranges_tree_to_itness
 ranges_tree_to_itness =
-  function(RangesTree)
-    local ResultIs = { }
-
-    for key, val in ordered_pass(RangesTree, ranges_tree_comparator) do
+  function(ranges_tree)
+    local result_is = { }
+    for key, val in ordered_pass(ranges_tree, ranges_tree_comparator) do
       if is_integer(key) then
-        add_to_list(ResultIs, serialize_range(val))
+        add_to_list(result_is, serialize_range(val))
       end
 
       if not (is_string(key) and is_table(val)) then goto next end
 
-      add_to_list(ResultIs, key)
-
-      local NodeIs
-
-      NodeIs = ranges_tree_to_itness(val)
-      add_to_list(ResultIs, NodeIs)
+      add_to_list(result_is, key)
+      add_to_list(result_is, ranges_tree_to_itness(val))
 
       ::next::
     end
-
-    return ResultIs
+    return result_is
   end
 
 -- Export:
 return ranges_tree_to_itness
 
 --[[
-  2026-05-05
+  2026 #
 ]]

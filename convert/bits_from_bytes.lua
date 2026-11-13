@@ -2,37 +2,25 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-07
+  Last mod.: 2026-11-13
 ]]
 
---[[
-  Result structure
-
-    string
-]]
-
--- Imports:
 local byte_to_bits = request('!.convert.byte_to_bits')
 local add_to_list = request('!.concepts.list.add_item')
 local list_to_string = request('!.concepts.list.to_string')
 
-local bits_from_bytes =
-  function(Bytes)
-    assert_table(Bytes)
+return
+  function(bytes)
+    assert_table(bytes)
 
-    local BytesBits = { }
-
-    for idx, byte in ipairs(Bytes) do
-      add_to_list(BytesBits, byte_to_bits(byte))
+    local bits = { }
+    for idx, byte in ipairs(bytes) do
+      add_to_list(bits, byte_to_bits(byte))
     end
 
-    return list_to_string(BytesBits)
+    return list_to_string(bits)
   end
 
--- Export:
-return bits_from_bytes
-
 --[[
-  2026-05-03
-  2026-05-07
+  2026 # #
 ]]

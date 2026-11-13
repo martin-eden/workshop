@@ -10,11 +10,9 @@ local itness_parse = request('!.concepts.codec_itness.parse')
 
 return
   function(str)
-    local string_input_stream = string_input_stream.create(str)
-
-    return itness_parse(string_input_stream)
+    return itness_parse(string_input_stream.create(str))
   end
 
 --[[
-  2026-04-27
+  2026 #
 ]]

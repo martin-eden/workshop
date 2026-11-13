@@ -2,20 +2,20 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-09
+  Last mod.: 2026-11-13
 ]]
 
--- Imports:
-local Range = request('!.concepts.RangesTree.Range.Interface')
-local RangesTreeClass = request('!.concepts.RangesTree.RangesTree.Interface')
+local deserialize_range
+do
+  local range = request('!.concepts.RangesTree.Range.Interface')
+  deserialize_range =
+    function(node)
+      local start = tonumber(node[1])
+      local len = tonumber(node[2])
 
-local deserialize_range =
-  function(NodeIs)
-    local range_start = tonumber(NodeIs[1])
-    local range_len = tonumber(NodeIs[2])
-
-    return Range.create(range_start, range_len)
-  end
+      return range.create(start, len)
+    end
+end
 
 local looks_like_range =
   function(key_is, val_is)
@@ -40,42 +40,36 @@ local looks_like_node =
 
 local ranges_tree_from_itness
 ranges_tree_from_itness =
-  function(RangesTreeIs, RangesTree, name_prefix)
+  function(ranges_tree_is, ranges_tree, name_prefix)
     local node_name = name_prefix
 
-    for key, val in ipairs(RangesTreeIs) do
+    for key, val in ipairs(ranges_tree_is) do
       if looks_like_range(key, val) then
-        RangesTree:AddRange(node_name, deserialize_range(val))
+        ranges_tree:AddRange(node_name, deserialize_range(val))
       end
 
       if looks_like_name(key, val) then
         node_name = name_prefix .. val
-
-        RangesTree:AddName(node_name)
+        ranges_tree:AddName(node_name)
       end
 
       if looks_like_node(key, val) then
-        ranges_tree_from_itness(
-          val,
-          RangesTree,
-          node_name .. '.'
-        )
+        ranges_tree_from_itness(val, ranges_tree, node_name .. '.')
       end
     end
   end
 
-local ranges_tree_from_itness_root =
-  function(RangesTreeIs)
-    local RangesTree = RangesTreeClass.create()
-
-    ranges_tree_from_itness(RangesTreeIs, RangesTree, '')
-
-    return RangesTree
-  end
+local ranges_tree_class =
+  request('!.concepts.RangesTree.RangesTree.Interface')
 
 -- Export:
-return ranges_tree_from_itness_root
+return
+  function(ranges_tree_is)
+    local ranges_tree = ranges_tree_class.create()
+    ranges_tree_from_itness(ranges_tree_is, ranges_tree, '')
+    return ranges_tree
+  end
 
 --[[
-  2026-05-05
+  2026 # #
 ]]
