@@ -43,8 +43,13 @@ do
   local indent_class = request('!.concepts.indent')
   local attach_methods = request('!.table.attach_methods')
   create =
-    function(output)
-      local me = { indent_class.create(), output }
+    function(output, indent_chunk, min_indent, max_indent)
+      local me =
+        {
+          [1] =
+            indent_class.create(indent_chunk, min_indent, max_indent),
+          [2] = output,
+        }
       attach_methods(me, interface)
       return me
     end
