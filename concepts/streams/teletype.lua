@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-04
+  Last mod.: 2026-11-13
 ]]
 
 --[[
@@ -51,41 +51,43 @@ do
   local exists = request('!.file_system.file.is_byte_stream_device')
   local tty_get_raw_params = request('!.mechs.tty.get_raw_params')
   local tty_set_params = request('!.mechs.tty.set_params')
+  local io_open = io.open
   local sleep_sec = request('!.system.sleep')
-  local InputInterface = request('!.concepts.StreamIo.Input.File')
-  local OutputInterface = request('!.concepts.StreamIo.Output.File')
+  local file_in_stream = request('!.concepts.streams.input.file')
+  local file_out_stream = request('!.concepts.streams.output.file')
 
   open =
-    function(Me, speed_bps)
-      if not exists(Me[1]) then return end
+    function(me, speed_bps)
+      local dev_name = me[1]
 
-      if Me[2] then close(Me) end
+      if not exists(dev_name) then return end
 
-      Me[3] = tty_get_raw_params(Me[1])
+      if me[2] then close(me) end
+
+      me[3] = tty_get_raw_params(dev_name)
 
       tty_set_params(
-        Me[1],
+        dev_name,
         { speed_bps = speed_bps, read_timeout_s = read_timeout_sec }
       )
 
-      Me[4] = io.open(Me[1], 'r+')
-      Me[4]:setvbuf('no')
+      me[4] = io_open(dev_name, 'r+')
+      me[4]:setvbuf('no')
 
       sleep_sec(warmup_delay_sec)
 
-      Me.Input = InputInterface.create(Me[1])
-      Me.Input[2] = Me[4]
+      me.input = file_in_stream.create(me[1])
+      me.input[2] = me[4]
 
-      Me.Output = OutputInterface.create(Me[1])
-      Me.Output[2] = Me[4]
+      me.output = file_out_stream.create(me[1])
+      me.output[2] = me[4]
 
-      Me[2] = true
+      me[2] = true
 
       return true
     end
 end
 
--- close
 do
   --[[
     Close UART device opened for reading and writing
@@ -94,10 +96,9 @@ do
   ]]
 
   local tty_set_raw_params = request('!.mechs.tty.set_raw_params')
-
   close =
-    function(Me)
-      if not Me[3] then return end
+    function(me)
+      if not me[3] then return end
 
       --[[
         -- io.close(file)
@@ -114,46 +115,45 @@ do
         Surely device is closed somehow when Lua exits,
         but some other way than via io.close().
       ]]
-      -- io.close(Me[4])
-      Me[4] = nil
+      -- io.close(me[4])
+      me[4] = nil
 
-      Me.Input[2] = Me[4]
-      Me.Output[2] = Me[4]
+      me.input[2] = me[4]
+      me.output[2] = me[4]
 
-      tty_set_raw_params(Me[1], Me[3])
-      Me[3] = nil
+      tty_set_raw_params(me[1], me[3])
+      me[3] = nil
 
-      Me[1] = nil
+      me[1] = nil
 
-      Me[2] = false
+      me[2] = false
     end
 end
 
-local Interface
+local interface
 local create
 do
   local attach_methods = request('!.table.attach_methods')
   create =
     function(device_file_name)
-      local Me = { device_file_name }
-      attach_methods(Me, Interface)
-      return Me
+      assert_string(device_file_name)
+      local me = { device_file_name, false, '', 0 }
+      attach_methods(me, interface)
+      return me
     end
 end
 
-Interface =
+interface =
   {
     create = create,
-
-    Open = open,
-    Close = close,
-
-    Input = nil,
-    Output = nil,
+    open = open,
+    close = close,
+    input = { },
+    output = { },
   }
 
 -- Export:
-return Interface
+return interface
 
 --[[
   2024 # # #

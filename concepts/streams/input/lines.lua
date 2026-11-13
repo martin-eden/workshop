@@ -2,35 +2,37 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-13
+]]
+
+--[[
+  Storage format
+
+    1 [t] -- base input stream
 ]]
 
 --[[
   Actually it's wrapper over provided base stream.
 ]]
 
-local init =
-  function(me, base_stream)
-    me.base_stream = base_stream
-  end
-
 --[[
   Unlike Read() from base streams we have different interface:
 
-  Base Read():
+  Base read():
 
     * Uses one argument (number of bytes to read)
     * If stream is over
       * Returns empty string
     * Returns string with given bytes
 
-  This Read():
+  This read():
 
     * Uses no arguments (reads one line per call)
     * If stream is over
       * Returns "false"
     * Returns "true" and string with line
 ]]
+
 local read
 do
   local newline = request('!.concepts.ascii.chars').newline
@@ -38,39 +40,46 @@ do
     function(me)
       -- Naive implementation for first time
 
-      local base_stream = me.base_stream
+      local input = me[1]
 
-      local char = base_stream:Read(1)
-
+      local char = input:read(1)
       if (char == '') then return false end
 
       local line = ''
-
       while true do
-        if (char == '') then break end
         if (char == newline) then break end
-
         line = line .. char
-
-        char = base_stream:Read(1)
+        char = input:read(1)
+        if (char == '') then break end
       end
 
       return true, line
     end
 end
 
-local interface =
-  {
-    Init = init,
-    Read = read,
+local interface
+local create
+do
+  local attach_methods = request('!.table.attach_methods')
+  create =
+    function(base_stream)
+      assert_table(base_stream)
+      local me = { base_stream }
+      attach_methods(me, interface)
+      return me
+    end
+end
 
-    -- Internals:
-    base_stream = { },
+interface =
+  {
+    create = create,
+    read = read,
   }
 
 -- Export:
 return interface
 
 --[[
-  2026-07-13
+  2026 #
+  2026-11-13
 ]]

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-02
+  Last mod.: 2026-11-13
 ]]
 
 --[[
@@ -17,9 +17,9 @@ do
   local create_file = request('!.file_system.file.create')
   local open_for_writing = request('!.file_system.file.open_for_writing')
   open =
-    function(Me)
-      create_file(Me[1], '')
-      Me[2] = open_for_writing(Me[1])
+    function(me)
+      create_file(me[1], '')
+      me[2] = open_for_writing(me[1])
     end
 end
 
@@ -27,46 +27,42 @@ local close
 do
   local close_file = request('!.file_system.file.close')
   close =
-    function(Me)
-      close_file(Me[2])
+    function(me)
+      close_file(me[2])
     end
 end
 
 local write =
-  function(Me, data_str)
+  function(me, data_str)
     assert_string(data_str)
-
-    Me[2]:write(data_str)
+    me[2]:write(data_str)
   end
 
-local Interface
-
+local interface
 local create
 do
   local attach_methods = request('!.table.attach_methods')
   create =
     function(pathname)
       assert_string(pathname)
-
-      local Me = { pathname, 0 }
-      attach_methods(Me, Interface)
-
-      return Me
+      local me = { pathname, 0 }
+      attach_methods(me, interface)
+      return me
     end
 end
 
-Interface =
+interface =
   {
-    create = create,
-    -- Extensions:
-    Open = open,
-    Close = close,
     -- Core:
-    Write = write,
+    create = create,
+    write = write,
+    -- Extensions:
+    open = open,
+    close = close,
   }
 
 -- Export:
-return Interface
+return interface
 
 --[[
   2024 # # # # #

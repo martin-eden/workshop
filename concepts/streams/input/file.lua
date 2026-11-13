@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-28
+  Last mod.: 2026-11-13
 ]]
 
 --[[
@@ -14,10 +14,10 @@
 
 local open
 do
-  local open_file_for_reading = request('!.file_system.file.open_for_reading')
+  local open_read = request('!.file_system.file.open_for_reading')
   open =
-    function(Me)
-      Me[2] = open_file_for_reading(Me[1])
+    function(me)
+      me[2] = open_read(me[1])
     end
 end
 
@@ -25,8 +25,8 @@ local close
 do
   local close_file = request('!.file_system.file.close')
   close =
-    function(Me)
-      close_file(Me[2])
+    function(me)
+      close_file(me[2])
     end
 end
 
@@ -34,10 +34,13 @@ local read
 do
   local is_natural = request('!.number.is_natural')
   read =
-    function(Me, num_bytes)
-      assert(is_natural(num_bytes))
+    function(me, num_bytes)
+      assert_integer(num_bytes)
+      assert(num_bytes >= 0)
 
-      local data_str = Me[2]:read(num_bytes)
+      if (num_bytes == 0) then return '' end
+
+      local data_str = me[2]:read(num_bytes)
 
       -- No end-of-file concept in input stream
       if is_nil(data_str) then data_str = '' end
@@ -46,32 +49,31 @@ do
     end
 end
 
-local Interface
+local interface
 local create
 do
   local attach_methods = request('!.table.attach_methods')
   create =
     function(pathname)
       assert_string(pathname)
-      local Me = { pathname, 0 }
-      attach_methods(Me, Interface)
-
-      return Me
+      local me = { pathname, 0 }
+      attach_methods(me, interface)
+      return me
     end
 end
 
-Interface =
+interface =
   {
-    create = create,
-    -- Extensions:
-    Open = open,
-    Close = close,
     -- Core:
-    Read = read,
+    create = create,
+    read = read,
+    -- Extensions:
+    open = open,
+    close = close,
   }
 
 -- Export:
-return Interface
+return interface
 
 --[[
   2024 # # # # #

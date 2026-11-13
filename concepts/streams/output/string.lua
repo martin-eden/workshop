@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-14
+  Last mod.: 2026-11-13
 ]]
 
 --[[
@@ -21,9 +21,9 @@ local write
 do
   local add_to = request('!.concepts.list.add_item')
   write =
-    function(Me, data_str)
+    function(me, data_str)
       assert_string(data_str)
-      add_to(Me, data_str)
+      add_to(me, data_str)
     end
 end
 
@@ -31,32 +31,32 @@ local get_string
 do
   local list_to_string = request('!.concepts.list.to_string')
   get_string =
-    function(Me)
-      return list_to_string(Me)
+    function(me)
+      return list_to_string(me)
     end
 end
 
-local Interface
+local interface
 local create
 do
   local attach_methods = request('!.table.attach_methods')
   create =
     function()
-      local Me = { }
-      attach_methods(Me, Interface)
-      return Me
+      local me = { }
+      attach_methods(me, interface)
+      return me
     end
 end
 
-Interface =
+interface =
   {
     create = create,
-    Write = write,
-    GetString = get_string,
+    write = write,
+    get_string = get_string,
   }
 
 -- Export:
-return create()
+return interface
 
 --[[
   2024 # # # #
