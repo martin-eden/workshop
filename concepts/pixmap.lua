@@ -1,4 +1,4 @@
--- Pixmap image
+-- 2-d matrix image
 
 --[[
   Author: Martin Eden
@@ -6,39 +6,54 @@
 ]]
 
 --[[
-  Data format
+  Storage format
 
-    1 [t] -- indexer instance
-    2 [t] -- image data, list of color channel values
+    1 [t] index instance
+    2 [t] image data, list of color channel values
 ]]
 
-local index_class = request('index')
+--[[
+  "Image" is 3-d array with dimensions: width, height, num_channels.
+  "Color" is 1-d array with dimension: num_channels.
+]]
 
-local set_pixel =
-  function(me, x, y, color)
-    for channel = 1, me[1][3] do
+local get_color =
+  function(me, x, y)
+    local color = { }
+    for channel = 1, me[1]:get_dim(3) do
+      local index = me[1]:get_index({ x, y, channel })
+      color[channel] = me[2][index]
+    end
+    return color
+  end
+
+local set_color =
+  function(me, color, x, y)
+    for channel = 1, me[1]:get_dim(3) do
       local index = me[1]:get_index({ x, y, channel })
       me[2][index] = color[channel]
     end
   end
 
-local get_pixel
-do
-  local add_to_list = request('!.concepts.list.add_item')
-  get_pixel =
-    function(me, x, y)
-      local result = { }
-      for channel = 1, me[1][3] do
-        local index = me[1]:get_index({ x, y, channel })
-        add_to_list(result, me[2][index])
-      end
-      return result
-    end
-end
+local get_width =
+  function(me)
+    return me[1]:get_dim(1)
+  end
+
+local get_height =
+  function(me)
+    return me[1]:get_dim(2)
+  end
+
+local get_num_channels =
+  function(me)
+    return me[1]:get_dim(3)
+  end
 
 local interface
 local create
 do
+  local index_class = request('index')
   local attach_methods = request('!.table.attach_methods')
   create =
     function(width, height, num_channels)
@@ -59,8 +74,11 @@ end
 interface =
   {
     create = create,
-    set_pixel = set_pixel,
-    get_pixel = get_pixel,
+    get_color = get_color,
+    set_color = set_color,
+    get_width = get_width,
+    get_height = get_height,
+    get_num_channels = get_num_channels,
   }
 
 -- Export:
