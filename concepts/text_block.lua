@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-13
+  Last mod.: 2026-11-14
 ]]
 
 --[[
@@ -12,24 +12,28 @@
     2 [i] number of newlines after line with text
     3 [t] indent instance
     4 [i] block width (maximum line length in stored list)
-    5 [t] lines list
-      0+ [s] line
+    5 [t] string output stream instance
 ]]
+
+--[[
+  It's specialized text printer for optimal formatting
+
+  It provides additional methods to get text block width ("get_width"),
+  spawn disposable copy ("seed") and merge it ("graft").
+]]
+
+local newline = request('!.concepts.ascii.chars').newline
 
 local flush
 do
-  local trim = request('!.string.trim_tail')
-  local add_to_list = request('!.concepts.list.add_item')
-
+  local rtrim = request('!.string.trim_tail')
+  local str_rep = string.rep
   flush =
     function(me)
-      add_to_list(me[5], trim(me[1]))
-      for _ = 2, me[2] do
-        add_to_list(me[5], '')
-      end
-      me[2] = 0
-
+      me[5]:write(rtrim(me[1]))
+      me[5]:write(str_rep(newline, me[2]))
       me[1] = ''
+      me[2] = 0
     end
 end
 
@@ -94,20 +98,18 @@ local dec_indent =
     me[3]:dec()
   end
 
-local get_text
-do
-  local lines_to_str = request('!.convert.lines_to_str')
-  get_text =
-    function(me)
-      flush(me)
-      return lines_to_str(me[5])
-    end
-end
+local get_text =
+  function(me)
+    flush(me)
+    return me[5]:get_string()
+  end
 
 local get_width =
   function(me)
     return me[4]
   end
+
+local string_output_class = request('!.concepts.streams.output.string')
 
 local seed
 do
@@ -132,7 +134,7 @@ do
           [2] = me[2],
           [3] = new(me[3]),
           [4] = 0,
-          [5] = { },
+          [5] = string_output_class.create(),
         }
       setmetatable(another_me, getmetatable(me))
       return another_me
@@ -144,15 +146,13 @@ do
   --[[
     Merge with another our instance
   ]]
-  local add_list = request('!.concepts.list.add_list')
   local max = math.max
-
   graft =
     function(me, another_me)
       me[1] = another_me[1]
       me[2] = another_me[2]
       me[4] = max(me[4], another_me[4])
-      add_list(me[5], another_me[5])
+      me[5]:write(another_me[5]:get_string())
     end
 end
 
@@ -166,14 +166,13 @@ do
   create =
     function(indent_chunk)
       assert_string(indent_chunk)
-      local indent = indent.create(indent_chunk, min_indent, max_indent)
       local me =
         {
           [1] = '',
           [2] = 0,
-          [3] = indent,
+          [3] = indent.create(indent_chunk, min_indent, max_indent),
           [4] = 0,
-          [5] = { },
+          [5] = string_output_class.create(),
         }
       attach_methods(me, interface)
       return me
@@ -203,6 +202,6 @@ return interface
 --[[
   2017 # # #
   2024 #
-  2026 # # # # #
-  2026-11-12
+  2026 # # # # # #
+  2026-11-14
 ]]
