@@ -2,23 +2,20 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-14
+  Last mod.: 2026-11-14
 ]]
 
 local str_gmatch = string.gmatch
 local add_to_list = request('!.concepts.list.add_item')
 
--- Export:
 return
   function(str)
-    local Words = { }
-
+    local words = { }
     -- "%S+" - capture non-space sequences
     for word in str_gmatch(str, '%S+') do
-      add_to_list(Words, word)
+      add_to_list(words, word)
     end
-
-    return Words
+    return words
   end
 
 --[[
