@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-12
+  Last mod.: 2026-11-14
 ]]
 
 --[[
@@ -16,38 +16,27 @@
 
 local cho =
   function(...)
-    local result = { ... }
-    result.mode_choice = true
-    return result
+    return { mode_choice = true, ... }
   end
 
 local rep =
   function(...)
-    local result = { ... }
-    result.f_rep = true
-    return result
+    return { f_rep = true, ... }
   end
 
 local opt =
   function(...)
-    local result = { ... }
-    result.op = 'opt'
-    return result
+    return { op = 'opt', ... }
   end
 
 local is_not =
   function(...)
-    local result = { ... }
-    result.op = 'neg'
-    return result
+    return { op = 'neg', ... }
   end
 
 local opt_rep =
   function(...)
-    local result = { ... }
-    result.op = 'opt'
-    result.f_rep = true
-    return result
+    return { op = 'opt', f_rep = true, ... }
   end
 
 local list =
