@@ -22,12 +22,6 @@
       ^. -- upper directory
       !. -- root directory
 
-  * Global "get_base_prefix()"
-
-    Implementation of "request()" knows it's own module name prefix
-    for "require()". It's critical information for niche tools.
-    Used by [require_file].
-
   * Convenience globals
 
     Modules that made global because they are used often:
@@ -54,9 +48,8 @@
   and use it for relative require() modules in that directory.
 ]]
 
-local set_base_prefix
 local split_name
-local get_base_prefix
+local base_prefix
 local request
 local stack_init
 local stack_add
@@ -148,20 +141,6 @@ do
       end
   end
 
-  do
-    local base_prefix
-
-    set_base_prefix =
-      function(arg_base_prefix)
-        base_prefix = arg_base_prefix
-      end
-
-    get_base_prefix =
-      function()
-        return base_prefix
-      end
-  end
-
   local get_require_name =
     function(qualified_name)
       local caller_prefix
@@ -170,7 +149,7 @@ do
 
       if is_absolute_name then
         qualified_name = str_sub(qualified_name, 3)
-        caller_prefix = get_base_prefix()
+        caller_prefix = base_prefix
       else
         caller_prefix = get_caller_prefix()
       end
@@ -200,10 +179,9 @@ do
   -- First element is invocation module name
   local our_require_name = (...)
 
-  set_base_prefix(split_name(our_require_name))
+  base_prefix = split_name(our_require_name)
 
   _G['request'] = request
-  _G['get_base_prefix'] = get_base_prefix
 
   -- We can now use request() but need to add our name to call stack
 
@@ -222,6 +200,6 @@ end
   2017 #
   2018 # #
   2024 #
-  2026 # # # #
-  2026-09-24
+  2026 # # # # #
+  2026-11-14
 ]]
