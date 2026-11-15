@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-13
+  Last mod.: 2026-11-15
 ]]
 
 --[[
@@ -107,10 +107,8 @@ do
   local syntax_chars_regexp
   do
     local get_values = request('!.table.get_values')
-    local list_to_str = request('!.concepts.list.to_string')
-    local quote_regexp = request('!.lua.regexp.quote')
-    syntax_chars_regexp =
-      '[' .. quote_regexp(list_to_str(get_values(syntax))) .. ']'
+    local charset_regexp = request('!.lua.regexp.charset')
+    syntax_chars_regexp = charset_regexp(get_values(syntax))
   end
   local attach_methods = request('!.table.attach_methods')
   create =
@@ -134,6 +132,5 @@ return interface
 
 --[[
   2024 # #
-  2026 #
-  2026-11-13
+  2026 # #
 ]]
