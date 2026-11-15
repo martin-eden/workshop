@@ -1,8 +1,13 @@
-local assert_stream = request('!.mechs.streams.assert_is_stream')
+-- Parse data from Firmata
 
-local parse =
-  function(self, mode)
-    assert_stream(self.stream)
+--[[
+  Author: Martin Eden
+  Last mod.: 2026-11-15
+]]
+
+return
+  function(me, mode)
+    assert_table(me.stream)
 
     local is_request = false
 
@@ -11,11 +16,11 @@ local parse =
       is_request = mode.is_request
     end
 
-    local result = {}
-    while self:parse_chunk(is_request, result) do
-    end
-    local stream_pos = self.stream:get_position()
-    local stream_length = self.stream:get_length()
+    local result = { }
+    while me:parse_chunk(is_request, result) do end
+
+    local stream_pos = me.stream:get_position()
+    local stream_length = me.stream:get_length()
     local is_fully_parsed = (stream_pos - 1 == stream_length)
     local status =
       {
@@ -23,7 +28,10 @@ local parse =
         stream_length = stream_length,
         is_fully_parsed = is_fully_parsed,
       }
+
     return result, status
   end
 
-return parse
+--[[
+  2019 # # #
+]]

@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-12
+  Last mod.: 2026-11-15
 ]]
 
 --[[
@@ -23,12 +23,11 @@ local match = request('processor.match')
 local interface
 local create
 do
-  local assert_is_stream = request('!.mechs.streams.assert_is_stream')
   local attach_methods = request('!.table.attach_methods')
   create =
     function(input, output, on_match)
-      assert_is_stream(input)
-      assert_is_stream(output)
+      assert_table(input)
+      assert_table(output)
       assert_function(on_match)
       local me = { input, output, on_match}
       attach_methods(me, interface)
