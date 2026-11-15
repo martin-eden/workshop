@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-12
+  Last mod.: 2026-11-15
 ]]
 
 local output_seq = request('!.mechs.streams.sequence.interface')
@@ -24,13 +24,13 @@ return
     assert(is_table(grammar) or is_string(grammar) or is_function(grammar))
 
     local output = new(output_seq)
-    output:init({ })
+    output:init()
 
     local processor = data_processor.create(input, output, on_match)
 
     local is_parsed = processor:match(grammar)
 
-    local data = fold(output.seq)
+    local data = fold(output:get_values())
     populate(data, input)
 
     return is_parsed, data
