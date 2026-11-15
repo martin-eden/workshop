@@ -1,4 +1,4 @@
--- Return regexp string to match one of characters from list
+-- Return regexp string to match character from list
 
 --[[
   Author: Martin Eden
@@ -7,10 +7,11 @@
 
 local list_to_str = request('!.concepts.list.to_string')
 local defuse = request('!.lua.regexp.quote')
+local to_charset = request('to_charset')
 
 return
   function(chars)
-    return '[' .. defuse(list_to_str(chars)) .. ']'
+    return to_charset(defuse(list_to_str(chars)))
   end
 
 --[[

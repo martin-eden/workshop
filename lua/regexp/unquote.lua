@@ -2,11 +2,11 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-14
+  Last mod.: 2026-11-15
 ]]
 
-local magic_char_pattern = request('magic_char_pattern')
-local replace_pattern = '%%(' .. magic_char_pattern .. ')'
+local magic_charset = request('magic_charset')
+local replace_pattern = '%%(' .. magic_charset .. ')'
 local str_gsub = string.gsub
 
 return
