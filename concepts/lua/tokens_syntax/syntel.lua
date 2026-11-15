@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-12
+  Last mod.: 2026-11-15
 ]]
 
 --[[
@@ -30,6 +30,7 @@ local is_keyword =
     end
   end
 
+local charset = request('!.lua.regexp.charset')
 local match_regexp = request('!.mechs.parser.handy').match_regexp
 local cho = request('!.mechs.processor.handy').cho
 
@@ -47,11 +48,34 @@ return
       '..',
       '//',
       '::',
-      match_regexp('[%=%~%<%>%.%:%,%;%/%(%)%[%]%{%}%-%+%#%*%%%^%&%|]')
+      match_regexp(
+        charset(
+          {
+            ';',
+            '=',
+            ',',
+            '.',
+            ':',
+            '-',
+            '#',
+            '~',
+            '+',
+            '*',
+            '/',
+            '%',
+            '&',
+            '|',
+            '^',
+            '(', ')',
+            '[', ']',
+            '<', '>',
+            '{', '}',
+          }
+        )
+      )
     )
   }
 
 --[[
-  2026-10-26
-  2026-10-28
+  2026 # #
 ]]
