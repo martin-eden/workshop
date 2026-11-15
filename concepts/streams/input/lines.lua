@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-13
+  Last mod.: 2026-11-15
 ]]
 
 --[[
@@ -16,7 +16,7 @@
 ]]
 
 --[[
-  Unlike Read() from base streams we have different interface:
+  Unlike read() from base streams we have different interface:
 
   Base read():
 
