@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-15
+  Last mod.: 2026-11-16
 ]]
 
 --[[
@@ -40,7 +40,7 @@ do
       local pos = me[2]
       if (new_position == pos) then return end
       new_position = constrain(new_position, 1, pos)
-      for i = new_position, pos - 1 do
+      for i = pos - 1, new_position, -1 do
         me[1][i] = nil
       end
       me[2] = new_position
