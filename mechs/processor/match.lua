@@ -1,20 +1,19 @@
--- Grammar matching routine
+-- Grammar matching core
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-12
+  Last mod.: 2026-11-18
 ]]
 
 --[[
-  It matches current position of <me.input_stream> with <rule> and
+  It matches current position in input stream with rule and
   returns boolean result.
 
-  Behavior depends of <rule> type:
+  Behavior depends of rule type:
 
     string - simple string matching
 
-    function - calls that function and pass it <me.input_stream>,
-      <me.output_stream>
+    function - calls that function and passes it input and output streams
 
     table - sequence of rules plus processing flags:
       op [?s] -- "neg" or "opt"
@@ -22,19 +21,22 @@
         "opt" - optional rule (result is always true but try to match)
       f_rep [?b] -- repeat flag - flag to repeat processing until fail
       mode_choice [?b] - flag to handle sequence as choice
-        true - choice first matching rule
-        false - match following sequence of rules
+        true - choice: success if one rule matched
+        false - sequence: success if all rules matched
       name [?s] - name of rule. Passed to handler of "match" event.
 
       In case of positive result and when <.name> is present,
-      <me.on_match> function called with arguments of input stream,
+      "on match" function is called with arguments of input stream,
       output stream, rule name, initial input stream position.
 
-  In case of negative result read positions in input and output
-  streams are restored to what they were at start of this function.
+  In case of negative result positions in input and output streams
+  are restored to what they were at start of this function.
 ]]
 
-return
+-- I am proud of this code
+
+local match
+match =
   function(me, rule)
     local rule_type = type(rule)
     if (rule_type == 'string') then
@@ -56,17 +58,15 @@ return
       local mode_choice = rule.mode_choice
       local mode_seq = not mode_choice
 
-      local input_stream = me[1]
-      local output_stream = me[2]
-
       ::restart::
-      local round_in_stream_pos = input_stream:get_position()
-      local round_out_stream_pos = output_stream:get_position()
+
+      local round_in_stream_pos = me[1]:get_position()
+      local round_out_stream_pos = me[2]:get_position()
 
       if mode_seq then
         result = true
         for i = 1, #rule do
-          if not me:match(rule[i]) then
+          if not match(me, rule[i]) then
             result = false
             break
           end
@@ -75,7 +75,7 @@ return
         -- mode_choice
         result = false
         for i = 1, #rule do
-          if me:match(rule[i]) then
+          if match(me, rule[i]) then
             result = true
             break
           end
@@ -83,12 +83,10 @@ return
       end
 
       if not result then
-        input_stream:set_position(round_in_stream_pos)
-        output_stream:set_position(round_out_stream_pos)
+        me[1]:set_position(round_in_stream_pos)
+        me[2]:set_position(round_out_stream_pos)
       elseif rule_name then
-        me[3](
-          input_stream, output_stream, rule_name, round_in_stream_pos
-        )
+        me[3](me[1], me[2], rule_name, round_in_stream_pos)
       end
 
       if f_rep then
@@ -108,6 +106,9 @@ return
       return result
     end
   end
+
+-- Export:
+return match
 
 --[[
   2018
