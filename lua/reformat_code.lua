@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-19
 ]]
 
 --[[
@@ -10,37 +10,28 @@
 
   Return function to reformat string with Lua code
 
-    [f] -> [s] -- function that returns string with formatted code
+    [..] -> [s] -- function that returns string with formatted code
 
       1 [s] -- string with Lua code
       ? [?] -- options
 ]]
 
-local get_formatter_ast
+local get_ast
 do
-  local get_ast
-  do
-    local tokens_syntax = request('!.concepts.lua.tokens_syntax')
-    local generic_parse = request('!.mechs.generic_loader')
-    local tokens_accessor = request('!.concepts.lua.tokens_accessor')
-    local syntax = request('!.concepts.lua.syntax')
-    local parse = request('!.mechs.parser.parse')
-    get_ast =
-      function(code_str)
-        local syntax_ast = { }
-        do
-          local tokens = generic_parse(code_str, tokens_syntax)
-          local tokens_accessor = tokens_accessor.create(tokens)
-          local is_parsed
-          is_parsed, syntax_ast = parse(tokens_accessor, syntax)
-        end
-        return syntax_ast
-      end
-  end
+  local tokens_syntax = request('!.concepts.lua.tokens_syntax')
+  local string_input_stream =
+    request('!.concepts.streams.seekable.input.string')
+  local parse = request('!.mechs.parser.parse')
+  local tokens_accessor = request('!.concepts.lua.tokens_accessor')
+  local syntax = request('!.concepts.lua.syntax')
   local transform_ast = request('!.concepts.lua.transform_ast')
-  get_formatter_ast =
-    function(lua_code_str)
-      return transform_ast(get_ast(lua_code_str))
+  get_ast =
+    function(code_str)
+      local input_str = string_input_stream.create(code_str)
+      local is_ok, tokens = parse(input_str, tokens_syntax)
+      local input_tokens = tokens_accessor.create(tokens)
+      local is_ok, syntax_ast = parse(input_tokens, syntax)
+      return transform_ast(syntax_ast)
     end
 end
 
@@ -54,7 +45,7 @@ return
     local shebang_str, lua_code_str = split_shebang(shell_code_str)
 
     local result_str =
-      serialize_ast(get_formatter_ast(lua_code_str), options)
+      serialize_ast(get_ast(lua_code_str), options)
 
     if shebang_str then
       result_str = shebang_str .. newline .. result_str
@@ -65,6 +56,5 @@ return
 
 --[[
   2018 #
-  2026 # # # # #
-  2026-11-03
+  2026 # # # # # #
 ]]
