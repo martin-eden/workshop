@@ -24,7 +24,7 @@ return
         if not is_table(node) then return end
 
         if (#node == 0) then
-          node[1] = input:get_segment(node.seg[1], node.seg[2])
+          node[1] = input:get_segment(node.seg)
         else
           for _, subnode in ipairs(node) do
             populate_leaves(subnode)

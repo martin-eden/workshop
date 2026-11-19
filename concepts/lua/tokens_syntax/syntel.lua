@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-15
+  Last mod.: 2026-11-19
 ]]
 
 --[[
@@ -16,11 +16,9 @@ local is_keyword =
   function(input)
     local init_pos = input:get_position()
     if match_name(input) then
-      local token =
-        input:get_segment(
-          init_pos,
-          input:get_position() - init_pos
-        )
+      local segment =
+        { init_pos, input:get_position() - init_pos }
+      local token = input:get_segment(segment)
       if keywords_map[token] then
         return true
       else

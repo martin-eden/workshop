@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-19
 ]]
 
 --[[
@@ -19,7 +19,7 @@
 --[[
   interface between [processor] and [match_string]
 
-  Processor receives input stream handler which has methods
+  Processor receives this input stream handler which has methods
   to get/set reading index and method to compare with string.
 
   Processor calls match_string(). If it succeeds it must return
@@ -47,14 +47,15 @@ local set_position =
   end
 
 local get_segment =
-  function(me, start, len)
+  function(me, segment)
     -- No sense in concatenating several strings
-    if (len ~= 1) then return end
+    if (segment[2] ~= 1) then return end
+    local start = segment[1]
     if (start > me[3]) then return end
     return me[1][start][1]
   end
 
-local read_type =
+local match_type =
   function(me, type)
     if (me[2] > me[3]) then return false end
     if (me[1][me[2]].type ~= type) then return false end
@@ -64,17 +65,17 @@ local read_type =
 
 local is_name =
   function(me)
-    return read_type(me, 'name')
+    return match_type(me, 'name')
   end
 
 local is_string =
   function(me)
-    return read_type(me, 'string')
+    return match_type(me, 'string')
   end
 
 local is_number =
   function(me)
-    return read_type(me, 'number')
+    return match_type(me, 'number')
   end
 
 local interface

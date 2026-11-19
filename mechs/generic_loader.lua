@@ -2,17 +2,16 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-13
+  Last mod.: 2026-11-19
 ]]
 
 local string_input_stream =
-  request('!.mechs.streams.mergeable.string.interface')
+  request('!.concepts.streams.seekable.input.string')
 local parse = request('parser.parse')
 
 return
   function(data_str, syntax, ...)
-    local input_stream = new(string_input_stream)
-    input_stream:init(data_str)
+    local input_stream = string_input_stream.create(data_str)
 
     local result
     do
