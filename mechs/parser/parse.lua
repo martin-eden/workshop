@@ -10,9 +10,9 @@ local data_processor = request('!.mechs.processor')
 
 local on_match =
   function(input, output, name, init_pos)
-    local length = input:get_position() - init_pos
-    if (length == 0) then return end
-    output:write({ type = name, start = init_pos, len = length })
+    local len = input:get_position() - init_pos
+    if (len == 0) then return end
+    output:write({ type = name, seg = { init_pos, len } })
   end
 
 local fold = request('fold')

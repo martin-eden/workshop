@@ -2,16 +2,17 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-12
+  Last mod.: 2026-11-19
 ]]
 
 --[[
   For all records we remove data offsets related to input stream
 
   This is because
+
     * we assume that input stream is no longer accessible in
       further flow
-    * the intention of parsing is remove more low-level layer,
+    * the intention of parsing is remove lower-level layer,
       not just annotate it
 ]]
 
@@ -23,7 +24,7 @@ return
         if not is_table(node) then return end
 
         if (#node == 0) then
-          node[1] = input:get_segment(node.start, node.len)
+          node[1] = input:get_segment(node.seg[1], node.seg[2])
         else
           for _, subnode in ipairs(node) do
             populate_leaves(subnode)
@@ -35,10 +36,7 @@ return
     strip_segments =
       function(node)
         if not is_table(node) then return end
-
-        node.start = nil
-        node.len = nil
-
+        node.seg = nil
         for _, subnode in ipairs(node) do
           strip_segments(subnode)
         end

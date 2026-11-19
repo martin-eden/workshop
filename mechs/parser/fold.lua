@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-12
+  Last mod.: 2026-11-19
 ]]
 
 local is_inside = request('!.mechs.geometry.1d.segments.is_inside')
@@ -15,7 +15,7 @@ return
       local dest_idx = 1
       local result = { struc[1] }
       repeat
-        if not is_inside(struc[src_idx], result[dest_idx]) then
+        if not is_inside(struc[src_idx].seg, result[dest_idx].seg) then
           dest_idx = dest_idx + 1
           result[dest_idx] = struc[src_idx]
         else
@@ -24,14 +24,13 @@ return
             start_idx = start_idx - 1
           until
             not result[start_idx] or
-            not is_inside(struc[src_idx], result[start_idx])
+            not is_inside(struc[src_idx].seg, result[start_idx].seg)
 
           start_idx = start_idx + 1
           local dest_table =
             {
-              start = struc[src_idx].start,
-              len = struc[src_idx].len,
               type = struc[src_idx].type,
+              seg = struc[src_idx].seg,
             }
           local copy_idx = start_idx
           for i = start_idx, dest_idx do
