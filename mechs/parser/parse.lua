@@ -2,10 +2,10 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-15
+  Last mod.: 2026-11-19
 ]]
 
-local output_seq = request('!.mechs.streams.sequence.interface')
+local output_seq = request('!.concepts.streams.seekable.output.sequence')
 local data_processor = request('!.mechs.processor')
 
 local on_match =
@@ -23,8 +23,7 @@ return
     assert_table(input)
     assert(is_table(grammar) or is_string(grammar) or is_function(grammar))
 
-    local output = new(output_seq)
-    output:init()
+    local output = output_seq.create()
 
     local processor = data_processor.create(input, output, on_match)
 
