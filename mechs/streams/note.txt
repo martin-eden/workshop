@@ -1,0 +1,12 @@
+Old stream interfaces
+
+These interfaces was born with implementation of Lua code formatter
+somewhere in 2016/2017. Later they were reused for PKZIP codec.
+
+In 2026 I returned to Lua code formatter and rewrote interfaces
+(same idea, just fresher style and implementation).
+
+So modules here are for PKZIP codec. I don't have energy to
+readjust it's code yet.
+
+-- Martin, 2026-11
