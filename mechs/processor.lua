@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-15
+  Last mod.: 2026-11-19
 ]]
 
 --[[
@@ -29,7 +29,7 @@ do
       assert_table(input)
       assert_table(output)
       assert_function(on_match)
-      local me = { input, output, on_match}
+      local me = { input, output, on_match }
       attach_methods(me, interface)
       return me
     end
