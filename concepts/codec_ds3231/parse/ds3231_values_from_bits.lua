@@ -13,7 +13,7 @@ return
   function(data)
     return
       {
-        Status =
+        status =
           {
             ['32kihz_pin_enabled'] =
               bool_from_bit(data.status['32kihz_pin_enabled']),
@@ -39,8 +39,7 @@ return
               sint8_from_byte(byte_from_bits(data.status.speed_trim)),
             wave_freq_num =
               byte_from_bits(data.status.wave_freq_num),
-
-            Temperature =
+            temperature =
               {
                 is_neg =
                   bool_from_bit(data.status.temperature.is_neg),
@@ -50,8 +49,7 @@ return
                   byte_from_bits(data.status.temperature.frac),
               },
           },
-
-        Moment =
+        moment =
           {
             is_next_century =
               bool_from_bit(data.moment.is_next_century),
@@ -72,8 +70,7 @@ return
             second_bcd =
               byte_from_bits(data.moment.second_bcd),
           },
-
-        Alarm_1 =
+        alarm_1 =
           {
             dateday_bcd =
               byte_from_bits(data.alarm_1.dateday_bcd),
@@ -81,26 +78,22 @@ return
               bool_from_bit(data.alarm_1.dateday_is_day),
             ignore_dateday =
               bool_from_bit(data.alarm_1.ignore_dateday),
-
             hour_is_12h_format =
               bool_from_bit(data.alarm_1.hour_is_12h_format),
             hour_data =
               byte_from_bits(data.alarm_1.hour_data),
             ignore_hour =
               bool_from_bit(data.alarm_1.ignore_hour),
-
             minute_bcd =
               byte_from_bits(data.alarm_1.minute_bcd),
             ignore_minute =
               bool_from_bit(data.alarm_1.ignore_minute),
-
             second_bcd =
               byte_from_bits(data.alarm_1.second_bcd),
             ignore_second =
               bool_from_bit(data.alarm_1.ignore_second),
           },
-
-        Alarm_2 =
+        alarm_2 =
           {
             dateday_bcd =
               byte_from_bits(data.alarm_2.dateday_bcd),
@@ -108,14 +101,12 @@ return
               bool_from_bit(data.alarm_2.dateday_is_day),
             ignore_dateday =
               bool_from_bit(data.alarm_2.ignore_dateday),
-
             hour_is_12h_format =
               bool_from_bit(data.alarm_2.hour_is_12h_format),
             hour_data =
               byte_from_bits(data.alarm_2.hour_data),
             ignore_hour =
               bool_from_bit(data.alarm_2.ignore_hour),
-
             minute_bcd =
               byte_from_bits(data.alarm_2.minute_bcd),
             ignore_minute =
@@ -126,4 +117,5 @@ return
 
 --[[
   2026 # #
+  2026-11-26
 ]]
