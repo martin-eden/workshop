@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-11
+  Last mod.: 2026-11-28
 ]]
 
 local normalize = request('!.concepts.path_name.normalize')
@@ -13,7 +13,7 @@ return
     local command =
       {
         'dot',
-        '-tsvg',
+        '-Tsvg',
         normalize(dot_pathname),
         '-o',
         normalize(svg_pathname),
