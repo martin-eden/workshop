@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-28
 ]]
 
 --[[
@@ -96,10 +96,10 @@ local add_to_list = request('!.concepts.list.add_item')
 
 local parse_closure =
   function(input_lines)
-    input_lines:Read()
-    input_lines:Read()
+    input_lines:read()
+    input_lines:read()
 
-    local is_ok, opcode_line = input_lines:Read()
+    local is_ok, opcode_line = input_lines:read()
     if not is_ok then return false end
 
     local instructions = { }
@@ -108,7 +108,7 @@ local parse_closure =
 
       add_to_list(instructions, parse_line(opcode_line))
 
-      is_ok, opcode_line = input_lines:Read()
+      is_ok, opcode_line = input_lines:read()
       if not is_ok then break end
     end
 
@@ -119,7 +119,7 @@ local parse_closure =
 return
   function(input_lines)
     local closures = { }
-    input_lines:Read()
+    input_lines:read()
     while true do
       local is_ok, closure = parse_closure(input_lines)
       if not is_ok then break end
@@ -129,6 +129,5 @@ return
   end
 
 --[[
-  2026-07-13
-  2026-10-19
+  2026 # #
 ]]
