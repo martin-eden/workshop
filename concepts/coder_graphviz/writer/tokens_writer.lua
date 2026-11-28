@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-28
 ]]
 
 --[[
@@ -14,8 +14,8 @@
     4 [t] -- indent instance
 ]]
 
-local spaces = request('Spaces')
-local syntels = request('Syntels')
+local spaces = request('spaces')
+local syntels = request('syntels')
 
 local end_line
 local empty_line
@@ -25,7 +25,7 @@ do
     function(me)
       if (me[2] == 0) then return end
 
-      me[1]:Write(line_separator)
+      me[1]:write(line_separator)
       me[2] = 0
       me[3] = ''
     end
@@ -33,9 +33,11 @@ do
   empty_line =
     function(me)
       end_line(me)
-      me[1]:Write(line_separator)
+      me[1]:write(line_separator)
     end
 end
+
+local indent_chunk = '   '
 
 local write
 do
@@ -62,7 +64,7 @@ do
       end
 
       if (line_len == 0) then
-        output:Write(indent:to_string())
+        output:write(indent:to_string())
       end
 
       if
@@ -74,8 +76,8 @@ do
       then
         -- Wrap lines on "->" or ";"
         end_line(me)
-        output:Write(indent:to_string())
-        output:Write(indent:get_indent_chunk())
+        output:write(indent:to_string())
+        output:write(indent_chunk)
       else
         local write_sep = false
 
@@ -93,12 +95,12 @@ do
         end
 
         if write_sep then
-          output:Write(item_separator)
+          output:write(item_separator)
           me[2] = me[2] + sep_len
         end
       end
 
-      output:Write(token)
+      output:write(token)
 
       if (token == start_graph) then
         indent:inc()
@@ -114,36 +116,24 @@ do
   local create
   do
     local indent_class = request('!.concepts.indent')
-    local indent_chunk = '   '
+    local min_indent = 0
+    local max_indent = 99
     local attach_methods = request('!.table.attach_methods')
-
     create =
       function(base_output)
-        assert_table(base_output)
-
-        local indent = indent_class.create()
-        indent:set_indent_chunk(indent_chunk)
-
-        local me =
-          {
-            [1] = base_output,
-            [2] = 0,
-            [3] = '',
-            [4] = indent,
-          }
-
+        local indent =
+          indent_class.create(indent_chunk, min_indent, max_indent)
+        local me = { base_output, 0, '', indent }
         attach_methods(me, interface)
-
         return me
       end
   end
-
   interface =
     {
       create = create,
-      EndLine = end_line,
-      EmptyLine = empty_line,
-      Write = write,
+      end_line = end_line,
+      empty_line = empty_line,
+      write = write,
     }
 end
 
@@ -151,5 +141,6 @@ end
 return interface
 
 --[[
-  2026-09-15
+  2026 #
+  2026-11-28
 ]]

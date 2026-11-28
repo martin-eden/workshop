@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-19
+  Last mod.: 2026-11-28
 ]]
 
 --[[
@@ -34,40 +34,36 @@
 ]]
 
 local get_num_entries = request('!.table.get_num_entries')
-local Writer = request('Writer')
+local writer = request('writer')
 local ordered_pass = request('!.table.ordered_pass')
 local get_chains = request('!.mechs.graph.get_chains')
 
 -- Export:
 return
-  function(Graph, OutputStream)
-    local Labels = Graph[1]
-    local Links = Graph[2]
+  function(graph, output)
+    local labels = graph[1]
+    local links = graph[2]
 
-    local num_nodes = get_num_entries(Labels)
-    local Writer = Writer.create(OutputStream, num_nodes)
+    local num_nodes = get_num_entries(labels)
+    local writer = writer.create(output, num_nodes)
 
-    Writer:StartGraph()
+    writer:start_graph()
 
-    for index, label in ordered_pass(Labels) do
-      Writer:Node(index, label)
+    for index, label in ordered_pass(labels) do
+      writer:node(index, label)
     end
 
     do
-      local Chains = get_chains(Links)
-
-      if (#Chains == 0) then goto next end
-
-      Writer:EmptyLine()
-
-      for _, Chain in ipairs(Chains) do
-        Writer:Chain(Chain)
+      local chains = get_chains(links)
+      if (#chains == 0) then goto next end
+      writer:empty_line()
+      for _, chain in ipairs(chains) do
+        writer:chain(chain)
       end
-
       :: next ::
     end
 
-    Writer:EndGraph()
+    writer:end_graph()
   end
 
 --[[
