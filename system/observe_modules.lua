@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-13
+  Last mod.: 2026-11-28
 ]]
 
 --[[
@@ -45,6 +45,15 @@
   (Yes, it's not crucial, currently not used, and occupies most of
   code. Still, we consider this as important.)
 ]]
+
+do
+  local is_lua_54 = (_VERSION == 'Lua 5.4')
+  local is_lua_55 = (_VERSION == 'Lua 5.5')
+  if not (is_lua_54 or is_lua_55) then
+    print('We need 2nd result from require().')
+    error('This module requires Lua 5.4 or 5.5.')
+  end
+end
 
 local module_paths
 local dependencies
