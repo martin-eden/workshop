@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-28
 ]]
 
 --[[
@@ -24,7 +24,7 @@ do
   local list_to_str = request('!.concepts.list.to_string')
   write_rec =
     function(rec)
-      output:Write(
+      output:write(
         list_to_str(rec, field_separator) .. record_separator
       )
     end
@@ -86,6 +86,5 @@ return
   end
 
 --[[
-  2026 # # # #
-  2026-10-19
+  2026 # # # # #
 ]]
