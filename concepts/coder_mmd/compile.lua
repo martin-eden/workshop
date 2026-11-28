@@ -2,36 +2,34 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-10-19
+  Last mod.: 2026-11-28
 ]]
 
-local Writer = request('Writer')
+local writer = request('writer')
 local get_chains = request('!.mechs.graph.get_chains')
 
--- Export:
 return
-  function(Graph, OutputStream)
-    local Labels = Graph[1]
-    local Links = Graph[2]
+  function(graph, output)
+    local labels = graph[1]
+    local links = graph[2]
 
-    local Writer = Writer.create(OutputStream, #Labels)
+    local writer = writer.create(output, #labels)
 
-    Writer:StartGraph()
+    writer:start_graph()
 
-    for index, label in ipairs(Labels) do
-      Writer:Node(index, label)
+    for index, label in ipairs(labels) do
+      writer:node(index, label)
     end
 
-    Writer:EmptyLine()
+    writer:empty_line()
 
-    for _, Chain in ipairs(get_chains(Links)) do
-      Writer:Chain(Chain)
+    for _, chain in ipairs(get_chains(links)) do
+      writer:chain(chain)
     end
 
-    Writer:EndGraph()
+    writer:end_graph()
   end
 
 --[[
-  2026-09-15
-  2026-10-19
+  2026 # #
 ]]

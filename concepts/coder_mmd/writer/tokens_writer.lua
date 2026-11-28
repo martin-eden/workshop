@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-11-09
+  Last mod.: 2026-11-28
 ]]
 
 --[[
@@ -14,28 +14,22 @@
     4 [t] -- indent instance
 ]]
 
-local spaces = request('Spaces')
-local syntels = request('Syntels')
+local spaces = request('spaces')
+local syntels = request('syntels')
 
-local end_line
-local empty_line
-do
-  local line_separator = spaces.newline
-  end_line =
-    function(me)
-      if (me[2] == 0) then return end
+local end_line =
+  function(me)
+    if (me[2] == 0) then return end
+    me[1]:write(spaces.newline)
+    me[2] = 0
+    me[3] = ''
+  end
 
-      me[1]:Write(line_separator)
-      me[2] = 0
-      me[3] = ''
-    end
-
-  empty_line =
-    function(me)
-      end_line(me)
-      me[1]:Write(line_separator)
-    end
-end
+local empty_line =
+  function(me)
+    end_line(me)
+    me[1]:write(spaces.newline)
+  end
 
 local write
 do
@@ -56,23 +50,18 @@ do
       local indent = me[4]
 
       if (line_len == 0) then
-        output_stream:Write(indent:to_string())
+        output_stream:write(indent:to_string())
       end
 
       if (line_len > wrapping_len) and (token == arrow) then
         --[[
           Wrap lines before "-->"
 
-            a --> b --> c
-
-          goes to
-
-            a --> b
-            b --> c
+          "a --> b --> c" goes to "a --> b", "b --> c"
         ]]
         end_line(me)
-        output_stream:Write(indent:to_string())
-        output_stream:Write(prev_token)
+        output_stream:write(indent:to_string())
+        output_stream:write(prev_token)
       end
 
       do
@@ -89,12 +78,12 @@ do
         end
 
         if write_sep then
-          output_stream:Write(item_separator)
+          output_stream:write(item_separator)
           me[2] = me[2] + sep_len
         end
       end
 
-      output_stream:Write(token)
+      output_stream:write(token)
 
       -- We can only increase indent at this level as format is not braced
       if (token == kw_flowchart) then
@@ -111,25 +100,16 @@ local create
 do
   local indent_class = request('!.concepts.indent')
   local indent_chunk = '  '
+  local min_indent = 0
+  local max_indent = 99
   local attach_methods = request('!.table.attach_methods')
-
   create =
-    function(base_output_stream)
-      assert_table(base_output_stream)
-
-      local indent = indent_class.create()
-      indent:set_indent_chunk(indent_chunk)
-
-      local me =
-        {
-          [1] = base_output_stream,
-          [2] = 0,
-          [3] = '',
-          [4] = indent,
-        }
-
+    function(output)
+      assert_table(output)
+      local indent =
+        indent_class.create(indent_chunk, min_indent, max_indent)
+      local me = { output, 0, '', indent }
       attach_methods(me, interface)
-
       return me
     end
 end
@@ -137,9 +117,9 @@ end
 interface =
   {
     create = create,
-    EndLine = end_line,
-    EmptyLine = empty_line,
-    Write = write,
+    end_line = end_line,
+    empty_line = empty_line,
+    write = write,
   }
 
 -- Export:
