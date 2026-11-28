@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-09-01
+  Last mod.: 2026-11-28
 ]]
 
 --[[
@@ -26,10 +26,10 @@ local itness_to_stream = request('!.concepts.codec_itness.compile')
 
 -- Export:
 return
-  function(Args, OutputStream)
+  function(args, output)
     itness_to_stream(
-      get_listing(get_bytecode(file_to_str(Args[1]))),
-      OutputStream
+      get_listing(get_bytecode(file_to_str(args[1]))),
+      output
     )
   end
 
